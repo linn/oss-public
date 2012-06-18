@@ -1,0 +1,227 @@
+//
+// Use the reference section to name additional assemblies
+// required to execute the template.
+//
+// The following assemblies are provided by default:
+//		System.dll
+//		System.Xml.dll
+//		LinnGen.exe
+//
+// Name one additional assembly on each line of the reference section
+//
+
+<* reference *>
+
+XmlUpnp.dll
+
+<* reference *>
+
+//
+// Use the import section for additional using directives.
+//
+// The following directives are provided by default
+//
+//		using System;
+//		using System.Text;
+//		using System.IO;
+//		using System.Xml;
+//		using System.Xml.XPath;
+//		using System.Collections.Generic;
+//
+
+<* import *>
+
+using Linn.Xml.Upnp;
+
+<* import *>
+
+//
+// Use the function section to provide helper functions
+// that can be called from within the body section
+//
+
+<* function *>
+
+Dictionary<string,string> argtype = new Dictionary<string,string>();
+Dictionary<string,string> svtype = new Dictionary<string,string>();
+
+void Initialise()
+{    
+    argtype.Add("string", "String");
+    argtype.Add("ui1", "int");
+    argtype.Add("ui2", "int");
+    argtype.Add("ui4", "int");
+    argtype.Add("boolean", "boolean");
+    argtype.Add("i1", "int");
+    argtype.Add("i2", "int");
+    argtype.Add("i4", "int");
+    argtype.Add("bin.base64", "String");
+    argtype.Add("uri", "String");
+    
+    svtype.Add("string", "String");
+    svtype.Add("ui1", "Int");
+    svtype.Add("ui2", "Int");
+    svtype.Add("ui4", "Int");
+    svtype.Add("boolean", "Bool");
+    svtype.Add("i1", "Int");
+    svtype.Add("i2", "Int");
+    svtype.Add("i4", "Int");
+    svtype.Add("bin.base64", "Binary");
+    svtype.Add("uri", "String");
+}
+
+<* function *>
+
+//
+// The body section contains the generated text
+//
+// C# code can be embedded within <% %> tags
+//
+// <%=name%> will output the contents of the named variable
+//
+// args is an array of strings containing the generator arguments
+//
+// XPathNavigator LoadXmlFile(filename) is provided for loading
+// and navigating xml files
+//
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+    if (args.Length < 2)
+    {
+        throw (new TemplateException("Service Domain not specified"));
+    }
+    
+    if (args.Length < 3)
+    {
+        throw (new TemplateException("Service Type not specified"));
+    }
+    
+    if (args.Length < 4)
+    {
+        throw (new TemplateException("Service Version not specified"));
+    }
+    
+	string domain = args[1];
+    string type = args[2];
+    uint version;
+    
+    try
+    {
+	   version = Convert.ToUInt32(args[3]);
+	}
+	catch (FormatException)
+	{
+        throw (new TemplateException("Invalid version number specified"));
+	}
+    catch (OverflowException)
+    {
+        throw (new TemplateException("Invalid version number specified"));
+    }
+
+    string upnpdomain = domain.Replace(".", "-");
+
+    if (upnpdomain.StartsWith("upnp-"))
+    {
+        upnpdomain = "schemas-" + upnpdomain;
+    }
+
+    Initialise();
+
+	UpnpXml u = new UpnpXml(args[0]);
+%>
+<html>
+<head>
+    <style>
+        @import "Services.css";
+	</style>
+</head>
+<body>
+    <div id="service">
+	    <div id="header">
+		    <%=type%>
+	    </div>
+	    <div id="body">
+		    <div id="details">
+			    <div id="header">
+		        	Details
+		        </div>
+			    <div id="body">
+			    	<div>
+			        	Domain: <%=domain%>
+			       	</div>
+			       	<div>
+			        	Version: <%=version%>
+			        </div>
+			    </div>
+		    </div>
+		    <div id="actions">
+			    <div id="header">
+		        	Actions
+		        </div>
+			    <div id="body">
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+				    <div id="action">
+					    <div id="header">
+					        <%=a.name%>
+				        </div>
+					    <div id="body">
+							<div id="input">
+							    <div id="header">
+							        Input Arguments
+						        </div>
+						        <div id="body">
+<%      if (a.inargs.Count == 0) %>
+<%      { %>
+                                    <div>								
+							            None
+                                    </div>
+<%      } %>
+<%      else %>
+<%      { %>
+<%          foreach (Argument i in a.inargs) %>
+<%          { %>
+                                    <div>								
+							            <%=i.name%>
+                                    </div>								
+<%          } %>
+<%      } %>
+						        </div>
+							</div>					    
+							<div id="output">
+							    <div id="header">
+							        Output Arguments
+						        </div>
+						        <div id="body">
+						        
+<%      if (a.outargs.Count == 0) %>
+<%      { %>
+                                    <div>								
+							            None
+                                    </div>
+<%      } %>
+<%      else %>
+<%      { %>
+<%          foreach (Argument o in a.outargs) %>
+<%          { %>
+                                    <div>								
+							            <%=o.name%>
+                                    </div>								
+<%          } %>
+<%      } %>
+						        </div>
+							</div>					    
+					    </div>
+				    </div>
+<%  } %>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+</body>
+<* body *>

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Package type='Widget'>
+  <Version>8</Version>
+  <Namespace>InputWidget</Namespace>
+  <Plugin class="NodeInput">
+    <Name>Input</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>10</Width>
+    <Height>10</Height>
+    <RenderState />
+    <ClampToTextureSize>True</ClampToTextureSize>
+    <MsgReceiver />
+  </Plugin>
+</Package>

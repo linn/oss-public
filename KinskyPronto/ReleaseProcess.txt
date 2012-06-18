@@ -1,0 +1,77 @@
+
+            KinskyPronto Release Process
+            ----------------------------
+    
+    1) Update ProntoScripts\buildVersion.js and commit file
+    
+    2) Build JS files as release
+        - cd Prontoscripts
+        - scons variant=release
+        
+    3) Update XCF files using ProntoEditPro
+        For both 9400 and 9600 XCF files
+            - in 'Watch TV' clear and delete linnControl, then restart PEP
+            - in 'Watch TV' drag in linnControl form Building Blocks -> Libraries
+            - in 'Watch TV' enable linnControl
+            - update script in LinnDS-9x00-PREAMP (Properties->Advanced)
+            - update script in LinnDS-9x00-RADIO (Properties->Advanced)            
+            - update script in LinnDS-9x00-DS (Properties->Advanced)
+            - save the XCF file
+            
+    4) Test XCF then create XGF files
+        For both 9400 and 9600 XCF files
+            - test operate correctly
+            - delete existing XGF files from 
+                C:\Documents and Settings\All Users\Application Data\Philips\ProntoEdit Professional 2\ProntoScriptModules\Categories\NewCategory
+            - right-click on LinnDS-9x00-PREAMP and select
+                'Save to ProntoScript Modules'
+                
+    5) Build installer
+        - cd ProntosScripts
+        - makensis KinskyPronto.nsi
+        
+    6) Rename install file to include version number
+        - ProntoScripts\build\KinskyPronto.exe -> KinskyProntoN.n.n.exe     
+        
+    7) Get the new component p/n from     
+        http://eng.linn.co.uk/wiki/index.php/Ascit:Processes:SoftwareRelease:ComponentPartsList
+        
+    8) Copy and rename installer file into components directory
+        /local/share/components/Snnnnnnnn.exe
+        \\eng.linn.co.uk\share_w\components\Snnnnnnn.exe
+        
+    9) Update components table in wiki
+    
+    10) Get new bundle name from
+        http://eng.linn.co.uk/wiki/index.php/Ascit:Processes:SoftwareRelease:BundlePartsList
+    
+    11) Checkout/update release template
+        /eng.linn.co.uk/home/grahamdo/ReleaseTemplates/KinskyPronto
+        
+    12) Update release.txt file in Release templates with changes
+    
+    13) Update BuildBundle.bat with new bundle name (2 places)
+    
+    14) Commit changes to ReleaseTemplates files
+    
+    15) From CMD prompt execute BuildBundle.bat to get bundle file
+    
+    16) Check this bundle contains correct files then copy to 
+        /local/share/releases/Bnnnnnnnn.exe
+        
+    17) Update bundles table in wiki
+    
+    18) Use email template to inform users of release
+        http://eng.linn.co.uk/wiki/index.php/Ascit:Processes:SoftwareRelease:BundlePartsList
+        
+        -----------------------------------------------
+        
+    19) Once verified 
+        - change status of component on wiki page
+        - change status of bundle on wiki page
+        - put file up on Oss site at
+            http://oss.linn.co.uk/trac/wiki/DownloadKinskyPronto
+            
+        (use sudo to do this)
+            sudo -u products /usr/bin/scp -q -i /home/products/.ssh/volkano_products_rsa ~/work/KinskyPronto/ProntoScripts/build/KinskyPronto-3.2.1.exe kiboko.linn.co.uk\:/var/www.oss/NightlyBuilds/KinskyPronto/Cara/                                                                     
+                            

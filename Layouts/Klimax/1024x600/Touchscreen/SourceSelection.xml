@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>SourceSelection</Namespace>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>SourceSelection.SourceText</Child>
+      <Child>SourceSelection.Number</Child>
+      <Child>SourceSelection.Background</Child>
+      <Child>SourceSelection.SourceList</Child>
+      <Child>SourceSelection.SourceScrollbar</Child>
+    </Children>
+    <Width>447</Width>
+    <Height>371</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>SourceText</Name>
+    <Plugin />
+    <Parent>SourceSelection.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>20</X>
+        <Y>16</Y>
+        <Z>8</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>300</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>2</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Source</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>Number</Name>
+    <Plugin />
+    <Parent>SourceSelection.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>20</X>
+        <Y>335</Y>
+        <Z>9</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>250</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>2</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>11</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>0 sources</Text>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Background</Name>
+    <Plugin>SourceSelection.Background.TextureArrayFixed</Plugin>
+    <Parent>SourceSelection.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>447</Width>
+    <Height>371</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/Window_right.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Background.TextureArrayFixed</Name>
+    <Plugin>SourceSelection.Background</Plugin>
+    <Texture>Bitmaps/Window_right.png</Texture>
+  </Plugin>
+  <Plugin class="NodeInput">
+    <Name>SourceListInput</Name>
+    <Plugin />
+    <Parent>SourceSelection.SourceList</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>432</Width>
+    <Height>288</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState />
+    <ClampToTextureSize>True</ClampToTextureSize>
+    <MsgReceiver>SourceSelection.SourceList</MsgReceiver>
+  </Plugin>
+  <Plugin class="NodeList">
+    <Name>SourceList</Name>
+    <Plugin />
+    <Parent>SourceSelection.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>8</X>
+        <Y>41</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>SourceSelection.SourceListInput</Child>
+      <Child>SourceSelection.Highlight</Child>
+    </Children>
+    <Width>432</Width>
+    <Height>288</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>2</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>0</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>11</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <LineCount>8</LineCount>
+    <Highlight>SourceSelection.Highlight</Highlight>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Highlight</Name>
+    <Plugin>SourceSelection.Highlight.TextureArrayFixed</Plugin>
+    <Parent>SourceSelection.SourceList</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>432</Width>
+    <Height>36</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/highlight_right.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Highlight.TextureArrayFixed</Name>
+    <Plugin>SourceSelection.Highlight</Plugin>
+    <Texture>Bitmaps/highlight_right.png</Texture>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>SourceScrollbar</Name>
+    <Plugin />
+    <Parent>SourceSelection.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>10</Y>
+        <Z>10</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+  </Plugin>
+</Package>

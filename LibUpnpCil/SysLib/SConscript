@@ -1,0 +1,25 @@
+Import('_default_env')
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Linn/Ascii/Ascii.cs
+    Linn/Ascii/Parser.cs
+""")
+
+clilibs = ['mscorlib', 'System', 'OssCore']
+if _default_env['hardware'] != 'Droid':
+    lib = _default_env.CliLibrary('OssSysLib', files, CLILIBS=clilibs)
+else:
+    msproj = _default_env.MSBuildFileGenerator('OssSysLib', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.SysLib')
+    lib = _default_env.MSBuildLibBuilder('OssSysLib', msproj, CLILIBS=clilibs)
+    
+Alias('Lib', lib)
+
+Alias('Test', 'Lib')
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/SysLib.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/SysLib', DOXYGENNAMESPACE='OssSysLib')
+
+Alias('Docs', docs)
+
+Default(['Test','Docs'])
+

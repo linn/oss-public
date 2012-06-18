@@ -1,0 +1,49 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<script type="text/javascript" src="../../../Common/Scripts/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="../../../Common/Scripts/jquery.xml2json.js"></script>   
+		<script type="text/javascript" src="../../../Common/Scripts/jquery.form.js"></script>   
+		<script type="text/javascript" src="../../../Common/Scripts/jquery-ui-1.8.7.custom.min.js"></script>  
+		<script type="text/javascript" src="../../../Common/Scripts/jquery.tools.min.js"></script>
+		<script type="text/javascript" src="../../../Common/Scripts/ProductSupport.js"></script>   
+		<script type="text/javascript" src="../../../Common/Scripts/helpers.js"></script>  
+		<script type="text/javascript" src="../../../Common/Scripts/Variant/Variant.js"></script>  
+		<!-- jQuery needs to come before Prototype -->
+		<script type="text/javascript" src="../../../ServiceProxies/Prototype.js"></script>
+		<script type="text/javascript" src="../../../ServiceProxies/Helpers.js"></script>   
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceCollection.js"></script>   
+		<script type="text/javascript" src="../../../ServiceProxies/SoapRequest.js"></script>     
+		 
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceProduct.js"></script>      
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceConfiguration.js"></script>    
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceVolkano.js"></script>  
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceProxy.js"></script>  
+        
+		<script type="text/javascript" src="Scripts/Application.js"></script>    
+
+        <link rel="stylesheet" type="text/css" href="../../../Common/Themes/custom-theme/jquery-ui-1.8.7.custom.css" />
+        <link rel="stylesheet" type="text/css" href="CSS/Application.css" />
+	</head>
+    <body>
+    <div id="container">
+        <div id='header' class="ui-state-default">
+            <span id="logo"></span>
+            <ul id="tabHeaders" class='mainTabs'>
+                <li id="lnkTabUpload"><a href="#tabUpload"><span>Upload Application</span></a></li>                
+            </ul>
+        </div>
+        <div id="tabs">
+            <div id="tabUpload">
+                <form enctype="multipart/form-data" id="frmUpload" method="post" action="/webapp">
+                    <input id="inputUpload" type="file" name="webapp" /><br /><input type="submit" value="Upload" />
+                </form>
+            </div>
+        </div>
+    </div>
+        
+    </body>
+</html>

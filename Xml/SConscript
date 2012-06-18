@@ -1,0 +1,66 @@
+Import('_tool_env')
+
+# XSD Files
+
+xsdFiles = Split("""
+    Linn/Xml/DidlLite/DidlLite.xsd
+    Linn/Xml/Hal/Hal.xsd
+    Linn/Xml/Layout/Layout.xsd
+    Linn/Xml/Rom/Rom.xsd
+    Linn/Xml/RomCollection/RomCollection.xsd
+    Linn/Xml/Service/Service.xsd
+    Linn/Xml/Tags/Tags.xsd
+    Linn/Xml/Upnp/Upnp.xsd
+""")
+
+xsd = _tool_env.Install('$install_dir/bin', xsdFiles)
+
+Alias('Lib', xsd)
+
+# Xmlxxx.dll
+
+dll  = _tool_env.CliLibrary('XmlDidlLite', Split("""
+    Linn/Xml/DidlLite/DidlLite.cs
+    Linn/Xml/DidlLite/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlHal', Split("""
+    Linn/Xml/Hal/Hal.cs
+    Linn/Xml/Hal/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlLayout', Split("""
+    Linn/Xml/Layout/Layout.cs
+    Linn/Xml/Layout/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlRom', Split("""
+    Linn/Xml/Rom/Rom.cs
+    Linn/Xml/Rom/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlRomCollection', Split("""
+    Linn/Xml/RomCollection/RomCollection.cs
+    Linn/Xml/RomCollection/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlService', Split("""
+    Linn/Xml/Service/Service.cs
+    Linn/Xml/Service/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlTags', Split("""
+    Linn/Xml/Tags/Tags.cs
+    Linn/Xml/Tags/AssemblyInfo.cs
+    """))
+
+dll += _tool_env.CliLibrary('XmlUpnp', Split("""
+    Linn/Xml/Upnp/Upnp.cs
+    Linn/Xml/Upnp/AssemblyInfo.cs
+    """))
+
+Alias('Lib', dll)
+Alias('Test', 'Lib')
+Alias('Docs', 'Lib')
+Default(['Test','Docs'])
+

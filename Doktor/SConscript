@@ -1,0 +1,31 @@
+Import('_default_env')
+
+files = Split("""
+    Linn/Doktor/Node/Node.cs   
+    Linn/Doktor/Parameter/Parameter.cs   
+    Linn/Doktor/Parameter/ParameterEnum.cs   
+    Linn/Doktor/Parameter/ParameterString.cs   
+    Linn/Doktor/Parameter/ParameterNumber.cs   
+    Linn/Doktor/Parameter/ParameterUri.cs   
+    Linn/Doktor/Parameter/ParameterDs.cs   
+    Linn/Doktor/Parameter/ParameterUpnp.cs   
+    Linn/Doktor/Parameter/ParameterMediaRenderer.cs   
+    Linn/Doktor/Parameter/ParameterMediaServer.cs   
+    Linn/Doktor/Report/Report.cs   
+    Linn/Doktor/Supply/Supply.cs   
+    Linn/Doktor/Supply/SupplyUpnp.cs   
+    Linn/Doktor/Test/Test.cs   
+    Linn/Doktor/Test/TestTestReport.cs   
+    Linn/Doktor/Test/TestTestParameter.cs   
+    Linn/Doktor/Test/TestUpnp.cs   
+    Properties/AssemblyInfo.cs   
+""")
+ 
+res=[]
+    
+lib = _default_env.CliLibrary('OssDoktor', files, CLILIBS=['OssCore', 'OssSysLib', 'OssControl', 'mscorlib', 'System', 'System.Xml'], CLIRESOURCES=res)
+
+Alias('Lib', lib)
+Alias('Test', 'Lib')
+
+Default('Test')

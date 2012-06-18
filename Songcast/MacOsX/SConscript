@@ -1,0 +1,175 @@
+Import('_default_env kBuildInfo')
+
+
+# build folders for the components of songcast - we need scons nodes for these
+# folders as they are passed to other builders
+
+appFolder = _default_env.Command('LinnSongcast.app', '', [Mkdir('$TARGET')])
+prefFolder = _default_env.Command('LinnSongcast.prefPane', '', [Mkdir('$TARGET')])
+driverFolder = _default_env.Command('LinnSongcast.kext', '', [Mkdir('$TARGET')])
+distFolder = _default_env.Command('InstallerDist', '', [Mkdir('$TARGET')])
+scriptsFolder = _default_env.Command('InstallerScripts', '', [Mkdir('$TARGET')])
+dmgContentsFolder = _default_env.Command('InstallerDmgContents', '', [Mkdir('$TARGET')])
+
+
+# build the songcast app
+
+appFiles = [
+    ('MacOS/libohSongcast.so', 'ohSongcast.app/Contents/MacOS/libohSongcast.so'),
+    ('MacOS/Songcast', 'ohSongcast.app/Contents/MacOS/ohSongcast'),
+    ('Resources/Icon.icns', '../../Resources/Songcast.icns'),
+    ('Resources/MenuIconOff.png', '../../Resources/SysTrayIconOff.png'),
+    ('Resources/MenuIconOn.png', '../../Resources/SysTrayIconOn.png'),
+    ('Resources/SenderIcon.png', '../../Resources/IconLarge.png'),
+    ('Resources/English.lproj/InfoPlist.strings', 'ohSongcast.app/Contents/Resources/English.lproj/InfoPlist.strings'),
+    ('Resources/English.lproj/Localizable.strings', 'ohSongcast.app/Contents/Resources/English.lproj/Localizable.strings'),
+    ('Resources/English.lproj/MainMenu.nib', 'ohSongcast.app/Contents/Resources/English.lproj/MainMenu.nib'),
+    ('Resources/English.lproj/WindowUpdates.nib', 'ohSongcast.app/Contents/Resources/English.lproj/WindowUpdates.nib')
+]
+
+app = []
+for (target, source) in appFiles:
+    app += _default_env.InstallAs('LinnSongcast.app/Contents/' + target, 'App/' + source)
+
+app += _default_env.TagReplace('LinnSongcast.app/Contents/Info.plist', 'App/Info.plist', TAGS=kBuildInfo)
+
+
+# build the songcast preferences plugin
+
+prefsFiles = [
+    ('MacOS/Songcast', 'ohSongcast.prefPane/Contents/MacOS/ohSongcast'),
+    ('Resources/Icon.icns', '../../Resources/Songcast.icns'),
+    ('Resources/Icon.png', '../../Resources/IconSmall.png'),
+    ('Resources/IconLarge.png', '../../Resources/IconLarge.png'),
+    ('Resources/green.tiff', 'ohSongcast.prefPane/Contents/Resources/green.tiff'),
+    ('Resources/red.tiff', 'ohSongcast.prefPane/Contents/Resources/red.tiff'),
+    ('Resources/English.lproj/InfoPlist.strings', 'ohSongcast.prefPane/Contents/Resources/English.lproj/InfoPlist.strings'),
+    ('Resources/English.lproj/Localizable.strings', 'ohSongcast.prefPane/Contents/Resources/English.lproj/Localizable.strings'),
+    ('Resources/English.lproj/SongcastPrefPane.nib', 'ohSongcast.prefPane/Contents/Resources/English.lproj/SongcastPrefPane.nib'),
+]
+
+prefs = []
+for (target, source) in prefsFiles:
+    prefs += _default_env.InstallAs('LinnSongcast.prefPane/Contents/' + target, 'Prefs/' + source)
+
+prefs += _default_env.TagReplace('LinnSongcast.prefPane/Contents/Info.plist', 'Prefs/Info.plist', TAGS=kBuildInfo)
+
+
+# define compile flags for the driver code
+
+if _default_env['variant'] == 'debug':
+    debug_specific_flags = '-O0'
+else:
+    debug_specific_flags = '-Os'
+
+compiler_flags = '-c -fmessage-length=0 -pipe -nostdinc -Wno-trigraphs -fasm-blocks -force_cpusubtype_ALL ' + debug_specific_flags + ' -finline -fno-keep-inline-functions -Wreturn-type -Wunused-variable -DKERNEL -DKERNEL_PRIVATE -DDRIVER_PRIVATE -DAPPLE -DNeXT -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -gdwarf-2 -I/System/Library/Frameworks/Kernel.framework/PrivateHeaders -I/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Kernel.framework/Headers -D\'BRANDING_KEXTINFO_KMODVERSION="' + kBuildInfo['BUILD_INFO_VERSION'] + '"\''
+
+cpp_flags = '-x c++ ' + compiler_flags + ' -msoft-float -fno-builtin -fno-common -mkernel -fno-exceptions -fno-rtti -fcheck-new -fapple-kext'
+
+c_flags = '-x c -std=gnu99 ' + compiler_flags + ' -msoft-float -fno-builtin -fno-common -mkernel'
+
+link_flags1 = '-isysroot /Developer/SDKs/MacOSX10.6.sdk '
+link_flags2 = ' -mmacosx-version-min=10.6 -lcpp_kext -Xlinker -kext -nostdlib -lkmodc++ -lkmod -lcc_kext'
+
+
+# AudioClip.cpp is the only file containing floating point operations - this is compiled with floating point support as recommended in the apple documentation
+audio_clip_flags = '-x c++ -c -fmessage-length=0 -pipe -Wno-trigraphs -fasm-blocks -O3 -Wreturn-type -Wunused-variable -DKERNEL=1 -DKERNEL_PRIVATE=1 -gdwarf-2 -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -I/System/Library/Frameworks/Kernel.framework/PrivateHeaders -I/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Kernel.framework/Headers -fno-exceptions -fno-rtti -fpascal-strings -fno-schedule-insns -fno-schedule-insns2 -static -findirect-virtual-calls -mlong-branch'
+
+
+driverCppFiles = Split("""
+    AudioDevice
+    AudioEngine
+    AudioUserClient
+    Songcast
+""")
+
+
+# build the songcast driver i386 binary
+
+arch_flags  = '-arch i386 '
+compile_cpp = 'gcc ' + arch_flags + cpp_flags + ' $SOURCE -o $TARGET'
+compile_c   = 'gcc ' + arch_flags + c_flags + ' $SOURCE -o $TARGET'
+compile_ac  = 'gcc ' + arch_flags + audio_clip_flags + ' $SOURCE -o $TARGET'
+link        = 'g++ ' + arch_flags + link_flags1 + ' $SOURCES ' + link_flags2 + ' -o $TARGET'
+
+objects_i386 = []
+for f in driverCppFiles:
+    objects_i386 += _default_env.Command('Driver/i386/' + f + '.o', 'Driver/' + f + '.cpp', compile_cpp)
+
+objects_i386 += _default_env.Command('Driver/i386/AudioClip.o', 'Driver/AudioClip.cpp', compile_ac)
+objects_i386 += _default_env.Command('Driver/i386/KextInfo.o', 'Driver/KextInfo.c', compile_c)
+
+driver_i386 = _default_env.Command('Driver/i386/Songcast', objects_i386, link)
+
+
+# build the songcast driver x86_64 binary
+
+arch_flags  = '-arch x86_64 '
+compile_cpp = 'gcc ' + arch_flags + cpp_flags + ' $SOURCE -o $TARGET'
+compile_c   = 'gcc ' + arch_flags + c_flags + ' $SOURCE -o $TARGET'
+compile_ac  = 'gcc ' + arch_flags + audio_clip_flags + ' $SOURCE -o $TARGET'
+link        = 'g++ ' + arch_flags + link_flags1 + ' $SOURCES ' + link_flags2 + ' -o $TARGET'
+
+objects_x86_64 = []
+for f in driverCppFiles:
+    objects_x86_64 += _default_env.Command('Driver/x86_64/' + f + '.o', 'Driver/' + f + '.cpp', compile_cpp)
+
+objects_x86_64 += _default_env.Command('Driver/x86_64/AudioClip.o', 'Driver/AudioClip.cpp', compile_ac)
+objects_x86_64 += _default_env.Command('Driver/x86_64/KextInfo.o', 'Driver/KextInfo.c', compile_c)
+
+driver_x86_64 = _default_env.Command('Driver/x86_64/Songcast', objects_x86_64, link)
+
+
+# build the songcast driver universal binary and bundle
+
+driver_uni = _default_env.Command('Driver/Universal/Songcast', [driver_i386, driver_x86_64], 'lipo -create $SOURCES -output $TARGET')
+
+driverFiles = [
+]
+
+driver = []
+driver += _default_env.InstallAs('LinnSongcast.kext/Contents/MacOS/Songcast', driver_uni)
+driver += _default_env.TagReplace('LinnSongcast.kext/Contents/Info.plist', 'Driver/Info.plist', TAGS=kBuildInfo)
+
+
+# build the .pkg installer
+
+dist = []
+dist += _default_env.Install('InstallerDist/Library/Linn/', appFolder)
+dist += _default_env.Install('InstallerDist/Library/PreferencePanes/', prefFolder)
+dist += _default_env.Install('InstallerDist/Library/Linn/', driverFolder)
+dist += _default_env.InstallAs('InstallerDist/Library/LaunchAgents/uk.co.linn.songcast.plist', 'LaunchAgent.plist')
+
+_default_env.Depends(dist, app)
+_default_env.Depends(dist, prefs)
+_default_env.Depends(dist, driver)
+
+scripts = []
+scripts += _default_env.Install('InstallerScripts/', 'Scripts/preflight')
+scripts += _default_env.Install('InstallerScripts/', 'Scripts/postflight')
+
+pkg = _default_env.PackageMaker('InstallerSongcast', distFolder, TITLE = '"Linn Songcast"', VERSION = kBuildInfo['BUILD_INFO_VERSION'], INFO_PLIST = _default_env.File('PkgInfo.plist'), SCRIPT_DIR = scriptsFolder)
+
+_default_env.Depends(pkg, dist)
+_default_env.Depends(pkg, scripts)
+
+
+# build the .dmg for distribution - always add the .pkg as Installer.pkg so the auto updates work
+
+dmgContents = []
+dmgContents += _default_env.Install('InstallerDmgContents/', 'Scripts/uninstall.tool')
+dmgContents += _default_env.InstallAs('InstallerDmgContents/Installer.pkg', pkg)
+
+dmg = _default_env.MacOsXDmgBuild('InstallerSongcast', dmgContentsFolder, VOLNAME='"Linn Songcast"')
+
+_default_env.Depends(dmg, dmgContents)
+
+
+# install some stuff
+
+instdmg = _default_env.Install('$install_dir/share/Songcast/', dmg)
+
+
+Alias('Lib', instdmg)
+
+

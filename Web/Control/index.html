@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <script type="text/javascript" src="../Common/Scripts/helpers.js"></script>  
+        <script type="text/javascript">
+            var qs = GetQueryString();
+            var service = "Ds";
+            if (qs.service){
+                service = qs.service;
+            }
+            window.location="Layouts/Default/index.html#service=" + service;
+        </script>
+	</head>
+</html>

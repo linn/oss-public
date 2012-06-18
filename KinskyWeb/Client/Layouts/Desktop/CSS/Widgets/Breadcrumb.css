@@ -1,0 +1,12 @@
+#BreadcrumbContainer
+{
+	padding:0px;
+	margin:0px;
+}
+li.BreadcrumbItem
+{
+	cursor:pointer;
+	list-style-type:none;
+	float:left;
+	padding-right:10px;
+}

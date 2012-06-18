@@ -1,0 +1,199 @@
+Import('_default_env')
+
+# BBC
+#
+
+files = Split("""
+    Bbc/Properties/AssemblyInfo.cs
+    Bbc/Bbc.cs
+    Bbc/WebFetcher.cs
+""")
+res  = _default_env.Install('$install_dir/bin/Plugins/Bbc', 'Bbc/Bbc.png')
+kpz = _default_env.CliLibrary('Plugins/Bbc/OssKinskyMppBbc', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'OssKinsky', 'OssDidlLite', 'OssCore'])
+img  = _default_env.Install('$install_dir/lib/Linn/Plugins/Bbc', 'Bbc/Bbc.png')
+img += _default_env.Install('$install_dir/bin/Test/Plugins/Bbc', 'Bbc/Bbc.png')
+_default_env.Alias('Bbc', kpz + img + res)
+if _default_env['installers']:
+    zip = _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppBbc.kpz', kpz + res, 'zip -j $TARGET $SOURCES')
+    _default_env.Alias('Bbc', zip)
+
+# WFMU
+#
+
+files = Split("""
+    Wfmu/Properties/AssemblyInfo.cs
+    Wfmu/Wfmu.cs
+    Wfmu/WebFetcher.cs
+""")
+res  = _default_env.Install('$install_dir/bin/Plugins/Wfmu', 'Wfmu/Wfmu.png')
+kpz = _default_env.CliLibrary('Plugins/Wfmu/OssKinskyMppWfmu', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'OssKinsky', 'OssDidlLite', 'OssCore'])
+img  = _default_env.Install('$install_dir/lib/Linn/Plugins/Wfmu', 'Wfmu/Wfmu.png')
+img += _default_env.Install('$install_dir/bin/Test/Plugins/Wfmu', 'Wfmu/Wfmu.png')
+_default_env.Alias('Wfmu', kpz + img + res)
+if _default_env['installers']:
+    zip = _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppWfmu.kpz', kpz + res, 'zip -j $TARGET $SOURCES')
+    _default_env.Alias('Wfmu', zip)
+
+# Shoutcast
+#
+
+#files = Split("""
+#    Shoutcast/Properties/AssemblyInfo.cs
+#    Shoutcast/Shoutcast.cs
+#    Shoutcast/WebFetcher.cs
+#""")
+#res  = _default_env.Install('$install_dir/bin/Plugins/Shoutcast', 'Shoutcast/Shoutcast.png')
+#kpz = _default_env.CliLibrary('Plugins/Shoutcast/OssKinskyMppShoutcast', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'OssKinsky', 'OssDidlLite', 'OssCore'])
+#img  = _default_env.Install('$install_dir/lib/Linn/Plugins/Shoutcast', 'Shoutcast/Shoutcast.png')
+#img += _default_env.Install('$install_dir/bin/Test/Plugins/Shoutcast', 'Shoutcast/Shoutcast.png')
+#_default_env.Alias('Shoutcast', kpz + img + res)
+#if _default_env['installers']:
+#    zip = _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppShoutcast.kpz', kpz + res, 'zip -j $TARGET $SOURCES')
+#    _default_env.Alias('Shoutcast', zip)
+
+# Move Trailers
+#
+
+files = Split("""
+    MovieTrailers/Properties/AssemblyInfo.cs
+    MovieTrailers/Podcast.cs
+    MovieTrailers/MovieTrailers.cs
+    MovieTrailers/WebFetcher.cs
+""")
+res  = _default_env.Install('$install_dir/bin/Plugins/MovieTrailers', 'MovieTrailers/MovieTrailers.png')
+kpz = _default_env.CliLibrary('Plugins/MovieTrailers/OssKinskyMppMovieTrailers', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssDidlLite', 'OssCore', 'System', 'System.Xml'])
+img  = _default_env.Install('$install_dir/lib/Linn/Plugins/MovieTrailers', 'MovieTrailers/MovieTrailers.png')
+img += _default_env.Install('$install_dir/bin/Test/Plugins/MovieTrailers', 'MovieTrailers/MovieTrailers.png')
+_default_env.Alias('MovieTrailers', kpz + img + res)
+if _default_env['installers']:
+    zip = _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppMovieTrailers.kpz', kpz + res, 'zip -j $TARGET $SOURCES')
+    _default_env.Alias('MovieTrailers', zip)
+
+# Radio
+#
+
+files = Split("""
+    Radio/Properties/AssemblyInfo.cs
+    Radio/Properties/Resources.Designer.cs
+    Radio/Radio.cs
+    Radio/Feed.cs
+    Radio/View.cs
+""")
+#res = _default_env.Resgen('OssKinskyMppRadio.Properties.Resources.resources', 'Radio/Properties/Resources.resx')
+#kpz = _default_env.CliLibrary('Plugins/Radio/OssKinskyMppRadio', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssDidlLite', 'OssCore', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
+#if _default_env['installers']:
+    #zip += _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppRadio.kpz', kpz, 'zip -j $TARGET $SOURCES')
+
+# Soundcard
+#
+
+files = Split("""
+    Soundcard/Properties/AssemblyInfo.cs
+    Soundcard/Properties/Resources.Designer.cs
+    Soundcard/Soundcard.cs
+    Soundcard/DirectSound.cs
+    Soundcard/View.cs
+""")
+#lib =  _default_env.Install("$install_dir/lib", "Soundcard/SlimDX.dll")
+#lib += _default_env.Install("$install_dir/bin", "Soundcard/SlimDX.dll")
+#lib += _default_env.Install("$install_dir/bin/Test", "Soundcard/SlimDX.dll")    
+#res =  _default_env.Resgen('OssKinskyMppSoundcard.Properties.Resources.resources', 'Soundcard/Properties/Resources.resx')
+#kpz = _default_env.CliLibrary('Plugins/Soundcard/OssKinskyMppSoundcard', files, CLILIBS=['mscorlib', 'SlimDX', 'OssKinsky', 'OssDidlLite', 'OssSysLib', 'OssCore', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
+#kpz += _default_env.Install("$install_dir/bin/Plugins/Soundcard", "Soundcard/SlimDX.dll")
+#kpz += _default_env.Install("$install_dir/bin/Plugins/Soundcard", "Soundcard/SlimDX.xml")
+#if _default_env['installers']:
+#    zip += _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppSoundcard.kpz', kpz, 'zip -j $TARGET $SOURCES')
+
+# Last.FM
+#
+
+files = Split("""
+    LastFm/Properties/AssemblyInfo.cs
+    LastFm/Properties/Resources.Designer.cs
+    LastFm/LastFm.cs
+    LastFm/LastFmService.cs
+    LastFm/OptionsLastFm.cs
+    LastFm/OptionsPageLastFm.cs
+    LastFm/OptionsPageLastFm.Designer.cs
+    LastFm/View.cs
+    LastFm/View.Designer.cs
+    LastFm/ViewContextMenu.cs
+""")
+#res  = _default_env.Resgen('OssKinskyMppLastFm.Properties.Resources.resources', 'LastFm/Properties/Resources.resx')
+#res += _default_env.Resgen('OssKinskyMppLastFm.OptionsPageLastFm.resources', 'LastFm/OptionsPageLastFm.resx')
+#kpz  = _default_env.CliLibrary('Plugins/LastFm/OssKinskyMppLastFm', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssDidlLite', 'OssCore', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
+#if _default_env['installers']:
+#    zip += _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppLastFm.kpz', kpz, 'zip -j $TARGET $SOURCES')
+
+# EarthMap
+#
+
+files = Split("""
+    EarthMap/Properties/AssemblyInfo.cs
+    EarthMap/Properties/Resources.Designer.cs
+    EarthMap/EarthMap.cs
+""")
+#res = _default_env.Resgen('OssKinskyMppEarthMap.Properties.Resources.resources', 'EarthMap/Properties/Resources.resx')
+#kpz = _default_env.CliLibrary('Plugins/EarthMap/OssKinskyMppEarthMap', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssCore', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
+#if _default_env['installers']:
+    #zip += _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppEarthMap.kpz', kpz, 'zip -j $TARGET $SOURCES')
+
+# WorldCup2010
+#
+
+files = Split("""
+    WorldCup2010/Properties/AssemblyInfo.cs
+    WorldCup2010/Properties/Resources.Designer.cs
+    WorldCup2010/WorldCup2010.cs
+    WorldCup2010/View.cs
+""")
+#res = _default_env.Resgen('OssKinskyMppWorldCup2010.Properties.Resources.resources', 'WorldCup2010/Properties/Resources.resx')
+#kpz = _default_env.CliLibrary('Plugins/Radio/OssKinskyMppWorldCup2010', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssDidlLite', 'OssCore', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
+#if _default_env['installers']:
+    #zip += _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppWorldCup2010.kpz', kpz, 'zip -j $TARGET $SOURCES')
+
+# Folder
+#
+
+if _default_env['hardware'] != 'Ios':
+    files = Split("""
+        Folder/Properties/AssemblyInfo.cs
+        Folder/Folder.cs
+    """)
+    lib = _default_env.CliLibrary('Plugins/Folder/OssKinskyMppFolder', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssDidlLite', 'OssCore', 'taglib-sharp', 'policy.2.0.taglib-sharp'])
+    _default_env.Alias('Folder', lib)
+    img  = _default_env.Install('$install_dir/lib/Linn/Plugins/Folder', 'Folder/Resources/Folder.png')
+    img += _default_env.Install('$install_dir/bin/Plugins/Folder', 'Folder/Resources/Folder.png')
+    img += _default_env.Install('$install_dir/bin/Test/Plugins/Folder', 'Folder/Resources/Folder.png')
+    _default_env.Alias('Folder', img)
+
+# Itunes
+#
+
+if _default_env['hardware'] != 'Ios':
+    files = Split("""
+        Itunes/Properties/AssemblyInfo.cs
+        Itunes/Itunes.cs
+        Itunes/Database.cs
+        Itunes/Library.cs
+        Itunes/UserOptions.cs
+    """)
+    res  = _default_env.Install('$install_dir/bin/Plugins/Itunes', 'Itunes/Resources/Itunes.png')
+    kpz  = _default_env.CliLibrary('Plugins/Itunes/OssKinskyMppItunes', files, CLILIBS=['mscorlib', 'OssKinsky', 'OssDidlLite', 'OssCore'])
+    img  = _default_env.Install('$install_dir/lib/Linn/Plugins/Itunes', 'Itunes/Resources/Itunes.png')
+    img += _default_env.Install('$install_dir/bin/Test/Plugins/Itunes', 'Itunes/Resources/Itunes.png')
+    _default_env.Alias('Itunes', kpz + img + res)
+    if _default_env['installers']:
+        zip = _default_env.Command('$install_dir/share/Kinsky/OssKinskyMppItunes.kpz', kpz + res, 'zip -j $TARGET $SOURCES')
+        _default_env.Alias('Itunes', zip)
+
+Alias('Lib', 'Bbc')
+Alias('Lib', 'MovieTrailers')
+Alias('Lib', 'Shoutcast')
+Alias('Lib', 'Folder')
+Alias('Lib', 'Wfmu')
+Alias('Lib', 'Itunes')
+Alias('Test', 'Lib')
+Alias('Docs')
+
+Default(['Test','Docs'])

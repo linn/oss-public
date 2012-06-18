@@ -1,0 +1,780 @@
+//
+// Use the reference section to name additional assemblies
+// required to execute the template.
+//
+// The following assemblies are provided by default:
+//		System.dll
+//		System.Xml.dll
+//		LinnGen.exe
+//
+// Name one additional assembly on each line of the reference section
+//
+
+<* reference *>
+
+XmlUpnp.dll
+
+<* reference *>
+
+//
+// Use the import section for additional using directives.
+//
+// The following directives are provided by default
+//
+//		using System;
+//		using System.Text;
+//		using System.IO;
+//		using System.Xml;
+//		using System.Xml.XPath;
+//		using System.Collections.Generic;
+//
+
+<* import *>
+
+using Linn.Xml.Upnp;
+using Linn;
+
+<* import *>
+
+//
+// Use the function section to provide helper functions
+// that can be called from within the body section
+//
+
+<* function *>
+
+Dictionary<string,string> argtype = new Dictionary<string,string>();
+Dictionary<string,string> proptype = new Dictionary<string,string>();
+
+void Initialise()
+{    
+    argtype.Add("string", "string");
+    argtype.Add("ui1", "uint");
+    argtype.Add("ui2", "uint");
+    argtype.Add("ui4", "uint");
+    argtype.Add("boolean", "bool");
+    argtype.Add("i1", "int");
+    argtype.Add("i2", "int");
+    argtype.Add("i4", "int");
+    argtype.Add("bin.base64", "byte[]");
+    argtype.Add("uri", "string");
+    
+    proptype.Add("string", "String");
+    proptype.Add("ui1", "Uint");
+    proptype.Add("ui2", "Uint");
+    proptype.Add("ui4", "Uint");
+    proptype.Add("boolean", "Bool");
+    proptype.Add("i1", "Int");
+    proptype.Add("i2", "Int");
+    proptype.Add("i4", "Int");
+    proptype.Add("bin.base64", "Binary");
+    proptype.Add("uri", "String");
+}
+
+string RetString(Method a)
+{
+    if (a.outargs.Count == 1)
+    {
+        string type = a.outargs[0].variable.type;
+        return (argtype[type]);        
+    }
+    else {
+        return("void");
+    }
+}
+
+string ObjString(Method a)
+{
+    string result = "";
+    
+    foreach (Argument i in a.inargs)
+    {
+        if (result.Length > 0)
+        {
+            result += ", ";
+        }
+        result += i.name;
+    }
+    
+    return(result);
+}
+
+string InString(Method a)
+{
+    string result = "";
+    
+    foreach (Argument i in a.inargs)
+    {
+        if (result.Length > 0)
+        {
+            result += ", ";
+        }
+        
+        result += argtype[i.variable.type];
+        result += " ";
+        result += i.name;
+    }
+    
+    return(result);
+}
+
+string ArgString(Method a)
+{
+    string result = InString(a);
+    
+    if (a.outargs.Count < 2)
+    {
+        return (result);
+    }
+    
+    foreach (Argument o in a.outargs)
+    {
+        if (result.Length > 0)
+        {
+            result += ", ";
+        }
+        result += "out ";
+        result += argtype[o.variable.type];
+        result += " ";
+        result += o.name;
+    }
+    
+    return(result);
+}
+
+string FormatValue(string aValue)
+{
+    string result = "";
+    
+    bool uppercase = true;
+    bool uppertrigger = false;
+    
+    for (int i = 0; i < aValue.Length; i++)
+    {
+        char x = aValue[i];
+        
+        if (x >= 'A' && x <= 'Z')
+        {
+        	if (uppercase || uppertrigger)
+        	{
+            	result += x;
+            	uppercase = false;
+            	uppertrigger = false;
+            }
+            else
+            {
+            	result += Char.ToLower(x);
+            }
+            
+            continue;
+        }
+        
+        if (x >= 'a' && x <= 'z')
+        {
+        	if (uppercase)
+        	{
+            	result += Char.ToUpper(x);
+            	uppercase = false;
+            }
+            else
+            {
+            	result += x;
+            	
+	            uppertrigger = true;
+            }
+            
+            continue;
+        }
+        
+      	uppercase = true;
+      	
+        if (x >= '0' && x <= '9')
+        {
+            result += x;
+            continue;
+        }
+        
+        if (x == '+')
+        {
+        	result += "Plus";
+        	continue;
+        }
+        
+        if (x == '&')
+        {
+        	result += "And";
+        	continue;
+        }
+        
+        if (x == '#')
+        {
+        	result += "Hash";
+        	continue;
+        }
+        
+        if (x == '$')
+        {
+        	result += "Dollar";
+        	continue;
+        }
+        
+        if (x == '*')
+        {
+        	result += "Star";
+        	continue;
+        }
+    }
+    
+    return (result);
+}
+
+<* function *>
+
+//
+// The body section contains the generated text
+//
+// C# code can be embedded within <% %> tags
+//
+// <%=name%> will output the contents of the named variable
+//
+// args is an array of strings containing the generator arguments
+//
+// XPathNavigator LoadXmlFile(filename) is provided for loading
+// and navigating xml files
+//
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+    if (args.Length < 2)
+    {
+        throw (new TemplateException("Service Domain not specified"));
+    }
+    
+    if (args.Length < 3)
+    {
+        throw (new TemplateException("Service Type not specified"));
+    }
+    
+    if (args.Length < 4)
+    {
+        throw (new TemplateException("Service Version not specified"));
+    }
+    
+	string domain = args[1];
+    string type = args[2];
+    uint version;
+    
+    try
+    {
+	   version = Convert.ToUInt32(args[3]);
+	}
+	catch (FormatException)
+	{
+        throw (new TemplateException("Invalid version number specified"));
+	}
+    catch (OverflowException)
+    {
+        throw (new TemplateException("Invalid version number specified"));
+    }
+
+	string suffix = "";
+	
+    if (args.Length > 4)
+    {
+    	suffix = args[4];
+    }
+    
+    string upnpdomain = domain.Replace(".", "-");
+
+    if (upnpdomain.StartsWith("upnp-"))
+    {
+        upnpdomain = "schemas-" + upnpdomain;
+    }
+    
+    Initialise();
+
+    Dictionary<string,string> svtype = new Dictionary<string,string>();
+    
+    svtype.Add("string", "String");
+    svtype.Add("ui1", "Uint");
+    svtype.Add("ui2", "Uint");
+    svtype.Add("ui4", "Uint");
+    svtype.Add("boolean", "Bool");
+    svtype.Add("i1", "Int");
+    svtype.Add("i2", "Int");
+    svtype.Add("i4", "Int");
+    svtype.Add("bin.base64", "Binary");
+    svtype.Add("uri", "String");
+
+	UpnpXml u = new UpnpXml(args[0]);
+%>
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.Web.Services.Protocols;
+using System.Xml;
+
+using Linn.Control;
+
+namespace Linn.ControlPoint.Upnp
+{
+    public class Service<%=type%><%=suffix%> : ServiceUpnp
+    {
+
+<%  foreach (Variable s in u.variables) %>
+<%  { %>
+<%      foreach (string v in s.values) %>
+<%      { %>
+        public const string k<%=s.prettyname%><%=FormatValue(v)%> = "<%=v%>";
+<%      } %>
+<%  } %>
+
+        public Service<%=type%><%=suffix%>(Device aDevice)
+            : this(aDevice, null)
+        {
+        }
+
+        public Service<%=type%><%=suffix%>(Device aDevice, IEventUpnpProvider aEventServer)
+            : base(aDevice, ServiceType(), new ProtocolUpnp(), aEventServer)
+        {
+			iWatchdogLock = new object();
+			iExpectedSequenceNumber = 0;
+            Action action = null;
+            
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+            action = new Action("<%=a.name%>");
+<%       foreach (Argument i in a.inargs) %>
+<%       { %>
+            action.AddInArgument(new Argument("<%=i.name%>", Argument.EType.e<%=proptype[i.variable.type]%>));
+<%       } %>
+<%       foreach (Argument o in a.outargs) %>
+<%       { %>
+            action.AddOutArgument(new Argument("<%=o.name%>", Argument.EType.e<%=proptype[o.variable.type]%>));
+<%       } %>
+            iActions.Add(action);
+            
+<%  } %>        
+        }
+
+        public static ServiceType ServiceType()
+        {
+            return (new ServiceType("<%=domain%>", "<%=type%>", <%=version.ToString()%>));
+        }
+        
+        public static ServiceType ServiceType(uint aVersion)
+        {
+            return (new ServiceType("<%=domain%>", "<%=type%>", aVersion));
+        }
+        
+        // Create async action objects
+        
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+        public AsyncAction<%=a.name%> CreateAsyncAction<%=a.name%>()
+        {
+            return (new AsyncAction<%=a.name%>(this));
+        }
+
+<%  } %>
+
+        // Synchronous actions
+        
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+        public <%=RetString(a)%> <%=a.name%>Sync(<%=ArgString(a)%>)
+        {
+            AsyncAction<%=a.name%> action = CreateAsyncAction<%=a.name%>();
+            
+            object result = action.<%=a.name%>BeginSync(<%=ObjString(a)%>);
+
+<%      if (a.outargs.Count == 0) %>
+<%      { %>
+            action.<%=a.name%>End(result);
+<%      } %>
+<%      else %>
+<%      { %>
+            AsyncAction<%=a.name%>.EventArgsResponse response = action.<%=a.name%>End(result);
+                
+<%          if (a.outargs.Count == 1) %>
+<%          { %>
+            return(response.<%=a.outargs[0].name%>);
+<%          } %>
+<%          else %>
+<%          { %>
+<%              foreach (Argument o in a.outargs) %>
+<%              { %>
+            <%=o.name%> = response.<%=o.name%>;
+<%              } %>
+<%          } %>
+<%      } %>
+        }
+        
+<%  } %>
+
+<%  int index = 0; %>
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+        // AsyncAction<%=a.name%>
+
+        public class AsyncAction<%=a.name%>
+        {
+            internal AsyncAction<%=a.name%>(Service<%=type%><%=suffix%> aService)
+            {
+                iHandler = aService.Protocol.CreateInvokeHandler(aService, aService.GetActionAt(<%=index%>));
+                iService = aService;
+            }
+
+            internal object <%=a.name%>BeginSync(<%=InString(a)%>)
+            {
+                iHandler.WriteBegin();
+                
+<%       foreach (Argument i in a.inargs) %>
+<%       { %>
+                iHandler.WriteArgument<%=proptype[i.variable.type]%>("<%=i.name%>", <%=i.name%>);           
+<%       } %>
+                
+                return (iHandler.WriteEnd(null));
+            }
+
+            public void <%=a.name%>Begin(<%=InString(a)%>)
+            {
+                iHandler.WriteBegin();
+                
+<%       foreach (Argument i in a.inargs) %>
+<%       { %>
+                iHandler.WriteArgument<%=proptype[i.variable.type]%>("<%=i.name%>", <%=i.name%>);                
+<%       } %>
+                
+                try
+                {
+                    iHandler.WriteEnd(this.Callback);
+                }
+                catch(Exception e)
+                {
+                    UserLog.WriteLine("<%=type%><%=suffix%>.AsyncAction<%=a.name%>.<%=a.name%>Begin(" + iService.ControlUri + "): " + e);
+                }
+            }
+
+            internal EventArgsResponse <%=a.name%>End(object aResult)
+            {
+                try
+                {
+                    iHandler.ReadBegin(aResult);
+                    EventArgsResponse response = new EventArgsResponse(iHandler);
+                    iHandler.ReadEnd();
+                    
+                    return (response);
+                }
+                catch (SoapException e)
+                {
+                    throw (iService.CreateServiceException(ref e));
+                }
+                catch (Exception e)
+                {
+                    UserLog.WriteLine("<%=type%><%=suffix%>.AsyncAction<%=a.name%>.<%=a.name%>End(" + iService.ControlUri + "): " + e.Message);
+
+                    throw (iService.CreateServiceException(ref e)); 
+                }
+            }
+
+            private void Callback(object aResult)
+            {
+                try
+                {
+                    iHandler.ReadBegin(aResult);
+                    EventArgsResponse result = new EventArgsResponse(iHandler);
+                    iHandler.ReadEnd();
+                    
+                    if (EventResponse != null)
+                    {
+                        EventResponse(iService, result);
+                    }
+                }
+                catch (SoapException e)
+                {
+                    EventArgsError error = iService.CreateEventArgsError(ref e);
+
+                    if (EventError != null)
+                    {
+                        EventError(this, error);
+                    }
+                }
+                catch (Exception e)
+                {
+                    UserLog.WriteLine("<%=type%><%=suffix%>.AsyncAction<%=a.name%>.Callback(" + iService.ControlUri + "): " + e.Message);
+                }
+            }
+
+            public class EventArgsResponse : EventArgs
+            {
+                internal EventArgsResponse(IInvokeHandler aHandler)
+                {
+<%      foreach (Argument o in a.outargs) %>
+<%      { %>
+                    <%=o.name%> = aHandler.ReadArgument<%=proptype[o.variable.type]%>("<%=o.name%>");
+<%      } %>
+                }
+                
+<%      foreach (Argument o in a.outargs) %>
+<%      { %>
+                public <%=argtype[o.variable.type]%> <%=o.name%>;
+<%      } %>
+            }
+
+            public event EventHandler<EventArgsResponse> EventResponse;
+            public event EventHandler<EventArgsError> EventError;
+
+            private IInvokeHandler iHandler;
+            private Service<%=type%><%=suffix%> iService;
+        }
+        
+<%    index++; %>        
+<%  } %>
+
+        protected override void EventServerEvent(EventServerUpnp obj, EventArgsEvent e)
+        {
+<%  if (u.evented.Count > 0) %>
+<%  { %>
+            if (e.SequenceNo != iExpectedSequenceNumber)
+			{
+				UserLog.WriteLine("EventServerEvent: Out of sequence event received.  Resubscribing.");
+				Resubscribe();
+			}else
+			{
+				iExpectedSequenceNumber++;
+			}
+            XmlNode variable;
+
+            XmlNamespaceManager nsmanager = new XmlNamespaceManager(e.Xml.NameTable);
+
+            nsmanager.AddNamespace("e", kNamespaceUpnpService);
+
+<%      foreach (Variable s in u.evented) %>
+<%      { %>
+            bool event<%=s.name%> = false;
+            variable = e.Xml.SelectSingleNode(kBasePropertyPath + "<%=s.name%>", nsmanager);
+
+            if (variable != null)
+            {
+                string value = "";
+
+                XmlNode child = variable.FirstChild;
+
+                if (child != null)
+                {
+                    value = child.Value;
+                }
+                    
+<%          if (argtype[s.type] == "byte[]") %>
+<%          { %>
+				if (value == String.Empty)
+				{
+				    <%=s.name%> =  new byte[0];
+				}
+				else
+				{
+                    <%=s.name%> = Convert.FromBase64String(value);
+                }
+<%          } %>
+<%          else if (argtype[s.type] == "string") %>
+<%          { %>
+                <%=s.name%> = value;
+<%          } %>
+<%          else if (argtype[s.type] == "bool") %>
+<%          { %>
+				try
+				{
+	                <%=s.name%> = bool.Parse(value);
+                }
+                catch (FormatException)
+                {
+                	try
+                	{
+                		<%=s.name%> = (uint.Parse(value) > 0);
+                	}
+	                catch (FormatException)
+    	            {
+    	            	<%=s.name%> = false; 
+    	            }
+                }
+<%          } %>
+<%          else %>
+<%          { %>
+				try
+				{
+					<%=s.name%> = <%=argtype[s.type]%>.Parse(value);
+				}
+				catch (Exception)
+				{
+					UserLog.WriteLine(String.Format("{0}: Warning: Exception caught in parse <%=s.name%> with value {1}", DateTime.Now, value));
+				}
+<%          } %>
+
+                event<%=s.name%> = true;
+            }
+
+<%      } %>
+          
+<%      foreach (Variable s in u.evented) %>
+<%      { %>            
+            if(event<%=s.name%>)
+            {
+                if (EventState<%=s.name%> != null)
+                {
+					try
+					{
+						EventState<%=s.name%>(this, EventArgs.Empty);
+					}
+					catch(Exception ex)
+					{
+						UserLog.WriteLine("Exception caught in EventState<%=s.name%>: " + ex);
+						Assert.CheckDebug(false);
+					}
+                }
+            }
+<%      } %>
+            
+            if (EventState != null)
+            {
+                EventState(this, EventArgs.Empty);
+            }
+            
+            if (e.SequenceNo == 0)
+            {
+                if (iEventInitial != null)
+                {
+					if (!iSentInitialEvent)
+					{	
+						// if we are resubscribing due to an out of sequence event, don't raise EventInitial again
+						iEventInitial(this, EventArgs.Empty);
+						iSentInitialEvent = true;
+					}else
+					{
+						InitialEventReceived(this, EventArgs.Empty);
+					}
+                }
+            }
+<%  } %>
+        }
+
+<%  if (u.evented.Count > 0) %>
+<%  { %>
+        private EventHandler<EventArgs> iEventInitial;
+
+        private bool iInitialEventReceived;
+		private bool iSentInitialEvent;
+
+        private void InitialEventReceived(object obj, EventArgs e)
+        {
+            iInitialEventReceived = true;
+			KillWatchdog();
+        }
+
+        public event EventHandler<EventArgs> EventInitial
+        {
+            add
+            {
+                if (iEventInitial == null)
+                {
+					iSentInitialEvent = false;
+                    iEventInitial += InitialEventReceived;
+                    Subscribe(); // could throw if no EventServer provided
+                }
+                else
+                {
+                    if (iInitialEventReceived)
+                    {
+                        value(this, EventArgs.Empty);
+                    }
+                }
+                iEventInitial += value;
+            }
+
+            remove
+            {
+                iEventInitial -= value;
+
+                if (iEventInitial.GetInvocationList().GetLength(0) == 1) // 1 for our selves
+                {
+                    Unsubscribe();
+                    iEventInitial -= InitialEventReceived;
+                }
+            }
+        }
+		
+		private void CreateWatchdog()
+		{
+			lock(iWatchdogLock)
+			{
+				iWatchdog = new System.Threading.Timer(new System.Threading.TimerCallback(WatchdogElapsed), null, kWatchdogTimeout, System.Threading.Timeout.Infinite);                 
+			}
+		}
+		
+		private void KillWatchdog()
+		{
+			lock(iWatchdogLock)
+			{
+				if (iWatchdog != null)
+				{
+					iWatchdog.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);					
+					iWatchdog.Dispose();
+					iWatchdog = null;
+				}
+			}
+		}
+
+		private void WatchdogElapsed(object sender)
+		{
+			KillWatchdog();
+			if (!iInitialEventReceived)
+			{
+				UserLog.WriteLine(String.Format("{0}: WatchdogElapsed - {1}:{2}", DateTime.Now, this.Type, this.Device.Udn));
+				OnEventSubscriptionError();
+			}
+		}
+		
+		protected override void Subscribe()
+		{			
+			CreateWatchdog();
+			iInitialEventReceived = false;
+			iExpectedSequenceNumber = 0;
+			base.Subscribe();
+		}
+		
+		protected override void Unsubscribe()
+		{
+			KillWatchdog();
+			base.Unsubscribe();
+		}
+		
+		private void Resubscribe()
+		{
+			Unsubscribe();
+			Subscribe();
+		}
+
+        public event EventHandler<EventArgs> EventState;
+<%      foreach (Variable s in u.evented) %>
+<%      { %>
+        public event EventHandler<EventArgs> EventState<%=s.name%>;
+<%      } %>
+
+<%      foreach (Variable s in u.evented) %>
+<%      { %>
+        public <%=argtype[s.type]%> <%=s.name%>;
+<%      } %>
+<%  } %>
+		private const int kWatchdogTimeout = 10000;
+		private System.Threading.Timer iWatchdog;
+		private object iWatchdogLock;
+		private uint iExpectedSequenceNumber;
+    }
+}
+    
+<* body *>

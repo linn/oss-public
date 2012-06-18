@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>
+Common Code
+</title>
+
+<script type="text/javascript">
+
+htmlEncode = function(textToEncode)  {
+  var result = textToEncode;
+
+  var amp = /&/gi;
+  var gt = />/gi;
+  var lt = /</gi;
+  var quot = new RegExp ('"', 'gi'); //   /"/gi;
+  var apos = new RegExp ("'", 'gi'); //   /'/gi;
+
+  var html_gt = "&gt;";
+  var html_lt = "&lt;";
+  var html_amp = "&amp;";
+  var html_quot = "&quot;";
+  var html_apos = "&apos;";
+
+  result = result.replace(amp, html_amp);
+  result = result.replace(quot, html_quot);
+  result = result.replace(lt, html_lt);
+  result = result.replace(gt, html_gt);
+  result = result.replace(apos, html_apos);
+
+  return result;
+};
+
+
+var didlHead = htmlEncode('<DIDL-Lite xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:upnp="urn:schemas-upnp-org:metadata-1-0/upnp/" xmlns:dlna="urn:schemas-dlna-org:metadata-1-0/" xmlns:pv="http://www.pv.com/pvns/" xmlns="urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/">');
+var didlFoot = htmlEncode('</DIDL-Lite>');
+
+console.log(didlHead);
+
+console.log(didlFoot);
+
+document.write("<pre>" + didlHead + "</pre>");
+document.write("<pre>" + didlFoot + "</pre>");
+</script>
+
+</head>
+<body>
+<h1>Common Code</h1>
+<p>
+This directory contains common code shared between Konductor &amp; KinskyPronto.
+</p>
+</body>
+</html>
+

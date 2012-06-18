@@ -1,0 +1,175 @@
+Import('_default_env')
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Properties/Resources.Designer.cs
+    Linn/Topology/Boxes.cs
+    Linn/Topology/DeviceFinder.cs
+    Linn/Topology/House0.cs
+    Linn/Topology/House1.cs
+    Linn/Topology/House2.cs
+    Linn/Topology/Library.cs
+    Linn/Topology/ModelIdArray.cs
+    Linn/Topology/ModelInfo.cs
+    Linn/Topology/ModelLibrary.cs
+    Linn/Topology/ModelMediaServer.cs
+    Linn/Topology/ModelMultipusSender.cs
+    Linn/Topology/ModelMultipusSenders.cs
+    Linn/Topology/ModelPlaylistManager.cs
+    Linn/Topology/ModelSource.cs
+    Linn/Topology/ModelSourceAuxiliary.cs
+    Linn/Topology/ModelSourceDiscPlayer.cs
+    Linn/Topology/ModelSourceDiscPlayerSdp.cs
+    Linn/Topology/ModelSourceMediaRenderer.cs
+    Linn/Topology/ModelSourceMediaRendererDs.cs
+    Linn/Topology/ModelSourceMediaRendererUpnpAv.cs
+    Linn/Topology/ModelSourceMultipus.cs
+    Linn/Topology/ModelSourceRadio.cs
+    Linn/Topology/ModelTime.cs
+    Linn/Topology/ModelVolumeControl.cs
+    Linn/Topology/ModelVolumeControlPreamp.cs
+    Linn/Topology/ModelVolumeControlUpnpAv.cs
+    Linn/Topology/MultipusSenders.cs
+    Linn/Topology/PlaylistManager.cs
+    Linn/Topology/SourceList.cs
+    Linn/Topology/Tree.cs
+    Linn/Topology/ModelFactory.cs
+""")
+
+res = _default_env.Resgen('Linn.Topology.Properties.Resources.resources', 'Properties/Resources.resx')
+
+clilibs = ['mscorlib', 'System', 'System.Xml', 'OssCore', 'OssControl', 'OssServices', 'OssDidlLite']
+if _default_env['hardware'] != 'Droid':
+    lib = _default_env.CliLibrary('OssTopology', files, CLILIBS=clilibs, CLIRESOURCES=res)
+else:
+    msproj = _default_env.MSBuildFileGenerator('OssTopology', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Topology')
+    lib = _default_env.MSBuildLibBuilder('OssTopology', msproj, CLILIBS=clilibs)
+    
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Topology.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Topology', DOXYGENNAMESPACE='OssTopology')
+
+prog = []
+
+files = Split("""
+    LinnTopology/LinnTopology.cs
+    LinnTopology/App.cs
+""")
+
+pcFiles = Split("""
+    LinnTopology/Framework/Full/Form1.cs
+    LinnTopology/Framework/Full/Form1.Designer.cs
+""")
+
+pocketPcFiles = Split("""
+    LinnTopology/Framework/Compact/Form1.cs
+    LinnTopology/Framework/Compact/Form1.Designer.cs
+""")
+
+if _default_env['hardware'] != 'PocketPc':
+    files.extend(pcFiles)
+else:
+    files.extend(pocketPcFiles)
+
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+    prog += _default_env.CliProgram('LinnTopology', files, CLILIBS=['mscorlib', 'System', 'OssTopology', 'OssServices', 'OssControl', 'OssCore', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
+elif _default_env['hardware'] == 'Droid':
+
+    files = Split("""
+        LinnTopology/Droid/Activities.cs
+        LinnTopology/Droid/Stack.cs
+        LinnTopology/Droid/Properties/AssemblyInfo.cs
+        LinnTopology/Droid/Resources/Layout/Main.axml
+        LinnTopology/Droid/Resources/Values/Strings.xml
+        LinnTopology/Droid/Resources/Drawable-hdpi/Icon.png
+        LinnTopology/Droid/Resources/Drawable-mdpi/Icon.png
+        LinnTopology/Droid/Resources/Drawable-ldpi/Icon.png
+        LinnTopology/Droid/Resources/Drawable/ListTextColour.xml
+        LinnTopology/Droid/Resources/Layout/RoomList.axml
+        LinnTopology/Droid/Resources/Layout/Room.axml
+        LinnTopology/Droid/Resources/Layout/SourceList.axml
+        LinnTopology/Droid/Resources/Layout/RoomList.axml
+        LinnTopology/Droid/Resources/Layout/Source.axml
+        LinnTopology/Droid/Resources/Layout/RoomSourceList.axml
+        LinnTopology/Droid/Resources/Layout/MediaServer.axml
+        LinnTopology/Droid/Resources/Layout/MediaServerList.axml
+    """)    
+    androidResources = [f.replace("LinnTopology/Droid/","") for f in files if f.startswith("LinnTopology/Droid/Resources/")]    
+    links = [f.replace("LinnTopology/Droid/","") for f in files]
+    
+    images = [
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Playing.png"), "Resources/Drawable/Playing.png")
+    ]
+    files += [x[0] for x in images]
+    androidResources += [x[1] for x in images]
+    links += [x[1] for x in images]
+    
+    
+    libs = ['System', 'System.Xml', 'System.Core', 'OssControl', 'OssCore', 'OssDidlLite', 'OssServices', 'OssSysLib', 'OssTopology', 'OssToolkitDroid', 'Mono.Android']
+    # hack - need to copy AndroidManifest.xml across from source to build tree as monodroid does not allow its location outwith a subdirectory of the .csproj file's location at present
+    manifest = _default_env.InstallAs('$build_dir/LinnTopology/Droid/Properties/Manifest.xml', 'LinnTopology/Droid/Properties/AndroidManifest.xml')
+    msproj = _default_env.MSBuildFileGenerator('LinnTopology', 
+        files, 
+        CLILIBS=libs, 
+        LINKS=links, 
+        ROOTNAMESPACE='LinnTopologyDroid', 
+        ANDROIDRESGENFILE='Resources.Designer.cs', 
+        ANDROIDMANIFEST='LinnTopology/Droid/Properties/Manifest.xml',
+        ANDROIDRESOURCES=androidResources,
+        DEFAULTTARGETS='SignAndroidPackage',
+        OUTPUTPATH='.')
+    Depends(msproj, manifest)
+    libDroid = _default_env.MSBuildApkBuilder('Linn.Topology.apk', msproj, CLILIBS=libs)
+    prog += libDroid
+else:
+    files = Split("""
+        LinnTopology/Ios/AppDelegateIpad.cs
+        LinnTopology/Ios/AppDelegateIphone.cs
+        LinnTopology/Ios/Main.cs
+        LinnTopology/Ios/MainWindowIpad.xib.designer.cs
+        LinnTopology/Ios/MainWindowIphone.xib.designer.cs
+        LinnTopology/Ios/RoomTableViewController.cs
+        LinnTopology/Ios/SourceTableViewController.cs
+        LinnTopology/Ios/SplitViewControllerDelegate.cs
+    """)
+    
+    prog += _default_env.CliProgram('LinnTopology', files, CLILIBS=['mscorlib', 'System', 'OssTopology', 'OssServices', 'OssControl', 'OssCore', 'monotouch'])
+
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+    prog += _default_env.CliProgram('FindDevice', 'FindDevice/FindDevice.cs', CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssTopology'])
+
+    files = Split("""
+        LinnDiagnostics/Form1.cs
+        LinnDiagnostics/Form1.Designer.cs
+        LinnDiagnostics/LinnDiagnostics.cs
+    """)
+    prog += _default_env.CliProgram('LinnDiagnostics', files, CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssSysLib', 'OssTopology', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms', 'System.Xml'])
+
+tests = None
+if _default_env['hardware'] != 'Droid':
+    tests  = _default_env.CliProgram('Test/TestTopology', 'Linn/Topology/Test/TestTopology.cs', CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssTopology'])
+
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+    files = Split("""
+        Test/TestWebServicesAsync/Form1.cs
+        Test/TestWebServicesAsync/Form1.Designer.cs
+        Test/TestWebServicesAsync/Program.cs
+    """)
+    tests += _default_env.CliProgram('Test/TestWebServicesAsync', files, CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssServices', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
+
+    files = Split("""
+        Test/TestMediaServerSearch/Form1.cs
+        Test/TestMediaServerSearch/Form1.Designer.cs
+        Test/TestMediaServerSearch/Program.cs
+    """)
+    tests += _default_env.CliProgram('Test/TestMediaServerSearch', files, CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssDidlLite', 'OssTopology', 'System.Drawing', 'System.Windows.Forms'])
+
+Alias('Docs', docs)
+
+Alias('Test', tests)
+Alias('Lib', prog)
+Alias('Test', prog)
+Alias('Test', 'Lib')
+
+Default(['Test','Docs'])
+

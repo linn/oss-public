@@ -1,0 +1,923 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3574B357-B48E-410A-B93F-4F09D12AE4AC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KinskyWeb</RootNamespace>
+    <AssemblyName>KinskyWeb</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationManifest>..\..\KinskyWeb\Server\app.manifest</ApplicationManifest>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\External\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="HttpServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d7063c47c583695a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\External\HttpServer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Comms\ResourceStreamService.cs">
+      <Link>Classes\Comms\ResourceStreamService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Comms\SelfHostingServiceHost.cs">
+      <Link>Classes\Comms\SelfHostingServiceHost.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Helpers\ImageExtensions.cs">
+      <Link>Classes\Helpers\ImageExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Helpers\IOExtensions.cs">
+      <Link>Classes\Helpers\IOExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Helpers\XmlExtensions.cs">
+      <Link>Classes\Helpers\XmlExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\Adaptors.cs">
+      <Link>Classes\Kinsky\Adaptors.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\IKinskyContainer.cs">
+      <Link>Classes\Kinsky\IKinskyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\IKinskyWidget.cs">
+      <Link>Classes\Kinsky\IKinskyWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\KinskyContainer.cs">
+      <Link>Classes\Kinsky\KinskyContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\KinskyStack.cs">
+      <Link>Classes\Kinsky\KinskyStack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\KinskyWidgets.cs">
+      <Link>Classes\Kinsky\KinskyWidgets.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\ViewStub.cs">
+      <Link>Classes\Kinsky\ViewStub.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\WidgetFactory.cs">
+      <Link>Classes\Kinsky\WidgetFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Kinsky\WidgetRegistry.cs">
+      <Link>Classes\Kinsky\WidgetRegistry.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\Browser.cs">
+      <Link>Classes\Services\Browser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\DataTransferObjects.cs">
+      <Link>Classes\Services\DataTransferObjects.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\Disc.cs">
+      <Link>Classes\Services\Disc.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\MediaTime.cs">
+      <Link>Classes\Services\MediaTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\Playlist.cs">
+      <Link>Classes\Services\Playlist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\PlayMode.cs">
+      <Link>Classes\Services\PlayMode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\Room.cs">
+      <Link>Classes\Services\Room.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\RoomList.cs">
+      <Link>Classes\Services\RoomList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\SourceList.cs">
+      <Link>Classes\Services\SourceList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\Track.cs">
+      <Link>Classes\Services\Track.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\TransportControl.cs">
+      <Link>Classes\Services\TransportControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\VolumeControl.cs">
+      <Link>Classes\Services\VolumeControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\Services\WidgetContainer.cs">
+      <Link>Classes\Services\WidgetContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\TestStubs\MediaProviderStub.cs">
+      <Link>Classes\TestStubs\MediaProviderStub.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\TestStubs\StubWidgetFactory.cs">
+      <Link>Classes\TestStubs\StubWidgetFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Classes\TestStubs\TopologyStub.cs">
+      <Link>Classes\TestStubs\TopologyStub.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\FormAboutBox.cs">
+      <Link>FormAboutBox.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\FormAboutBox.designer.cs">
+      <Link>FormAboutBox.designer.cs</Link>
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\MainForm.cs">
+      <Link>MainForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\MainForm.designer.cs">
+      <Link>MainForm.designer.cs</Link>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\MainFormMac.cs">
+      <Link>MainFormMac.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\MainFormMac.designer.cs">
+      <Link>MainFormMac.designer.cs</Link>
+      <DependentUpon>MainFormMac.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Properties\AssemblyInfo.cs">
+      <Link>Properties\ServiceWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyWeb\Server\Resources.Designer.cs">
+      <Link>Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\KinskyWeb\Server\app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\KinskyWeb\Client\Common\CSS\jquery.contextmenu.css">
+      <Link>Client\Common\CSS\jquery.contextmenu.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\core.js">
+      <Link>Client\Common\Scripts\core.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery-1.4.2.min.js">
+      <Link>Client\Common\Scripts\jquery-1.4.2.min.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery-ui-1.8rc3.custom.min.js">
+      <Link>Client\Common\Scripts\jquery-ui-1.8rc3.custom.min.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery.contextmenu.js">
+      <Link>Client\Common\Scripts\jquery.contextmenu.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery.json.js">
+      <Link>Client\Common\Scripts\jquery.json.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery.jsonrequest.js">
+      <Link>Client\Common\Scripts\jquery.jsonrequest.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery.selectboxes.min.js">
+      <Link>Client\Common\Scripts\jquery.selectboxes.min.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery.timer.js">
+      <Link>Client\Common\Scripts\jquery.timer.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\jquery.xml2json.js">
+      <Link>Client\Common\Scripts\jquery.xml2json.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\prototype.js">
+      <Link>Client\Common\Scripts\prototype.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\splitpane.js">
+      <Link>Client\Common\Scripts\splitpane.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\Breadcrumb.js">
+      <Link>Client\Common\Scripts\Widgets\Breadcrumb.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\BreadcrumbMobile.js">
+      <Link>Client\Common\Scripts\Widgets\BreadcrumbMobile.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\Browser.js">
+      <Link>Client\Common\Scripts\Widgets\Browser.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\MediaTime.js">
+      <Link>Client\Common\Scripts\Widgets\MediaTime.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\MediaTimeMobile.js">
+      <Link>Client\Common\Scripts\Widgets\MediaTimeMobile.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\Playlist.js">
+      <Link>Client\Common\Scripts\Widgets\Playlist.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\PlayMode.js">
+      <Link>Client\Common\Scripts\Widgets\PlayMode.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\RoomSelector.js">
+      <Link>Client\Common\Scripts\Widgets\RoomSelector.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\RoomSelectorMobile.js">
+      <Link>Client\Common\Scripts\Widgets\RoomSelectorMobile.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\SourceSelector.js">
+      <Link>Client\Common\Scripts\Widgets\SourceSelector.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\SourceSelectorMobile.js">
+      <Link>Client\Common\Scripts\Widgets\SourceSelectorMobile.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\StandbyButton.js">
+      <Link>Client\Common\Scripts\Widgets\StandbyButton.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\Track.js">
+      <Link>Client\Common\Scripts\Widgets\Track.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\TransportControl.js">
+      <Link>Client\Common\Scripts\Widgets\TransportControl.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\UpDirectory.js">
+      <Link>Client\Common\Scripts\Widgets\UpDirectory.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\VolumeControl.js">
+      <Link>Client\Common\Scripts\Widgets\VolumeControl.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\VolumeControlMobile.js">
+      <Link>Client\Common\Scripts\Widgets\VolumeControlMobile.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\WasteBin.js">
+      <Link>Client\Common\Scripts\Widgets\WasteBin.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\Widget.js">
+      <Link>Client\Common\Scripts\Widgets\Widget.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Scripts\Widgets\WidgetContainer.js">
+      <Link>Client\Common\Scripts\Widgets\WidgetContainer.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_flat_30_cccccc_40x100.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_flat_30_cccccc_40x100.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_flat_50_5c5c5c_40x100.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_flat_50_5c5c5c_40x100.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_glass_20_555555_1x400.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_glass_20_555555_1x400.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_glass_40_0078a3_1x400.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_glass_40_0078a3_1x400.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_glass_40_ffc73d_1x400.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_glass_40_ffc73d_1x400.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_gloss-wave_25_333333_500x100.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_gloss-wave_25_333333_500x100.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_highlight-soft_80_eeeeee_1x100.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_highlight-soft_80_eeeeee_1x100.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_inset-soft_25_000000_1x100.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_inset-soft_25_000000_1x100.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\images\ui-bg_inset-soft_30_f58400_1x100.png">
+      <Link>Client\Common\Themes\ui-darkness\images\ui-bg_inset-soft_30_f58400_1x100.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Common\Themes\ui-darkness\jquery-ui-1.8rc3.custom.css">
+      <Link>Client\Common\Themes\ui-darkness\jquery-ui-1.8rc3.custom.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\kinsky.css">
+      <Link>Client\Layouts\Desktop\CSS\kinsky.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\kinsky_ie7.css">
+      <Link>Client\Layouts\Desktop\CSS\kinsky_ie7.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\Breadcrumb.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\Breadcrumb.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\Browser.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\Browser.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\MediaTime.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\MediaTime.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\PlayMode.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\PlayMode.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\RoomSelector.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\RoomSelector.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\SourceSelector.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\SourceSelector.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\StandbyButton.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\StandbyButton.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\Track.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\Track.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\TransportControl.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\TransportControl.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\UpDirectory.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\UpDirectory.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\VolumeControl.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\VolumeControl.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\CSS\Widgets\WasteBin.css">
+      <Link>Client\Layouts\Desktop\CSS\Widgets\WasteBin.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\ajax-loader.gif">
+      <Link>Client\Layouts\Desktop\Images\ajax-loader.gif</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Logo.png">
+      <Link>Client\Layouts\Desktop\Images\Logo.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\3kArray.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\3kArray.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Album.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Album.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\AlbumError.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\AlbumError.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Artist.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Artist.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Bin.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Bin.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\BinMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\BinMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Directory.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Directory.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Error.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Error.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Folder.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Folder.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Library.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Library.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Pause.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Pause.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\PauseMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\PauseMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\PauseTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\PauseTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Play.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Play.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Playing.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Playing.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Playlist.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Playlist.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\PlayMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\PlayMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\PlayTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\PlayTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Radio.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Radio.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Repeat.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Repeat.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\RepeatActive.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\RepeatActive.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\RepeatActiveMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\RepeatActiveMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\RepeatMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\RepeatMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Shuffle.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Shuffle.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\ShuffleActive.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\ShuffleActive.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\ShuffleActiveMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\ShuffleActiveMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\ShuffleMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\ShuffleMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\SkipBack.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\SkipBack.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\SkipBackMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\SkipBackMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\SkipBackTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\SkipBackTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\SkipForward.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\SkipForward.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\SkipForwardMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\SkipForwardMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\SkipForwardTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\SkipForwardTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Standby.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Standby.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\StandbyActive.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\StandbyActive.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\StandbyActiveMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\StandbyActiveMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Stop.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Stop.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\StopMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\StopMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\StopTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\StopTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Track.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Track.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\UpDirectory.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\UpDirectory.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\UpDirectoryMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\UpDirectoryMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Video.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Video.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\VolumeControl.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\VolumeControl.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\Wheel.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\Wheel.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelInnerGlow.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelInnerGlow.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelSkipBack.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelSkipBack.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelSkipBackMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelSkipBackMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelSkipBackTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelSkipBackTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelSkipForward.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelSkipForward.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelSkipForwardMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelSkipForwardMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelSkipForwardTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelSkipForwardTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelVolumeDown.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelVolumeDown.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelVolumeDownMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelVolumeDownMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelVolumeDownTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelVolumeDownTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelVolumeUp.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelVolumeUp.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelVolumeUpMouse.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelVolumeUpMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Images\Widgets\WheelVolumeUpTouch.png">
+      <Link>Client\Layouts\Desktop\Images\Widgets\WheelVolumeUpTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\kinsky.html">
+      <Link>Client\Layouts\Desktop\kinsky.html</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Desktop\Scripts\kinsky.js">
+      <Link>Client\Layouts\Desktop\Scripts\kinsky.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\kinsky.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\kinsky.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\kinsky_ie7.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\kinsky_ie7.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\Breadcrumb.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\Breadcrumb.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\Browser.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\Browser.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\MediaTime.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\MediaTime.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\PlayMode.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\PlayMode.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\RoomSelector.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\RoomSelector.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\SourceSelector.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\SourceSelector.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\StandbyButton.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\StandbyButton.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\Track.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\Track.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\TransportControl.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\TransportControl.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\UpDirectory.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\UpDirectory.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\VolumeControl.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\VolumeControl.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\CSS\Widgets\WasteBin.css">
+      <Link>Client\Layouts\Portrait\Medium\CSS\Widgets\WasteBin.css</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\ajax-loader.gif">
+      <Link>Client\Layouts\Portrait\Medium\Images\ajax-loader.gif</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Logo.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Logo.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\3kArray.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\3kArray.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Album.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Album.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\AlbumError.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\AlbumError.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Artist.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Artist.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Bin.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Bin.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\BinMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\BinMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Directory.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Directory.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Error.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Error.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Folder.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Folder.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\IconSelectedServer.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\IconSelectedServer.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Library.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Library.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Pause.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Pause.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\PauseMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\PauseMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\PauseTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\PauseTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Play.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Play.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Playing.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Playing.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Playlist.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Playlist.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\PlayMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\PlayMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\PlayTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\PlayTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Radio.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Radio.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Repeat.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Repeat.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\RepeatActive.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\RepeatActive.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\RepeatActiveMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\RepeatActiveMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\RepeatMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\RepeatMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Shuffle.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Shuffle.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\ShuffleActive.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\ShuffleActive.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\ShuffleActiveMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\ShuffleActiveMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\ShuffleMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\ShuffleMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\SkipBack.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\SkipBack.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\SkipBackMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\SkipBackMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\SkipBackTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\SkipBackTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\SkipForward.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\SkipForward.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\SkipForwardMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\SkipForwardMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\SkipForwardTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\SkipForwardTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Standby.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Standby.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\StandbyActive.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\StandbyActive.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\StandbyActiveMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\StandbyActiveMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Stop.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Stop.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\StopMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\StopMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\StopTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\StopTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Track.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Track.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\UpDirectory.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\UpDirectory.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\UpDirectoryMouse.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\UpDirectoryMouse.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\Video.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\Video.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\VolumeDown.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\VolumeDown.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\VolumeDownTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\VolumeDownTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\VolumeEmpty.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\VolumeEmpty.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\VolumeUp.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\VolumeUp.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Images\Widgets\VolumeUpTouch.png">
+      <Link>Client\Layouts\Portrait\Medium\Images\Widgets\VolumeUpTouch.png</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\kinsky.html">
+      <Link>Client\Layouts\Portrait\Medium\kinsky.html</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Client\Layouts\Portrait\Medium\Scripts\kinsky.js">
+      <Link>Client\Layouts\Portrait\Medium\Scripts\kinsky.js</Link>
+    </Content>
+    <Content Include="..\..\KinskyWeb\Server\TestFiles\FakeMediaServer.xml">
+      <Link>TestFiles\FakeMediaServer.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="..\..\KinskyWeb\Server\FormAboutBox.resx">
+      <Link>FormAboutBox.resx</Link>
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyWeb\Server\MainForm.resx">
+      <Link>MainForm.resx</Link>
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyWeb\Server\MainFormMac.resx">
+      <Link>MainFormMac.resx</Link>
+      <DependentUpon>MainFormMac.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyWeb\Server\Resources.resx">
+      <Link>Resources.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLite\OssDidlLite.csproj">
+      <Project>{D07487C1-8D3F-43C8-BE1B-C1BFB5B2C562}</Project>
+      <Name>OssDidlLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopology\OssTopology.csproj">
+      <Project>{DDD50783-4131-4138-85E6-72377C232B1C}</Project>
+      <Name>OssTopology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties InternalTargetFrameworkVersion="3.5" />
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

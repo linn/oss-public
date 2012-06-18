@@ -1,0 +1,175 @@
+Import('_default_env kVersion')
+
+files = Split("""
+    Installer/Header.bmp
+    Installer/NsiTemplate.txt
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/Kinsky/WinForms', files)
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Properties/Settings.Designer.cs
+    Forms/FormAboutBox.cs
+    Forms/FormAboutBox.Designer.cs
+    Forms/FormArtwork.cs
+    Forms/FormArtwork.Designer.cs
+    Forms/FormCheckForUpdates.cs
+    Forms/FormCheckForUpdates.Designer.cs
+    Forms/FormKinskyDesktop.cs
+    Forms/FormKinskyDesktop.Designer.cs
+    Forms/FormMultipusReceivers.cs
+    Forms/FormMultipusReceivers.Designer.cs
+    Forms/FormOptions.cs
+    Forms/FormOptions.Designer.cs
+    Forms/FormPluginBrowser.cs
+    Forms/FormSavePlaylist.cs
+    Forms/FormSavePlaylist.Designer.cs
+    Forms/FormSelector.cs
+    Forms/FormSelector.Designer.cs
+    Forms/FormStatus.cs
+    Forms/FormStatus.Designer.cs
+    Forms/FormThemed.cs
+    Forms/FormThemed.Designer.cs
+    Forms/FormUpdate.cs
+    Forms/FormUpdate.Designer.cs
+    Widgets/ButtonControl.cs
+    Widgets/ButtonControl.Designer.cs
+    Widgets/ButtonControlBiState.cs
+    Widgets/ButtonControlBiState.Designer.cs
+    Widgets/ButtonControlTriState.cs
+    Widgets/ButtonControlTriState.Designer.cs
+    Widgets/DoubleBufferedButton.cs
+    Widgets/DoubleBufferedComboBox.cs
+    Widgets/DoubleBufferedPanel.cs
+    Widgets/DoubleBufferedSplitContainer.cs
+    Widgets/DoubleBufferedTableLayoutPanel.cs
+    Widgets/Kontrol.cs
+    Widgets/ListViewKinsky.cs
+    Widgets/ListViewLibrary.cs
+    Widgets/ListWidget.cs
+    Widgets/ListWidget.Designer.cs
+    Widgets/PanelBusy.cs
+    Widgets/PlaylistWidget.cs
+    Widgets/PlaylistWidget.Designer.cs
+    Widgets/RockerControl.cs
+    Widgets/RockerControl.Designer.cs
+    Widgets/RotaryControl.cs
+    Widgets/RotaryControl.Designer.cs
+    Widgets/ScrollBarControl.cs
+    Widgets/ScrollBarControl.Designer.cs
+    Widgets/TabControl.cs
+    Widgets/TabControl.Designer.cs
+    Widgets/ThreekArrayControl.cs
+    Widgets/ThreekArrayControl.Designer.cs
+    AppRestartHandler.cs
+    DropConverter.cs
+    OptionPageColours.cs
+    OptionPageGeneral.cs
+    OptionPageFonts.cs
+    Program.cs
+    ResourcesManager.cs
+    Support.cs
+    UiOptions.cs
+    ViewBrowser.cs
+    Views.cs
+""")
+
+res  = _default_env.Resgen('KinskyDesktop.Properties.Resources.resources', 'Properties/Resources.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.ButtonControl.resources', 'Widgets/ButtonControl.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.ButtonControlBiState.resources', 'Widgets/ButtonControlBiState.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.ButtonControlTriState.resources', 'Widgets/ButtonControlTriState.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.ListWidget.resources', 'Widgets/ListWidget.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.PlaylistWidget.resources', 'Widgets/PlaylistWidget.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.RockerControl.resources', 'Widgets/RockerControl.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.RotaryControl.resources', 'Widgets/RotaryControl.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.ScrollBarControl.resources', 'Widgets/ScrollBarControl.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.TabControl.resources', 'Widgets/TabControl.resx')
+res += _default_env.Resgen('KinskyDesktop.Widgets.ThreekArrayControl.resources', 'Widgets/ThreekArrayControl.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormAboutBox.resources', 'Forms/FormAboutBox.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormArtwork.resources', 'Forms/FormArtwork.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormCheckForUpdates.resources', 'Forms/FormCheckForUpdates.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormKinskyDesktop.resources', 'Forms/FormKinskyDesktop.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormMultipusReceivers.resources', 'Forms/FormMultipusReceivers.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormOptions.resources', 'Forms/FormOptions.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormSavePlaylist.resources', 'Forms/FormSavePlaylist.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormSelector.resources', 'Forms/FormSelector.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormStatus.resources', 'Forms/FormStatus.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormThemed.resources', 'Forms/FormThemed.resx')
+res += _default_env.Resgen('KinskyDesktop.Forms.FormUpdate.resources', 'Forms/FormUpdate.resx')
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+app = _default_env.CliProgram('KinskyWinForms', files, CSCTARGET=target, CLILIBS=['OssCore', 'OssControl', 'OssServices', 'OssDidlLite', 'OssTopology', 'OssKinsky', 'OssToolkitWinForms', 'System.Data', 'System.Drawing', 'System.Windows.Forms'], CLIRESOURCES=res, WINICON='$variant_dir/share/Linn/Kinsky/Kinsky.ico')
+
+app.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssToolkitWinForms.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssDidlLite.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssKinsky.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.config')))
+
+plugins = []
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Bbc'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Folder'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Itunes'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/MovieTrailers'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Wfmu'))])
+
+resources = []
+resources.append(Dir(_default_env.subst('$variant_dir/share/Linn/Resources/Kinsky')))
+
+installer = []
+if _default_env['installers'] and _default_env['hardware'] == 'Windows':
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Kinsky', 'InstallerKinskyWinForms',
+                        FILES        = {''         : app,
+                                        'Plugins'  : plugins,
+                                        'Resources' : resources},
+                        TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/Kinsky/WinForms/NsiTemplate.txt'),
+                        RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico'),
+                                        'header'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/WinForms/Header.bmp'),
+                                        'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish.bmp'),
+                                        'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT      = 'Kinsky',
+                        VERSION      = kVersion,
+                        CERT         = '',
+                        LAUNCHFILE   = 'KinskyWinForms.exe')
+
+if _default_env['installers'] and _default_env['hardware'] == 'Linux':
+    installer = _default_env.ReleaseInstallerDebian('$install_dir/share/Kinsky', 'InstallerKinsky',
+                        FILES        = {'usr/lib/Kinsky'          : app,
+                                        'usr/lib/Kinsky/Plugins'  : plugins,
+                                        'usr/lib/Kinsky/Resources' : resources},
+                        MAINTAINER   = 'Linn [http://oss.linn.co.uk]',
+                        DEPENDECIES  = 'libmono-winforms2.0-cil (>= 2.0.1), mono-gmcs (>= 2.0.1)',
+                        ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky.xpm',
+                        DESCRIPTION  = 'Desktop UPnP control point',
+                        CATEGORIES   = 'AudioVideo;Audio;Video;Player;',
+                        PRODUCT      = 'Kinsky',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyWinForms.exe')
+
+if _default_env['installers'] and _default_env['hardware'] == 'MacOsX':
+    installer = _default_env.ReleaseInstallerMacOsX('$install_dir/share/Kinsky', 'InstallerKinskyWinForms',
+                        FILES        = {''          : app,
+                                        'Plugins'   : plugins,
+                                        'Resources' : resources},
+                        ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
+                        DESCRIPTION  = 'Desktop UPnP control point',
+                        PRODUCT      = 'KinskyWinForms',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyWinForms.exe')
+
+Depends(installer, installerResources)
+
+Alias('Lib', app)
+Alias('Lib', plugins)
+Alias('Lib', resources)
+Alias('Lib', installerResources)
+Alias('Lib', installer)

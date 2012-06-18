@@ -1,0 +1,6 @@
+Import('env')
+
+env.Tool('gmcs', toolpath=['../../BuildSystem/Tool'])
+env.Tool('resgen2', toolpath=['../../BuildSystem/Tool'])
+env.Tool('MSBuild', toolpath=['../../BuildSystem/Tool'])
+env.Tool('MSBuildFileGenerator', toolpath=['../../BuildSystem/Tool'])

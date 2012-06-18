@@ -1,0 +1,165 @@
+Import('_default_env')
+
+files = Split("""
+    Default/NotFound.png
+    Default/AnimatedDefault1.jpg
+    Default/AnimatedDefault2.jpg
+    Default/AnimatedDefault3.jpg
+    Default/AnimatedDefault4.jpg
+    Default/Default.png
+    Default/Exit.png
+    Default/Hilight210x40.png
+    Default/NextOff.png
+    Default/NextOn.png
+    Default/Off.jpg
+    Default/On.jpg
+    Default/PrevOff.png
+    Default/PrevOn.png
+    Default/SliderBackground.png
+    Default/SliderBar.png
+""")
+defaultResources = _default_env.Install('$variant_dir/share/Linn/Gui/Editor/Default', files)
+files = Split("""
+    Layouts/Kivor.xml
+    Layouts/Pekin.xml
+""")
+resources = _default_env.Install('$variant_dir/share/Linn/Gui/Editor/Layouts', files)
+files = Split("""
+    Layouts/Kivor/Background.bmp
+    Layouts/Kivor/FastForward1.bmp
+    Layouts/Kivor/FastForward2.bmp
+    Layouts/Kivor/Mute1.bmp
+    Layouts/Kivor/Mute2.bmp
+    Layouts/Kivor/Play1.bmp
+    Layouts/Kivor/Play2.bmp
+    Layouts/Kivor/Rewind1.bmp
+    Layouts/Kivor/Rewind2.bmp
+    Layouts/Kivor/Src1.jpg
+    Layouts/Kivor/Src2.jpg
+    Layouts/Kivor/VolumeDown1.bmp
+    Layouts/Kivor/VolumeDown2.bmp
+    Layouts/Kivor/VolumeUp1.bmp
+    Layouts/Kivor/VolumeUp2.bmp
+""")
+resources += _default_env.Install('$variant_dir/share/Linn/Gui/Editor/Layouts/Kivor', files)
+files = Split("""
+    Layouts/Pekin/Background.jpg
+    Layouts/Pekin/Band1.jpg
+    Layouts/Pekin/Band2.jpg
+    Layouts/Pekin/ChannelDown1.jpg
+    Layouts/Pekin/ChannelDown2.jpg
+    Layouts/Pekin/ChannelUp1.jpg
+    Layouts/Pekin/ChannelUp2.jpg
+    Layouts/Pekin/Mute1.jpg
+    Layouts/Pekin/Mute2.jpg
+    Layouts/Pekin/Src1.jpg
+    Layouts/Pekin/Src2.jpg
+    Layouts/Pekin/VolumeDown1.jpg
+    Layouts/Pekin/VolumeDown2.jpg
+    Layouts/Pekin/VolumeUp1.jpg
+    Layouts/Pekin/VolumeUp2.jpg
+""")
+resources += _default_env.Install('$variant_dir/share/Linn/Gui/Editor/Layouts/Pekin', files)
+files = Split("""
+    Widgets/AnimatedPushButton.xml
+    Widgets/AnimatedSurface.xml
+    Widgets/AnimatedToggleButton.xml
+    Widgets/List.xml
+    Widgets/NasList.xml
+    Widgets/Input.xml
+    Widgets/PushButton.xml
+    Widgets/Slider.xml
+    Widgets/Surface.xml
+    Widgets/ToggleButton.xml
+""")
+resources += _default_env.Install('$variant_dir/share/Linn/Gui/Editor/Widgets', files)
+files = Split("""
+    Resources/Background.bmp
+    Resources/Node.bmp
+    Resources/NodeHit.bmp
+    Resources/NodeInput.bmp
+    Resources/NodeList.bmp
+    Resources/NodePolygon.bmp
+    Resources/NodeText.bmp
+    Resources/Ref.bmp
+""")
+resources += _default_env.Install('$variant_dir/share/Linn/Gui/Editor/Resources', files)
+
+files = Split("""
+    EditorAboutBox.cs
+    EditorAboutBox.Designer.cs
+    EditorCanvas.cs
+    EditorController.cs
+    EditorForm.cs
+    EditorForm.Designer.cs
+    EditorFactory.cs
+    EditorNode.cs
+    EditorNodeFont.cs
+    EditorNodeHit.cs
+    EditorNodeInput.cs
+    EditorNodeList.cs
+    EditorNodePolygon.cs
+    EditorNodeSlider.cs
+    EditorNodeText.cs
+    EditorMessage.cs
+    EditorPlugin.cs
+    EditorSettings.cs
+    EditorTextureArray.cs
+    KinskyEd.cs
+    NewLayoutDialog.cs
+    NewLayoutDialog.Designer.cs
+    PreferencesDialog.cs
+    PreferencesDialog.Designer.cs
+    RendererGdiEditor.cs
+    ScenegraphForm.cs
+    ScenegraphForm.Designer.cs
+    Properties/AssemblyInfo.cs
+    UndoRedo/Command.cs
+    UndoRedo/CommandController.cs
+    UndoRedo/CommandNode.cs
+    UndoRedo/CommandNodeFont.cs
+    UndoRedo/CommandNodeHit.cs
+    UndoRedo/CommandNodeInput.cs
+    UndoRedo/CommandNodeList.cs
+    UndoRedo/CommandNodePolygon.cs
+    UndoRedo/CommandNodeSlider.cs
+    UndoRedo/CommandNodeText.cs
+    UndoRedo/CommandPlugin.cs
+    UndoRedo/CommandTextureArray.cs
+    UndoRedo/UndoRedoManager.cs
+""")
+res  = _default_env.Resgen('Linn.Gui.Editor.EditorForm.resources', 'EditorForm.resx')
+res += _default_env.Resgen('Linn.Gui.Editor.ScenegraphForm.resources', 'ScenegraphForm.resx')
+res += _default_env.Resgen('Linn.Gui.Editor.EditorAboutBox.resources', 'EditorAboutBox.resx')
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+app = _default_env.CliProgram('KinskyEd', files, CLILIBS=['mscorlib', 'OssGui', 'OssCore', 'System', 'System.Xml', 'System.Drawing', 'System.Windows.Forms'], CLIRESOURCES=res, WINICON='$variant_dir/share/Linn/Core/linn.ico')
+Alias('Lib', app)
+Depends(app, resources)
+Depends(app, defaultResources)
+Depends(app, 'OssGui')
+
+linnguied = []
+linnguied.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+linnguied.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+linnguied.append(File(_default_env.subst('$install_dir/lib/Linn/OssGui.dll')))
+
+if _default_env['installers'] == True:
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Gui', 'InstallerKinskyEd',
+                        FILES      = {''                        : [File(_default_env.subst('$variant_dir/share/Linn/Core/linn.ico'))],
+                                      'bin'                     : linnguied + app },
+                        DIRS       = {'share/Linn/Gui/Editor'   : [Dir(_default_env.subst('$variant_dir/share/Linn/Gui/Editor/Default'))] +
+                                                                  [Dir(_default_env.subst('$variant_dir/share/Linn/Gui/Editor/Resources'))] +
+                                                                  [Dir(_default_env.subst('$variant_dir/share/Linn/Gui/Editor/Widgets'))]},
+                        TEMPLATE   = 'Installer/KinskyEdNsiTemplate.txt',
+                        RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Core/linn.ico'),
+                                      'header'  : _default_env.subst('$variant_dir/share/Linn/Core/header.bmp'),
+                                      'finish'  : _default_env.subst('$variant_dir/share/Linn/Core/finish.bmp'),
+                                      'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT    = 'KinskyEd',
+                        VERSION    = 'development',
+                        CERT       = '',
+                        LAUNCHFILE = 'bin\KinskyEd.exe')
+    Alias('Lib', installer)
+

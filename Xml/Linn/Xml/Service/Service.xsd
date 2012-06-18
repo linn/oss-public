@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="service" type="service">
+  </xs:element>
+  <xs:complexType name="service">
+    <xs:sequence>
+      <xs:element name="description" type="description"/>
+      <xs:element name="model" type="model"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="description">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="namespace" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="model">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="string" type="string"/>
+        <xs:element name="signed" type="signed"/>
+        <xs:element name="unsigned" type="unsigned"/>
+        <xs:element name="bool" type="property"/>
+        <xs:element name="binary" type="binary"/>
+        <xs:element name="enum" type="enum"/>
+        <xs:element name="record" type="record"/>
+      </xs:choice>
+      <xs:element name="interface" type="interface" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="property">
+    <xs:sequence>
+      <xs:element name="name" type="identifier" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="access" type="access" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="identifier">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"/>
+      <xs:pattern value="[a-zA-Z0-9]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="access">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ro"/>
+      <xs:enumeration value="rw"/>
+      <xs:enumeration value="rv"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="string">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="bytes" type="xs:positiveInteger" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="signed">
+    <xs:complexContent>
+      <xs:extension base="property">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="unsigned">
+    <xs:complexContent>
+      <xs:extension base="property">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="binary">
+    <xs:complexContent>
+      <xs:extension base="string">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="enum">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="value" type="value" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="value">
+    <xs:simpleContent>
+      <xs:extension base="identifier">
+        <xs:attribute name="n" type="xs:integer"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="record">
+    <xs:complexContent>
+      <xs:extension base="property">
+        <xs:sequence>
+          <xs:element name="model" type="model"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="interface">
+    <xs:sequence>
+      <xs:element name="method" type="method" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="method">
+    <xs:sequence>
+      <xs:element name="name" type="identifier"/>
+      <xs:element name="in" type="argumentlist"/>
+      <xs:element name="out" type="argumentlist"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="argumentlist">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="string" type="identifier"/>
+      <xs:element name="signed" type="identifier"/>
+      <xs:element name="unsigned" type="identifier"/>
+      <xs:element name="bool" type="identifier"/>
+      <xs:element name="binary" type="identifier"/>
+      <xs:element name="related" type="related"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="related">
+    <xs:simpleContent>
+      <xs:extension base="identifier">
+        <xs:attribute name="name" type="identifier"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

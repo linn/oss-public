@@ -1,0 +1,14 @@
+Import('_default_env')
+
+doktortest = Split("""
+    DoktorTest/AssemblyInfo.cs
+    DoktorTest/DoktorTest.cs
+""")
+
+progs = _default_env.CliProgram('DoktorTest', doktortest, CLILIBS=['mscorlib', 'System', 'OssCore', 'OssSysLib', 'OssControl', 'OssDoktor'])
+
+Alias('Lib', progs)
+
+Alias('Test', 'Lib')
+
+Default('Test')

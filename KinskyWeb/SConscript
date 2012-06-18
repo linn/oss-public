@@ -1,0 +1,138 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+files = Split("""
+    Installer/Header.bmp
+    Installer/NsiTemplate.txt
+    Installer/KinskyWeb.xpm
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/KinskyWeb', files)
+
+files = Split("""
+    Server/Program.cs
+    Server/Properties/AssemblyInfo.cs
+    Server/Classes/Comms/ResourceStreamService.cs
+    Server/Classes/Comms/SelfHostingServiceHost.cs
+    Server/Classes/Helpers/ImageExtensions.cs
+    Server/Classes/Helpers/XmlExtensions.cs
+    Server/Classes/Helpers/IOExtensions.cs
+    Server/Classes/Kinsky/Adaptors.cs
+    Server/Classes/Kinsky/IKinskyContainer.cs
+    Server/Classes/Kinsky/IKinskyWidget.cs
+    Server/Classes/Kinsky/KinskyContainer.cs
+    Server/Classes/Kinsky/KinskyStack.cs
+    Server/Classes/Kinsky/KinskyWidgets.cs
+    Server/Classes/Kinsky/ViewStub.cs
+    Server/Classes/Kinsky/WidgetFactory.cs
+    Server/Classes/Kinsky/WidgetRegistry.cs    
+    Server/Classes/TestStubs/MediaProviderStub.cs
+    Server/Classes/TestStubs/StubWidgetFactory.cs
+    Server/Classes/TestStubs/TopologyStub.cs
+    Server/Classes/Services/Browser.cs
+    Server/Classes/Services/DataTransferObjects.cs
+    Server/Classes/Services/MediaTime.cs
+    Server/Classes/Services/Playlist.cs
+    Server/Classes/Services/Room.cs
+    Server/Classes/Services/RoomList.cs
+    Server/Classes/Services/SourceList.cs
+    Server/Classes/Services/Track.cs
+    Server/Classes/Services/TransportControl.cs
+    Server/Classes/Services/VolumeControl.cs
+    Server/Classes/Services/WidgetContainer.cs
+    Server/Classes/Services/PlayMode.cs
+    Server/Resources.Designer.cs
+    Server/MainForm.cs
+    Server/MainForm.Designer.cs
+    Server/MainFormMac.cs
+    Server/MainFormMac.Designer.cs
+    Server/FormAboutBox.cs
+    Server/FormAboutBox.Designer.cs
+""")
+
+res = _default_env.Resgen('KinskyWeb.Resources.resources', 'Server/Resources.resx')
+res += _default_env.Resgen('KinskyWeb.MainForm.resources', 'Server/MainForm.resx')
+res += _default_env.Resgen('KinskyWeb.MainFormMac.resources', 'Server/MainFormMac.resx')
+
+#TODO: app.manifest needs to go in as a manifest file
+
+
+#Current version of mono on eng server has wrong version of System.ServiceModel.Web.dll (version 3.0.0.0 not 3.5.0.0)
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+app = _default_env.CliProgram('KinskyWeb', files, CSCTARGET=target, CLILIBS=['OssCore','OssControl','OssDidlLite','OssTopology','OssKinsky','System', 'System.Core', 'System.Configuration', 'System.Runtime.Serialization', 'System.ServiceModel', 'System.Xml.Linq', 'System.Data.DataSetExtensions', 'System.Data', 'System.Xml', 'System.Drawing', 'System.Windows.Forms', '../External/Newtonsoft.Json.dll', '../External/HttpServer.dll'], CLIRESOURCES=res)
+
+app.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssDidlLite.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssKinsky.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.config')))
+app.append(File(_default_env.subst('$install_dir/lib/Newtonsoft.Json.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Newtonsoft.Json.License.txt')))
+app.append(File(_default_env.subst('$install_dir/lib/HttpServer.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/HttpServer.License.txt')))
+
+plugins = []
+#plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Library'))])
+resources = []
+#resources.append(Dir(_default_env.subst('$variant_dir/share/Linn/Resources/KinskyWeb')))
+
+installer = []
+if _default_env['installers']:
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/KinskyWeb', 'InstallerKinskyWeb',
+                        FILES        = {''         : app,
+                                        'Plugins'  : plugins,
+                                        'Resources' : resources},
+                        TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/KinskyWeb/NsiTemplate.txt'),
+                        RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico'),
+                                        'header'  : _default_env.subst('$variant_dir/share/Linn/KinskyWeb/Header.bmp'),
+                                        'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish.bmp'),
+                                        'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT      = 'KinskyWeb',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyWeb.exe')
+    
+    installer += _default_env.ReleaseInstallerDebian('$install_dir/share/KinskyWeb', 'InstallerKinskyWeb',
+                        FILES        = {'usr/lib/KinskyWeb'          : app,
+                                        'usr/lib/KinskyWeb/Plugins'  : plugins,
+                                        'usr/lib/KinskyWeb/Resources' : resources},
+                        MAINTAINER   = 'Linn [http://oss.linn.co.uk]',
+                        DEPENDECIES  = 'libmono-winforms2.0-cil (>= 2.0.1), mono-gmcs (>= 2.0.1), libmono-wcf3.0-cil (>= 2.4.2)',
+                        ICON         = '$variant_dir/share/Linn/KinskyWeb/KinskyWeb.xpm',
+                        DESCRIPTION  = 'Web UPnP control point',
+                        CATEGORIES   = 'AudioVideo;Audio;Video;Player;',
+                        PRODUCT      = 'KinskyWeb',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyWeb.exe')
+    
+    installer += _default_env.ReleaseInstallerMacOsX('$install_dir/share/KinskyWeb', 'InstallerKinskyWeb',
+                        FILES        = {''          : app,
+                                        'Plugins'   : plugins,
+                                        'Resources' : resources},
+                        ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
+                        DESCRIPTION  = 'Web UPnP control point',
+                        PRODUCT      = 'KinskyWeb',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyWeb.exe')
+    Depends(installer, installerResources)
+
+resources2 = [
+    (_default_env.subst('$install_dir/share/KinskyWeb/InstallerKinskyWeb.exe'),"InstallerKinskyWeb.exe")
+]
+   
+installer += _default_env.CliLibrary('UpdaterKinskyWeb', 'Test.cs', CLILIBS=['System.Windows.Forms'], CLIRESOURCES=resources2)
+
+Alias('Lib', installerResources)
+Alias('Lib', installer)
+Alias('Test', 'Lib')
+
+Default('Test')
+

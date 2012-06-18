@@ -1,0 +1,654 @@
+﻿//
+// Use the reference section to name additional assemblies
+// required to execute the template.
+//
+// The following assemblies are provided by default:
+//		System.dll
+//		System.Xml.dll
+//		LinnGen.exe
+//
+// Name one additional assembly on each line of the reference section
+//
+
+<* reference *>
+
+KodegenService.exe
+
+<* reference *>
+
+//
+// Use the import section for additional using directives.
+//
+// The following directives are provided by default
+//
+//		using System;
+//		using System.Text;
+//		using System.IO;
+//		using System.Xml;
+//		using System.Xml.XPath;
+//		using System.Collections.Generic;
+//
+
+<* import *>
+
+using Kodegen.Service;
+
+<* import *>
+
+//
+// Use the function section to provide helper functions
+// that can be called from within the body section
+//
+
+<* function *>
+<* function *>
+
+//
+// The body section contains the generated text
+//
+// C# code can be embedded within <% %> tags
+//
+// <%=name%> will output the contents of the named variable
+//
+// args is an array of strings containing the generator arguments
+//
+// XPathNavigator LoadXmlFile(filename) is provided for loading
+// and navigating xml files
+//
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+	ServiceXml s = new ServiceXml(args[0]);
+%>
+#include <<%=s.include%>>
+#include <Linn/Control/Stream.h>
+
+using namespace Linn;
+using namespace <%=s.ns%>;
+
+<%
+
+	// Constructor
+	
+%>
+<%  foreach (Model m in s.models) { %>
+<%      if (m.name == s.name) { %>
+<%=m.name%>::<%=m.name%>(TUint aInstance = 0) : Service(aInstance)
+{
+<%          foreach (Property p in m.properties) { %>
+<%              if (p.evented) { %>
+	i<%=p.name%> = new Property<%=p.kind%>();
+<%              } %>
+<%          } %>
+<%      } %>
+<%      else { %>
+<%=m.name%>::<%=m.name%>(<%=s.name%>& a<%=s.name%>) : i<%=s.name%>(a<%=s.name%>)
+{
+<%      } %>
+}
+
+<%
+
+	// Model Get Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access != "no") { %>
+<%=p.get%> <%=m.name%>::<%=p.name%>() const
+{
+<%              if (m.name == s.name && p.evented) { %>
+	return (i<%=p.name%>->Get());
+<%              } %>
+<%              else { %>
+	return (i<%=p.name%>);
+<%              } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Model Set Accessors (Public)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access == "rw") { %>
+void <%=m.name%>::Set<%=p.name%>(<%=p.get%> a<%=p.name%>)
+{
+<%              if (m.name == s.name) { %>
+	if (i<%=p.name%>->Set(a<%=p.name%>)) {
+		<%=p.name%>Changed(a<%=p.name%>);
+		i<%=p.name%>Changed.Signal();
+	}
+<%              } %>
+<%              else { %>
+	i<%=s.name%>.i<%=m.name%>Mutex.Wait();
+	
+	if (i<%=p.name%> == a<%=p.name%>) {
+		i<%=s.name%>.i<%=m.name%>Mutex.Signal();
+		return;
+	}
+	
+	i<%=p.name%> = a<%=p.name%>;
+	
+	i<%=s.name%>.i<%=m.name%>Mutex.Signal();
+	
+	<%=p.name%>Changed(a<%=p.name%>);	
+	
+	i<%=s.name%>.i<%=m.name%><%=p.name%>Changed.Signal();
+<%              } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Model Set Accessors (Protected)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access == "rv") { %>
+void <%=m.name%>::Set<%=p.name%>(<%=p.get%> a<%=p.name%>)
+{
+<%              if (m.name == s.name) { %>
+	if (i<%=p.name%>->Set(a<%=p.name%>)) {
+		i<%=p.name%>Changed.Signal();
+	}
+<%              } %>
+<%              else { %>
+	i<%=s.name%>.i<%=m.name%>Mutex.Wait();
+	
+	if (i<%=p.name%> == a<%=p.name%>) {
+		i<%=s.name%>.i<%=m.name%>Mutex.Signal();
+		return;
+	}
+	
+	i<%=p.name%> = a<%=p.name%>;
+	
+	i<%=s.name%>.i<%=m.name%>Mutex.Signal();
+	
+	i<%=s.name%>.i<%=m.name%><%=p.name%>Changed.Signal();
+<%              } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Model Record Count Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+<%=p.get%> <%=m.name%>::<%=p.model%>Count() const
+{
+	return (i<%=p.model%>Vector.size());
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Model Record Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+<%=p.model%>& <%=m.name%>::Get<%=p.model%>(<%=p.get%> a<%=p.name%>) const
+{
+	return (*i<%=p.model%>Vector[a<%=p.name%>]);
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Model Initialise Accessors (Derived Implementation)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access != "no") { %>
+void <%=m.name%>::Initialise<%=p.name%>(<%=p.get%> a<%=p.name%>)
+{
+<%             if (p.evented) { %>
+	i<%=p.name%>->Initialise(a<%=p.name%>);
+<%             } %>
+<%             else { %>
+	i<%=p.name%> = a<%=p.name%>;
+<%             } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Model Add Record Accessors (Derived Implementation)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+void <%=m.name%>::Add(<%=p.model%>* a<%=p.model%>)
+{
+	i<%=p.model%>Vector.push_back(a<%=p.model%>);
+}
+
+<%          } %>
+<%      } %>
+<%  } %>
+<%
+
+	// Service Methods (Network Control)
+	
+%>
+const Brx& <%=s.name%>::UpnpDescription()
+{
+	return (Brx::Empty());
+}
+
+/*
+<?xml version="1.0"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+    <specVersion>
+        <major>1</major>
+        <minor>0</minor>
+    </specVersion>
+    <actionList>
+        <action>
+            <name>actionName</name>
+            <argumentList>
+                <argument>
+                    <name>formalParameterName</name>
+                    <direction>in xor out</direction>
+                    <retval />
+                    <relatedStateVariable>stateVariableName</relatedStateVariable>
+                 </argument>
+                 Declarations for other arguments defined by UPnP Forum working committee (if any)
+                 go here
+            </argumentList>
+        </action>
+        Declarations for other actions defined by UPnP Forum working committee (if any)
+        go here
+        Declarations for other actions added by UPnP vendor (if any) go here
+    </actionList>
+    <serviceStateTable>
+        <stateVariable sendEvents="yes">
+            <name>variableName</name>
+            <dataType>variable data type</dataType>
+            <defaultValue>default value</defaultValue>
+            <allowedValueList>
+                <allowedValue>enumerated value</allowedValue>
+                Other allowed values defined by UPnP Forum working committee (if any) go here
+                </allowedValueList>
+        </stateVariable>
+        <stateVariable sendEvents="yes">
+            <name>variableName</name>
+            <dataType>variable data type</dataType>
+            <defaultValue>default value</defaultValue>
+            <allowedValueRange>
+                <minimum>minimum value</minimum>
+                <maximum>maximum value</maximum>
+                <step>increment value</step>
+            </allowedValueRange>
+        </stateVariable>
+        Declarations for other state variables defined by UPnP Forum working committee
+        (if any) go here
+        Declarations for other state variables added by UPnP vendor (if any) go here
+    </serviceStateTable>
+</scpd>
+*/
+
+void <%=s.name%>::StreamUpnpDescription(IStreamWriter& aStream)
+{
+	aStream.WriteBegin();
+	aStream.Write(Brn("<?xml version=\"1.0\"?>"));
+	aStream.Write(Brn("<scpd xmlns=\"urn:schemas-upnp-org:service-1-0\">"));
+    aStream.Write(Brn("<specVersion>"));
+    aStream.Write(Brn("<major>1</major>"));
+	aStream.Write(Brn("<minor>0</minor>"));
+    aStream.Write(Brn("</specVersion>"));
+	aStream.Write(Brn("<actionList>"));
+<%  foreach (Model t in s.Related(s.model)) { %>
+<%      Model c = s.Child(t, s.model); %>
+<%		string prefix = s.Prefix(t, s.model); %>
+<%		List<Model> chain = s.Chain(t, s.model); %>
+<%
+
+	// Service Model Get Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.access != "no") { %>
+//  Action: <%=prefix%><%=p.name%>
+	aStream.Write(Brn("<action>"));
+	aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("<%=prefix%><%=p.name%>"));
+    aStream.Write(Brn("</name>"));
+    aStream.Write(Brn("<argumentList>"));
+<%              foreach (Model i in chain) { %>
+    aStream.Write(Brn("<argument>"));
+    aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("a<%=i.name%>Index"));
+    aStream.Write(Brn("<direction>"));
+    aStream.Write(Brn("in"));
+    aStream.Write(Brn("</direction>"));
+    aStream.Write(Brn("<relatedStateVariable>"));
+	aStream.Write(Brn("i<%=i.name%>Index"));
+    aStream.Write(Brn("</relatedStateVariable>"));
+<%              } %>
+    aStream.Write(Brn("<argument>"));
+    aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("a<%=prefix%><%=p.name%>"));
+    aStream.Write(Brn("</name>"));
+    aStream.Write(Brn("<direction>"));
+    aStream.Write(Brn("out"));
+    aStream.Write(Brn("</direction>"));
+    aStream.Write(Brn("<relatedStateVariable>"));
+	aStream.Write(Brn("i<%=prefix%><%=p.name%>"));
+    aStream.Write(Brn("</relatedStateVariable>"));
+    aStream.Write(Brn("<retval/>"));
+    aStream.Write(Brn("</argument>"));
+    aStream.Write(Brn("</argumentList>"));
+	aStream.Write(Brn("</action>"));
+<%          } %>
+<%      } %>
+<%
+
+	// Service Model Set Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.access == "rw") { %>
+//  Action: Set<%=prefix%><%=p.name%>
+	aStream.Write(Brn("<action>"));
+	aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("Set<%=prefix%><%=p.name%>"));
+    aStream.Write(Brn("</name>"));
+    aStream.Write(Brn("<argumentList>"));
+<%              foreach (Model i in chain) { %>
+    aStream.Write(Brn("<argument>"));
+    aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("a<%=i.name%>Index"));
+    aStream.Write(Brn("<direction>"));
+    aStream.Write(Brn("in"));
+    aStream.Write(Brn("</direction>"));
+    aStream.Write(Brn("<relatedStateVariable>"));
+	aStream.Write(Brn("i<%=i.name%>Index"));
+    aStream.Write(Brn("</relatedStateVariable>"));
+<%              } %>
+    aStream.Write(Brn("<argument>"));
+    aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("a<%=prefix%><%=p.name%>"));
+    aStream.Write(Brn("</name>"));
+    aStream.Write(Brn("<direction>"));
+    aStream.Write(Brn("in"));
+    aStream.Write(Brn("</direction>"));
+    aStream.Write(Brn("<relatedStateVariable>"));
+	aStream.Write(Brn("i<%=prefix%><%=p.name%>"));
+    aStream.Write(Brn("</relatedStateVariable>"));
+    aStream.Write(Brn("</argument>"));
+    aStream.Write(Brn("</argumentList>"));
+	aStream.Write(Brn("</action>"));
+<%          } %>
+<%      } %>
+<%
+
+	// Find Service Model Record Count Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.type == "record") { %>
+//  Action: <%=prefix%><%=p.model%>Count
+	aStream.Write(Brn("<action>"));
+	aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("<%=prefix%><%=p.model%>Count"));
+    aStream.Write(Brn("</name>"));
+    aStream.Write(Brn("<argumentList>"));
+<%              foreach (Model i in chain) { %>
+    aStream.Write(Brn("<argument>"));
+    aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("a<%=i.name%>Index"));
+    aStream.Write(Brn("<direction>"));
+    aStream.Write(Brn("in"));
+    aStream.Write(Brn("</direction>"));
+    aStream.Write(Brn("<relatedStateVariable>"));
+	aStream.Write(Brn("i<%=i.name%>Index"));
+    aStream.Write(Brn("</relatedStateVariable>"));
+<%              } %>
+    aStream.Write(Brn("<argument>"));
+    aStream.Write(Brn("<name>"));
+	aStream.Write(Brn("a<%=p.model%>Count"));
+    aStream.Write(Brn("</name>"));
+    aStream.Write(Brn("<direction>"));
+    aStream.Write(Brn("out"));
+    aStream.Write(Brn("</direction>"));
+    aStream.Write(Brn("<relatedStateVariable>"));
+	aStream.Write(Brn("i<%=p.model%>Index"));
+    aStream.Write(Brn("</relatedStateVariable>"));
+    aStream.Write(Brn("<retval/>"));
+    aStream.Write(Brn("</argument>"));
+    aStream.Write(Brn("</argumentList>"));
+	aStream.Write(Brn("</action>"));
+<%          } %>
+<%      } %>
+	aStreamp.Write(Brn("<serviceStateTable>"));
+    aStream.Write(Brn("<stateVariable sendEvents=\"yes\">"));
+    aStream.Write(Brn("</stateVariable"));
+	aStreamp.Write(Brn("</serviceStateTable>"));
+	aStream.Write(Brn("</scpd>"));
+	aStream.WriteEnd();
+<%  } %>
+}
+
+void <%=s.name%>::InvokedResponseError(InvokeToken& aToken, TUint aCode, const Brx& aDescription)
+{
+	aToken.Error(aCode, aDescription);
+}
+
+void <%=s.name%>::Invoke(InvokeToken& aToken, TUint aVersion, const Brx& aAction)
+{
+<%  string preamble = null; %>
+<%  foreach (Model m in s.models) { %>
+<%		string prefix = s.Prefix(m, s.model); %>
+<%
+
+	// Find Service Model Get Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access != "no") { %>
+	<%=preamble%>if (aAction == "<%=prefix%><%=p.name%>") {
+		Invoke<%=prefix%><%=p.name%>(aToken, aVersion);
+	}
+<%              preamble = "else "; %>
+<%          } %>
+<%      } %>
+<%
+
+	// Find Service Model Set Accessors (Network Control)
+	
+%>
+<%     foreach (Property p in m.properties) { %>
+<%         if (p.access == "rw") { %>
+	<%=preamble%>if (aAction == "Set<%=prefix%><%=p.name%>") {
+		InvokeSet<%=prefix%><%=p.name%>(aToken, aVersion);
+	}
+<%              preamble = "else "; %>
+<%          } %>
+<%      } %>
+<%
+
+	// Find Service Model Record Count Accessors (Network Control)
+	
+%>
+<%     foreach (Property p in m.properties) { %>
+<%         if (p.type == "record") { %>
+	<%=preamble%>if (aAction == "<%=prefix%><%=p.model%>Count") {
+        Invoke<%=prefix%><%=p.model%>Count(aToken, aVersion);
+	}
+<%              preamble = "else "; %>
+<%          } %>
+<%      } %>
+<%
+
+	// Find Service Interface Method Accessors (Network Control)
+	
+%>
+<%   foreach (Method a in m.methods) { %>
+	<%=preamble%>if (aAction == "<%=prefix%><%=a.name%>") {
+        Invoke<%=prefix%><%=a.name%>(aToken, aVersion);
+	}
+<%          preamble = "else "; %>
+<%      } %>
+<%  } %>
+	
+	InvokeResponseError(aToken, 100, Brn("Action not found"));
+}
+
+<%  foreach (Model m in s.models) { %>
+<%  foreach (Model t in s.Related(m)) { %>
+<%      Model c = s.Child(t, m); %>
+<%		string prefix = s.Prefix(t, m); %>
+<%      string childprefix = s.Prefix(t, c); %>
+<%
+
+	// Model Event Producer Accessors
+	
+%>
+<%  if (m == s.model) { %>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.evented) { %>
+<%              if (t == s.model) { %>
+Producer& <%=m.name%>::<%=p.name%>Changed() const
+{
+	return (i<%=p.name%>Changed);
+}
+<%              } %>
+<%              else { %>
+Producer& <%=m.name%>::<%=t.name%><%=p.name%>Changed() const
+{
+	return (i<%=t.name%><%=p.name%>Changed);
+}
+<%              } %>
+
+<%          } %>
+<%      } %>
+<%  } %>
+<%
+
+	// Service Model Get Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.access != "no") { %>
+void <%=m.name%>::Invoke<%=prefix%><%=p.name%>(aToken, aVersion)
+{
+<%              if (m == s.model) { %>
+	aToken.ReadBegin();
+<%              } %>
+<%              if (m == t) { %>
+	aToken.ReadEnd();
+	aToken.WriteBegin();
+	aToken.Write<%=p.kind%>(<%=p.name%>());
+	aToken.WriteEnd();
+<%              } %>
+<%              else { %>
+	<%=c.name%>& child = Get<%=c.name%>(aToken.ReadUint());
+	child.Invoke<%=childprefix%><%=p.name%>(aToken, aVersion);
+<%              } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Service Model Set Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.access == "rw") { %>
+void <%=m.name%>::InvokeSet<%=prefix%><%=p.name%>(aToken, aVersion)
+{
+<%              if (m == s.model) { %>
+	aToken.ReadBegin();
+<%              } %>
+<%              if (m == t) { %>
+	Set<%=p.name%>(aToken.Read<%=p.kind%>());
+	aToken.ReadEnd();
+	aToken.WriteBegin();
+	aToken.WriteEnd();
+<%              } %>
+<%              else { %>
+	<%=c.name%>& child = Get<%=c.name%>(aToken.ReadUint());
+	child.InvokeSet<%=childprefix%><%=p.name%>(aToken, aVersion);
+<%              } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Find Service Model Record Count Accessors (Network Control)
+	
+%>
+<%      foreach (Property p in t.properties) { %>
+<%          if (p.type == "record") { %>
+void <%=m.name%>::Invoke<%=prefix%><%=p.model%>Count(aToken, aVersion)
+{
+<%              if (m == s.model) { %>
+	aToken.ReadBegin();
+<%              } %>
+<%              if (m == t) { %>
+	aToken.ReadEnd();
+	aToken.WriteBegin();
+	aToken.Write<%=p.kind%>(<%=p.model%>Count());
+	aToken.WriteEnd();
+<%              } %>
+<%              else { %>
+	<%=c.name%>& child = Get<%=c.name%>(aToken.ReadUint());
+	child.Invoke<%=childprefix%><%=p.model%>Count(aToken, aVersion);
+<%              } %>
+}
+
+<%          } %>
+<%      } %>
+<%
+
+	// Find Service Interface Method Accessors (Network Control)
+	
+%>
+<%      foreach (Method x in t.methods) { %>
+void <%=m.name%>::Invoke<%=prefix%><%=x.name%>(aToken, aVersion)
+{
+<%          if (m == s.model) { %>
+	aToken.ReadBegin();
+<%          } %>
+<%          if (m == t) { %>
+<%              foreach (Argument a in x.inargs) { %>
+    <%=a.get%> in<%=a.name%> = aToken.Read<%=a.kind%>();
+<%              } %>
+	aToken.ReadEnd();
+<%              foreach (Argument a in x.outargs) { %>
+    <%=a.get%> out<%=a.name%>;
+<%              } %>
+	<%=x.invoke%>
+	aToken.WriteBegin();
+<%              foreach (Argument a in x.outargs) { %>
+	aToken.Write<%=a.kind%>(<%=a.name%>);
+<%              } %>
+	aToken.WriteEnd();
+<%          } %>
+<%          else { %>
+	<%=c.name%>& child = Get<%=c.name%>(aToken.ReadUint());
+	child.Invoke<%=childprefix%><%=x.name%>(aToken, aVersion);
+<%          } %>
+}
+
+<%      } %>
+<%  } %>
+<%  } %>
+
+<* body *>

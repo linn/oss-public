@@ -1,0 +1,46 @@
+Import('_default_env')
+
+# Config
+config = _default_env.Install('$hardware_dir/share/Web/Root/Config/', Glob('Config/*.html'))
+config += _default_env.Install('$hardware_dir/share/Web/Root/Config/Layouts/Default/', Glob('Config/Layouts/Default/*.html'))
+config += _default_env.Install('$hardware_dir/share/Web/Root/Config/Layouts/Default/CSS', Glob('Config/Layouts/Default/CSS/*.css'))
+config += _default_env.Install('$hardware_dir/share/Web/Root/Config/Layouts/Default/Scripts/', Glob('Config/Layouts/Default/Scripts/*.js'))
+config += _default_env.Install('$hardware_dir/share/Web/Root/Config/Layouts/Default/Images/', Glob('Config/Layouts/Default/Images/*.gif'))
+config += _default_env.Install('$hardware_dir/share/Web/Root/Config/Layouts/Default/Images/', Glob('Config/Layouts/Default/Images/*.png'))
+
+# Additional files
+additional = _default_env.Install('$hardware_dir/share/Web/Root', 'Resources/favicon.ico')
+
+# Common scripts
+common = _default_env.Install('$hardware_dir/share/Web/Root/Common/Scripts/', Glob('Common/Scripts/*.js'))
+common += _default_env.Install('$hardware_dir/share/Web/Root/Common/Images/', Glob('Common/Images/*.gif'))
+common += _default_env.Install('$hardware_dir/share/Web/Root/Common/Images/', Glob('Common/Images/*.png'))
+common += _default_env.Install('$hardware_dir/share/Web/Root/Common/CSS/', Glob('Common/CSS/*.css'))
+common += _default_env.Install('$hardware_dir/share/Web/Root/Common/Themes/custom-theme/', Glob('Common/Themes/custom-theme/*.css'))
+common += _default_env.Install('$hardware_dir/share/Web/Root/Common/Themes/custom-theme/images/', Glob('Common/Themes/custom-theme/images/*.png'))
+common += _default_env.Install('$hardware_dir/share/Web/Root/Common/Themes/custom-theme/images/', Glob('Common/Themes/custom-theme/images/*.gif'))
+
+# build variant file
+variant = _default_env.InstallAs('$hardware_dir/share/Web/Root/Common/Scripts/Variant/Variant.js', _default_env.subst('Common/Scripts/Variant/$variant') + '.js')
+AlwaysBuild(variant)
+
+# Control app
+control = _default_env.Install('$hardware_dir/share/Web/Root/Control', Glob('Control/*.html'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Common/Scripts', Glob('Control/Common/Scripts/*.js'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Common/Scripts/Widgets', Glob('Control/Common/Scripts/Widgets/*.js'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Layouts/Default', Glob('Control/Layouts/Default/*.html'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Layouts/Default/CSS', Glob('Control/Layouts/Default/CSS/*.css'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Layouts/Default/Scripts', Glob('Control/Layouts/Default/Scripts/*.js'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Layouts/Default/Images', Glob('Control/Layouts/Default/Images/*.png'))
+control += _default_env.Install('$hardware_dir/share/Web/Root/Control/Layouts/Default/Images', Glob('Control/Layouts/Default/Images/*.gif'))
+
+tar = _default_env.Tar('$hardware_dir/share/Web/Web.tar', '$hardware_dir/share/Web/Root')
+
+Alias('Lib', tar) 
+Alias('Lib', common) 
+Alias('Lib', variant) 
+Alias('Lib', config) 
+Alias('Lib', control) 
+Alias('Lib', additional) 
+Alias('Test', 'Lib') 
+Default('Test')

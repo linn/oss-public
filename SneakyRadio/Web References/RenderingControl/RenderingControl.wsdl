@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:svc="schemas-upnp-org-RenderingControl-1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RenderingControl" targetNamespace="schemas-upnp-org-RenderingControl-1" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:schemas-upnp-org:control-1-0">
+      <xsd:complexType name="UpnpErrorDetail">
+        <xsd:sequence>
+          <xsd:element minOccurs="1" maxOccurs="1" name="UPnPError">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="1" maxOccurs="1" name="errorCode" type="xsd:unsignedInt" />
+                <xsd:element minOccurs="1" maxOccurs="1" name="errorDescription" type="xsd:string" />
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="UpnpErrorMessage">
+    <part name="Detail" type="svc:UpnpErrorDetail" />
+  </message>
+  <message name="SetVolumeInput">
+    <part name="InstanceID" type="xsd:unsignedInt" />
+    <part name="Channel" type="xsd:string" />
+    <part name="DesiredVolume" type="xsd:unsignedShort" />
+  </message>
+  <message name="SetVolumeOutput" />
+  <message name="SetMuteInput">
+    <part name="InstanceID" type="xsd:unsignedInt" />
+    <part name="Channel" type="xsd:string" />
+    <part name="DesiredMute" type="xsd:boolean" />
+  </message>
+  <message name="SetMuteOutput" />
+  <portType name="SetVolumePortType">
+    <operation name="SetVolume">
+      <input message="svc:SetVolumeInput" />
+      <output message="svc:SetVolumeOutput" />
+      <fault name="UpnpError" message="UpnpErrorMessage" />
+    </operation>
+  </portType>
+  <portType name="SetMutePortType">
+    <operation name="SetMute">
+      <input message="svc:SetMuteInput" />
+      <output message="svc:SetMuteOutput" />
+      <fault name="UpnpError" message="UpnpErrorMessage" />
+    </operation>
+  </portType>
+  <binding name="SetVolumeBinding" type="svc:SetVolumePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="SetVolume">
+      <soap:operation soapAction="urn:schemas-upnp-org:service:RenderingControl:1#SetVolume" />
+      <input>
+        <soap:body use="encoded" namespace="urn:schemas-upnp-org:service:RenderingControl:1" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:schemas-upnp-org:service:RenderingControl:1" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="UpnpError">
+        <soap:fault use="encoded" name="UpnpError" namespace="urn:schemas-upnp-org:control-1-0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+  </binding>
+  <binding name="SetMuteBinding" type="svc:SetMutePortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="SetMute">
+      <soap:operation soapAction="urn:schemas-upnp-org:service:RenderingControl:1#SetMute" />
+      <input>
+        <soap:body use="encoded" namespace="urn:schemas-upnp-org:service:RenderingControl:1" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:schemas-upnp-org:service:RenderingControl:1" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+      <fault name="UpnpError">
+        <soap:fault use="encoded" name="UpnpError" namespace="urn:schemas-upnp-org:control-1-0" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </fault>
+    </operation>
+  </binding>
+  <service name="RenderingControlService">
+    <port name="SetVolumePort" binding="svc:SetVolumeBinding" />
+    <port name="SetMutePort" binding="svc:SetMuteBinding" />
+  </service>
+</definitions>

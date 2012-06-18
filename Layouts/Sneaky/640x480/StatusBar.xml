@@ -1,0 +1,1138 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>StatusBar</Namespace>
+  <Package>Main.xml</Package>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.RoomTab</Child>
+      <Child>StatusBar.SourceTab</Child>
+      <Child>StatusBar.PlaylistTab</Child>
+      <Child>StatusBar.LibraryTab</Child>
+      <Child>StatusBar.Playlist</Child>
+      <Child>StatusBar.Rooms</Child>
+      <Child>StatusBar.Sources</Child>
+      <Child>StatusBar.Library</Child>
+      <Child>StatusBar.TitleBar</Child>
+    </Children>
+    <Width>480</Width>
+    <Height>109</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>RoomTab</Name>
+    <Plugin>StatusBar.RoomTab.Bistable</Plugin>
+    <Parent>StatusBar.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>4</X>
+        <Y>4</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Rooms</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Sources</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Library</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.RoomSelection</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.SourceSelection</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Library</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>116</Width>
+    <Height>48</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/LinnTab.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>RoomTab.Bistable</Name>
+    <Plugin>StatusBar.RoomTab.TextureArrayFixed</Plugin>
+    <StartState>True</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>RoomTab.TextureArrayFixed</Name>
+    <Plugin>StatusBar.RoomTab</Plugin>
+    <Texture>Bitmaps/LinnTab_off.png</Texture>
+    <Texture>Bitmaps/LinnTab.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>SourceTab</Name>
+    <Plugin>StatusBar.SourceTab.Bistable</Plugin>
+    <Parent>StatusBar.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>123</X>
+        <Y>4</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Rooms</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Sources</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Library</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.RoomSelection</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.SourceSelection</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Library</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>116</Width>
+    <Height>48</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/MusicRoom_Tab_off.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>SourceTab.Bistable</Name>
+    <Plugin>StatusBar.SourceTab.TextureArrayFixed</Plugin>
+    <StartState>False</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>SourceTab.TextureArrayFixed</Name>
+    <Plugin>StatusBar.SourceTab</Plugin>
+    <Texture>Bitmaps/MusicRoom_Tab_off.png</Texture>
+    <Texture>Bitmaps/MusicRoom_Tab.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>PlaylistTab</Name>
+    <Plugin>StatusBar.PlaylistTab.Bistable</Plugin>
+    <Parent>StatusBar.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>361</X>
+        <Y>4</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Rooms</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Sources</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Playlist</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Library</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Playlist</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.RoomSelection</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.SourceSelection</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Library</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>116</Width>
+    <Height>48</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/Playlist_Tab_off.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>PlaylistTab.Bistable</Name>
+    <Plugin>StatusBar.PlaylistTab.TextureArrayFixed</Plugin>
+    <StartState>False</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>PlaylistTab.TextureArrayFixed</Name>
+    <Plugin>StatusBar.PlaylistTab</Plugin>
+    <Texture>Bitmaps/Playlist_Tab_off.png</Texture>
+    <Texture>Bitmaps/Playlist_Tab.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>LibraryTab</Name>
+    <Plugin>StatusBar.LibraryTab.Bistable</Plugin>
+    <Parent>StatusBar.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>242</X>
+        <Y>4</Y>
+        <Z>4</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Rooms</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Sources</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>StatusBar.Library</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.RoomTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.SourceTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>StatusBar.PlaylistTab.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.RoomSelection</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.SourceSelection</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.LibraryTab.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Library</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>116</Width>
+    <Height>48</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/LibraryTab_off.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>LibraryTab.Bistable</Name>
+    <Plugin>StatusBar.LibraryTab.TextureArrayFixed</Plugin>
+    <StartState>False</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>LibraryTab.TextureArrayFixed</Name>
+    <Plugin>StatusBar.LibraryTab</Plugin>
+    <Texture>Bitmaps/LibraryTab_off.png</Texture>
+    <Texture>Bitmaps/LibraryTab.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>PlaylistFlipButton</Name>
+    <Plugin>StatusBar.PlaylistFlipButton.Bistable</Plugin>
+    <Parent>StatusBar.Playlist</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>375</X>
+        <Y>56</Y>
+        <Z>5</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistFlipButton.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Playlist</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistFlipButton.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.CurrentTrack</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistFlipButton.Bistable</Fullname>
+          <OldState>True</OldState>
+          <NewState>False</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.Playlist</Fullname>
+          <Active>True</Active>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>StatusBar.PlaylistFlipButton.Bistable</Fullname>
+          <OldState>True</OldState>
+          <NewState>False</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetActive">
+          <Fullname>Main.CurrentTrack</Fullname>
+          <Active>False</Active>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>40</Width>
+    <Height>40</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Default/Off.jpg</Texture>
+    </RenderState>
+    <ClampToTextureSize>False</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>PlaylistFlipButton.Bistable</Name>
+    <Plugin>StatusBar.PlaylistFlipButton.TextureArrayFixed</Plugin>
+    <StartState>False</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>PlaylistFlipButton.TextureArrayFixed</Name>
+    <Plugin>StatusBar.PlaylistFlipButton</Plugin>
+    <Texture>Default/Off.jpg</Texture>
+    <Texture>Default/On.jpg</Texture>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>RoomsText</Name>
+    <Plugin />
+    <Parent>StatusBar.Rooms</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>6</X>
+        <Y>59</Y>
+        <Z>-17</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>100</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>128</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Rooms</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>SourceText</Name>
+    <Plugin />
+    <Parent>StatusBar.Sources</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>6</X>
+        <Y>59</Y>
+        <Z>-18</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>100</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>128</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Sources</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>LibraryText</Name>
+    <Plugin />
+    <Parent>StatusBar.Library</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>6</X>
+        <Y>59</Y>
+        <Z>-19</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>100</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>128</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Library</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>PlaylistBarText</Name>
+    <Plugin />
+    <Parent>StatusBar.Playlist</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>16</X>
+        <Y>69</Y>
+        <Z>12</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>100</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>128</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Playlist</Text>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>DeletePlaylist</Name>
+    <Plugin>StatusBar.DeletePlaylist.Monostable</Plugin>
+    <Parent>StatusBar.Playlist</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>438</X>
+        <Y>68</Y>
+        <Z>13</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>17</Width>
+    <Height>18</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/Delete.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>DeletePlaylist.Monostable</Name>
+    <Plugin>StatusBar.DeletePlaylist.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>DeletePlaylist.TextureArrayFixed</Name>
+    <Plugin>StatusBar.DeletePlaylist</Plugin>
+    <Texture>Bitmaps/Delete.png</Texture>
+    <Texture>Bitmaps/Delete_on.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Back</Name>
+    <Plugin>StatusBar.Back.Monostable</Plugin>
+    <Parent>StatusBar.Library</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>77</X>
+        <Y>45</Y>
+        <Z>-17</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>40</Width>
+    <Height>40</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Default/Off.jpg</Texture>
+    </RenderState>
+    <ClampToTextureSize>False</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Back.Monostable</Name>
+    <Plugin>StatusBar.Back.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Back.TextureArrayFixed</Name>
+    <Plugin>StatusBar.Back</Plugin>
+    <Texture>Default/Off.jpg</Texture>
+    <Texture>Default/On.jpg</Texture>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Playlist</Name>
+    <Plugin />
+    <Parent>StatusBar.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>10</Y>
+        <Z>15</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.PlaylistFlipButton</Child>
+      <Child>StatusBar.PlaylistBarText</Child>
+      <Child>StatusBar.DeletePlaylist</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Rooms</Name>
+    <Plugin />
+    <Parent>StatusBar.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>10</Y>
+        <Z>29</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.RoomsText</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Sources</Name>
+    <Plugin />
+    <Parent>StatusBar.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>10</Y>
+        <Z>30</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.SourceText</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Library</Name>
+    <Plugin />
+    <Parent>StatusBar.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>10</Y>
+        <Z>31</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.LibraryText</Child>
+      <Child>StatusBar.Back</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>TitleBar</Name>
+    <Plugin>StatusBar.TitleBar.TextureArrayFixed</Plugin>
+    <Parent>StatusBar.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>99</Y>
+        <Z>32</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>480</Width>
+    <Height>10</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/TitleBar.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>TitleBar.TextureArrayFixed</Name>
+    <Plugin>StatusBar.TitleBar</Plugin>
+    <Texture>Bitmaps/TitleBar.png</Texture>
+  </Plugin>
+</Package>

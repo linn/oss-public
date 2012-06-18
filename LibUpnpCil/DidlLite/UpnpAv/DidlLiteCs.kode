@@ -1,0 +1,717 @@
+//
+// Use the reference section to name additional assemblies
+// required to execute the template.
+//
+// The following assemblies are provided by default:
+//      System.dll
+//      System.Xml.dll
+//      LinnGen.exe
+//
+// Name one additional assembly on each line of the reference section
+//
+
+<* reference *>
+
+XmlDidlLite.dll
+
+<* reference *>
+
+//
+// Use the import section for additional using directives.
+//
+// The following directives are provided by default
+//
+//      using System;
+//      using System.Text;
+//      using System.IO;
+//      using System.Xml;
+//      using System.Xml.XPath;
+//      using System.Collections.Generic;
+//
+
+<* import *>
+
+using Linn.Xml.DidlLite;
+
+<* import *>
+
+//
+// Use the function section to provide helper functions
+// that can be called from within the body section
+//
+
+<* function *>
+
+<* function *>
+
+//
+// The body section contains the generated text
+//
+// C# code can be embedded within <% %> tags
+//
+// <%=name%> will output the contents of the named variable
+//
+// args is an array of strings containing the generator arguments
+//
+// XPathNavigator LoadXmlFile(filename) is provided for loading
+// and navigating xml files
+//
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+    DidlLiteXml h = new DidlLiteXml(args[0]);
+%>
+using System;
+using System.IO;
+using System.Xml;
+using System.Collections.Generic;
+using System.Threading;
+using System.Reflection;
+
+using Linn;
+
+namespace Upnp
+{
+    public class Time
+    {
+        public class TimeInvalid : System.Exception
+        {
+            public TimeInvalid(string aTime) : base(aTime) { }
+        }
+
+        public Time(int aSecondsTotal)
+        {
+            iSecondsTotal = aSecondsTotal;
+            CalculateHoursMinutesSeconds();
+        }
+        
+        public Time(string aTime)
+        {
+            string[] result = aTime.Split(':');
+            int length = result.GetLength(0);
+            if (length > 0)
+            {
+                try
+                {
+                    if(length > 2)
+                    {
+                        iSecondsTotal += int.Parse(result[0]) * 3600;
+                        if (iSecondsTotal < 0)
+                        {
+                            iSecondsTotal = -iSecondsTotal;
+                        }
+                    }
+
+                    if(length > 1)
+                    {
+                        int mins = int.Parse(result[length - 2]);
+                        if (mins < 0 || mins > 59)
+                        {
+                            throw new TimeInvalid(aTime);
+                        }
+                        iSecondsTotal += mins * 60;
+                    }
+
+                    int index = result[length - 1].IndexOf('.');
+                    int secs;
+                    if (index == -1)
+                    {
+                        secs = int.Parse(result[length - 1]);
+                    }
+                    else
+                    {
+                        secs = int.Parse(result[length - 1].Substring(0, index));
+                    }
+                    if (secs < 0 || secs > 59)
+                    {
+                        throw new TimeInvalid(aTime);
+                    }
+                    iSecondsTotal += secs;
+                    if (aTime[0] == '-')
+                    {
+                        iSecondsTotal = -iSecondsTotal;
+                    }
+
+                    CalculateHoursMinutesSeconds();
+                }
+                catch(FormatException)
+                {
+                    throw new TimeInvalid(aTime);
+                }
+            }
+            else
+            {
+                throw new TimeInvalid(aTime);
+            }
+        }
+        
+        public int SecondsTotal
+        {
+            get
+            {
+                return iSecondsTotal;
+            }
+            set
+            {
+                iSecondsTotal = value;
+                CalculateHoursMinutesSeconds();
+            }
+        }
+
+        public int Hours
+        {
+            get
+            {
+                return iHours;
+            }
+        }
+
+        public int Minutes
+        {
+            get
+            {
+                return iMinutes;
+            }
+        }
+
+        public int Seconds
+        {
+            get
+            {
+                return iSeconds;
+            }
+        }
+
+        public string ToPrettyString()
+        {
+            string time = string.Empty;
+            if (iSecondsTotal < 0)
+            {
+                time += "-";
+            }
+            if (iHours > 0)
+            {
+                time += iHours;
+                time += ":";
+                time += string.Format("{0:00}", iMinutes);
+            }
+            else
+            {
+                time += iMinutes;
+            }
+            time += ":";
+            time += string.Format("{0:00}", iSeconds);
+
+            return time;
+        }
+
+        public override string ToString()
+        {
+            return (iSecondsTotal < 0 ? "- " : (iHours < 10 ? "0" : "")) + iHours.ToString() + ":" + String.Format("{0:00}", iMinutes) + ":" + String.Format("{0:00}", iSeconds);
+        }
+
+        private void CalculateHoursMinutesSeconds()
+        {
+            iHours = iSecondsTotal / 3600;
+            iMinutes = (iSecondsTotal % 3600) / 60;
+            iSeconds = (iSecondsTotal % 3600) % 60;
+
+            if (iSecondsTotal < 0)
+            {
+                iHours = -iHours;
+                iMinutes = -iMinutes;
+                iSeconds = -iSeconds;
+            }
+
+            Assert.Check(iMinutes < 60);
+            Assert.Check(iSeconds < 60);
+        }
+        
+        private int iSecondsTotal;
+        private int iHours;
+        private int iMinutes;
+        private int iSeconds;
+    }
+    
+    public class DidlLite : List<upnpObject>
+    {
+        public DidlLite() { }
+        
+        public DidlLite(string aDidlLite)
+        {
+            XmlNameTable xmlNsTable = new NameTable();
+            XmlNamespaceManager xmlNsMan = new XmlNamespaceManager(xmlNsTable);
+<%  foreach (Namespace n in h.namespaces) %>
+<%  { %>
+            xmlNsMan.AddNamespace("<%=n.prefix%>", "<%=n.uri%>");
+<%  } %>
+
+            XmlReader reader = XmlTextReader.Create(new StringReader(aDidlLite));
+
+            while(!reader.EOF)
+            {
+                if(reader.NodeType == XmlNodeType.Element)
+                {
+                    XmlNode n = null;
+                    if(reader.Name == "item")
+                    {
+                        XmlDocument xmlDocument = new XmlDocument(xmlNsMan.NameTable);
+                        XmlNode node = xmlDocument.ReadNode(reader);
+                        xmlDocument.AppendChild(node);
+
+                        n = xmlDocument.SelectSingleNode("didl:item/upnp:class", xmlNsMan);
+                    }
+                    else if(reader.Name == "container")
+                    {
+                        XmlDocument xmlDocument = new XmlDocument(xmlNsMan.NameTable);
+                        XmlNode node = xmlDocument.ReadNode(reader);
+                        xmlDocument.AppendChild(node);
+
+                        n = xmlDocument.SelectSingleNode("didl:container/upnp:class", xmlNsMan);
+                    }
+                    else
+                    {
+                        reader.Read();
+                    }
+
+                    if(n != null)
+                    {
+                        string didlType = n.InnerText;
+                        //didlType = didlType.Replace("object", "upnpObject");
+        
+                        string[] names = didlType.Split('.');
+                        int index = names.Length - 1;
+        
+                        while(index != -1)
+                        {
+<%  foreach (Class c in h.classes) %>
+<%  { %>
+<%  if (!c.isbase && c.name != "upnpObject") %>
+<%  { %>
+                            if(names[index] == "<%=c.name%>")
+                            {
+                                Add(new <%=c.name%>(n.ParentNode));
+                                break;
+                            }
+<%  } %>
+<%  } %>
+                            else
+                            {
+                                index--;
+                            }
+                        }
+        
+                        if (index == -1)
+                        {
+                            UserLog.WriteLine(DateTime.Now + ": DidlLite construction error - no type (" + didlType + ")");
+                            UserLog.WriteLine(n.ParentNode.InnerText);
+                            Assert.Check(false);
+                        }
+                    }
+                }
+                else
+                {
+                    reader.Read();
+                }
+            }
+        }
+
+        public string Xml
+        {
+            get
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                XmlNamespaceManager xmlNsMan = new XmlNamespaceManager(xmlDocument.NameTable);
+<%  foreach (Namespace n in h.namespaces) %>
+<%  { %>
+                xmlNsMan.AddNamespace("<%=n.prefix%>", "<%=n.uri%>");
+<%  } %>
+                
+                XmlElement element = xmlDocument.CreateElement("DIDL-Lite", "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/");
+                xmlDocument.AppendChild(element);
+                
+                foreach (upnpObject o in this)
+                {
+                    xmlDocument.DocumentElement.AppendChild(xmlDocument.ImportNode(o.XmlNode, true));
+                }
+
+                return xmlDocument.OuterXml;
+            }
+        }
+    }
+    
+<%  foreach (Class c in h.classes) %>
+<%  { %>
+<%  if (c.isbase) %>
+<%  { %>
+<%  if(c.name == "upnpObject") %>
+<%  { %>
+    public abstract class <%=c.name%>
+<%  } %>
+<%  else %>
+<%  { %>
+    public class <%=c.name%>
+<%  } %>
+<%  } %>
+<%  else %>
+<%  { %>
+    public class <%=c.name%> : <%=c.extends%>
+<%  } %>
+    {
+        public <%=c.name%>() {
+<%      if (c.classType != null) %>
+<%      { %>
+            iClassFound = true;
+            iClass = "<%=c.classType%>";
+<%      } %>
+        }
+        public <%=c.name%>(XmlNode aXmlNode)
+<%      if (!c.isbase) %>
+<%      { %>
+            : base(aXmlNode)
+<%      } %>
+        {
+<%      if (c.isbase) %>
+<%      { %>
+            iXmlDocument = new XmlDocument();
+            iXmlNsMan = new XmlNamespaceManager(iXmlDocument.NameTable);
+<%      foreach (Namespace n in h.namespaces) %>
+<%      { %>
+            iXmlNsMan.AddNamespace("<%=n.prefix%>", "<%=n.uri%>");
+<%      } %>
+            iXmlDocument.AppendChild(iXmlDocument.ImportNode(aXmlNode, true));
+<%      } %>
+        }
+        
+<%      foreach (Property p in c.properties) %>
+<%      { %>
+<%          if (p.type == "list") %>
+<%          { %>
+        public virtual List<<%=p.element%>> <%=p.name%> {
+<%          } %>
+<%          else %>
+<%          { %>
+        public virtual <%=p.type%> <%=p.name%> {
+<%          } %>
+            get {
+                lock (iLock)
+                {
+                    PreCache<%=p.name%>();
+                }
+                return i<%=p.name%>;
+            }
+<%          if (p.name != "Class") %>
+<%          { %>
+            set {
+                lock (iLock)
+                {
+                    PreCache();
+                    i<%=p.name%> = value;
+                    i<%=p.name%>Found = true;
+                }
+            }
+<%          } %>
+        }
+        private void PreCache<%=p.name%>() {
+            lock (iLock)
+            {
+            if(!i<%=p.name%>Searched) {
+                if(iXmlDocument != null) {
+<%          if (p.type != "string" && p.type != "list") %>
+<%          { %>
+                    XmlNode n = iXmlDocument.FirstChild.SelectSingleNode("<%=p.xpath%>", iXmlNsMan);
+                    if (n != null) {
+<%              if (p.type == "bool") %>
+<%              { %>
+                        try
+                        {
+                            i<%=p.name%> = <%=p.type%>.Parse(n.InnerText);
+                        }
+                        catch(FormatException e)
+                        {
+				            if(n.InnerText == "0")
+					        {
+					            i<%=p.name%> = false;
+					        }
+					        else if(n.InnerText == "1")
+					        {
+					    	    i<%=p.name%> = true;
+					        }
+					        else
+					        {
+						        throw e;
+					        }
+				        }
+<%	            } %>
+<%		        else %>
+<%		        { %>
+                        try
+                        {
+					        i<%=p.name%> = <%=p.type%>.Parse(n.InnerText);
+					    }
+					    catch(FormatException) { }
+                        catch (OverflowException) { }
+<%		        } %>
+                        i<%=p.name%>Found = true;
+                    }
+<%          } %>
+<%          else if (p.type == "list") %>
+<%          { %>
+                    foreach (XmlNode n in iXmlDocument.FirstChild.SelectNodes("<%=p.xpath%>", iXmlNsMan)) {
+<%              bool found = false; %>
+<%              foreach (Class n in h.classes) %>
+<%              { %>
+<%                 if (p.element == n.name) %>
+<%                 { %>
+                        i<%=p.name%>.Add(new <%=p.element%>(n));
+<%                      found = true; %>
+<%                      break; %>
+<%                 } %>
+<%              } %>
+<%              if (!found) %>
+<%              { %>
+<%                  if (p.element == "string") %>
+<%                  { %>
+                        i<%=p.name%>.Add(n.InnerText);
+<%                  } %>
+<%                  else if(p.element == "bool") %>
+<%                  { %>
+                        try
+                        {
+                            i<%=p.name%>.Add(<%=p.element%>.Parse(n.InnerText));
+                        }
+                        catch(FormatException e)
+                        {
+				            if(n.InnerText == "0")
+					        {
+					            i<%=p.name%>.Add(false);
+					        }
+					        else if(n.InnerText == "1")
+					        {
+					    	    i<%=p.name%>.Add(true);
+					        }
+					        else
+					        {
+						        throw e;
+					        }
+                        }
+<%                  } %>
+<%                  else %>
+<%                  { %>
+                        try
+                        {
+                            i<%=p.name%>.Add(<%=p.element%>.Parse(n.InnerText));
+                        }
+                        catch(FormatException) { }
+<%                  } %>
+<%              } %>
+                    }
+<%          } %>
+<%          else %>
+<%          { %>
+                    XmlNode n = iXmlDocument.FirstChild.SelectSingleNode("<%=p.xpath%>", iXmlNsMan);
+                    if (n != null) {
+                        i<%=p.name%> = n.InnerText;
+                        i<%=p.name%>Found = true;
+                    }
+<%          } %>
+                }
+                i<%=p.name%>Searched = true;
+<%          if (p.type == "list") %>
+<%          { %>
+                i<%=p.name%>Found = true;
+<%          } %>
+            }
+            }
+        }
+        
+<%      } %>
+
+<%      if(c.isbase) %>
+<%      { %>
+        internal virtual void PreCache() {
+<%      } %>
+<%      else %>
+<%      { %>
+        internal override void PreCache() {
+<%      } %>
+<%      foreach (Property p in c.properties) %>
+<%      { %>
+<%			if (p.type == "list") %>
+<%			{ %>
+			PreCache<%=p.name%>();
+<%              foreach (Class n in h.classes) %>
+<%              { %>
+<%                  if (p.element == n.name) %>
+<%                  { %>
+			foreach(<%=p.element%> i in i<%=p.name%>) {
+			    i.PreCache();
+			}
+<%                  } %>
+<%              } %>
+<%			} %>
+<%			else %>
+<%			{ %>
+			PreCache<%=p.name%>();
+<%			} %>
+<%      } %>
+<%      if(c.isbase) %>
+<%      { %>
+			iXmlDocument = null;
+<%      } %>
+<%      else %>
+<%      { %>
+			base.PreCache();
+<%      } %>
+        }
+
+<%      if(c.name == "upnpObject") %>
+<%      { %>
+        internal XmlNode XmlNode {
+            get {
+                if(iXmlDocument == null) {
+                    XmlDocument xmlDocument = new XmlDocument();
+                    iXmlNsMan = new XmlNamespaceManager(xmlDocument.NameTable);
+<%          foreach (Namespace n in h.namespaces) %>
+<%          { %>
+                    iXmlNsMan.AddNamespace("<%=n.prefix%>", "<%=n.uri%>");
+<%          } %>
+                    XmlElement obj = null;
+                    if(this is container) {
+                        obj = xmlDocument.CreateElement("container", "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/");
+                    } else if(this is item) {
+                        obj = xmlDocument.CreateElement("item", "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/");
+                    } else {
+                        Assert.Check(false);
+                    }
+                    CreateDidlLite(xmlDocument, obj);
+                    xmlDocument.AppendChild(obj);
+                    return xmlDocument.FirstChild;
+                }
+                return iXmlDocument.FirstChild;
+            }
+        }
+<%      } %>
+        
+<%      if(c.isbase) %>
+<%      { %>
+        internal virtual void CreateDidlLite(XmlDocument aXmlDocument, XmlElement aXmlElement) {
+<%      } %>
+<%      else %>
+<%      { %>
+        internal override void CreateDidlLite(XmlDocument aXmlDocument, XmlElement aXmlElement) {
+            base.CreateDidlLite(aXmlDocument, aXmlElement);
+<%      } %>
+<%      foreach (Property p in c.properties) %>
+<%      { %>
+            if(i<%=p.name%>Found) {
+<%          if (p.type == "list") %>
+<%          { %>
+                foreach(<%=p.element%> item in i<%=p.name%>) {
+                    string xpath = "<%=p.xpath%>";
+                    string prefix = "didl";
+                    string[] split = xpath.Split(':');
+                    if(split.Length > 1) {
+                        prefix = split[0];
+                    }
+<%                  if(p.xpath.Contains("didl")) %>
+<%                  { %>
+                    XmlElement obj = aXmlDocument.CreateElement("<%=p.xpath.Replace("didl:", "")%>", "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/");
+<%                  } %>
+<%                  else %>
+<%                  { %>
+                    XmlElement obj = aXmlDocument.CreateElement("<%=p.xpath%>", iXmlNsMan.LookupNamespace(prefix));
+<%                  } %>
+<%              bool found = false; %>
+<%              foreach (Class n in h.classes) %>
+<%              { %>
+<%                  if (p.element == n.name) %>
+<%                  { %>
+                    item.CreateDidlLite(aXmlDocument, obj);
+<%                      found = true; %>
+<%                      break; %>
+<%                  } %>
+<%              } %>
+<%              if (!found) %>
+<%              { %>
+                    XmlText text = aXmlDocument.CreateTextNode(item.ToString());
+                    obj.AppendChild(text);
+<%              } %>
+                    aXmlElement.AppendChild(obj);
+                }
+<%          } %>
+<%          else %>
+<%          { %>
+<%              if (p.xpath == ".") %>
+<%              { %>
+                XmlText text = aXmlDocument.CreateTextNode(<%=p.name%>.ToString());
+                aXmlElement.AppendChild(text);
+<%              } %>
+<%              else if(p.xpath.StartsWith("@")) %>
+<%              { %>
+                string xpath = "<%=p.xpath%>";
+                XmlAttribute attribute = aXmlDocument.CreateAttribute(xpath.Substring(1));
+                XmlText text = aXmlDocument.CreateTextNode(<%=p.name%>.ToString());
+                attribute.AppendChild(text);
+                aXmlElement.SetAttributeNode(attribute);
+<%              } %>
+<%              else %>
+<%              { %>
+                string xpath = "<%=p.xpath%>";
+                string prefix = "ns";
+                string[] split = xpath.Split(':');
+                if(split.Length > 1) {
+                    prefix = split[0];
+                }
+                XmlElement element = aXmlDocument.CreateElement("<%=p.xpath%>", iXmlNsMan.LookupNamespace(prefix));
+                XmlText text = aXmlDocument.CreateTextNode(<%=p.name%>.ToString());
+                element.AppendChild(text);
+                aXmlElement.AppendChild(element);
+<%              } %>
+<%          } %>
+            }
+<%      } %>
+        }
+        
+<%      if (c.isbase) %>
+<%      { %>
+        protected XmlDocument iXmlDocument;
+        protected XmlNamespaceManager iXmlNsMan;
+        protected object iLock = new object();
+<%      } %>
+<%      foreach (Property p in c.properties) %>
+<%      { %>
+<%      if (p.name == "Class") %>
+<%      { %>
+        protected bool i<%=p.name%>Found = false;
+<%      } %>
+<%      else %>
+<%      { %>
+        private bool i<%=p.name%>Found = false;
+<%      } %>
+        private bool i<%=p.name%>Searched = false;
+<%      if (p.type == "list") %>
+<%      { %>
+        private List<<%=p.element%>> i<%=p.name%> = new List<<%=p.element%>>();
+<%      } %>
+<%      else %>
+<%      { %>
+<%          if (p.name == "Class") %>
+<%          { %>
+        protected <%=p.type%> i<%=p.name%>;
+<%          } %>
+<%          else %>
+<%          { %>
+        private <%=p.type%> i<%=p.name%>;
+<%          } %>
+<%      } %>
+<%      } %>
+    }
+<%  } %>
+} // DidlLite
+
+<* body *>

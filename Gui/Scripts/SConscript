@@ -1,0 +1,13 @@
+Import('_default_env')
+
+file = _default_env.Install('$install_dir/bin', 'RunGuiTests.sh')
+runTests = _default_env.AddPostAction(file, Chmod(file, 0755))
+file = _default_env.Install('$install_dir/bin', 'RunTestsGui')
+runTests += _default_env.AddPostAction(file, Chmod(file, 0755))
+Alias('RunTestsGui', runTests)
+Alias('Test', runTests)
+
+SConscript('Fallback/SConscript', exports = '_default_env')
+
+#result = _default_env.CliProgram('CfPatcher', 'CompactFrameworkPatcher.cs', CLILIBS=['System'])
+#result += _default_env.CliProgram('HelloWorld', 'HelloWorld.cs', CLILIBS=['System'])

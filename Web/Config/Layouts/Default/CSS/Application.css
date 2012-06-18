@@ -1,0 +1,323 @@
+body, html
+{
+	background:#000;
+	margin:0;
+	padding:0;
+	color:#FFF;
+	width:100%;
+	height:100%;
+	font-family: Segoe UI, Arial, sans-serif;
+    font-size:medium;
+}
+
+.ModelIcon 
+{
+    text-align:left;
+    position:relative;
+    width: 120px;
+    height: 50px;
+    border:none;
+}
+
+.ModelIcon img
+{
+    border:none;
+}
+
+.ModelIcon span
+{
+    width:24px;
+    height:24px;
+    position:absolute;
+    top:13px;
+    left:48px;
+    background:url('/images/Reboot.png') no-repeat;
+}
+
+#container
+{    
+    max-width:800px;
+    margin:auto;
+}
+
+#logo
+{
+    width:26px;
+    height:33px;  
+    background-position:center center;
+    background-repeat:no-repeat;
+    display:inline-block;
+    margin-left:7px;
+    float:right;
+    margin-top:12px;
+    margin-right:7px;
+    margin-bottom:7px;
+}
+
+#logo img
+{
+    border:none;
+}
+
+#SwUpdateIcon,
+#RebootIcon,
+#ToggleIcon
+{
+    width:24px;
+    height:24px;
+    margin-left:15px;
+    margin-top:2px;
+    border:none;
+}
+
+#HelpIcon
+{
+    width:24px;
+    height:24px;
+    margin-right:15px;
+    margin-top:2px;
+    border:none;
+}
+
+#RebootIconHelp,
+#ToggleIconHelp
+{
+    width:24px;
+    height:24px;
+    margin-bottom:2px;
+    border:none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.SmallIcon
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#InfoIcon
+{
+    width:32px;
+    height:32px;
+    margin-left:15px;
+    margin-top:2px;
+    position:absolute;
+    clip:rect(0px,28px,25px,0px);
+    border:none;
+}
+
+a:active,
+:focus
+{
+    outline:none;
+}
+
+#tabs
+{
+    min-height:600px;
+}
+
+.ElementDescription,
+.AboutDescription,
+.AboutDescriptionTitle,
+.ElementEditor,
+.ElementLink,
+.ElementInfo,
+.ElementInfoTitle,
+.AboutInfoLeft
+{
+    display:inline-block;
+    margin-top:6px;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+.ElementDescription,
+.AboutDescription,
+.AboutDescriptionTitle,
+.AboutInfoLeft
+{
+    width:45%;
+    padding-right:5px;
+}
+
+.AboutDescription,
+.AboutDescriptionTitle,
+.AboutInfoLeft
+{
+    margin-left:20px
+}
+
+h3 a,
+.ElementLink
+{
+    color:#2D8FBF;
+    text-decoration:none;
+}
+
+.AboutDescriptionTitle,
+.ElementInfoTitle
+{
+    padding-top:15px;
+    font-style:italic;
+    color:#939393;
+}
+
+.Invalid
+{
+    border: solid red 2px;
+}
+
+input.positiveInteger,
+input.integer,
+input.string
+{
+    width:217px;
+}
+
+input.positiveInteger_iPad,
+input.integer_iPad,
+input.string_iPad
+{
+    width:210px;
+}
+
+select.selectBox
+{
+    min-width:220px;
+    max-width:255px;
+}
+
+input.uri
+{
+    width:520px;
+}
+
+input.uri_iPad
+{
+    width:513px;
+}
+
+#tabs 
+{
+    padding-top:5px;
+}
+
+div.body
+{    
+    display:block;
+    float:right;  
+    width:72%;
+}
+
+ul {  
+	margin:0 !important; 
+	padding:0;
+    display:inline-block;
+    vertical-align:bottom;
+}
+
+ul li {  
+	float:left;	 
+	padding:0; 
+	margin:0;  
+	list-style-type:none;
+    height:100%;
+}
+
+ul.header
+{
+    float:left;
+    display:block;
+    width:22%;
+}
+
+ul.header li
+{
+    clear:left;
+    width:100%;
+}
+
+ul.header a
+{
+    width:100%;
+	-moz-border-radius:4px 4px 4px 4px;	
+	-webkit-border-radius:4px 4px 4px 4px;	
+    margin-left:1px;
+    margin-bottom:2px;
+}
+
+ul.mainTabs a
+{
+    border-bottom:0px;
+}
+
+ul.mainTabs li
+{
+    margin-top:10px;
+}
+
+ul a { 
+	float:left;
+	font-size:large;
+	display:inline-block;
+	text-decoration:none;
+    padding-top:9px;
+    padding-bottom:9px;
+    padding-left:10px;
+    padding-right:10px;
+	border:2px solid #666;	
+    margin-right:2px;
+	outline:0;
+	-moz-border-radius:4px 4px 0 0;	
+	-webkit-border-radius:4px 4px 0 0;	
+    height:100%;
+    color:#FFF;
+    font-weight:bold;
+}
+
+ul a:hover {
+    background-color:#939393;
+	font-weight:bold;
+}
+	
+/* selected tab */
+ul a.current
+{
+	background-color:#2D8FBF;
+    cursor:default;
+}
+
+h3
+{
+    font-size:medium;
+    line-height:0px;
+}
+
+.HelpTextTitle
+{
+    font-weight:bold;
+    color:#2D8FBF;
+}
+
+.HelpTextOption
+{
+    color:#ffffff;
+}
+
+.HelpTextDescription
+{
+    color:#939393;
+}
+
+.HelpTextInvalid
+{
+    color: red;
+}
+
+.Expandable
+{
+    /* expandable elements collapsed by default */
+    display: none;
+}

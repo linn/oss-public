@@ -1,0 +1,174 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+prog = []
+if _default_env['hardware'] == 'Droid':
+
+    files = Split("""
+        Linn/Kinsky/Droid/Activities.cs
+        Linn/Kinsky/Droid/Stack.cs
+        Linn/Kinsky/Droid/Views.cs
+        Linn/Kinsky/Droid/Properties/AssemblyInfo.cs
+        Linn/Kinsky/Droid/Resources/Layout/Main.axml
+        Linn/Kinsky/Droid/Resources/Layout/BrowserItem.axml
+        Linn/Kinsky/Droid/Resources/Layout/RoomList.axml
+        Linn/Kinsky/Droid/Resources/Layout/RoomListItem.axml
+        Linn/Kinsky/Droid/Resources/Layout/SourceList.axml
+        Linn/Kinsky/Droid/Resources/Layout/SourceListItem.axml
+        Linn/Kinsky/Droid/Resources/Layout/VolumeAndTransportControls.axml
+        Linn/Kinsky/Droid/Resources/Layout/BottomBar.axml
+        Linn/Kinsky/Droid/Resources/Layout/TrackControls.axml
+        Linn/Kinsky/Droid/Resources/Layout/BrowserControls.axml
+        Linn/Kinsky/Droid/Resources/Layout/RoomAndSourceControls.axml
+        Linn/Kinsky/Droid/Resources/Values/Strings.xml
+        Linn/Kinsky/Droid/Resources/Values/Styles.xml
+        Linn/Kinsky/Droid/Resources/Values-Land/Styles.xml
+        Linn/Kinsky/Droid/Resources/Drawable/BackButton.xml
+        Linn/Kinsky/Droid/Resources/Drawable/EditModeButton.xml
+        Linn/Kinsky/Droid/Resources/Drawable/ButtonBackground.xml
+        Linn/Kinsky/Droid/Resources/Drawable/RepeatButton.xml
+        Linn/Kinsky/Droid/Resources/Drawable/RepeatButtonForeground.xml
+        Linn/Kinsky/Droid/Resources/Drawable/ShuffleButton.xml
+        Linn/Kinsky/Droid/Resources/Drawable/ShuffleButtonForeground.xml
+        Linn/Kinsky/Droid/Resources/Drawable/StandbyButton.xml
+        Linn/Kinsky/Droid/Resources/Drawable/StandbyButtonForeground.xml
+        Linn/Kinsky/Droid/Resources/Drawable-hdpi/Icon.png
+        Linn/Kinsky/Droid/Resources/Drawable-mdpi/Icon.png
+        Linn/Kinsky/Droid/Resources/Drawable-ldpi/Icon.png
+    """)    
+    androidResources = [f.replace("Linn/Kinsky/Droid/","") for f in files if f.startswith("Linn/Kinsky/Droid/Resources/")]    
+    links = [f.replace("Linn/Kinsky/Droid/","") for f in files]
+    
+    images = [
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ClockIcon.png"), "Resources\Drawable\ClockIcon.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ClockIconElapsed.png"), "Resources\Drawable\ClockIconElapsed.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ClockIconRemaining.png"), "Resources\Drawable\ClockIconRemaining.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/MuteIcon.png"), "Resources\Drawable\MuteIcon.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Mute.png"), "Resources\Drawable\Mute.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/MuteActive.png"), "Resources\Drawable\MuteActive.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/LeftFiller.png"), "Resources\Drawable\LeftFiller.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/TopRightEdge.png"), "Resources\Drawable\TopRightEdge.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/TopLeftEdge.png"), "Resources\Drawable\TopLeftEdge.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/TopFiller.png"), "Resources\Drawable\TopFiller.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/BottomLeftEdge.png"), "Resources\Drawable\BottomLeftEdge.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/BottomRightEdge.png"), "Resources\Drawable\BottomRightEdge.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/BottomFiller.png"), "Resources\Drawable\BottomFiller.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/FfwdButton.png"), "Resources\Drawable\FfwdButton.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/FrwdButton.png"), "Resources\Drawable\FrwdButton.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/RightFiller.png"), "Resources\Drawable\RightFiller.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/SkipBack.png"), "Resources\Drawable\SkipBack.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/SkipBackDown.png"), "Resources\Drawable\SkipBackDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/SkipForward.png"), "Resources\Drawable\SkipForward.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/SkipForwardDown.png"), "Resources\Drawable\SkipForwardDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Pause.png"), "Resources\Drawable\Pause.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Play.png"), "Resources\Drawable\Play.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Stop.png"), "Resources\Drawable\Stop.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Array.png"), "Resources\Drawable\Array.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/PauseOver.png"), "Resources\Drawable\PauseOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/PlayOver.png"), "Resources\Drawable\PlayOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/StopOver.png"), "Resources\Drawable\StopOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Wheel.png"), "Resources\Drawable\Wheel.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/WheelLarge.png"), "Resources\Drawable\WheelLarge.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/WheelLargeOver.png"), "Resources\Drawable\WheelLargeOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Screws.png"), "Resources\Drawable\Screws.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ScrewsLarge.png"), "Resources\Drawable\ScrewsLarge.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/WheelOver.png"), "Resources\Drawable\WheelOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/Rocker.png"), "Resources\Drawable\Rocker.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/RockerLeftDown.png"), "Resources\Drawable\RockerLeftDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/RockerRightDown.png"), "Resources\Drawable\RockerRightDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/WheelMute.png"), "Resources\Drawable\WheelMute.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Shuffle.png"), "Resources\Drawable\Shuffle.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/ShuffleDown.png"), "Resources\Drawable\ShuffleDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/ShuffleOn.png"), "Resources\Drawable\ShuffleOn.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/ShuffleOnDown.png"), "Resources\Drawable\ShuffleOnDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/PauseDown.png"), "Resources\Drawable\PauseDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/PlayDown.png"), "Resources\Drawable\PlayDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/StopDown.png"), "Resources\Drawable\StopDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/SkipBackOver.png"), "Resources\Drawable\SkipBackOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/SkipForwardOver.png"), "Resources\Drawable\SkipForwardOver.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Repeat.png"), "Resources\Drawable\Repeat.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/RepeatDown.png"), "Resources\Drawable\RepeatDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/RepeatOn.png"), "Resources\Drawable\RepeatOn.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/RepeatOnDown.png"), "Resources\Drawable\RepeatOnDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/RoomSource.png"), "Resources\Drawable\RoomSource.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/LinnLogo.png"), "Resources\Drawable\LinnLogo.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/TramLines.png"), "Resources\Drawable\TramLines.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Home.png"), "Resources\Drawable\Home.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/HomeDown.png"), "Resources\Drawable\HomeDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/HourGlass.png"), "Resources\Drawable\HourGlass.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/HourGlass2.png"), "Resources\Drawable\HourGlass2.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/List.png"), "Resources\Drawable\List.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/SettingsWhite.png"), "Resources\Drawable\Settings.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Delete.png"), "Resources\Drawable\Delete.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/DeleteDown.png"), "Resources\Drawable\DeleteDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Save.png"), "Resources\Drawable\Save.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/SaveDown.png"), "Resources\Drawable\SaveDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Standby.png"), "Resources\Drawable\Standby.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/StandbyDown.png"), "Resources\Drawable\StandbyDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/StandbyOn.png"), "Resources\Drawable\StandbyOn.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Multi.png"), "Resources\Drawable\Multi.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/MultiDown.png"), "Resources\Drawable\MultiDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/MultiOnDown.png"), "Resources\Drawable\MultiOnDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/StandbyOnDown.png"), "Resources\Drawable\StandbyOnDown.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/HomeOn.png"), "Resources\Drawable\HomeOn.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/MultiOn.png"), "Resources\Drawable\MultiOn.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Album.png"), "Resources\Drawable\Album.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/AlbumArtError.png"), "Resources\Drawable\AlbumArtError.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Artist.png"), "Resources\Drawable\Artist.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Directory.png"), "Resources\Drawable\Directory.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/DisclosureIndicator.png"), "Resources\Drawable\DisclosureIndicator.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Error.png"), "Resources\Drawable\Error.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Folder.png"), "Resources\Drawable\Folder.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Library.png"), "Resources\Drawable\Library.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Loading.png"), "Resources\Drawable\Loading.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Playing.png"), "Resources\Drawable\Playing.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Playlist.png"), "Resources\Drawable\Playlist.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/PlaylistItem.png"), "Resources\Drawable\PlaylistItem.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/PlaylistSource.png"), "Resources\Drawable\PlaylistSource.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/CD.png"), "Resources\Drawable\CD.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Radio.png"), "Resources\Drawable\Radio.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Room.png"), "Resources\Drawable\Room.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Source.png"), "Resources\Drawable\Source.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Sender.png"), "Resources\Drawable\Sender.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/SenderNoSend.png"), "Resources\Drawable\SenderNoSend.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Track.png"), "Resources\Drawable\Track.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/UPNP.png"), "Resources\Drawable\UPNP.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/Video.png"), "Resources\Drawable\Video.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/IconBookmark.png"), "Resources\Drawable\Bookmark.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/TopBarFiller.png"), "Resources\Drawable\TopBarFiller.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Icons/RefreshButton.png"), "Resources\Drawable\RefreshButton.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/BackButtonFocused.9.png"), "Resources\Drawable\BackButtonFocused.9.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/BackButtonNormal.9.png"), "Resources\Drawable\BackButtonNormal.9.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/BackButtonPressed.9.png"), "Resources\Drawable\BackButtonPressed.9.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ButtonFocused.9.png"), "Resources\Drawable\ButtonFocused.9.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ButtonNormal.9.png"), "Resources\Drawable\ButtonNormal.9.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/ButtonPressed.9.png"), "Resources\Drawable\ButtonPressed.9.png"),
+        (_default_env.subst("$variant_dir/share/Linn/Resources/Kinsky2/Images/TopBarFiller.png"), "Resources\Drawable\TopBarFiller.png"),
+    ]
+    files += [x[0] for x in images]
+    androidResources += [x[1] for x in images]
+    links += [x[1] for x in images]
+    
+    
+    libs = ['System', 'System.Xml', 'System.Core', 'OssControl', 'OssCore', 'OssDidlLite', 'OssServices', 'OssSysLib', 'OssTopology', 'OssToolkitDroid', 'Mono.Android', 'OssKinsky']
+    # hack - need to copy AndroidManifest.xml across from source to build tree as monodroid does not allow its location outwith a subdirectory of the .csproj file's location at present
+    manifest = _default_env.InstallAs('$build_dir/Kinsky/Droid/Properties/Manifest.xml', 'Linn/Kinsky/Droid/Properties/AndroidManifest.xml')
+    msproj = _default_env.MSBuildFileGenerator('Kinsky', 
+        files, 
+        CLILIBS=libs, 
+        LINKS=links, 
+        ROOTNAMESPACE='KinskyDroid', 
+        ANDROIDRESGENFILE='Resources.Designer.cs', 
+        ANDROIDMANIFEST='Kinsky/Droid/Properties/Manifest.xml',
+        ANDROIDRESOURCES=androidResources,
+        DEFAULTTARGETS='SignAndroidPackage',
+        OUTPUTPATH='.')
+    Depends(msproj, manifest)
+    libDroid = _default_env.MSBuildApkBuilder('Linn.Kinsky.apk', msproj, CLILIBS=libs)
+    prog += libDroid
+
+Alias('Lib', prog)
+Alias('Test', 'Lib')
+
+Default('Test')

@@ -1,0 +1,34 @@
+Import('_default_env', '_tool_env')
+
+# Upnp DidlLite description
+
+kode  = _default_env.Install('$hardware_dir/share/Kodegen', 'UpnpAv/DidlLiteCs.kode')
+didl  = _default_env.Kodegen('$sconsign_dir/share/DidlLite/DidlLite.cs', 'UpnpAv/DidlLiteDescription.xml', KODE="DidlLiteCs.kode")
+Depends(didl, kode)
+
+# Build library
+
+didl += ['Properties/AssemblyInfo.cs', 'Upnp/DidlLiteAdapter.cs']
+clilibs = ['OssSysLib', 'OssCore', 'mscorlib', 'System', 'System.Xml', 'System.Web.Services']
+if _default_env['hardware'] != 'Droid':
+    lib =  _default_env.CliLibrary('OssDidlLite', didl, CLILIBS=clilibs)
+else:    
+    msproj = _default_env.MSBuildFileGenerator('OssDidlLite', didl, LINKS=didl, CLILIBS=clilibs, ROOTNAMESPACE='Linn.DidlLite')
+    lib = _default_env.MSBuildLibBuilder('OssDidlLite', msproj, CLILIBS=clilibs)
+    
+test = []
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Droid':
+    test += _default_env.CliProgram('Test/TestDidlLite', 'UpnpAv/Test/TestDidlLite.cs', CLILIBS=['mscorlib', 'System.Xml', 'OssCore', 'OssTestFramework', 'OssDidlLite'])
+
+Alias('Lib', kode)
+Alias('Lib', didl)
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/DidlLite.tar', didl, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/DidlLite', DOXYGENNAMESPACE='OssDidlLite', DOXYGENINPUT='Upnp ' + _default_env.subst('$sconsign_dir/share/DidlLite'))
+
+Alias('Docs', docs)
+
+Alias('Test', test)
+Alias('Test', 'Lib')
+
+Default(['Test','Docs'])

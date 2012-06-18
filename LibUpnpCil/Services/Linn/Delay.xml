@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+
+    <specVersion>
+        <major>1</major>
+        <minor>0</minor>
+    </specVersion>
+
+    <actionList>
+
+
+        <action>
+            <name>SetDelay</name>
+            <argumentList>
+                <argument>
+                    <name>aDelay</name>
+                    <direction>in</direction>
+                    <relatedStateVariable>Delay</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+
+        <action>
+            <name>Delay</name>
+            <argumentList>
+                <argument>
+                    <name>aDelay</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>Delay</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+
+        <action>
+            <name>DelayMinimum</name>
+            <argumentList>
+                <argument>
+                    <name>aDelay</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>DelayMinimum</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+        <action>
+            <name>DelayMaximum</name>
+            <argumentList>
+                <argument>
+                    <name>aDelay</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>DelayMaximum</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+
+        <action>
+            <name>PresetCount</name>
+            <argumentList>
+                <argument>
+                    <name>aCount</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>PresetCount</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+        <action>
+            <name>PresetIndex</name>
+            <argumentList>
+                <argument>
+                    <name>aIndex</name>
+                    <direction>out</direction>
+                    <relatedStateVariable>PresetIndex</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+        <action>
+            <name>SetPresetIndex</name>
+            <argumentList>
+                <argument>
+                    <name>aIndex</name>
+                    <direction>in</direction>
+                    <relatedStateVariable>PresetIndex</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+
+    </actionList>
+
+    <serviceStateTable>
+
+
+        <stateVariable sendEvents="yes">
+            <name>Delay</name>
+            <dataType>ui4</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="yes">
+            <name>DelayMinimum</name>
+            <dataType>ui4</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="yes">
+            <name>DelayMaximum</name>
+            <dataType>ui4</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="yes">
+            <name>PresetCount</name>
+            <dataType>ui4</dataType>
+        </stateVariable>
+
+        <stateVariable sendEvents="yes">
+            <name>PresetIndex</name>
+            <dataType>ui4</dataType>
+        </stateVariable>
+
+
+    </serviceStateTable>
+
+</scpd>
+
+

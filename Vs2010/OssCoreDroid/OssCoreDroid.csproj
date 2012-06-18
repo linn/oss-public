@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Linn</RootNamespace>
+    <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
+    <AndroidApplication>True</AndroidApplication>
+    <AssemblyName>OssCore</AssemblyName>
+    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <BaseDirectory>..\..\LibUpnpCil\Core</BaseDirectory>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\AssemblyInfoModel.cs">
+      <Link>AssemblyInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\BitConverter.cs">
+      <Link>BitConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Debug.cs">
+      <Link>Debug.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\DebugReport.cs">
+      <Link>DebugReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\ApplicationDroid.cs">
+      <Link>Framework\ApplicationDroid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\AssemblyInfoDroid.cs">
+      <Link>Framework\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\IImageCache.cs">
+      <Link>IImageCache.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\IInvoker.cs">
+      <Link>IInvoker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkInfoDroid.cs">
+      <Link>Framework\NetworkInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\ServiceInfo.cs">
+      <Link>Framework\ServiceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemEvents.cs">
+      <Link>Framework\SystemEvents.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfoDroid.cs">
+      <Link>Framework\SystemInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\Timer.cs">
+      <Link>Framework\Timer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Helper.cs">
+      <Link>Helper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\NetworkInfoModel.cs">
+      <Link>NetworkInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\Network.cs">
+      <Link>Network\Network.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\WebRequest.cs">
+      <Link>Network\WebRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Option.cs">
+      <Link>Option.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionManager.cs">
+      <Link>OptionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPage.cs">
+      <Link>OptionPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPageCrashDumper.cs">
+      <Link>OptionPageCrashDumper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPageUpdates.cs">
+      <Link>OptionPageUpdates.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionParser.cs">
+      <Link>OptionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\ProductSupport.cs">
+      <Link>ProductSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Scheduler.cs">
+      <Link>Scheduler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Stack.cs">
+      <Link>Stack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Standard.cs">
+      <Link>Standard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Stream.cs">
+      <Link>Stream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\SystemInfoModel.cs">
+      <Link>SystemInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Ticker.cs">
+      <Link>Ticker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLog.cs">
+      <Link>UserLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLogFile.cs">
+      <Link>UserLogFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+</Project>

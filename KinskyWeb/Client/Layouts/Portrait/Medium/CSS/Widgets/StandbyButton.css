@@ -1,0 +1,17 @@
+#StandbyButton
+{
+	background-image:url('../../Images/Widgets/Standby.png');
+	background-repeat:no-repeat;
+	display:inline-block;
+	width:38px;
+	height:36px;
+	margin:0px;
+}
+#StandbyButton.Active
+{
+	background-image:url('../../Images/Widgets/StandbyActive.png');
+}
+#StandbyButton.Active.Hover
+{
+	background-image:url('../../Images/Widgets/StandbyActiveMouse.png');
+}

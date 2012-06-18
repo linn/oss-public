@@ -1,0 +1,29 @@
+#TrackContainer
+{
+	vertical-align:middle;
+	text-align:center;
+	overflow:hidden;
+	white-space:nowrap;
+}
+#Artwork
+{
+	margin-top:10px;
+	height:25%;
+	max-height:150px;
+}
+
+#TrackContainer p
+{
+	overflow:hidden;
+	margin: 2px;
+}
+#Title
+{
+	font-size:larger;
+	font-weight:bold;
+}
+
+#TrackEncoding p
+{
+	display:none;
+}

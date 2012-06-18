@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Tags" type="Tags"/>
+    <xs:complexType name="Tags">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="Entry" type="Entry" maxOccurs="unbounded"/>
+                <xs:element name="Group" type="Group" maxOccurs="unbounded"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Entry">
+        <xs:sequence>
+            <xs:element name="Tag" type="xs:string" />
+            <xs:element name="Type" type="xs:string" />
+            <xs:element name="Key" type="xs:unsignedInt" />
+            <xs:element name="Desc" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Group">
+        <xs:complexContent>
+            <xs:extension base="Entry">
+                <xs:sequence>
+                    <xs:element name="Count" type="xs:unsignedInt" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="Type">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TInt"/>
+            <xs:enumeration value="TUint"/>
+            <xs:enumeration value="String"/>
+            <xs:enumeration value="Binary"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

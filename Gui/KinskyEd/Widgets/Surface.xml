@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Package type='Widget'>
+  <Version>8</Version>
+  <Namespace>SurfaceWidget</Namespace>
+  <Plugin class='NodePolygon'>
+    <Name>Surface</Name>
+    <Plugin>SurfaceWidget.Surface.TextureArrayFixed</Plugin>
+    <Parent/>
+    <Active>true</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator/>
+    <Children/>
+    <Width>128</Width>
+    <Height>128</Height>
+    <RenderState>
+      <Texture>Default/Default.png</Texture>
+    </RenderState>
+  </Plugin>
+  <Plugin class='TextureArrayFixed'>
+    <Name>Surface.TextureArrayFixed</Name>
+    <Plugin>SurfaceWidget.Surface</Plugin>
+    <Texture>Default/Default.png</Texture>
+  </Plugin>
+</Package>

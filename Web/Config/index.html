@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <script type="text/javascript" src="../Common/Scripts/helpers.js"></script>  
+        <script type="text/javascript">
+            var qs = GetQueryString();
+            var service = "";
+            if (qs.service){
+                service = "#service=" + qs.service;
+            }
+            <!-- Only apply service if explicitly included. -->
+            <!-- This means DS + Proxy devices will be shown in one page (with tabs) if no service is used, -->
+            <!-- and each device can be viewed separately using the service (Ds/Preamp/Cd) -->
+            window.location="Layouts/Default/index.html" + service;
+        </script>
+	</head>
+</html>

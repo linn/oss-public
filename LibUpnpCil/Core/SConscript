@@ -1,0 +1,163 @@
+Import('_default_env')
+
+path = _default_env.Install('$install_dir/lib/Linn', 'Linn/__init__.py')
+path += _default_env.Install('$install_dir/lib/Linn', 'Linn/Path.py')
+
+Alias('Bootstrap', path)
+Alias('Lib', 'Bootstrap')
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Linn/BitConverter.cs
+    Linn/Network/Network.cs
+    Linn/Network/WebRequest.cs
+    Linn/AssemblyInfoModel.cs
+    Linn/Debug.cs
+    Linn/DebugReport.cs
+    Linn/Helper.cs
+    Linn/NetworkInfoModel.cs
+    Linn/Option.cs
+    Linn/OptionManager.cs
+    Linn/OptionPage.cs
+    Linn/OptionPageUpdates.cs
+    Linn/OptionParser.cs
+    Linn/ProductSupport.cs
+    Linn/Scheduler.cs
+    Linn/Stack.cs
+    Linn/Standard.cs
+    Linn/Stream.cs
+    Linn/SystemInfoModel.cs
+    Linn/Ticker.cs
+    Linn/UserLog.cs
+    Linn/UserLogFile.cs
+    Linn/IInvoker.cs
+""")
+
+iosFiles = Split("""
+    Linn/Framework/AssemblyInfo.cs
+    Linn/Framework/NetworkInfo.cs
+    Linn/Framework/ServiceInfo.cs
+    Linn/Framework/SystemEvents.cs
+    Linn/Framework/SystemInfoIos.cs
+    Linn/Framework/Timer.cs
+""")
+
+pocketPcFiles = Split("""
+    Linn/Framework/AssemblyInfoCompact.cs
+    Linn/Framework/NetworkInfoCompact.cs
+    Linn/Framework/SemaphoreCompact.cs
+    Linn/Framework/ServiceInfo.cs
+    Linn/Framework/SystemEventsCompact.cs
+    Linn/Framework/SystemInfoCompact.cs
+    Linn/Framework/TimerCompact.cs
+""")
+
+windowsFiles = Split("""
+    Linn/Framework/AssemblyInfo.cs
+    Linn/Framework/NetworkInfo.cs
+    Linn/Framework/ServiceInfoWindows.cs
+    Linn/Framework/SystemEventsFull.cs
+    Linn/Framework/SystemInfo.cs
+    Linn/Framework/Timer.cs
+    Linn/AutoUpdate.cs
+    Linn/IImageCache.cs
+""")
+
+macOsXFiles = Split("""
+    Linn/Framework/AssemblyInfo.cs
+    Linn/Framework/NetworkInfo.cs
+    Linn/Framework/ServiceInfo.cs
+    Linn/Framework/SystemEventsFull.cs
+    Linn/Framework/SystemInfoCocoa.cs
+    Linn/Framework/Timer.cs
+    Linn/AutoUpdate.cs
+""")
+
+linuxFiles = Split("""
+    Linn/Framework/AssemblyInfo.cs
+    Linn/Framework/NetworkInfo.cs
+    Linn/Framework/ServiceInfo.cs
+    Linn/Framework/SystemEventsFull.cs
+    Linn/Framework/SystemInfo.cs
+    Linn/Framework/Timer.cs
+    Linn/AutoUpdate.cs
+""")
+
+droidFiles = Split("""
+    Linn/Framework/ApplicationDroid.cs
+    Linn/Framework/AssemblyInfoDroid.cs
+    Linn/Framework/NetworkInfoDroid.cs
+    Linn/Framework/ServiceInfo.cs
+    Linn/Framework/SystemEvents.cs
+    Linn/Framework/SystemInfoDroid.cs
+    Linn/Framework/Timer.cs
+    Linn/OptionPageCrashDumper.cs
+    Linn/IImageCache.cs
+""")
+
+
+if _default_env['hardware'] == 'PocketPc':
+    files.append(pocketPcFiles)
+elif _default_env['hardware'] == 'Ios':
+    files.append(iosFiles)
+elif _default_env['hardware'] == 'Windows':
+    files.append(windowsFiles)
+elif _default_env['hardware'] == 'MacOsX':
+    files.append(macOsXFiles)
+elif _default_env['hardware'] == 'Linux':
+    files.append(linuxFiles)
+elif _default_env['hardware'] == 'Droid':
+    files.extend(droidFiles)
+else:
+    print '** Must define OssCore compile time select files for hardware: ' + _default_env['hardware']
+    Exit(2)
+
+
+lib = None
+if _default_env['hardware'] == 'PocketPc':
+    lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml'])
+elif _default_env['hardware'] == 'Ios':
+    lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml'])
+elif _default_env['hardware'] == 'Droid':
+    clilibs = ['System', 'System.Xml', 'System.Core', 'Mono.Android']
+    msproj = _default_env.MSBuildFileGenerator('OssCore', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn')
+    lib = _default_env.MSBuildLibBuilder('OssCore', msproj, CLILIBS=clilibs)
+else:
+    lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'System.ServiceProcess'])
+
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Droid':
+    lib += _default_env.CliLibrary('OssTestFramework', ['Linn/TestFramework/Properties/AssemblyInfo.cs', 'Linn/TestFramework/TestFramework.cs'], CLILIBS=['mscorlib', 'OssCore'])
+
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Core.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Core', DOXYGENNAMESPACE='OssCore', DOXYGENEXCLUDE='*.svn* Linn/Framework/ServiceInfoWindows.cs Linn/Framework/SystemInfoIos.cs Linn/Framework/NetworkInfoCompact.cs Linn/Framework/SemaphoreCompact.cs Linn/Framework/SystemEventsCompact.cs Linn/Framework/SystemEventsFull.cs Linn/Framework/SystemInfoCompact.cs Linn/Framework/TimerCompact.cs Linn/Framework/SystemInfoIos.cs')
+
+Alias('Docs', docs)
+
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Droid':
+    prog  = _default_env.CliProgram('Test/TestCs', 'Linn/Test/TestCs.cs', CLILIBS=['mscorlib', 'System.Xml', 'OssTestFramework', 'OssCore'] )
+    prog += _default_env.CliProgram('Test/TestDebug', 'Linn/Test/TestDebug.cs', CLILIBS=['mscorlib', 'System', 'OssTestFramework', 'OssCore'] )
+    prog += _default_env.CliProgram('Test/TestOptionParser', 'Linn/Test/TestOptionParser.cs', CLILIBS=['mscorlib', 'OssTestFramework', 'OssCore'] )
+    prog += _default_env.CliProgram('Test/TestTimer', 'Linn/Test/TestTimer.cs', CLILIBS=['mscorlib', 'System', 'OssTestFramework', 'OssCore'] )
+    prog += _default_env.CliProgram('Test/TestFramework', 'Linn/TestFramework/Test/TestTestFramework.cs', CLILIBS=['mscorlib', 'OssTestFramework', 'OssCore'])
+    Alias('Test', prog)
+Alias('Test', 'Lib')
+
+files = Split("""
+    Installer/finish.bmp
+    Installer/header.bmp
+    Installer/license.txt
+    Installer/linn.ico
+    Installer/linn.icns
+    Installer/linn.xpm
+    Installer/konfig.xpm
+    Installer/NsiTemplate.txt
+""")
+resources = _default_env.Install('$variant_dir/share/Linn/Core', files)
+Alias('Lib', resources)
+
+if(_default_env['variant'] == "release"):
+    script = _default_env.Install('$hardware_dir/bin', 'Scripts/OssRelease.py')
+    Alias('Lib', script)
+
+Default(['Test','Docs'])

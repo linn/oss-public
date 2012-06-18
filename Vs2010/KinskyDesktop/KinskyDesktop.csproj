@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AE624DD2-AEC5-44D0-A882-5C339495255A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KinskyDesktop</RootNamespace>
+    <AssemblyName>KinskyWinForms</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationIcon>..\..\Kinsky\Resources\Kinsky.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\KinskyDesktop\WinForms\DropConverter.cs">
+      <Link>DropConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormAboutBox.cs">
+      <Link>Forms\FormAboutBox.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormAboutBox.Designer.cs">
+      <Link>Forms\FormAboutBox.Designer.cs</Link>
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormArtwork.cs">
+      <Link>Forms\FormArtwork.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormArtwork.Designer.cs">
+      <Link>Forms\FormArtwork.Designer.cs</Link>
+      <DependentUpon>FormArtwork.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormCheckForUpdates.cs">
+      <Link>Forms\FormCheckForUpdates.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormCheckForUpdates.Designer.cs">
+      <Link>Forms\FormCheckForUpdates.Designer.cs</Link>
+      <DependentUpon>FormCheckForUpdates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormKinskyDesktop.cs">
+      <Link>Forms\FormKinskyDesktop.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormKinskyDesktop.Designer.cs">
+      <Link>Forms\FormKinskyDesktop.Designer.cs</Link>
+      <DependentUpon>FormKinskyDesktop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormMultipusReceivers.cs">
+      <Link>Forms\FormMultipusReceivers.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormMultipusReceivers.Designer.cs">
+      <Link>Forms\FormMultipusReceivers.Designer.cs</Link>
+      <DependentUpon>FormMultipusReceivers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormOptions.cs">
+      <Link>Forms\FormOptions.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormOptions.Designer.cs">
+      <Link>Forms\FormOptions.Designer.cs</Link>
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormPluginBrowser.cs">
+      <Link>Forms\FormPluginBrowser.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormSavePlaylist.cs">
+      <Link>Forms\FormSavePlaylist.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormSavePlaylist.Designer.cs">
+      <Link>Forms\FormSavePlaylist.Designer.cs</Link>
+      <DependentUpon>FormSavePlaylist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormSelector.cs">
+      <Link>Forms\FormSelector.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormSelector.Designer.cs">
+      <Link>Forms\FormSelector.Designer.cs</Link>
+      <DependentUpon>FormSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormStatus.cs">
+      <Link>Forms\FormStatus.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormStatus.Designer.cs">
+      <Link>Forms\FormStatus.Designer.cs</Link>
+      <DependentUpon>FormStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormThemed.cs">
+      <Link>Forms\FormThemed.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormThemed.Designer.cs">
+      <Link>Forms\FormThemed.Designer.cs</Link>
+      <DependentUpon>FormThemed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormUpdate.cs">
+      <Link>Forms\FormUpdate.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Forms\FormUpdate.Designer.cs">
+      <Link>Forms\FormUpdate.Designer.cs</Link>
+      <DependentUpon>FormUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\OptionPageColours.cs">
+      <Link>OptionPageColours.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\OptionPageFonts.cs">
+      <Link>OptionPageFonts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\OptionPageGeneral.cs">
+      <Link>OptionPageGeneral.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Properties\Settings.Designer.cs">
+      <Link>Properties\Settings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\ResourcesManager.cs">
+      <Link>ResourcesManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Support.cs">
+      <Link>Support.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\UiOptions.cs">
+      <Link>UiOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\ViewBrowser.cs">
+      <Link>ViewBrowser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Views.cs">
+      <Link>Views.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControl.cs">
+      <Link>Widgets\ButtonControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControl.Designer.cs">
+      <Link>Widgets\ButtonControl.Designer.cs</Link>
+      <DependentUpon>ButtonControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControlBiState.cs">
+      <Link>Widgets\ButtonControlBiState.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControlBiState.Designer.cs">
+      <Link>Widgets\ButtonControlBiState.Designer.cs</Link>
+      <DependentUpon>ButtonControlBiState.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControlTriState.cs">
+      <Link>Widgets\ButtonControlTriState.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControlTriState.Designer.cs">
+      <Link>Widgets\ButtonControlTriState.Designer.cs</Link>
+      <DependentUpon>ButtonControlTriState.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\DoubleBufferedButton.cs">
+      <Link>Widgets\DoubleBufferedButton.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\DoubleBufferedComboBox.cs">
+      <Link>Widgets\DoubleBufferedComboBox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\DoubleBufferedPanel.cs">
+      <Link>Widgets\DoubleBufferedPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\DoubleBufferedSplitContainer.cs">
+      <Link>Widgets\DoubleBufferedSplitContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\DoubleBufferedTableLayoutPanel.cs">
+      <Link>Widgets\DoubleBufferedTableLayoutPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\Kontrol.cs">
+      <Link>Widgets\Kontrol.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ListViewKinsky.cs">
+      <Link>Widgets\ListViewKinsky.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ListViewLibrary.cs">
+      <Link>Widgets\ListViewLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ListWidget.cs">
+      <Link>Widgets\ListWidget.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ListWidget.Designer.cs">
+      <Link>Widgets\ListWidget.Designer.cs</Link>
+      <DependentUpon>ListWidget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\PanelBusy.cs">
+      <Link>Widgets\PanelBusy.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\PlaylistWidget.cs">
+      <Link>Widgets\PlaylistWidget.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\PlaylistWidget.Designer.cs">
+      <Link>Widgets\PlaylistWidget.Designer.cs</Link>
+      <DependentUpon>PlaylistWidget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\RockerControl.cs">
+      <Link>Widgets\RockerControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\RockerControl.Designer.cs">
+      <Link>Widgets\RockerControl.Designer.cs</Link>
+      <DependentUpon>RockerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\RotaryControl.cs">
+      <Link>Widgets\RotaryControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\RotaryControl.Designer.cs">
+      <Link>Widgets\RotaryControl.Designer.cs</Link>
+      <DependentUpon>RotaryControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ScrollBarControl.cs">
+      <Link>Widgets\ScrollBarControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ScrollBarControl.Designer.cs">
+      <Link>Widgets\ScrollBarControl.Designer.cs</Link>
+      <DependentUpon>ScrollBarControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\TabControl.cs">
+      <Link>Widgets\TabControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\TabControl.Designer.cs">
+      <Link>Widgets\TabControl.Designer.cs</Link>
+      <DependentUpon>TabControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ThreekArrayControl.cs">
+      <Link>Widgets\ThreekArrayControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\Widgets\ThreekArrayControl.Designer.cs">
+      <Link>Widgets\ThreekArrayControl.Designer.cs</Link>
+      <DependentUpon>ThreekArrayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\WinForms\AppRestartHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormMultipusReceivers.resx">
+      <Link>Forms\FormMultipusReceivers.resx</Link>
+      <DependentUpon>FormMultipusReceivers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <SubType>Designer</SubType>
+      <LogicalName>KinskyDesktop.Properties.Resources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLite\OssDidlLite.csproj">
+      <Project>{D07487C1-8D3F-43C8-BE1B-C1BFB5B2C562}</Project>
+      <Name>OssDidlLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServices\OssServices.csproj">
+      <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
+      <Name>OssServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitWinForms\OssToolkitWinForms.csproj">
+      <Project>{31015215-E24D-4990-BBB3-949125162907}</Project>
+      <Name>OssToolkitWinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopology\OssTopology.csproj">
+      <Project>{DDD50783-4131-4138-85E6-72377C232B1C}</Project>
+      <Name>OssTopology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormAboutBox.resx">
+      <Link>Forms\FormAboutBox.resx</Link>
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormArtwork.resx">
+      <Link>Forms\FormArtwork.resx</Link>
+      <DependentUpon>FormArtwork.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormCheckForUpdates.resx">
+      <Link>Forms\FormCheckForUpdates.resx</Link>
+      <DependentUpon>FormCheckForUpdates.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormKinskyDesktop.resx">
+      <Link>Forms\FormKinskyDesktop.resx</Link>
+      <DependentUpon>FormKinskyDesktop.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormOptions.resx">
+      <Link>Forms\FormOptions.resx</Link>
+      <DependentUpon>FormOptions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormSavePlaylist.resx">
+      <Link>Forms\FormSavePlaylist.resx</Link>
+      <DependentUpon>FormSavePlaylist.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormSelector.resx">
+      <Link>Forms\FormSelector.resx</Link>
+      <DependentUpon>FormSelector.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormStatus.resx">
+      <Link>Forms\FormStatus.resx</Link>
+      <DependentUpon>FormStatus.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormThemed.resx">
+      <Link>Forms\FormThemed.resx</Link>
+      <DependentUpon>FormThemed.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Forms\FormUpdate.resx">
+      <Link>Forms\FormUpdate.resx</Link>
+      <DependentUpon>FormUpdate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Properties\Settings.settings">
+      <Link>Properties\Settings.settings</Link>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControl.resx">
+      <Link>Widgets\ButtonControl.resx</Link>
+      <DependentUpon>ButtonControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControlBiState.resx">
+      <Link>Widgets\ButtonControlBiState.resx</Link>
+      <DependentUpon>ButtonControlBiState.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\ButtonControlTriState.resx">
+      <Link>Widgets\ButtonControlTriState.resx</Link>
+      <DependentUpon>ButtonControlTriState.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\ListWidget.resx">
+      <Link>Widgets\ListWidget.resx</Link>
+      <DependentUpon>ListWidget.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\PlaylistWidget.resx">
+      <Link>Widgets\PlaylistWidget.resx</Link>
+      <DependentUpon>PlaylistWidget.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\RockerControl.resx">
+      <Link>Widgets\RockerControl.resx</Link>
+      <DependentUpon>RockerControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\RotaryControl.resx">
+      <Link>Widgets\RotaryControl.resx</Link>
+      <DependentUpon>RotaryControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\ScrollBarControl.resx">
+      <Link>Widgets\ScrollBarControl.resx</Link>
+      <DependentUpon>ScrollBarControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\TabControl.resx">
+      <Link>Widgets\TabControl.resx</Link>
+      <DependentUpon>TabControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\KinskyDesktop\WinForms\Widgets\ThreekArrayControl.resx">
+      <Link>Widgets\ThreekArrayControl.resx</Link>
+      <DependentUpon>ThreekArrayControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

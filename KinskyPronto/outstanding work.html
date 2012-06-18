@@ -1,0 +1,387 @@
+<html>
+<head>
+<title>
+KinskyPronto Outstanding Work
+</title>
+<style type="text/css">
+<!--
+body {
+
+  margin: 0;
+  font-family: "Helvetica, Tahoma";	
+	
+    overflow-x: hidden;
+    -webkit-user-select: none;
+    -webkit-text-size-adjust: none;
+    
+}
+
+.unimplemented {
+	COLOR: #999
+}
+
+.bug {
+	COLOR: red
+}
+
+.heading {
+  line-height: 0.75em;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  text-align: center;
+  font-weight: bold;
+  background-color:  #416779; /* #408080; */
+  font-size:400%;
+  color:white;
+}
+
+.content {
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+}
+
+-->
+</style>
+</head>
+<body>
+<h1>KinskyPronto Outstanding Work</h1>
+<p>
+This document details the outstanding work needed to be completed
+prior to the current work package (Cara 6 / Radio) can be considered complete.
+</p>
+<p>
+We also document a number of <span class=unimplemented>unimplemented features</span> which can considered for future work and a number of <span class=bug>bugs</span>, which need to be fixed prior to acceptance.
+</p>
+
+<h2>Bugs</h2>
+<h3>To Be Fixed this Release</h3>
+
+<ul>
+<li>External preamp, if DS/Preamp is in standby, the initial external
+source switch does not occur </li>
+<li>TV example - Basik.js. Not working - no source switch, no vol ctrl,
+no out-of-standby</li>
+<li>Fixed:<br/>
+Red text appearing (then normally disappearing) on actions/page
+switches on 9400 only</li>
+<li>DS-I preamp-only. No source switch occurring (ok with external
+preamp).</li>
+</ul>
+
+<h3>For Future Analysis</h3>
+<p>
+</p>
+
+<h2>Documentation</h2>
+<ol>
+<li>User Guide</li>
+<li>Developer Guide</li>
+<li>Integrator Guide<br/>
+    Possibly merged into the Developer's Guide</li>
+</ol>
+
+
+<h2>9400 / 9600 Independence</h2>
+<h2>Debug</h2>
+<p>
+Get fully switchable debug sorted.
+As we're short on time, make it simple, so just blast diag.log to equal doNothing if
+settings indicate that we should.
+</p>
+<ul>
+<li>Get fully switchable debug sorted</li>
+</ul>
+
+<ol>
+<li>Move to exclusivly use <code>ms.parse</code></li>
+<li></li>
+<li></li>
+</ol>
+
+<pre>
+<code>
+var w;
+w = GUI.addButton();
+w.setColor(0x000000, 0); /* Black */
+w.setBgColor(0x701919, 0); /* Midnight Blue */
+w.setColor(0x000000, 1); /* Black */
+w.setBgColor(0x00a5ff, 1); /* Orange */
+w.left = 10;
+w.top = 100;
+w.width = 80;
+w.height = 30;
+w.fontSize = 20;
+w.label = "Go!";
+w.visible = true;
+
+....
+
+w.remove();
+
+...
+
+To be added to activity.js
+
+Set a timer &amp; remove after 5 seconds.
+</code>
+</pre>
+<!--
+
+
+
+Bugs which should be fixed (but NOT reqd for task completion signoff)
+
+1) Library view gives extra blank page if number of entries in list is
+multiple of page length
+2) HTML escape seqs shown in playlist (as double-escaped )and now
+playing (single-escaped) pages 
+[3) (Seen once - mute/vol seem to lose events - if seen again try to
+investigate)]
+
+
+Please quote for next work (copy Sandy on this) - both in terms of
+cost(days), and actual time expected to take (allowing for part-time,
+holidays etc.). Here is the task list from earlier memo. Note that the
+invalid HTML decode fix should also fix bug #2 above (which I left as
+they are related). Let us know exactly how you want to handle the
+speedup investigation.
+
+Rik:
+ - Investigate and improve responsiveness
+     - Basic profiling to find problem areas
+     - Implementation of techniques to improve responsiveness in
+recognised problem areas
+     - Current known problem areas are
+         - TCP comms -> minimise TCP traffic
+         - Reading of radio station lists (XML parsing)
+         - Insert of tracks into DS playlist
+
+ - Fix invalid HTML decode method(s)
+     - may be combined with responsiveness work as this area is
+problematic
+
+ - Add lipsync delay capability to
+     - preamp-only configuration
+     - as plugin to 3rd part apps
+
+As some of Rik's work is difficult to timescale due to investigative
+nature, this should be handled on a more open-ended quotation.
+Suggestion for this is Rik quote for (say) 5 days work , let us know how
+long that will actually take (as working part time), and give regular
+status on progress
+
+Cheers
+
+Graham
+
+-->
+
+
+<h2>Other Stuff</h2>
+
+
+<p>
+Graham mentioned some other stuff.
+</p>
+<ul>
+<li>Different font.</li>
+<li>Use of scroll wheel, line at a time?</li>
+<li>Different devices.</li>
+</ul>
+
+</body>
+</html>
+
+
+
+<pre>
+
+<h2>Pronto 9400 Specific</h2>
+
+- errors when switching between Now Listening and Presets pages (both
+directions)
+- No radio album-art
+- Repeat softkey on Now Listening page
+
+<h2>General</h2>
+
+Just been going thru your latest code drop (as of Monday AM). As we are approaching completion date, here is a list of what needs to be done for acceptance. Ordered as I found the issues - I was testing using a Majik DS-I, once closer to finished I will check against Klimax/SC system and Majik DS (not I)
+
+1) After power-up and splash screen, getting dropped into Radio Presets page - should drop to home page
+       -- STILL HAPPENING --
+
+2) Home page selection
+    - DS icon -> Now Playing page -> OK
+                -- DONE --
+    - TV icon -> Should go to TV control with DS volume (+ source select macro).
+      -> remove attached activity or have demo using 3rd party control
+                -- NEEDS TO USE IP ADDRESS FOR DS, NOT ONE FROM BASIK --
+
+    - Debug Icon -> remove
+                -- DONE --
+
+    - LP12 icon -> Source page -> OK (but does need source-select command in startup Actions)
+                -- STILL NEEDS DOING --
+
+    - Radio icon -> Now Listening page -> OK
+                -- DONE --
+
+    - Chair icon -> remove
+                -- DONE --
+
+So lets reduce this to 4 home page icons which will demonstrate all our supported scenarios (Playlist, Radio, Source-Only,
+Embedded-source-select-plus-volume) with minimal clutter. Also makes home page layout on 9400 and 9600 the same which is good for demos.
+        -- BASICALLY DONE - NEEDS WORK ON INTERFACE TO 3rd PARTY APPS / SOURCE SELECTS --
+
+3) DS icon (playlist operation pages)
+  a) Needs to select Playlist source on startup
+        -- DONE (SLOWLY) --
+
+  b) Library pages need the [Play-Now, Play-Next, Play-Later] operations re-instated
+        -- DONE --
+
+  c) 'Loading' bar on library pages needs to show incrementing operation
+(spinner/dots/etc.)
+        -- STILL TODO --
+
+4) TV icon (3rd part control with DS source select and volume)
+  a) should do nothing or add your own demo (sky control or whatever) - I will create demo for use at LinnHQ with available 3rd party equipment
+        -- NEEDS CONFIG OF SOURCE SELECT ETC. --
+
+5) LP12 icon (source-only operation)
+  a) Needs to switch source on selection
+        -- NEEDS CONFIG OF SOURCE SELECT ETC. --
+
+  b) Display is not ideal - get Ali in to sort this (simple volume / source name only display) - could your code provide the name of the source for this (eg. Spdif1 etc)
+        -- UNDERLYING DATA AVAILABLE ?? --
+
+6) Radio icon (radio operation)
+  a) Needs to select Radio source on startup
+        -- DONE (SLOWLY) --
+
+  b) Now listening page should display metadata, artwork, elapsed time and volume
+        -- DONE --
+
+  c) Remove repeat/shuffle softkeys
+        -- DONE --
+
+  d) Play/Stop softkey becomes Play/Stop (not Play/Pause)
+        -- DONE --
+
+  e) Next/Prev softkeys should navigate through stations in list
+        -- TODO --
+
+  f) Presets page 'loading' bar should be same as for Playlist
+        -- TODO ? --
+
+  g) Presets page 'loading' bar is not disappearing once list populated
+        -- DONE --
+
+  h) Radio channel currently not being selected on keypress
+        -- DONE --
+
+7) Documentation
+        -- ALL TODO --
+  a) User guide - basically what buttons do what once inside the app
+  b) Installer guide - how to add and configure the 4 categories of app on a Pronto (using supplied xgf file(s))
+
+8) Bugs
+  Fix bugs which are found
+
+Currently still concerned about responsiveness, but lets get it all working first, then remove all debugging and see how it goes. Suspect that splitting the apps (rather than using certain parts of one big app) may speed things up (initial load would be faster, and fewer event subscriptions would be active)
+
+Ali required for:
+   - Source-Only page
+   - Softkey icons for play now/next/later
+   - Home page icons possibly
+   - Any other graphics you aware of ???
+
+
+</pre>
+
+
+<pre>
+
+
+---
+
+
+-
+
+
+What you MUST understand is that in the Pronto Operating system, a real socket is mapped into the javascript space. When you set a javascript socket reference to null, that only frees the javascript object and makes it available for garbage collection. It does NOT automatically close the socket. The same thing occurs whenever you assign a new TCPSocket() to a variable. The old javascript representation of the real socket object is now eligible for garbage collection but the back-end socket is still open. 
+
+Therefore, to make all this work, you MUST figure out from the data stream when you can be done with a socket and then issue a close() call. To make things a bit easier, you can also reference the 'connected' member field to see if a close is really needed.
+
+For example:
+
+if (socket && socket.connected)
+{
+try
+{ socket.close();
+}
+catch (e)
+{
+Diagnostics.log('close error! e: ' + e);
+}
+finally
+{
+socket = null;
+}
+} 
+
+
+---
+
+
+6. How to automatically reconnect after onTimeout/onError/onClose?
+
+Using the onTimeout, onError and onClose callback functions it is always possible to re-send the command if the first time failed. 
+These callback functions will typically try to reestablish the conection whereafter the onConnect callback will resend the command.
+e.g.:
+function reInitSocket()
+{
+   socket = new TCPSocket();
+   socket.onConnect = onConnect;
+   socket.onData = onData;
+   socket.onClose = onClose;
+   socket.onIOError = onIOError;
+   socket.connect(IPAddress, Port, Timeout);
+}
+
+function onTimeout()
+{
+   reInitSocket();
+}
+
+
+
+
+---
+
+1. Can I reconnect to an existing socket?
+
+The answer is no.
+Reusing a TCPSocket is not implemented. Always create a new socket after a close:
+function reInitSocket()
+{
+   socket = new TCPSocket();
+   socket.onConnect = onConnect;
+   socket.onData = onData;
+   socket.onClose = onClose;
+   socket.onIOError = onIOError;
+   socket.connect(IPAddress, Port);
+}
+.....
+if (socket.connected === true)
+{
+   socket.write(...
+}
+else
+{
+   reInitSocket();
+}
+
+
+
+</pre>

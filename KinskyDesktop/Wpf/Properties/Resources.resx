@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AboutBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/About.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KinskyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/KinskyIcon.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Delete.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeleteRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/DeleteRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeleteDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/DeleteDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Home" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Home.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HomeRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HomeDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HomeOn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeOnRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HomeOnRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HomeOnDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HomeOnDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Receivers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Multi.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReceiversRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MultiRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReceiversDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MultiDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReceiversOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MultiOn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReceiversOnRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MultiOnRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ReceiversOnDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MultiOnDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BusyIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HourGlass.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BusyIconElement" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/HourGlass2.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconAuxSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Source.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconRadioSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Radio.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSpdifSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Source.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconTosLinkSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Source.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconAlbum" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Album.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconAlbumError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Loading.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconArtist" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Artist.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDirectory" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Folder.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconDiscSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/CD.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconPlaylistSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/PlaylistSource.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconUpnpAvSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/UPNP.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Error.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconPlaylistContainer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Playlist.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconPlaylistItem" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/PlaylistItem.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconRoom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Room.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconLibrary" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Library.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconTrack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Track.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconVideo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Video.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NoAlbumArt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Loading.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconLoading" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Loading.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconPlaying" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Playing.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Minimize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Minimize.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MinimizeMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MinimizeMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MinimizeTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MinimizeTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MiniModeClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MiniModeClose.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MiniModeCloseMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MiniModeCloseMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MiniModeCloseTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/MiniModeCloseTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXClose.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXCloseMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXCloseMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXCloseTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXCloseTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMaximize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMaximize.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMaximizeMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMaximizeMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMaximizeTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMaximizeTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMini" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMini.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMinimize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMinimize.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMinimizeMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMinimizeMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMinimizeTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMinimizeTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMiniMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMiniMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OsXMiniTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/OsXMiniTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Pause.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PauseRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PauseOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PauseDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PauseDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Play" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Play.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Repeat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Repeat.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RepeatActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RepeatOn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RepeatActiveRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RepeatOnRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RepeatActiveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RepeatOnDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RepeatRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RepeatRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RepeatDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RepeatDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Save.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SaveRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SaveDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Shuffle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Shuffle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShuffleActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ShuffleOn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShuffleActiveRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ShuffleOnRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShuffleActiveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ShuffleOnDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShuffleRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ShuffleRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShuffleDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ShuffleDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Size" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Size.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SizeActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SizeDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SizeDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SizeDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkipBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/SkipBack.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkipBackOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/SkipBackOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkipBackDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/SkipBackDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkipForward" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/SkipForward.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkipForwardOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/SkipForwardOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SkipForwardDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/SkipForwardDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Standby" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Standby.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StandbyActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/StandbyOn.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StandbyActiveRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/StandbyOnRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StandbyActiveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/StandbyOnDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StandbyRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/StandbyRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StandbyDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/StandbyDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Stop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StopRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/StopOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StopDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/StopDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SysTrayPrevious" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SysTrayPrevious.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SysTrayPlay" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SysTrayPlay.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SysTrayPause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SysTrayPause.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SysTrayStop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SysTrayStop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SysTrayNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SysTrayNext.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Array" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Array.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tramlines" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Tramlines.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Back" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Back.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BackRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/BackRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BackDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/BackDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="View" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/View.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ViewRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ViewRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ViewDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ViewDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="List" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/List.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ListRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ListRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ListDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ListDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Thumbs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Thumbs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ThumbsRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ThumbsRollover.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ThumbsDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ThumbsDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wheel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Wheel.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WheelOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/WheelOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Screws" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Screws.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WheelControl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Control.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WheelControlOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/ControlOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WheelGlass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/WheelGlass.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WheelMute" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/WheelMute.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rocker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Rocker.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RockerLeftOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RockerLeftOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RockerRightOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RockerRightOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RockerLeftDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RockerLeftDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RockerRightDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RockerRightDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsClose.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsCloseMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsCloseMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsCloseTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsCloseTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMaximize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMaximize.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMaximizeMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMaximizeMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMaximizeTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMaximizeTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMini" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMini.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMinimize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMinimize.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMinimizeMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMinimizeMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMinimizeTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMinimizeTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMiniMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMiniMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsMiniTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsMiniTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsRestore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsRestore.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsRestoreMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsRestoreMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WindowsRestoreTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/WindowsRestoreTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollCircle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/ScrollCircle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollCircleOpaque" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/ScrollCircleOpaque.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollCircleMouse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/ScrollCircleMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollCircleTouch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/ScrollCircleTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottomFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BottomFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottomLeftEdge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BottomLeftEdge.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottomRightEdge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BottomRightEdge.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Footer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RoomSource.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Header" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Header.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LeftFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/LeftFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RightFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RightFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TopFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/TopFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TopLeftEdge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/TopLeftEdge.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TopRightEdge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/TopRightEdge.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TopBarFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/TopBarFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/LinnLogo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DrawerTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RoomSourceTop.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DrawerTopFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/RoomSourceTopFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconReceiverSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Receiver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconReceiverSourceNoReceive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/ReceiverNoReceive.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSenderSource" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Sender.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconSenderSourceNoSend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/SenderNoSend.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KModeLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/KModeLeft.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KModeRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/KModeRight.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="KModeFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/KModeFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Transparency" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/Transparency.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayNext.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayNextRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayNextOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayNow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayNow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayNowRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayNowOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayLater" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayLater.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayLaterRollover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/PlayLaterOver.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxLeft.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxOverLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxOverLeft.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxDownLeft" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxDownLeft.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxOverFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxOverFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxDownFiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxDownFiller.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxRight.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxOverRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxOverRight.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BoxDownRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Images/BoxDownRight.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddTab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/AddTab.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddTabOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/AddTabMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddTabDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/AddTabTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RemoveTab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RemoveTab.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RemoveTabOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RemoveTabMouse.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RemoveTabDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/RemoveTabTouch.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="IconBookmark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/IconBookmark.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../../../Layouts/Kinsky/Desktop2/Icons/Remove.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

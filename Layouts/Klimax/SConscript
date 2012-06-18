@@ -1,0 +1,6 @@
+Import("_default_env")
+
+SConscript('800x480/SConscript', exports = '_default_env')
+SConscript('1024x600/SConscript', exports = '_default_env')
+
+Alias('Lib', 'Klimax')

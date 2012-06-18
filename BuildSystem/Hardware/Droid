@@ -1,0 +1,23 @@
+Import('env')
+import os
+if 'PROCESSOR_ARCHITEW6432' in os.environ:
+    env['ENV']["PROCESSOR_ARCHITEW6432"] = os.environ["PROCESSOR_ARCHITEW6432"]
+if 'PROGRAMFILES' in os.environ:
+    env['ENV']["PROGRAMFILES"] = os.environ["PROGRAMFILES"]
+if 'PROGRAMFILES(X86)' in os.environ:
+    env['ENV']["PROGRAMFILES(X86)"] = os.environ["PROGRAMFILES(X86)"]
+if 'SYSTEMROOT' in env['ENV']:
+    env['ENV'].pop('SYSTEMROOT')
+if 'ANDROIDSIGNKEY' in os.environ:
+    # stored in the form ANDROIDKEYSTORE=<<path to keystore file>>;ANDROIDKEYSTOREPASS=<<store file password>>;ANDROIDKEYALIAS=<<key name>>;ANDROIDKEYPASS=<<key password>>
+    # see http://developer.android.com/guide/publishing/app-signing.html#cert
+    # note: do not use "=" or ";" in passwords or you will have to provide an alternative way to import key info
+    keys = dict(item.split("=") for item in os.environ["ANDROIDSIGNKEY"].split(";"))
+    env['ANDROIDKEYSTORE'] = keys['ANDROIDKEYSTORE']
+    env['ANDROIDKEYSTOREPASS'] = keys['ANDROIDKEYSTOREPASS']
+    env['ANDROIDKEYALIAS'] = keys['ANDROIDKEYALIAS']
+    env['ANDROIDKEYPASS'] = keys['ANDROIDKEYPASS']    
+env.Tool('gmcs', toolpath=['../../BuildSystem/Tool'])
+env.Tool('resgen2', toolpath=['../../BuildSystem/Tool'])
+env.Tool('MSBuild', toolpath=['../../BuildSystem/Tool'])
+env.Tool('MSBuildFileGenerator', toolpath=['../../BuildSystem/Tool'])

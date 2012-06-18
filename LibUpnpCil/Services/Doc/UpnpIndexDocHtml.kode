@@ -1,0 +1,82 @@
+//
+// Use the reference section to name additional assemblies
+// required to execute the template.
+//
+// The following assemblies are provided by default:
+//		System.dll
+//		System.Xml.dll
+//		LinnGen.exe
+//
+// Name one additional assembly on each line of the reference section
+//
+
+<* reference *>
+
+<* reference *>
+
+//
+// Use the import section for additional using directives.
+//
+// The following directives are provided by default
+//
+//		using System;
+//		using System.Text;
+//		using System.IO;
+//		using System.Xml;
+//		using System.Xml.XPath;
+//		using System.Collections.Generic;
+//
+
+<* import *>
+
+<* import *>
+
+//
+// Use the function section to provide helper functions
+// that can be called from within the body section
+//
+
+<* function *>
+
+<* function *>
+
+//
+// The body section contains the generated text
+//
+// C# code can be embedded within <% %> tags
+//
+// <%=name%> will output the contents of the named variable
+//
+// args is an array of strings containing the generator arguments
+//
+// XPathNavigator LoadXmlFile(filename) is provided for loading
+// and navigating xml files
+//
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+    XmlReader reader = XmlReader.Create(args[0]);
+    XPathDocument document = new XPathDocument(reader);
+    XPathNavigator navigator = document.CreateNavigator();
+%>
+<html>
+<head>
+    <style>
+        @import "Services.css";
+	</style>
+<head>
+<body>
+<%  foreach (XPathNavigator service in navigator.Select("services/service")) %>
+<%  { %>
+<%      string s = service.Value; %>
+	<div>
+	    <a href="<%=s%>.html"><%=s%></a>
+	</div>
+<%  } %>
+</body>
+</html>
+<* body *>

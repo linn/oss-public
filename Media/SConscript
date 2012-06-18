@@ -1,0 +1,21 @@
+Import('_default_env')
+
+files = Split("""
+    Linn/Media/Multipus/Control.cs
+""")
+
+lib = _default_env.CliLibrary('OssMedia', files, CLILIBS=['OssControl', 'OssCore'])
+
+Alias('Lib', lib)
+
+spy = Split("""
+    MultipusSpy/MultipusRecv.cs
+""")
+
+utils = _default_env.CliProgram('MultipusRecv', spy, CLILIBS=['OssMedia', 'OssCore', 'OssControl'])
+Alias('Lib', utils)
+
+Alias('Test', 'Lib')
+
+Default('Test')
+

@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{82EECFA4-3AE4-4A7B-9D45-1C3F2B2F2B50}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>KinskyTouch</RootNamespace>
+    <BaseDirectory>..\..\KinskyTouch</BaseDirectory>
+    <AssemblyName>Kinsky</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n />
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <EnvironmentVariables>
+      <EnvironmentVariables>
+        <Variable name="NSZombieEnabled" value="YES" />
+      </EnvironmentVariables>
+    </EnvironmentVariables>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <IpaPackageName />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\distribution\bin</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Distribution</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\..\KinskyTouch\Resources\KinskyLogo.png" />
+    <None Include="..\..\KinskyTouch\Resources\KinskyLogoIphone.png" />
+    <None Include="..\..\KinskyTouch\Resources\KinskyLogoSpotlight.png" />
+    <None Include="..\..\KinskyTouch\Resources\KinskyLogoSpotlightIphone.png" />
+    <None Include="..\..\KinskyTouch\Resources\KinskyLogoSpotlightIphone4.png" />
+    <None Include="..\..\KinskyTouch\Resources\Default-Portrait.png">
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </None>
+    <None Include="..\..\KinskyTouch\Resources\Default-Landscape.png">
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </None>
+    <None Include="..\..\KinskyTouch\Resources\KinskyLogoIphone4.png">
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </None>
+    <None Include="..\..\KinskyTouch\Resources\Default~iphone.png" />
+    <None Include="..\..\KinskyTouch\AppDelegate.cs" />
+    <None Include="..\..\KinskyTouch\Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\KinskyTouch\AppDelegateIpad.cs" />
+    <Compile Include="..\..\KinskyTouch\AppDelegateIphone.cs" />
+    <Compile Include="..\..\KinskyTouch\ArtworkCache.cs" />
+    <Compile Include="..\..\KinskyTouch\CellBrowser.cs" />
+    <Compile Include="..\..\KinskyTouch\CellBrowser.xib.designer.cs">
+      <DependentUpon>CellBrowser.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\CellBrowserHeader.cs" />
+    <Compile Include="..\..\KinskyTouch\CellBrowserHeader.xib.designer.cs">
+      <DependentUpon>CellBrowserHeader.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\CellBrowserItem.cs" />
+    <Compile Include="..\..\KinskyTouch\CellBrowserItem.xib.designer.cs">
+      <DependentUpon>CellBrowserItem.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\CellLazyLoadImage.cs" />
+    <Compile Include="..\..\KinskyTouch\CellPlaylist.cs" />
+    <Compile Include="..\..\KinskyTouch\CellPlaylist.xib.designer.cs">
+      <DependentUpon>CellPlaylist.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\HelperKinskyTouch.cs" />
+    <Compile Include="..\..\KinskyTouch\Main.cs" />
+    <Compile Include="..\..\KinskyTouch\MainWindowIpad.xib.designer.cs">
+      <DependentUpon>MainWindowIpad.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\MainWindowIphone.xib.designer.cs">
+      <DependentUpon>MainWindowIphone.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\MediaProviderSupport.cs" />
+    <Compile Include="..\..\KinskyTouch\UIControlRotary.cs" />
+    <Compile Include="..\..\KinskyTouch\UIViewControllerKinskyTouch.cs" />
+    <Compile Include="..\..\KinskyTouch\Views.cs" />
+    <Compile Include="..\..\KinskyTouch\ViewWidgetBrowser.cs" />
+    <Compile Include="..\..\KinskyTouch\ViewWidgetButtons.cs" />
+    <Compile Include="..\..\KinskyTouch\ViewWidgetPlaylist.cs" />
+    <Compile Include="..\..\KinskyTouch\ViewWidgetSelectors.cs" />
+    <Compile Include="..\..\KinskyTouch\ViewWidgetSenderReceiver.cs" />
+    <Compile Include="..\..\KinskyTouch\SourceToolbar.cs" />
+    <Compile Include="..\..\KinskyTouch\SaveDialog.xib.designer.cs">
+      <DependentUpon>SaveDialog.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\SaveViewController.cs" />
+    <Compile Include="..\..\KinskyTouch\CellSender.xib.designer.cs">
+      <DependentUpon>CellSender.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\CellSender.cs" />
+    <Compile Include="..\..\KinskyTouch\BrowserToolbar.cs" />
+    <Compile Include="..\..\KinskyTouch\ConfigController.cs" />
+    <Compile Include="..\..\KinskyTouch\ViewWidgetTrack.cs" />
+    <Compile Include="..\..\KinskyTouch\AppRestartHandler.cs" />
+    <Compile Include="..\..\KinskyTouch\ArtworkTileView.cs" />
+    <Compile Include="..\..\KinskyTouch\ArtworkTileView.xib.designer.cs">
+      <DependentUpon>ArtworkTileView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\KinskyTouch\Reachability.cs" />
+    <Compile Include="..\..\KinskyTouch\CellDefault.cs" />
+    <Compile Include="..\..\KinskyTouch\CellDefault.xib.designer.cs">
+      <DependentUpon>CellDefault.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\ResourceManager.cs" />
+    <Compile Include="..\..\KinskyTouch\OptionPageGeneral.cs" />
+    <Compile Include="..\..\KinskyTouch\OptionInsertMode.cs" />
+    <Compile Include="..\..\KinskyTouch\UIViewInfo.cs" />
+    <Compile Include="..\..\KinskyTouch\CellPlaylistItem.cs" />
+    <Compile Include="..\..\KinskyTouch\CellPlaylistItem.xib.designer.cs">
+      <DependentUpon>CellPlaylistItem.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\VolumeButtons.xib.designer.cs">
+      <DependentUpon>VolumeButtons.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\TimeButtons.xib.designer.cs">
+      <DependentUpon>TimeButtons.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\ViewWidgetTime.cs" />
+    <Compile Include="..\..\KinskyTouch\VolumeRotary.xib.designer.cs">
+      <DependentUpon>VolumeRotary.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\TimeRotary.xib.designer.cs">
+      <DependentUpon>TimeRotary.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\ViewWidgetVolume.cs">
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Compile>
+    <Compile Include="..\..\KinskyTouch\TimeController.cs" />
+    <Compile Include="..\..\KinskyTouch\VolumeController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellBrowser.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellBrowserHeader.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellBrowserItem.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellPlaylist.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\MainWindowIpad.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\MainWindowIphone.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\SaveDialog.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellSender.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\ArtworkTileView.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellDefault.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\CellPlaylistItem.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\VolumeButtons.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\TimeButtons.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\VolumeRotary.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyTouch\TimeRotary.xib" xmlns="" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">
+      <Project>{FADD2631-1259-4A92-B87F-69A4364AE7B6}</Project>
+      <Name>OssCoreIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLiteIos\OssDidlLiteIos.csproj">
+      <Project>{CB19E03F-9014-4654-BAA7-45BB2EA0DDEE}</Project>
+      <Name>OssDidlLiteIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssControlIos\OssControlIos.csproj">
+      <Project>{06C84AB5-457C-4731-9FA6-72EA3BB7E9E7}</Project>
+      <Name>OssControlIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinskyIos\OssKinskyIos.csproj">
+      <Project>{9FD7E2EC-1192-4912-857B-EFF6E12A06EC}</Project>
+      <Name>OssKinskyIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServicesIos\OssServicesIos.csproj">
+      <Project>{D4007AEC-E0D6-4FCD-B275-E6247FC5331C}</Project>
+      <Name>OssServicesIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssSysLibIos\OssSysLibIos.csproj">
+      <Project>{DAEF25A9-376B-4139-BCEA-2BCAF72FD7A9}</Project>
+      <Name>OssSysLibIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitIos\OssToolkitIos.csproj">
+      <Project>{CE61C5CB-180B-44A2-831C-E15889B61196}</Project>
+      <Name>OssToolkitIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopologyIos\OssTopologyIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065A}</Project>
+      <Name>OssTopologyIos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\LeftFiller.png">
+      <Link>LeftFiller.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\TopRightEdge.png">
+      <DeployService-Deploy>true</DeployService-Deploy>
+      <Link>TopRightEdge.png</Link>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\TopLeftEdge.png">
+      <Link>TopLeftEdge.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\TopFiller.png">
+      <Link>TopFiller.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\BottomLeftEdge.png">
+      <Link>BottomLeftEdge.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\BottomRightEdge.png">
+      <Link>BottomRightEdge.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\BottomFiller.png">
+      <Link>BottomFiller.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\RightFiller.png">
+      <Link>RightFiller.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\SkipBack.png">
+      <Link>SkipBack.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\SkipBackDown.png">
+      <Link>SkipBackDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\SkipForward.png">
+      <Link>SkipForward.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\SkipForwardDown.png">
+      <Link>SkipForwardDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Pause.png">
+      <Link>Pause.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Play.png">
+      <Link>Play.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Stop.png">
+      <Link>Stop.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Array.png">
+      <Link>Array.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\PauseOver.png">
+      <Link>PauseOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\PlayOver.png">
+      <Link>PlayOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\StopOver.png">
+      <Link>StopOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\WheelOver.png">
+      <Link>WheelOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Shuffle.png">
+      <Link>Shuffle.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\ShuffleDown.png">
+      <Link>ShuffleDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\ShuffleOn.png">
+      <Link>ShuffleOn.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\ShuffleOnDown.png">
+      <Link>ShuffleOnDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\PauseDown.png">
+      <Link>PauseDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\PlayDown.png">
+      <Link>PlayDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\StopDown.png">
+      <Link>StopDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\SkipBackOver.png">
+      <Link>SkipBackOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\SkipForwardOver.png">
+      <Link>SkipForwardOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Repeat.png">
+      <Link>Repeat.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\RepeatDown.png">
+      <Link>RepeatDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\RepeatOn.png">
+      <Link>RepeatOn.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\RepeatOnDown.png">
+      <Link>RepeatOnDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\RoomSource.png">
+      <Link>RoomSource.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\LinnLogo.png">
+      <Link>LinnLogo.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Home.png">
+      <Link>Home.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\HomeDown.png">
+      <Link>HomeDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Delete.png">
+      <Link>Delete.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\DeleteDown.png">
+      <Link>DeleteDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Save.png">
+      <Link>Save.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\SaveDown.png">
+      <Link>SaveDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Standby.png">
+      <Link>Standby.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\StandbyDown.png">
+      <Link>StandbyDown.png</Link>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\StandbyOn.png">
+      <Link>StandbyOn.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Multi.png">
+      <Link>Multi.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\MultiDown.png">
+      <Link>MultiDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\HomeOn.png">
+      <Link>HomeOn.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\MultiOn.png">
+      <Link>MultiOn.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Album.png">
+      <Link>Album.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Artist.png">
+      <Link>Artist.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Directory.png">
+      <Link>Directory.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Folder.png">
+      <Link>Folder.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Library.png">
+      <Link>Library.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Playlist.png">
+      <Link>Playlist.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\PlaylistItem.png">
+      <Link>PlaylistItem.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Radio.png">
+      <Link>Radio.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Track.png">
+      <Link>Track.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Video.png">
+      <Link>Video.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Loading.png">
+      <Link>Loading.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\DisclosureIndicator.png">
+      <Link>DisclosureIndicator.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Playing.png">
+      <Link>Playing.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Room.png">
+      <Link>Room.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\PlaylistSource.png">
+      <Link>PlaylistSource.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Sender.png">
+      <Link>Sender.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\SenderNoSend.png">
+      <Link>SenderNoSend.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\CD.png">
+      <Link>CD.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\HourGlass.png">
+      <Link>HourGlass.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\HourGlass2.png">
+      <Link>HourGlass2.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\WheelMute.png">
+      <Link>WheelMute.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\UPNP.png">
+      <Link>UPNP.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Wheel.png">
+      <Link>Wheel.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\MultiOnDown.png">
+      <Link>MultiOnDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\MediaProviderPlugins\Bbc\Bbc.png">
+      <Link>Bbc.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\MediaProviderPlugins\MovieTrailers\MovieTrailers.png">
+      <Link>MovieTrailers.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\MediaProviderPlugins\Shoutcast\Shoutcast.png">
+      <Link>Shoutcast.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\MediaProviderPlugins\Wfmu\Wfmu.png">
+      <Link>Wfmu.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Source.png">
+      <Link>Source.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\TramLines.png">
+      <Link>TramLines.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Screws.png">
+      <Link>Screws.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Rocker.png">
+      <Link>Rocker.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\RockerLeftDown.png">
+      <Link>RockerLeftDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\RockerRightDown.png">
+      <Link>RockerRightDown.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\AlbumArtError.png">
+      <Link>AlbumArtError.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Button.png">
+      <Link>Button.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\WheelLarge.png">
+      <Link>WheelLarge.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\ScrewsLarge.png">
+      <Link>ScrewsLarge.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\FfwdButton.png">
+      <Link>FfwdButton.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\FrwdButton.png">
+      <Link>FrwdButton.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\MuteActive.png">
+      <Link>MuteActive.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\WheelLargeOver.png">
+      <Link>WheelLargeOver.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\ClockIconElapsed.png">
+      <Link>ClockIconElapsed.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\ClockIconRemaining.png">
+      <Link>ClockIconRemaining.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\Mute.png">
+      <Link>Mute.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\ClockIcon.png">
+      <Link>ClockIcon.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\MuteIcon.png">
+      <Link>MuteIcon.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Error.png">
+      <Link>Error.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\KinskyTouch\KinskyLogoAbout.png">
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Settings.png">
+      <Link>Settings.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\List.png">
+      <Link>List.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+  </ItemGroup>
+</Project>

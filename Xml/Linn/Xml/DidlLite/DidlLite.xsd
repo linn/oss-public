@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="hierarchy" type="hierarchy"/>
+  <xs:complexType name="hierarchy">
+    <xs:sequence>
+      <xs:element name="namespace" type="namespace" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="class" type="class" minOccurs="1" maxOccurs="unbounded"/>
+	</xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="namespace">
+	  <xs:simpleContent>
+		  <xs:extension base="xs:string">
+			  <xs:attribute name="prefix" type="xs:string" use="required"/>
+		  </xs:extension>
+	  </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="class">
+    <xs:sequence>
+		<xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="extends" type="xs:string" use="optional"/>
+    <xs:attribute name="classType" type="xs:string" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="property">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+		<xs:attribute name="type" type="type" use="required"/>
+		<xs:attribute name="xpath" type="xs:string" use="required"/>
+		<xs:attribute name="element" type="xs:string" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="int"/>
+      <xs:enumeration value="uint"/>
+      <xs:enumeration value="long"/>
+      <xs:enumeration value="ulong"/>
+      <xs:enumeration value="bool"/>
+      <xs:enumeration value="list"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

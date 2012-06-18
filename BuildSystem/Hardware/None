@@ -1,0 +1,4 @@
+import SCons
+
+#raise SCons.Errors.UserError('No product specified')
+#

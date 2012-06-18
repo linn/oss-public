@@ -1,0 +1,89 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+files = Split("""
+    Installer/Header.bmp
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/Kinsky/Pda', files)
+
+files = Split("""
+   Views/UserControlLibrary.cs
+   Views/UserControlPlay.cs
+   Views/UserControlSource.cs
+   Widgets/BaseListView.cs
+   Widgets/ComboBoxItem.cs
+   Widgets/ImageButton.cs
+   Widgets/PanelBusy.cs
+   Widgets/PanelNoBackgroundPaint.cs   
+   Widgets/TransparentControlBase.cs
+   Widgets/TransparentLabel.cs
+   Widgets/Browser/WidgetBreadcrumb.cs
+   Widgets/PlayControl/WidgetMediaTime.cs
+   Widgets/PlayControl/WidgetPlayMode.cs
+   Widgets/PlayControl/WidgetTransport.cs
+   Widgets/PlayControl/WidgetVolume.cs
+   Widgets/PlayView/WidgetPlaylist.cs
+   Widgets/PlayView/WidgetPlaylistAux.cs
+   Widgets/PlayView/WidgetPlaylistRadio.cs
+   Widgets/PlayView/WidgetPlaylistReceiver.cs
+   Widgets/PlayView/WidgetTrack.cs
+   Widgets/Source/WidgetButtonStandby.cs
+   Widgets/Source/WidgetSelectorRoom.cs
+   Widgets/Source/WidgetSelectorSource.cs
+   Support/MediaProviderSupport.cs 
+   Support/PlaylistSupport.cs   
+   Support/ViewSupport.cs
+   Properties/AssemblyInfo.cs
+   Properties/Resources.Designer.cs
+   BrowserItems.cs
+   ContextMenuHelper.cs
+   FormAboutBox.cs
+   FormAboutBox.Designer.cs
+   IViewStub.cs
+   KinskyPda.cs
+   KinskyPda.Designer.cs   
+   LayoutManager.cs
+   Program.cs
+   TextureManager.cs
+   Theme.cs
+   ViewBrowser.cs
+""")
+
+if _default_env['hardware'] == 'PocketPc':
+    res  = _default_env.Resgen('KinskyPda.Properties.Resources.resources', 'Properties/Resources.resx')
+    res += _default_env.Resgen('KinskyPda.FormKinskyPda.resources', 'KinskyPDA.resx')
+    res += _default_env.Resgen('KinskyPda.FormAboutBox.resources', 'FormAboutBox.resx')
+
+    flags = _default_env['CSCFLAGS'] + " -win32res:Resources/hidpi.res"
+    app = _default_env.CliProgram('Kinsky', files, CSCFLAGS=flags, CSCTARGET='winexe', CLILIBS=['mscorlib', 'Microsoft.WindowsCE.Forms', 'System', 'System.Xml', 'System.Windows.Forms', 'System.Drawing', 'OssCore', 'OssControl', 'OssTopology', 'OssServices', 'OssDidlLite', 'OSSKinsky', 'OssToolkitWinForms'], CLIRESOURCES=res)
+    _default_env.Depends(app, File('Resources/hidpi.res'))
+
+    inf = _default_env.CabInf('Kinsky', 'Installer/TemplateKinskyPda.inf')
+    cab = _default_env.CabWiz('Kinsky', inf)
+    Depends(cab, app)
+    cab = _default_env.InstallAs('$install_dir/share/Kinsky/Pda/InstallerKinsky.cab', cab)
+    
+    kinskyPda = _default_env.Install('$install_dir/share/Kinsky/Pda', 'Installer/Kinsky.ini')
+    kinskyPda.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico')))
+    kinskyPda.extend(cab)
+
+    installer = []
+    if _default_env['installers']:
+        installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Kinsky/Pda', 'InstallerKinsky',
+                            FILES      = {''             : kinskyPda },
+                            TEMPLATE   = 'Installer/KinskyPdaNsiTemplate.txt',
+                            RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico'),
+                                          'header'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/Pda/header.bmp'),
+                                          'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish2.bmp'),
+                                          'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                            PRODUCT    = 'Kinsky',
+                            VERSION    = kVersion,
+                            CERT       = '',
+                            LAUNCHFILE = 'Kinsky.ini')
+    
+    Alias('Lib', cab)
+    Alias('Lib', installer)
+
+Alias('Test', 'Lib')    
+Default('Test')

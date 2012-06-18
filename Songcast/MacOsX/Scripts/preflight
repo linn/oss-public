@@ -1,0 +1,74 @@
+#!/bin/sh
+
+
+launchFile="/Library/LaunchAgents/uk.co.linn.songcast.plist"
+driver="/System/Library/Extensions/LinnSongcast.kext"
+
+launchFileOld="/Library/LaunchAgents/uk.co.linn.songcaster.plist"
+driverOld="/System/Library/Extensions/LinnSongcaster.kext"
+prefPaneOld="/Library/PreferencePanes/LinnSongcaster.prefPane"
+appOld="/Library/Linn/LinnSongcaster.app"
+
+
+# stop the agent application - this script is run by the installer as root
+# whereas the agent application is being run in the user context - uses
+# sudo -u $USER to ensure that the agent is successfully unloaded from launchd
+
+if [ -e "$launchFile" ]
+then
+  sudo -u "$USER" launchctl unload "$launchFile"
+fi
+
+
+# Do the above but for older versions that used the old name
+
+if [ -e "$launchFileOld" ]
+then
+  sudo -u "$USER" launchctl unload "$launchFileOld"
+
+  # remove the old file as this will not be overwritten
+  rm -rf "$launchFileOld"
+fi
+
+
+
+# unload the driver - need to try it twice since the first time 
+# usually gives errors due to a problem with the apple audio driver framework
+
+if [ -e "$driver" ]
+then
+  kextunload "$driver"
+  if [ $? != 0 ]
+  then
+    kextunload "$driver"
+  fi
+
+  # now delete the previous driver
+  rm -rf "$driver"
+fi
+
+
+# Do the above but for older versions that used the old name
+
+if [ -e "$driverOld" ]
+then
+  kextunload "$driverOld"
+  if [ $? != 0 ]
+  then
+    kextunload "$driverOld"
+  fi
+
+  # now delete the old driver - this will not get overwritten
+  rm -rf "$driverOld"
+fi
+
+
+# completely delete other old components that used the old name
+
+rm -rf "$prefPaneOld"
+rm -rf "$appOld"
+
+
+# if errors occurred, it will be because the app or driver is not loaded and running - that's fine
+exit 0
+

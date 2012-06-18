@@ -1,0 +1,752 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="KinskyLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources/KinskyLogo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AboutBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources/AboutBox.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Watermark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources/Watermark.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_flat_30_cccccc_40x100.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_flat_30_cccccc_40x100.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_flat_50_5c5c5c_40x100.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_flat_50_5c5c5c_40x100.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_glass_20_555555_1x400.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_glass_20_555555_1x400.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_glass_40_0078a3_1x400.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_glass_40_0078a3_1x400.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_glass_40_ffc73d_1x400.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_glass_40_ffc73d_1x400.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_gloss-wave_25_333333_500x100.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_gloss-wave_25_333333_500x100.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_highlight-soft_80_eeeeee_1x100.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_highlight-soft_80_eeeeee_1x100.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_inset-soft_25_000000_1x100.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_inset-soft_25_000000_1x100.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/images/ui-bg_inset-soft_30_f58400_1x100.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/images/ui-bg_inset-soft_30_f58400_1x100.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Themes/ui-darkness/jquery-ui-1.8rc3.custom.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Themes/ui-darkness/jquery-ui-1.8rc3.custom.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/Breadcrumb.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/Breadcrumb.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/BreadcrumbMobile.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/BreadcrumbMobile.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/Browser.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/Browser.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/MediaTime.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/MediaTime.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/MediaTimeMobile.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/MediaTimeMobile.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/Playlist.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/Playlist.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/RoomSelector.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/RoomSelector.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/RoomSelectorMobile.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/RoomSelectorMobile.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/SourceSelector.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/SourceSelector.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/SourceSelectorMobile.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/SourceSelectorMobile.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/Track.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/Track.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/TransportControl.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/TransportControl.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/UpDirectory.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/UpDirectory.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/VolumeControl.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/VolumeControl.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/VolumeControlMobile.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/VolumeControlMobile.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/Widget.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/Widget.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/WidgetContainer.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/WidgetContainer.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/PlayMode.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/PlayMode.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/WasteBin.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/WasteBin.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/Widgets/StandbyButton.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/Widgets/StandbyButton.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery.json.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery.json.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery.jsonrequest.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery.jsonrequest.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery.selectboxes.min.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery.selectboxes.min.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery.timer.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery.timer.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery.xml2json.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery.xml2json.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery-1.4.2.min.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery-1.4.2.min.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery-ui-1.8rc3.custom.min.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery-ui-1.8rc3.custom.min.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/core.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/core.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/prototype.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/prototype.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/splitpane.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/splitpane.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/Scripts/jquery.contextmenu.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/Scripts/jquery.contextmenu.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Common/CSS/jquery.contextmenu.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Common/CSS/jquery.contextmenu.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/kinsky.html" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/kinsky.html;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/Breadcrumb.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/Breadcrumb.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/Browser.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/Browser.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/MediaTime.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/MediaTime.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/RoomSelector.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/RoomSelector.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/SourceSelector.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/SourceSelector.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/Track.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/Track.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/TransportControl.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/TransportControl.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/UpDirectory.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/UpDirectory.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/VolumeControl.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/VolumeControl.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/PlayMode.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/PlayMode.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/WasteBin.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/WasteBin.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/Widgets/StandbyButton.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/Widgets/StandbyButton.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/kinsky.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/kinsky.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/CSS/kinsky_ie7.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/CSS/kinsky_ie7.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/3kArray.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/3kArray.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/AlbumError.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/AlbumError.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Bin.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Bin.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/BinMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/BinMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Pause.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Pause.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/PauseMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/PauseMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/PauseTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/PauseTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Play.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Play.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Playing.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Playing.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/PlayMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/PlayMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/PlayTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/PlayTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Repeat.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Repeat.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/RepeatActive.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/RepeatActive.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/RepeatActiveMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/RepeatActiveMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/RepeatMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/RepeatMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Shuffle.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Shuffle.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/ShuffleActive.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/ShuffleActive.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/ShuffleActiveMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/ShuffleActiveMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/ShuffleMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/ShuffleMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/SkipBack.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/SkipBack.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/SkipBackMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/SkipBackMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/SkipBackTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/SkipBackTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/SkipForward.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/SkipForward.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/SkipForwardMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/SkipForwardMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/SkipForwardTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/SkipForwardTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Stop.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Stop.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/StopMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/StopMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/StopTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/StopTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/UpDirectory.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/UpDirectory.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/UpDirectoryMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/UpDirectoryMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/VolumeControl.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/VolumeControl.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/Wheel.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Wheel.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelInnerGlow.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelInnerGlow.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelSkipBack.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelSkipBack.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelSkipBackMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelSkipBackMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelSkipBackTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelSkipBackTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelSkipForward.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelSkipForward.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelSkipForwardMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelSkipForwardMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelSkipForwardTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelSkipForwardTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelVolumeDown.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelVolumeDown.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelVolumeDownMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelVolumeDownMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelVolumeDownTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelVolumeDown.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelVolumeUp.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelVolumeUp.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Widgets/WheelVolumeUpMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelVolumeUpMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/WheelVolumeUpTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/WheelVolumeUpTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Album.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Album.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Desktop/Images/Widgets/Artist.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Artist.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Desktop/Images/Widgets/Directory.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Directory.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Error.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Error.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Folder.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Folder.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Library.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Library.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Desktop/Images/Widgets/Playlist.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Playlist.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Radio.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Radio.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Track.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Track.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/Video.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Video.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/NextPage.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/NextPage.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/NextPageMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/NextPageMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Desktop/Images/Widgets/PreviousPage.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/PreviousPage.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/PreviousPageMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/PreviousPageMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/NoAlbumArt.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/NoAlbumArt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Desktop/Images/Widgets/Standby.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/Standby.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Desktop/Images/Widgets/StandbyActive.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/StandbyActive.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/Widgets/StandbyActiveMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Widgets/StandbyActiveMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Desktop/Images/ajax-loader.gif" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/ajax-loader.gif;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Images/Logo.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Images/Logo.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Desktop/Scripts/kinsky.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Desktop/Scripts/kinsky.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  
+  <data name="Layouts/Portrait/Medium/kinsky.html" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/kinsky.html;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/Breadcrumb.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/Breadcrumb.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/Browser.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/Browser.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/MediaTime.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/MediaTime.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/RoomSelector.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/RoomSelector.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/SourceSelector.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/SourceSelector.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/Track.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/Track.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/TransportControl.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/TransportControl.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/UpDirectory.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/UpDirectory.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/VolumeControl.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/VolumeControl.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/PlayMode.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/PlayMode.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/WasteBin.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/WasteBin.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/Widgets/StandbyButton.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/Widgets/StandbyButton.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/kinsky.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/kinsky.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/CSS/kinsky_ie7.css" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/CSS/kinsky_ie7.css;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/3kArray.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/3kArray.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/AlbumError.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/AlbumError.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Bin.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Bin.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/BinMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/BinMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Pause.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Pause.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/PauseMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/PauseMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/PauseTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/PauseTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Play.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Play.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Playing.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Playing.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/PlayMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/PlayMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/PlayTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/PlayTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Repeat.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Repeat.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/RepeatActive.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/RepeatActive.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/RepeatActiveMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/RepeatActiveMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/RepeatMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/RepeatMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Shuffle.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Shuffle.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/ShuffleActive.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/ShuffleActive.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/ShuffleActiveMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/ShuffleActiveMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/ShuffleMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/ShuffleMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/SkipBack.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/SkipBack.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/SkipBackMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/SkipBackMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/SkipBackTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/SkipBackTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/SkipForward.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/SkipForward.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/SkipForwardMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/SkipForwardMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/SkipForwardTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/SkipForwardTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Stop.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Stop.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/StopMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/StopMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/StopTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/StopTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/UpDirectory.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/UpDirectory.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/UpDirectoryMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/UpDirectoryMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Album.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Album.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Artist.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Artist.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Directory.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Directory.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Error.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Error.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Folder.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Folder.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Library.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Library.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Playlist.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Playlist.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Radio.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Radio.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Track.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Track.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Video.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Video.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/NextPage.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/NextPage.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/NextPageMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/NextPageMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/PreviousPage.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/PreviousPage.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/IconSelectedServer.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/IconSelectedServer.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/VolumeDown.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/VolumeDown.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/VolumeDownTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/VolumeDownTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/VolumeUp.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/VolumeUp.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/VolumeUpTouch.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/VolumeUpTouch.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/VolumeEmpty.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/VolumeEmpty.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/PreviousPageMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/PreviousPageMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/AuxSource.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/AuxSource.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/CD.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/CD.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/DS.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/DS.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Home.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Home.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/HomeMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/HomeMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Room.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Room.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Spdif.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Spdif.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/TosLink.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/TosLink.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/UPNP.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/UPNP.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/NoAlbumArt.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/NoAlbumArt.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data> 
+  <data name="Layouts/Portrait/Medium/Images/Widgets/Standby.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/Standby.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/StandbyActive.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/StandbyActive.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/Widgets/StandbyActiveMouse.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Widgets/StandbyActiveMouse.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>  
+  <data name="Layouts/Portrait/Medium/Images/ajax-loader.gif" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/ajax-loader.gif;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Logo.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Logo.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/Glass.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/Glass.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/nav.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/nav.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Images/nav_divider.png" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Images/nav_divider.png;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Layouts/Portrait/Medium/Scripts/kinsky.js" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>../Client/Layouts/Portrait/Medium/Scripts/kinsky.js;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root> 

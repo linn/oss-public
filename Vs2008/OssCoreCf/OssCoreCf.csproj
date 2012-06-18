@@ -1,0 +1,174 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{50AACFB3-0D3D-4C1C-9D75-370686FE09D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn</RootNamespace>
+    <AssemblyName>OssCore</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>4118C335-430C-497f-BE48-11C3316B135E</PlatformID>
+    <OSVersion>5.1</OSVersion>
+    <DeployDirSuffix>OssCore</DeployDirSuffix>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <NativePlatformName>Windows Mobile 5.0 Pocket PC SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <LinnConfiguration>debug</LinnConfiguration>
+    <IntermediateOutputPath>..\..\build\PocketPc\$(LinnConfiguration)\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\PocketPc\$(LinnConfiguration)\bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PocketPC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <LinnConfiguration>trace</LinnConfiguration>
+    <IntermediateOutputPath>..\..\build\PocketPc\$(LinnConfiguration)\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\PocketPc\$(LinnConfiguration)\bin\</OutputPath>
+    <DefineConstants>TRACE;PocketPC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <LinnConfiguration>release</LinnConfiguration>
+    <IntermediateOutputPath>..\..\build\PocketPc\$(LinnConfiguration)\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\PocketPc\$(LinnConfiguration)\bin\</OutputPath>
+    <DefineConstants>PocketPC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\BitConverter.cs">
+      <Link>Linn\BitConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Debug.cs">
+      <Link>Linn\Debug.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\AssemblyInfoModel.cs">
+      <Link>Linn\AssemblyInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\DebugReport.cs">
+      <Link>Linn\DebugReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\AssemblyInfoCompact.cs">
+      <Link>Linn\Framework\AssemblyInfoCompact.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkInfoCompact.cs">
+      <Link>Linn\Framework\NetworkInfoCompact.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SemaphoreCompact.cs">
+      <Link>Linn\Framework\SemaphoreCompact.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\ServiceInfo.cs">
+      <Link>Linn\Framework\ServiceInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemEventsCompact.cs">
+      <Link>Linn\Framework\SystemEventsCompact.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfoCompact.cs">
+      <Link>Linn\Framework\SystemInfoCompact.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\TimerCompact.cs">
+      <Link>Linn\Framework\TimerCompact.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Helper.cs">
+      <Link>Linn\Helper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\NetworkInfoModel.cs">
+      <Link>Linn\NetworkInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\Network.cs">
+      <Link>Linn\Network\Network.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\WebRequest.cs">
+      <Link>Linn\Network\WebRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Option.cs">
+      <Link>Linn\Option.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionManager.cs">
+      <Link>Linn\OptionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPage.cs">
+      <Link>Linn\OptionPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPageUpdates.cs">
+      <Link>Linn\OptionPageUpdates.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionParser.cs">
+      <Link>Linn\OptionParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\ProductSupport.cs">
+      <Link>Linn\ProductSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Scheduler.cs">
+      <Link>Linn\Scheduler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Stack.cs">
+      <Link>Linn\Stack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Standard.cs">
+      <Link>Linn\Standard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Stream.cs">
+      <Link>Linn\Stream.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\SystemInfoModel.cs">
+      <Link>Linn\SystemInfoModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Ticker.cs">
+      <Link>Linn\Ticker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLog.cs">
+      <Link>Linn\UserLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLogFile.cs">
+      <Link>Linn\UserLogFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+</Project>

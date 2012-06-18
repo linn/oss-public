@@ -1,0 +1,1087 @@
+body, html
+{
+	background:#000;
+	margin:0px;
+	padding:0px;
+	color:#AAA;
+	width:100%;
+	height:100%;
+	font-family: Segoe UI, Arial, sans-serif;	
+	cursor:pointer;
+}
+
+html *
+{	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	margin:0px;
+	padding:0px;
+}
+
+#TrackContainer.Standby,
+#TransportControlPrevious.Standby,
+#TransportControlDisplay.Standby,
+#TransportControlNext.Standby,
+#NumpadImage.Standby,
+#CurrentSource.Standby,
+#VolumeControlImage.Standby,
+#ShuffleButton.Standby,
+#RepeatButton.Standby,
+#TransportButton.Standby
+{
+	display:none !important;
+}
+
+
+#PlaylistContainer, 
+#VolumeControlContainer, 
+#SourceSelectionContainer, 
+#NumpadContainer, 
+#VolumeControlTabs, 
+#TransportControlTabs, 
+#NowPlayingContainer,
+#TabContainers,
+#VolumeDisplayContainer
+{
+	display:none;
+}
+
+#PlaylistContainer.Active, 
+#VolumeControlContainer.Active, 
+#SourceSelectionContainer.Active, 
+#NumpadContainer.Active, 
+#VolumeControlTabs.Active, 
+#TransportControlTabs.Active, 
+#NowPlayingContainer.Active,
+#TabContainers.Active,
+#VolumeDisplayContainer.Active
+{
+	display:block;
+}
+
+#ToggleNumpad.Active span, 
+#ToggleSourceSelection.Active span, 
+#ToggleVolume.Active span
+{
+	color:#0082C4;
+}
+
+#TabContainers.Landscape,
+#NumpadContainer.Landscape,
+#SourceSelectionContainer.Landscape,
+#PlaylistContainer.Landscape,
+#RadioPresetListContainer.Landscape,
+#VolumeDisplayContainer.Landscape
+{
+	display:none !important;
+}
+
+#NowPlayingContainer,
+#SourceSelectionContainer,
+#NumpadContainer,
+#VolumeDisplayContainer
+{
+	width:100%;		
+}
+
+#NowPlayingContainer.Landscape
+{
+	display:block !important;
+	height:100%;
+	text-align:center;
+}
+
+#NowPlayingContainer.IPhone,
+#SourceSelectionContainer.IPhone,
+#NumpadContainer.IPhone,
+#VolumeDisplayContainer.IPhone
+{
+	height:260px !important;
+}
+
+#NowPlayingContainer.IPad,
+#SourceSelectionContainer.IPad,
+#NumpadContainer.IPad,
+#VolumeDisplayContainer.IPad
+{
+	height:785px !important;
+}
+
+#NowPlayingContainer.IPhone.Landscape
+{
+	height:175px;
+}
+
+#NowPlayingContainer.IPad.Landscape
+{
+	height:700px;
+}
+
+#TrackContainer.IPad
+{
+	margin-top:50px;
+}
+
+#TrackAlbumArtContainer
+{
+	width:100%;
+	display:inline-block;
+	margin-top:10px;
+	text-align:center;
+}
+
+#TrackAlbumArt
+{
+	max-width:150px;
+	max-height:150px;
+}
+
+#TrackAlbumArt.IPhone
+{
+	max-width:120px;
+	max-height:120px;
+}
+
+#TrackAlbumArt.IPad
+{
+	max-width:400px;
+	max-height:400px;
+	min-height:400px;
+}
+
+#TrackAlbumArtContainer.IPhone.Landscape, #TrackAlbumArtContainer.IPad.Landscape
+{
+	margin-top:0px;
+}
+
+#TrackAlbumArt.IPhone.Landscape
+{
+	max-height:100px;
+}
+
+#TrackAlbumArt.IPad.Landscape
+{
+	min-height:380px;
+	max-height:380px;
+}
+
+#TrackAlbumArt.Landscape
+{
+	float:none;
+	display:block;
+	margin:auto;
+	margin-top:10px;
+	max-height:150px;
+}
+
+#TrackContainer
+{
+	clear:left;
+	float:left;
+	width:74%;
+}
+
+#TrackContainer.IPad
+{
+	width:86%
+}
+
+#TrackContainer.Landscape
+{
+	width:100%;
+	float:none;
+}
+
+#TrackContainer div
+{
+	display:inline-block;	
+	min-width:100%;
+	width:100%;
+	font-size:20px;
+	white-space:nowrap;
+	overflow:hidden;
+	font-size:smaller;
+	margin:0 auto;
+	text-align:center;
+}
+
+#TrackContainer div.Landscape
+{
+	margin:auto;
+	text-align:center;
+	max-width:90%;
+}
+
+#TrackContainer div.IPad
+{
+	font-size:25px;
+}
+
+#TrackContainer div.IPad.Landscape
+{
+	font-size:15px;
+}
+
+#TrackContainer div.IPhone.Landscape
+{
+	font-size:15px;
+}
+
+#TrackTitle
+{
+	font-weight:bolder;
+	font-size:25px;
+}
+
+#TrackTitle.IPad
+{
+	font-size:40px !important;
+}
+
+#TrackTitle.IPad.Landscape
+{
+	font-size:30px !important;
+}
+
+#TrackTitle.IPhone.Landscape
+{
+	font-size:20px;
+}
+
+#TrackBitRate.IPad, #TrackSampleRate.IPad, #TrackCodec.IPad
+{
+	display:inline-block !important;	
+}
+	
+#NowPlayingButtons
+{
+	width:25%;
+	height:90%;
+	float:right;
+	border-left:solid 1px #FFF;
+	margin-top:10px;
+	clear:left;
+}
+
+#NowPlayingButtons.IPad
+{
+	width:12%;
+}
+
+#NowPlayingButtons.Landscape
+{
+	display:none;
+}
+
+#NowPlayingButtons div
+{
+	width:50px;
+	height:50px;	
+	margin:auto;
+	margin-top:5px;
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#NowPlayingButtons div div
+{
+	width:50px;
+	height:50px;	
+}
+
+#NowPlayingButtons div.IPhone
+{
+	height:40px;
+	margin-top:0px;
+}
+,
+#NowPlayingButtons div.IPad
+{
+	margin-top:30px;
+}
+
+#StandbyButton
+{	
+	margin-top:-5px !important;
+	background-image:url("../Images/Standby.png");
+}
+#StandbyButton.Hover
+{	
+	margin-top:-5px !important;
+	background-image:url("../Images/StandbyRollover.png");
+}
+#StandbyButton.Mouse
+{
+	background-image:url("../Images/StandbyDown.png");
+}
+
+#StandbyButton.Active
+{
+	background-image:url("../Images/StandbyOn.png");
+}
+
+#StandbyButton.Active.Hover
+{
+	background-image:url("../Images/StandbyOnRollover.png");
+}
+#StandbyButton.Active.Mouse
+{
+	background-image:url("../Images/StandbyOnDown.png");
+}
+
+#ShuffleButton
+{
+	background-image:url("../Images/Shuffle.png");
+}
+#ShuffleButton.Hover
+{
+	background-image:url("../Images/ShuffleRollover.png");
+}
+#ShuffleButton.Mouse
+{
+	background-image:url("../Images/ShuffleDown.png");
+}
+
+#ShuffleButton.Active
+{
+	background-image:url("../Images/ShuffleOn.png");
+}
+#ShuffleButton.Active.Hover
+{
+	background-image:url("../Images/ShuffleOnRollover.png");
+}
+#ShuffleButton.Active.Mouse
+{
+	background-image:url("../Images/ShuffleOnDown.png");
+}
+
+#ShuffleButton.Hidden
+{
+	display:none;
+}
+
+#RepeatButton
+{
+	background-image:url("../Images/Repeat.png");
+}
+#RepeatButton.Hover
+{
+	background-image:url("../Images/RepeatRollover.png");
+}
+#RepeatButton.Mouse
+{
+	background-image:url("../Images/RepeatDown.png");
+}
+
+#RepeatButton.Active
+{
+	background-image:url("../Images/RepeatOn.png");
+}
+#RepeatButton.Active.Hover
+{
+	background-image:url("../Images/RepeatOnRollover.png");
+}
+#RepeatButton.Active.Mouse
+{
+	background-image:url("../Images/RepeatOnDown.png");
+}
+
+#RepeatButton.Hidden
+{
+	display:none;
+}
+
+#TabContainers
+{
+	max-height:162px;
+	clear:both;
+}
+
+.TabContainer
+{
+	text-align:center;
+	margin:0px;
+	padding:0px;
+	display:none;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	overflow-x:hidden;
+	overflow-y:hidden;	
+	width:100%;
+	height:80px;
+	border-bottom-color:#777777;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+}
+
+.TabContainer.Active
+{
+	display:block;
+}
+
+.TabContainer div
+{
+	display:inline-block;
+	float:left;
+	text-align:center;
+	margin:0px;
+	padding:0px;
+	width:25%;
+	background-image:url("../Images/nav.png");
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+.TabContainer div.TwoColumn
+{
+	width:50%;
+}
+
+.TabContainer div.Tab.Active
+{
+	background-image:url("../Images/nav_active.png");
+	background-position:left top;
+	background-repeat:repeat-x;
+}
+
+.TabContainer span
+{
+	width:100%;
+	text-decoration:none;
+	line-height:85px;
+	color:#FFF;
+	background:#444;
+	margin:0px;
+	padding:0px;
+	padding-left:1px;	
+	vertical-align:middle;
+	text-align:center;
+	background-color:transparent;
+	display:inline-block;
+	height:80px;	
+	font-size:large;
+	margin-right:auto;
+}
+
+.TabContainer div span.Tab
+{
+	background-image:url("../Images/nav_divider.png");
+	background-position:left bottom;
+	background-repeat:no-repeat;
+}
+
+.TabContainer div.Active span.Tab
+{
+	background-image:url("../Images/nav_divider_active.png");
+	background-position:left bottom;
+	background-repeat:no-repeat;
+}
+
+#PlaylistClose
+{
+	float:left;
+	width:82px;
+	height:62px;
+	margin-top:10px;
+	margin-left:10px;
+	background-image:url("../Images/Close.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#PlaylistPaging
+{
+	float:right;
+}
+
+#SourceSelectionContainer .ListItem
+{
+	display:block;
+	width:33%;
+	float:left;
+	padding-top:5px;
+	padding-bottom:5px;	
+	padding-left:0px;
+	clear:right;
+}
+
+#SourceSelectionContainer .ListItem.Active
+{
+	background-image:none;
+}
+
+#SourceSelectionContainer .ListItem span
+{
+	display:block;
+	margin: 0 auto;
+	text-align:center;
+	font-size:20px;
+}
+
+#SourceSelectionContainer .ListItem.Active  span
+{
+	color:#0082C4;
+}
+
+#SourceSelectionContainer .ListItem img
+{
+	width:50px;
+	height:50px;
+	display:block;
+	margin: 0 auto;
+}
+
+#SourceSelectionContainer.IPad .ListItem img
+{
+	width:250px;
+	height:250px;
+}
+
+#SourceSelectionContainer.IPhone .ListItem img
+{
+	width:35px;
+	height:35px;
+}
+
+#Playlist
+{
+	clear:both;
+}
+
+.ListItem
+{
+	width:100%;
+	padding-left:30px;
+	text-align:left;
+	display:block;
+	clear:both;
+	float:left;
+	white-space:nowrap;
+	overflow:hidden;
+	padding-bottom:10px;
+	padding-top:10px;
+	border-top:solid 1px #444;
+}
+
+.PlaylistContainer,
+.PlaylistArtwork,
+.PlaylistTitle,
+.PlaylistPosition,
+.PlaylistArtist,
+.PlaylistAlbum,
+.PlaylistDuration
+{
+	padding-left:10px;
+	vertical-align:top;
+	white-space:nowrap;
+	overflow:hidden;
+}
+.PlaylistPosition
+{
+	
+	font-weight:bolder;
+}
+
+.PlaylistArtwork
+{
+	margin-top:5px;
+}
+
+
+.ListItem.Active .PlaylistTitle,
+.ListItem.Active .PlaylistPosition
+{
+	color:#0082C4;
+}
+ 
+.PlaylistContainer,
+.PlaylistArtwork,
+.PlaylistTitle,
+.PlaylistPosition
+{
+	display:inline-block;
+}
+
+.PlaylistTitle.IPad
+{
+	font-size:30px;
+}
+
+.PlaylistPosition.IPad
+{
+	font-size:35px;
+} 
+
+#Playlist .ListItem.Active
+{
+	background-image:url("../Images/Playing.png");
+	background-position:5px center;
+	background-repeat:no-repeat;
+}
+
+#Playlist.IPad .ListItem.Active
+{
+	background-image:url("../Images/Playing.png");
+	background-position:15px center;
+	background-repeat:no-repeat;
+}
+
+.PlaylistArtwork img
+{
+	height:60px;
+	line-height:60px;
+	margin-right:5px;
+	vertical-align:middle;
+}
+
+.PlaylistArtwork img.IPad
+{
+	height:100px;
+	line-height:100px;
+}
+
+#PlaylistLinks 
+{
+	line-height:60px;
+	vertical-align:top;
+}
+
+#PlaylistLinks.IPad 
+{	
+	line-height:90px;
+}
+
+#PlaylistLinks span
+{
+	vertical-align:top;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+#PlaylistLinks span.Active
+{
+	color:#0082C4;
+}
+
+#PlaylistLinks.IPad span
+{
+	
+	padding-left:10px;
+	padding-right:10px;
+	font-size:30px;
+}
+
+#PlaylistPrevious, #PlaylistNext
+{	
+	width:60px;
+	height:60px;
+	display:inline-block;
+}
+#PlaylistPrevious.IPad, #PlaylistNext.IPad
+{	
+	width:90px;
+	height:90px;
+}
+
+#SourceSelectionContainer.IPad .ListItem img
+{
+	width:200px;
+	height:200px;
+}
+
+#SourceSelectionPreviousPage.Active, #PlaylistPrevious
+{
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url("../Images/PreviousPage.png");
+}
+
+#SourceSelectionNextPage.Active, #PlaylistNext
+{
+	background-position:center center;
+	background-repeat:no-repeat;
+	background-image:url("../Images/NextPage.png"); 
+}
+
+#PlaylistPrevious.Inactive, #PlaylistNext.Inactive
+{
+	background-image:none !important;
+}
+
+#TransportControlPrevious, #TransportControlNext
+{
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#TransportControlPrevious
+{
+	background-image:url("../Images/SkipBack.png");
+}
+
+#TransportControlNext
+{
+	background-image:url("../Images/SkipForward.png");
+}
+
+#TransportControlToggleState
+{
+	position:absolute;
+	width:100%;
+	height:100%;
+	top:0px;
+	left:0px;
+	z-index:1;
+}
+#TrackAlbumArtContainer
+{
+	position:relative;
+}
+#TransportControlToggleState.Paused, #TransportControlToggleState.Stopped
+{	
+	background-image:url("../Images/PlayOverlay.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#TransportButton.Buffering
+{	    
+	background-image:url("../Images/Button.png");   
+	background-position:center center;
+	background-repeat:no-repeat;  
+}
+#TransportButton.Buffering.Hover
+{	    
+	background-image:url("../Images/ButtonRollover.png");   
+}
+#TransportButton.Buffering.Mouse
+{	    
+	background-image:url("../Images/ButtonDown.png");   
+}
+
+#TransportButton.Waiting
+{	    
+	background-image:url("../Images/Button.png");   
+	background-position:center center;
+	background-repeat:no-repeat;  
+}
+#TransportButton.Waiting.Hover
+{	    
+	background-image:url("../Images/ButtonRollover.png");   
+}
+#TransportButton.Waiting.Mouse
+{	    
+	background-image:url("../Images/ButtonDown.png");   
+}
+
+#TransportButton.Waiting > div
+{	
+	background-image:url("../Images/Stop.png");    
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+#TransportButton.Waiting.Hover > div
+{	
+	background-image:url("../Images/StopRollover.png");    
+}
+#TransportButton.Waiting.Mouse > div
+{	
+	background-image:url("../Images/StopDown.png");    
+}
+
+#TransportButton.Playing > div
+{	
+	background-image:url("../Images/Stop.png");    
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+#TransportButton.Playing.Hover > div
+{	
+	background-image:url("../Images/StopRollover.png");    
+}
+#TransportButton.Playing.Mouse > div
+{	
+	background-image:url("../Images/StopDown.png");    
+}
+
+#TransportButton.Playing.Pausable > div
+{	    
+	background-image:url("../Images/Pause.png");    
+}
+#TransportButton.Playing.Pausable.Hover > div
+{	
+	background-image:url("../Images/PauseRollover.png");    
+}
+#TransportButton.Playing.Pausable.Mouse > div
+{	
+	background-image:url("../Images/PauseDown.png");    
+}
+
+
+#TransportButton.Paused > div, #TransportButton.Stopped > div
+{	
+	background-image:url("../Images/Play.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+#TransportButton.Paused.Hover > div, #TransportButton.Stopped.Hover > div
+{	
+	background-image:url("../Images/PlayRollover.png");
+}
+#TransportButton.Paused.Mouse > div, #TransportButton.Stopped.Mouse > div
+{	
+	background-image:url("../Images/PlayDown.png");
+}
+
+#TransportButton.Buffering > div
+{	
+	background-image:url("../Images/Buffering.gif");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#ToggleNumpad span#NumpadImage
+{
+	background-image:url("../Images/Numpad.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#ToggleNumpad.Active span#NumpadImage
+{
+	background-image:url("../Images/NumpadActive.png");
+}
+
+#NumpadClear
+{
+	background-image:url("../Images/DeleteButton.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#NumpadEnter
+{
+	background-image:url("../Images/EnterButton.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#ToggleVolumeControl span#VolumeControlImage
+{
+	background-image:url("../Images/Volume.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+#ToggleVolumeControl.Active span#VolumeControlImage
+{
+	background-image:url("../Images/VolumeActive.png");
+}
+
+#ToggleVolumeControl span#VolumeControlImage.Inactive
+{
+	background-image:none;
+}
+
+#NumpadContainer div
+{
+	display:inline-block;
+	font-size:30px;
+	width:33%;
+	height:25%;
+	float:left;
+	text-align:center;
+	border-left:solid 1px #444;
+	border-bottom:solid 1px #444;
+	margin-left:-1px;
+	margin-bottom:-1px;
+	line-height:60px;
+	vertical-align:middle;
+}
+
+#NumpadContainer.IPad div
+{
+	line-height:200px;
+}
+
+#NumpadContainer #0,
+#NumpadContainer #NumpadBottomLeft,
+#NumpadContainer #NumpadBottomRight
+{
+	border-bottom:none;
+}
+
+#VolumeDisplayContainer.Active
+{
+	position:relative;
+}
+
+#VolumeDisplay
+{
+	font-size:200px;
+	text-align:center;
+	width:100%;
+	position:absolute;
+	top:50%;
+	margin-top:-150px;	
+	color:#0082C4;
+	display:inline-block;
+}
+
+#VolumeDisplay.IPhone
+{
+	font-size:150px;
+	margin-top:-100px;	
+}
+
+#VolumeDisplay.IPad
+{
+	font-size:300px;
+	margin-top:-200px;	
+}
+
+#VolumeDisplay.Mute
+{	
+	color:#777777;
+}
+
+#VolumeDisplayTooltip
+{
+	position:absolute;
+	bottom:0px;
+	text-align:center;
+	z-index:2;
+	color:#0082C4;
+	font-weight:bold;
+	font-size:30px;
+	width:100%;
+	display:inline-block;
+}
+
+#VolumeDisplayTooltip.IPad
+{
+	font-size:120px;
+	margin-bottom:100px;
+}
+
+#VolumeDown, #VolumeUp
+{
+	font-size:30px;
+	font-weight:bold;
+}
+
+
+#VolumeDown img,
+#VolumeUp img
+{
+	display:none;
+}
+
+
+
+#VolumeDown.IPad img,
+#VolumeUp.IPad img
+{
+	width:30px;
+	margin-top:25px;
+	margin-right:75px;
+	margin-left:75px;
+	display:inline;
+}
+
+#VolumeUp
+{
+	background-image:url("../Images/VolumeUpMed.png");
+	background-position:70% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeDown
+{
+	background-image:url("../Images/VolumeDownMed.png");
+	background-position:30% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeUp.Android,
+#VolumeDown.Android,
+#VolumeUpSmall.Android,
+#VolumeDownSmall.Android
+{	
+	float:left;
+	width:49%;
+}
+
+#VolumeUp.Android
+{
+	background-image:url("../Images/VolumeUpMed.png");
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeDown.Android
+{
+	background-image:url("../Images/VolumeDownMed.png");
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeUpSmall.Android
+{
+	background-image:url("../Images/VolumeUpSmall.png");
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeDownSmall.Android
+{
+	background-image:url("../Images/VolumeDownSmall.png");
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeUp.IPad
+{
+	background-image:url("../Images/VolumeUpSmall.png");
+	background-position:10% 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeDown.IPad
+{
+	background-image:url("../Images/VolumeDownSmall.png");
+	background-position:90% 50%;
+	background-repeat:no-repeat;
+}
+
+.TabContainer div.VolumeDown, 
+.TabContainer div.VolumeUp
+{
+	width:40%;
+}
+
+.TabContainer div.VolumeMute
+{
+	width:20%;
+}
+
+.TabContainer div.VolumeDown span
+{
+	text-align:left;
+}
+
+.TabContainer div.VolumeUp span
+{
+	text-align:right;
+}
+
+#VolumeMute
+{	
+	background-image:url("../Images/Mute.png");
+	background-position:center 50%;
+	background-repeat:no-repeat;
+}
+
+#VolumeMute.Mute
+{
+	background-image:url("../Images/MuteActive.png");
+}

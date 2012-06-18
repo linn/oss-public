@@ -1,0 +1,98 @@
+Import('_default_env')
+
+# TagLib
+
+lib =  _default_env.Install("$install_dir/lib", "taglib-sharp.dll")
+lib += _default_env.Install("$install_dir/bin", "taglib-sharp.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "taglib-sharp.dll")
+
+lib += _default_env.Install("$install_dir/lib", "policy.2.0.taglib-sharp.dll")
+lib += _default_env.Install("$install_dir/bin", "policy.2.0.taglib-sharp.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "policy.2.0.taglib-sharp.dll")
+
+lib += _default_env.Install("$install_dir/lib", "policy.2.0.taglib-sharp.config")
+lib += _default_env.Install("$install_dir/bin", "policy.2.0.taglib-sharp.config")
+lib += _default_env.Install("$install_dir/bin/Test", "policy.2.0.taglib-sharp.config")
+
+# GWT  1.5.2
+
+lib += _default_env.Install("$hardware_dir/lib", "gwt-dev-linux.jar")
+lib += _default_env.Install("$hardware_dir/lib", "gwt-user.jar")
+
+# MySql
+
+lib += _default_env.Install("$install_dir/lib", "mysql.data.dll")
+lib += _default_env.Install("$install_dir/bin", "mysql.data.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "mysql.data.dll")
+
+# Db4o (Version 7.12 .NET 3,5)
+
+lib += _default_env.Install("$install_dir/lib", "Db4objects.Db4o.dll")
+lib += _default_env.Install("$install_dir/bin", "Db4objects.Db4o.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "Db4objects.Db4o.dll")
+
+# monobjc
+
+lib += _default_env.Install("$install_dir/lib", "Monobjc.dll")
+lib += _default_env.Install("$install_dir/bin", "Monobjc.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "Monobjc.dll")
+
+lib += _default_env.Install("$install_dir/lib", "libmonobjc.2.dylib")
+lib += _default_env.Install("$install_dir/bin", "libmonobjc.2.dylib")
+lib += _default_env.Install("$install_dir/bin/Test", "libmonobjc.2.dylib")
+
+lib += _default_env.Install("$install_dir/lib", "Monobjc.Cocoa.dll")
+lib += _default_env.Install("$install_dir/bin", "Monobjc.Cocoa.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "Monobjc.Cocoa.dll")
+
+lib += _default_env.Install("$install_dir/lib", "Monobjc.ImageKit.dll")
+lib += _default_env.Install("$install_dir/bin", "Monobjc.ImageKit.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "Monobjc.ImageKit.dll")
+
+lib += _default_env.Install("$install_dir/lib", "Monobjc.WebKit.dll")
+lib += _default_env.Install("$install_dir/bin", "Monobjc.WebKit.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "Monobjc.WebKit.dll")
+
+# ICSharpCode.SharpZipLib
+
+if _default_env['hardware'] == 'PocketPc':
+    file = "Framework/Compact/ICSharpCode.SharpZipLib.dll"
+else:
+    file = "Framework/Full/ICSharpCode.SharpZipLib.dll"
+
+lib += _default_env.Install("$install_dir/lib", file)
+lib += _default_env.Install("$install_dir/bin", file)
+lib += _default_env.Install("$install_dir/bin/Test", file)
+
+# itextsharp (open source PDF creator)
+
+lib += _default_env.Install("$install_dir/lib", "itextsharp.dll")
+lib += _default_env.Install("$install_dir/bin", "itextsharp.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "itextsharp.dll")
+
+#Newtonsoft json parser
+lib += _default_env.Install("$install_dir/lib", "Newtonsoft.Json.dll")
+lib += _default_env.Install("$install_dir/bin", "Newtonsoft.Json.dll")
+lib += _default_env.Install("$install_dir/bin", "Newtonsoft.Json.License.txt")
+lib += _default_env.Install("$install_dir/lib", "Newtonsoft.Json.License.txt")
+
+# C# WebServer
+lib += _default_env.Install("$install_dir/lib", "HttpServer.dll")
+lib += _default_env.Install("$install_dir/bin", "HttpServer.dll")
+lib += _default_env.Install("$install_dir/bin", "HttpServer.License.txt")
+lib += _default_env.Install("$install_dir/lib", "HttpServer.License.txt")
+
+#Viewer Dependencies
+lib += _default_env.Install("$install_dir/lib", "msvcp100.dll")
+lib += _default_env.Install("$install_dir/lib", "msvcr100.dll")
+
+#Moq
+lib += _default_env.Install("$install_dir/lib", "Moq.dll")
+lib += _default_env.Install("$install_dir/bin/Test", "Moq.dll")
+
+Alias('Lib', lib)
+Alias('Docs')
+Alias('Test', 'Lib')
+
+Default(['Test', 'Docs'])
+

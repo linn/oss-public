@@ -1,0 +1,596 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>Main</Namespace>
+  <Package>StatusBar.xml</Package>
+  <Package>RoomSelection.xml</Package>
+  <Package>SourceSelection.xml</Package>
+  <Package>Library.xml</Package>
+  <Package>ControlPanel.xml</Package>
+  <Package>CurrentPlaylist.xml</Package>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Main.StatusBar</Child>
+      <Child>Main.SourceSelection</Child>
+      <Child>Main.Library</Child>
+      <Child>Main.Background</Child>
+      <Child>Main.Waiting</Child>
+      <Child>Main.ControlPanel</Child>
+      <Child>Main.CurrentPlaylist</Child>
+      <Child>Main.RoomSelection</Child>
+      <Child>Main.ExitButton</Child>
+      <Child>Main.MinimiseButton</Child>
+      <Child>Main.VersionText</Child>
+      <Child>Main.WibbleSpeed</Child>
+    </Children>
+    <Width>800</Width>
+    <Height>480</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>StatusBar</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>RoomSelection</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>46</X>
+        <Y>96</Y>
+        <Z>4</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>RoomSelection.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>SourceSelection</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>403</X>
+        <Y>96</Y>
+        <Z>4</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>SourceSelection.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Library</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>46</X>
+        <Y>96</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Library.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Background</Name>
+    <Plugin>Main.Background.TextureArrayFixed</Plugin>
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>800</Width>
+    <Height>480</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/background.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Background.TextureArrayFixed</Name>
+    <Plugin>Main.Background</Plugin>
+    <Texture>Bitmaps/background.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Waiting</Name>
+    <Plugin>Main.Waiting.Counter</Plugin>
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>112</X>
+        <Y>143</Y>
+        <Z>40</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>0</Width>
+    <Height>0</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/WaitingIcon_Background_One.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Counter">
+    <Name>Waiting.Counter</Name>
+    <Plugin>Main.Waiting.TextureArray</Plugin>
+    <MaxCount>6</MaxCount>
+    <CountsPerSecond>2</CountsPerSecond>
+    <Loop>True</Loop>
+    <Counting>False</Counting>
+  </Plugin>
+  <Plugin class="TextureArray">
+    <Name>Waiting.TextureArray</Name>
+    <Plugin>Main.Waiting</Plugin>
+    <Texture>Bitmaps/WaitingIcon_Background_One.png</Texture>
+    <Texture>Bitmaps/WaitingIcon_Background_Two.png</Texture>
+    <Texture>Bitmaps/WaitingIcon_Background_Three.png</Texture>
+    <Texture>Bitmaps/WaitingIcon_Background_Four.png</Texture>
+    <Texture>Bitmaps/WaitingIcon_Background_Five.png</Texture>
+    <Texture>Bitmaps/WaitingIcon_Background_Six.png</Texture>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>ControlPanel</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>374</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>ControlPanel.Root</Child>
+      <Child>Main.PlaybackControlEx</Child>
+      <Child>Main.ShuffleBlue</Child>
+      <Child>Main.RepeatBlue</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>CurrentPlaylist</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>403</X>
+        <Y>96</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentPlaylist.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>ExitButton</Name>
+    <Plugin>Main.ExitButton.Monostable</Plugin>
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>778</X>
+        <Y>2</Y>
+        <Z>42</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>20</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/close_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>ExitButton.Monostable</Name>
+    <Plugin>Main.ExitButton.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>ExitButton.TextureArrayFixed</Name>
+    <Plugin>Main.ExitButton</Plugin>
+    <Texture>Bitmaps/close_01.png</Texture>
+    <Texture>Bitmaps/close_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>MinimiseButton</Name>
+    <Plugin>Main.MinimiseButton.Monostable</Plugin>
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>758</X>
+        <Y>2</Y>
+        <Z>43</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>20</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/min_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>MinimiseButton.Monostable</Name>
+    <Plugin>Main.MinimiseButton.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>MinimiseButton.TextureArrayFixed</Name>
+    <Plugin>Main.MinimiseButton</Plugin>
+    <Texture>Bitmaps/min_01.png</Texture>
+    <Texture>Bitmaps/min_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>VersionText</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>694</X>
+        <Y>461</Y>
+        <Z>44</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>100</Width>
+    <Height>15</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>2</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>8.25</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text />
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>WibbleSpeed</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>4</X>
+        <Y>462</Y>
+        <Z>45</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>100</Width>
+    <Height>15</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>1</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>8.25</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>100</Text>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>PlaybackControlEx</Name>
+    <Plugin />
+    <Parent>Main.ControlPanel</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>-364</Y>
+        <Z>45</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Main.Shuffle</Child>
+      <Child>Main.Repeat</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Shuffle</Name>
+    <Plugin>Main.Shuffle.Monostable</Plugin>
+    <Parent>Main.PlaybackControlEx</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>681</X>
+        <Y>345</Y>
+        <Z>-2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>25</Width>
+    <Height>25</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/shuffle_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Shuffle.Monostable</Name>
+    <Plugin>Main.Shuffle.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Shuffle.TextureArrayFixed</Name>
+    <Plugin>Main.Shuffle</Plugin>
+    <Texture>Bitmaps/shuffle_01.png</Texture>
+    <Texture>Bitmaps/shuffle_01.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>ShuffleBlue</Name>
+    <Plugin>Main.ShuffleBlue.TextureArrayFixed</Plugin>
+    <Parent>Main.ControlPanel</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>691</X>
+        <Y>-19</Y>
+        <Z>44</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>25</Width>
+    <Height>25</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/shuffle_02.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>ShuffleBlue.TextureArrayFixed</Name>
+    <Plugin>Main.ShuffleBlue</Plugin>
+    <Texture>Bitmaps/shuffle_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Repeat</Name>
+    <Plugin>Main.Repeat.Monostable</Plugin>
+    <Parent>Main.PlaybackControlEx</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>706</X>
+        <Y>345</Y>
+        <Z>-1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>25</Width>
+    <Height>25</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/repeat_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Repeat.Monostable</Name>
+    <Plugin>Main.Repeat.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Repeat.TextureArrayFixed</Name>
+    <Plugin>Main.Repeat</Plugin>
+    <Texture>Bitmaps/repeat_01.png</Texture>
+    <Texture>Bitmaps/repeat_01.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>RepeatBlue</Name>
+    <Plugin>Main.RepeatBlue.TextureArrayFixed</Plugin>
+    <Parent>Main.ControlPanel</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>716</X>
+        <Y>-19</Y>
+        <Z>45</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>25</Width>
+    <Height>25</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/repeat_02.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>RepeatBlue.TextureArrayFixed</Name>
+    <Plugin>Main.RepeatBlue</Plugin>
+    <Texture>Bitmaps/repeat_02.png</Texture>
+  </Plugin>
+</Package>

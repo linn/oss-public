@@ -1,0 +1,9 @@
+Import('_default_env')
+
+SConscript('Klimax/SConscript', exports = '_default_env')
+SConscript('Kinsky/SConscript', exports = '_default_env')
+SConscript('Sneaky/SConscript', exports = '_default_env')
+
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])

@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn.Services</RootNamespace>
+    <AssemblyName>OssServices</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BaseDirectory>..\..\LibUpnpCil\Services</BaseDirectory>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\share\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LibUpnpCil\Services\Linn\AvTransport.xml">
+      <Link>Linn\AvTransport.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Debug.xml">
+      <Link>Linn\Debug.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Diagnostics.xml">
+      <Link>Linn\Diagnostics.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Flash.xml">
+      <Link>Linn\Flash.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Product.xml">
+      <Link>Linn\Product.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Proxy.xml">
+      <Link>Linn\Proxy.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Sdp.xml">
+      <Link>Linn\Sdp.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Video.xml">
+      <Link>Linn\Video.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Linn\Volkano.xml">
+      <Link>Linn\Volkano.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\Sonos\DeviceProperties.xml">
+      <Link>Sonos\DeviceProperties.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\AvTransport.xml">
+      <Link>UpnpAv\AvTransport.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\ConnectionManager.xml">
+      <Link>UpnpAv\ConnectionManager.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\ContentDirectory.xml">
+      <Link>UpnpAv\ContentDirectory.xml</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\RenderingControl.xml">
+      <Link>UpnpAv\RenderingControl.xml</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Configuration.xml">
+      <Link>Linn\Configuration.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Delay.xml">
+      <Link>Linn\Delay.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Jukebox.xml">
+      <Link>Linn\Jukebox.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\ProductV1.xml">
+      <Link>Linn\ProductV1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\ProductV2.xml">
+      <Link>Linn\ProductV2.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Soundcard.xml">
+      <Link>Linn\Soundcard.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Info1.xml">
+      <Link>Openhome\Info1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Playlist1.xml">
+      <Link>Openhome\Playlist1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\PlaylistManager1.xml">
+      <Link>Openhome\PlaylistManager1.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Product1.xml">
+      <Link>Openhome\Product1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Radio1.xml">
+      <Link>Openhome\Radio1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Receiver1.xml">
+      <Link>Openhome\Receiver1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Sender1.xml">
+      <Link>Openhome\Sender1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Time1.xml">
+      <Link>Openhome\Time1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Volume1.xml">
+      <Link>Openhome\Volume1.xml</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointAVTransport.cs">
+      <Link>Generated\UpnpControlPointAVTransport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointConfiguration.cs">
+      <Link>Generated\UpnpControlPointConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointConnectionManager.cs">
+      <Link>Generated\UpnpControlPointConnectionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointContentDirectory.cs">
+      <Link>Generated\UpnpControlPointContentDirectory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDebug.cs">
+      <Link>Generated\UpnpControlPointDebug.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDelay.cs">
+      <Link>Generated\UpnpControlPointDelay.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDeviceProperties.cs">
+      <Link>Generated\UpnpControlPointDeviceProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDiagnostics.cs">
+      <Link>Generated\UpnpControlPointDiagnostics.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointFlash.cs">
+      <Link>Generated\UpnpControlPointFlash.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointInfo.cs">
+      <Link>Generated\UpnpControlPointInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointJukebox.cs">
+      <Link>Generated\UpnpControlPointJukebox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointPlaylist.cs">
+      <Link>Generated\UpnpControlPointPlaylist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointPlaylistManager.cs">
+      <Link>Generated\UpnpControlPointPlaylistManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProduct.cs">
+      <Link>Generated\UpnpControlPointProduct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV1.cs">
+      <Link>Generated\UpnpControlPointProductV1.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV2.cs">
+      <Link>Generated\UpnpControlPointProductV2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProxy.cs">
+      <Link>Generated\UpnpControlPointProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointRadio.cs">
+      <Link>Generated\UpnpControlPointRadio.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointReceiver.cs">
+      <Link>Generated\UpnpControlPointReceiver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointRenderingControl.cs">
+      <Link>Generated\UpnpControlPointRenderingControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSdp.cs">
+      <Link>Generated\UpnpControlPointSdp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSender.cs">
+      <Link>Generated\UpnpControlPointSender.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSoundcard.cs">
+      <Link>Generated\UpnpControlPointSoundcard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointTime.cs">
+      <Link>Generated\UpnpControlPointTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVideo.cs">
+      <Link>Generated\UpnpControlPointVideo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVolkano.cs">
+      <Link>Generated\UpnpControlPointVolkano.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVolume.cs">
+      <Link>Generated\UpnpControlPointVolume.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Services\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

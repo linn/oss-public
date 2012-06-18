@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Layout" type ="Layout"/>
+    <xs:complexType name="Layout">
+        <xs:sequence>
+            <xs:element name="Section" type="Section" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Section">
+        <xs:sequence>
+            <xs:element name="Flash" type="xs:positiveInteger" />
+            <xs:element name="Offset" type="xs:positiveInteger" />
+            <xs:element name="Bytes" type="xs:positiveInteger" />
+        </xs:sequence>
+        <xs:attribute name="tag" type="xs:string" use="required" />
+    </xs:complexType>
+</xs:schema>

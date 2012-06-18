@@ -1,0 +1,313 @@
+# SConstruct file for KinskyPronto build
+#
+# This builds the application JavaScripts and copies them to the expected
+# locations (PEP default locations). Can additionally build an installer from
+# JS, XCF and XGF files. Note that the XCF and XGF files have to be created
+# manually using PEP
+
+import os
+import shutil
+import time
+
+
+helpText = """
+--------------------------------------------------------------------------------
+scons <target> variant=<debug|release> [monitor=<ip>]
+
+    target:- on of
+        <blank>  - build ALL
+        9400     - build apps for 9400
+        9600     - build apps for 9600
+        playlist - build playlist app for 9400 and 9600
+        radio    - build radio app for 9400 and 9600
+        preamp   - build preamp app for 9400 and 9600
+        
+    variant:-
+        debug   - include logging
+        release - no logging
+        
+    monitor:- IP address of PC running ProntoMonitor (for debug logs)
+--------------------------------------------------------------------------------
+"""
+Help( helpText )
+
+
+#------------------------
+# Handle input parameters
+#------------------------
+
+def abort():
+    print helpText
+    exit( -1 )
+     
+aVariant = ARGUMENTS.get( 'variant', '' ).lower()
+aMonitor = ARGUMENTS.get( 'monitor', '' )
+if aVariant not in ['debug', 'release']:
+    abort()
+if aVariant == 'debug':
+    if not aMonitor:
+        abort()
+    
+# write options to dependent file (to ensure rebuild when options change)
+f = open( 'bldOpts.js', 'wt+' )
+f.write( '\n// %s %s' % (aVariant, aMonitor) )
+f.close()    
+    
+
+#----------------------------------------------------------
+# Define the file sets required for the various applicatins
+#----------------------------------------------------------
+
+commonFirstFiles =      [ 'lib/macros.h',
+                          'buildVersion.js',  
+                          'pronto.js',
+                          'lib/preamble.js',
+                          'lib/log.js',               # enabled for debug build
+                          'lib/timestamp.js',         # enabled for debug build
+                          'lib/noLog.js',             # disabled for debug build
+                          'diag.js',
+                          'lib/elab.js',
+                          'prontoHardKeys.js',
+                          'validation.js',
+                          'lib/utils.js',
+                          'lib/utf8.js',
+                          'configuration.js',
+                          'ProntoDebug.js',           # enabled for debug build
+                          'lpec.js',
+                          'lpecMessages.js',
+                          'uiVolumeEtc.js',
+                          'kinskyUiElements.js',
+                          'engineVolumeEtc.js' ]
+
+msSpecificFiles =       [ 'ms.js',
+                          'lib/ms.parse.js',
+                          'lib/msMetadataCache.js',
+                          'engineTcpSocket.js']
+
+playlistSpecificFiles = [ 'decode.js',
+                          'uiHeader.js',
+                          'scrollWheelManagementLowestLevel.js',
+                          'scrollWheelManagementLowLevel.js',
+                          'scrollWheelManagement.js',
+                          'asyncBlockLoadCache.js',
+                          'uiPageXofY.js',
+                          'lib/base64_01.js',
+                          'lib/trackQueuing.js',
+                          'coverArtCache.js',
+                          'coverArt.js',
+                          'ui_paging.js',
+                          'uiLibrary.js',
+                          'uiNowPlaying.js',
+                          'uiPlaylist.js',
+                          'soapMessages.js',
+                          'engineSources.js',
+                          'engineLibrary.js',
+                          'engineTracks.js',
+                          'engineInfo.js',
+                          'pageTransitions.js',
+                          'powerManagement.js',
+                          'handleShuffleRepeat.js',
+                          'handleFooter.js',
+                          'play.js',
+                          'activity.js' ]
+                    
+radioSpecificFiles =    [ 'decode.js',
+                          'uiHeader.js',
+                          'scrollWheelManagementLowLevel.js',
+                          'scrollWheelManagement.js',
+                          'uiPageXofY.js',
+                          'lib/base64_01.js',
+                          'lib/ds.radio.parse.js',
+                          'coverArt.js',
+                          'ui_paging.js',
+                          'ui_Presets.js',
+                          'ui.NowListening.js',
+                          'engine.Radio.js',
+                          'engineSources.js',
+                          'engineInfo.js',
+                          'pageTransitions.js',
+                          'powerManagement.js',
+                          'handleFooter.js']
+                    
+preampSpecificFiles =   [ 'ui_paging.js',
+                          'ui.PreAmpOnly.js',
+                          'pageTransitions.js',
+                          'powerManagement.js' ]
+
+commonLastFiles =       [ 'splash.js',
+                          'go.js' ]
+                          
+embeddedControlFiles =  [ 'lib/macros.h',
+                          'embeddedControlHdr.js',  
+                          'lpec.js',
+                          'lpecMessages.js',
+                          'embeddedControl.js']                          
+                    
+playlistAppFiles = commonFirstFiles + msSpecificFiles + playlistSpecificFiles + commonLastFiles  
+radioAppFiles    = commonFirstFiles + radioSpecificFiles + commonLastFiles  
+preampAppFiles   = commonFirstFiles + preampSpecificFiles + commonLastFiles  
+
+
+#-----------------------
+# Define builder methods        
+#-----------------------
+ 
+def concatBld( target, source, env ):
+    print '\nCreating ' + str( target[0] )
+    tgtFile = open( str( target[0] ), 'wt' )
+    for src in source:
+        print '    Adding ' + str( src )
+        srcFile = open( str( src ), "rt" )
+        lines = srcFile.readlines()
+        for line in lines:
+            tgtFile.write( line )
+    tgtFile.close()
+    return None
+    
+def cpp( target, source, env ):
+    cmd = 'tools\mcpp.exe -N -P -k'
+    if env['VARIANT'] == 'debug':
+        cmd += ' -D LOGGING -D DEBUG_IP=%s' % env['MONITOR']
+    if env['APP'] != '':
+        cmd += ' -D VARIANT_%s' % env['APP']
+    if env['MODEL'] != '':
+        cmd += ' -D MODEL_%s' % env['MODEL']
+    cmd += ' ' + source + ' ' + target
+    print cmd    
+    os.popen( cmd )
+    
+def compress( target, source, env ):
+    cmd = 'java -jar tools\yuicompressor-2.4.2.jar %s -o %s' % (source, target)
+    print cmd    
+    os.popen( cmd )
+    
+def stamp( target, source, env ):
+    print "Timestamping %s" % target    
+    srcFile = open( source, "rt" )
+    lines = srcFile.readlines()
+    srcFile.close()    
+    tgtFile = open( target, "wt" )
+    tgtFile.write( '// KinskyPronto%s %s %s %s\n' % (env['APP'], env['MODEL'], env['VARIANT'], env['MONITOR'] ))    
+    tgtFile.write( '' )
+    tgtFile.write( 'var buildTimestamp = "%s";\n' % env['BUILD_TIME'] )
+    tgtFile.write( 'var buildRevision = "$%s $";\n' % env['BUILD_SVN_REV'] )
+    for line in lines:
+        tgtFile.write( line )
+    tgtFile.close()
+    
+def libhdr( target, source, env ):
+    print "Adding lib header to %s" % target    
+    srcFile = open( source, "rt" )
+    lines = srcFile.readlines()
+    srcFile.close()    
+    tgtFile = open( target, "wt" )
+    tgtFile.write( '/*!\n' )
+    tgtFile.write( '  @title linnControl\n' )
+    tgtFile.write( '  @version 1.0\n' )
+    tgtFile.write( '  @author Linn Products\n' )
+    tgtFile.write( ' */\n\n' )
+    for line in lines:
+        tgtFile.write( line )
+    tgtFile.close()
+    
+def psBld( target, source, env ):
+    psDir = 'C:\\Documents and Settings\\All Users\\Application Data\\Philips\\ProntoEdit Professional 2\\ProntoScripts\\'    
+    tgtName = str( target[0] )
+    srcName = str( source[0] )
+    cppName = tgtName.replace( '.js', 'Cpp.js' ) 
+    minName = tgtName.replace( '.js', 'CppMin.js' )
+    dest    = psDir + os.path.basename( tgtName )
+    if os.path.exists( minName ): os.unlink( minName )    # reqd. to catch build fails 
+    if os.path.exists( dest ): os.unlink( dest )          # remove in case build fails  
+    cpp( cppName, srcName, env )
+    compress( minName, cppName, env )
+    stamp( tgtName, minName, env )
+    dest = psDir + os.path.basename( tgtName )
+    print( 'Copying to %s' % dest )
+    shutil.copy( tgtName, dest )
+    return None
+
+def libBld( target, source, env ):
+    libDir = 'C:\\Documents and Settings\\All Users\\Application Data\\Philips\\ProntoEdit Professional 2\\Libraries\\'    
+    tgtName = str( target[0] )
+    srcName = str( source[0] )
+    cppName = tgtName.replace( '.js', 'Cpp.js' ) 
+    minName = tgtName.replace( '.js', 'CppMin.js' ) 
+    dest = libDir + os.path.basename( tgtName )
+    if os.path.exists( minName ): os.unlink( minName )    # reqd. to catch build fails 
+    if os.path.exists( dest ): os.unlink( dest )          # remove in case build fails  
+    cpp( cppName, srcName, env )
+    compress( minName, cppName, env )
+    libhdr( tgtName, minName, env )
+    print( 'Copying to %s' % dest )
+    shutil.copy( tgtName, dest )
+    return None
+
+
+#--------------------------
+# Define build environments
+#--------------------------
+
+def getSvnRev():
+    svnRev = 'Unknown'  
+    cmd = 'svn info http://oss.linn.co.uk/repos/Main/KinskyPronto'
+    data = os.popen( cmd ).read()
+    for line in data.split('\n'):
+        if 'Revision: ' in line:
+            svnRev = line
+            break
+    return svnRev
+
+env = Environment()
+env.SetDefault( BUILD_TIME = time.asctime() )    
+env.SetDefault( BUILD_SVN_REV = getSvnRev() )  
+env.SetDefault( VARIANT = aVariant )    
+env.SetDefault( MONITOR = aMonitor )   
+env.SetDefault( APP = '' ) 
+env.SetDefault( MODEL = '' ) 
+env.Append( BUILDERS = {'Concat': Builder( action = concatBld )})    
+env.Append( BUILDERS = {'Ps':     Builder( action = psBld )})    
+env.Append( BUILDERS = {'Lib':    Builder( action = libBld )})    
+
+envPlaylist9400 = env.Clone( APP='DS', MODEL='9400' )
+envRadio9400    = env.Clone( APP='RADIO', MODEL='9400' )
+envPreamp9400   = env.Clone( APP='PREAMP', MODEL='9400' )
+
+envPlaylist9600 = env.Clone( APP='DS', MODEL='9600' )
+envRadio9600    = env.Clone( APP='RADIO', MODEL='9600' )
+envPreamp9600   = env.Clone( APP='PREAMP', MODEL='9600' )
+    
+
+#--------------------------
+# Perform the actual builds     
+#--------------------------
+
+env.Concat( 'build\DS_xxxx_DS.js', [playlistAppFiles, 'bldOpts.js'] )
+envPlaylist9400.Ps( 'build\DS_9400_DS.js', 'build\DS_xxxx_DS.js' )
+envPlaylist9600.Ps( 'build\DS_9600_DS.js', 'build\DS_xxxx_DS.js' )
+
+env.Concat( 'build\DS_xxxx_RADIO.js', [radioAppFiles, 'bldOpts.js'] )
+envRadio9400.Ps( 'build\DS_9400_RADIO.js', 'build\DS_xxxx_RADIO.js' )
+envRadio9600.Ps( 'build\DS_9600_RADIO.js', 'build\DS_xxxx_RADIO.js' )
+
+env.Concat( 'build\DS_xxxx_PREAMP.js', [preampAppFiles, 'bldOpts.js'] )
+envPreamp9400.Ps( 'build\DS_9400_PREAMP.js', 'build\DS_xxxx_PREAMP.js' )
+envPreamp9600.Ps( 'build\DS_9600_PREAMP.js', 'build\DS_xxxx_PREAMP.js' )
+
+env.Concat( 'build\embeddedControl.js', [embeddedControlFiles, 'bldOpts.js'] )
+env.Lib( 'build\linnControl.js', 'build\embeddedControl.js' )
+
+
+#--------------------
+# Aliases for targets
+#--------------------
+
+Alias( '9400', ['build\DS_9400_DS.js', 'build\DS_9400_RADIO.js', 'build\DS_9400_PREAMP.js', 'build\linnControl.js'] )
+Alias( '9600', ['build\DS_9600_DS.js', 'build\DS_9600_RADIO.js', 'build\DS_9600_PREAMP.js', 'build\linnControl.js'] )
+
+Alias( 'playlist', ['build\DS_9400_DS.js'    , 'build\DS_9600_DS.js'] )
+Alias( 'radio',    ['build\DS_9400_RADIO.js' , 'build\DS_9600_RADIO.js'] )
+Alias( 'preamp',   ['build\DS_9400_PREAMP.js', 'build\DS_9600_PREAMP.js'] )
+
+
+

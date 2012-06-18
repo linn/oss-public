@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D645E5A7-8A42-4E8E-8AED-BD7D007B754F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KinskyDesktopWpf</RootNamespace>
+    <AssemblyName>Kinsky</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="..\..\KinskyDesktop\Wpf\App.xaml">
+      <Link>App.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\AboutDialog.xaml">
+      <Link>AboutDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\BookmarkNotFoundDialog.xaml">
+      <Link>BookmarkNotFoundDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\CrashLogDialog.xaml">
+      <Link>CrashLogDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\DetailsDialog.xaml">
+      <Link>DetailsDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\IndeterminateProgressBar.xaml">
+      <Link>IndeterminateProgressBar.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\OptionsDialog.xaml">
+      <Link>OptionsDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\PlaylistWidget.xaml">
+      <Link>PlaylistWidget.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\PlaylistWidgetAux.xaml">
+      <Link>PlaylistWidgetAux.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\RockerControl.xaml">
+      <Link>RockerControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\RotaryControl.xaml">
+      <Link>RotaryControl.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\SavePlaylistDialog.xaml">
+      <Link>SavePlaylistDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\StringInputDialog.xaml">
+      <Link>StringInputDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\ThreekArray.xaml">
+      <Link>ThreekArray.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\UpdateDialog.xaml">
+      <Link>UpdateDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\UpnpObjectDetailsDisplay.xaml">
+      <Link>UpnpObjectDetailsDisplay.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\UserLogDialog.xaml">
+      <Link>UserLogDialog.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\ViewKinsky.xaml">
+      <Link>ViewKinsky.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\ViewWidgetBreadcrumb.xaml">
+      <Link>ViewWidgetBreadcrumb.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\ViewWidgetBrowser.xaml">
+      <Link>ViewWidgetBrowser.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\ViewWidgetTrackDisplay.xaml">
+      <Link>ViewWidgetTrackDisplay.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\ComboBox.xaml">
+      <Link>ComboBox.xaml</Link>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>Resources/ComboBox</CustomToolNamespace>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\ControlStyles.xaml">
+      <Link>ControlStyles.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\ListBox.xaml">
+      <Link>ListBox.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\MenuItem.xaml">
+      <Link>MenuItem.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\ScrollBar.xaml">
+      <Link>ScrollBar.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\Shared.xaml">
+      <Link>Shared.xaml</Link>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Controls\KinskyDesktop.xaml">
+      <Link>KinskyDesktop.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\Slider.xaml">
+      <Link>Slider.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\TileViewStyle.xaml">
+      <Link>TileViewStyle.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="..\..\KinskyDesktop\Wpf\Resources\WindowChromeStyle.xaml">
+      <Link>WindowChromeStyle.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="..\..\KinskyDesktop\Wpf\App.xaml.cs">
+      <Link>App.xaml.cs</Link>
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\CrashLogDumperForm.cs">
+      <Link>Classes\CrashLogDumperForm.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\ImageLoader.cs">
+      <Link>Classes\ImageLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\ViewModels.cs">
+      <Link>Classes\ViewModels.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\BookmarkNotFoundDialog.xaml.cs">
+      <Link>BookmarkNotFoundDialog.xaml.cs</Link>
+      <DependentUpon>BookmarkNotFoundDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\CrashLogDialog.xaml.cs">
+      <Link>CrashLogDialog.xaml.cs</Link>
+      <DependentUpon>CrashLogDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\DistributingWrapPanel.cs">
+      <Link>Controls\DistributingWrapPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\KinskyDesktop.xaml.cs">
+      <Link>KinskyDesktop.xaml.cs</Link>
+      <DependentUpon>KinskyDesktop.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\AppRestartHandler.cs">
+      <Link>Classes\AppRestartHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\Commands.cs">
+      <Link>Classes\Commands.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\DragHelper.cs">
+      <Link>Classes\DragHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\DropConverter.cs">
+      <Link>Classes\DropConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\Extensions.cs">
+      <Link>Classes\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\IPlaylistWidget.cs">
+      <Link>Classes\IPlaylistWidget.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\LazyLoadingList.cs">
+      <Link>Classes\LazyLoadingList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\MediaProviderSupport.cs">
+      <Link>Classes\MediaProviderSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\StackStatusHandlerWpf.cs">
+      <Link>Classes\StackStatusHandlerWpf.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\UIOptions.cs">
+      <Link>Classes\UIOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\ValueConverters.cs">
+      <Link>Classes\ValueConverters.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\AboutDialog.xaml.cs">
+      <Link>AboutDialog.xaml.cs</Link>
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\BreadcrumbPanel.cs">
+      <Link>Controls\BreadcrumbPanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\DetailsDialog.xaml.cs">
+      <Link>DetailsDialog.xaml.cs</Link>
+      <DependentUpon>DetailsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\IndeterminateProgressBar.xaml.cs">
+      <Link>IndeterminateProgressBar.xaml.cs</Link>
+      <DependentUpon>IndeterminateProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\Kontrol.cs">
+      <Link>Controls\Kontrol.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\KontrolInnerRing.cs">
+      <Link>Controls\KontrolInnerRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\OptionsDialog.xaml.cs">
+      <Link>OptionsDialog.xaml.cs</Link>
+      <DependentUpon>OptionsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\PlaylistWidget.xaml.cs">
+      <Link>PlaylistWidget.xaml.cs</Link>
+      <DependentUpon>PlaylistWidget.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\PlaylistWidgetAux.xaml.cs">
+      <Link>PlaylistWidgetAux.xaml.cs</Link>
+      <DependentUpon>PlaylistWidgetAux.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\RockerControl.xaml.cs">
+      <Link>RockerControl.xaml.cs</Link>
+      <DependentUpon>RockerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\RotaryControl.xaml.cs">
+      <Link>RotaryControl.xaml.cs</Link>
+      <DependentUpon>RotaryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\SavePlaylistDialog.xaml.cs">
+      <Link>SavePlaylistDialog.xaml.cs</Link>
+      <DependentUpon>SavePlaylistDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\StringInputDialog.xaml.cs">
+      <Link>StringInputDialog.xaml.cs</Link>
+      <DependentUpon>StringInputDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\SystrayForm.cs">
+      <Link>Controls\SystrayForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\SystrayForm.designer.cs">
+      <Link>Controls\SystrayForm.designer.cs</Link>
+      <DependentUpon>SystrayForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\ThreekArray.xaml.cs">
+      <Link>ThreekArray.xaml.cs</Link>
+      <DependentUpon>ThreekArray.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\TileView.cs">
+      <Link>Controls\TileView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\UpdateDialog.xaml.cs">
+      <Link>UpdateDialog.xaml.cs</Link>
+      <DependentUpon>UpdateDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\UpnpObjectDetailsDisplay.xaml.cs">
+      <Link>UpnpObjectDetailsDisplay.xaml.cs</Link>
+      <DependentUpon>UpnpObjectDetailsDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\UserLogDialog.xaml.cs">
+      <Link>UserLogDialog.xaml.cs</Link>
+      <DependentUpon>UserLogDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\ViewKinsky.xaml.cs">
+      <Link>ViewKinsky.xaml.cs</Link>
+      <DependentUpon>ViewKinsky.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Classes\Views.cs">
+      <Link>Classes\Views.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\ViewWidgetBreadcrumb.xaml.cs">
+      <Link>ViewWidgetBreadcrumb.xaml.cs</Link>
+      <DependentUpon>ViewWidgetBreadcrumb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\ViewWidgetBrowser.xaml.cs">
+      <Link>ViewWidgetBrowser.xaml.cs</Link>
+      <DependentUpon>ViewWidgetBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\ViewWidgetTrackDisplay.xaml.cs">
+      <Link>ViewWidgetTrackDisplay.xaml.cs</Link>
+      <DependentUpon>ViewWidgetTrackDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\VirtualizingTilePanel.cs">
+      <Link>Controls\VirtualizingTilePanel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Controls\WindowChrome.cs">
+      <Link>Controls\WindowChrome.cs</Link>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Properties\Settings.Designer.cs">
+      <Link>Properties\Settings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Resources\ControlStyles.xaml.cs">
+      <Link>ControlStyles.xaml.cs</Link>
+      <DependentUpon>ControlStyles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Resources\TileViewStyle.xaml.cs">
+      <Link>TileViewStyle.xaml.cs</Link>
+      <DependentUpon>TileViewStyle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Wpf\Resources\WindowChromeStyle.xaml.cs">
+      <Link>WindowChromeStyle.xaml.cs</Link>
+      <DependentUpon>WindowChromeStyle.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="..\..\KinskyDesktop\Wpf\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="..\..\KinskyDesktop\Wpf\Properties\Settings.settings">
+      <Link>Properties\Settings.settings</Link>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLite\OssDidlLite.csproj">
+      <Project>{D07487C1-8D3F-43C8-BE1B-C1BFB5B2C562}</Project>
+      <Name>OssDidlLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServices\OssServices.csproj">
+      <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
+      <Name>OssServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopology\OssTopology.csproj">
+      <Project>{DDD50783-4131-4138-85E6-72377C232B1C}</Project>
+      <Name>OssTopology</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

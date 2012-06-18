@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>LinnTopology</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Resources/LinnLogoIphone.png</string>
+		<string>Resources/LinnLogoIpad.png</string>
+		<string>Resources/LinnLogoSpotlightIphone.png</string>
+		<string>Resources/LinnLogoSpotlightIpad.png</string>
+	</array>
+	<key>CFBundleIdentifier</key>
+	<string>uk.co.linn.LinnTopology</string>
+	<key>CFBundleVersion</key>
+	<string>4.1.1</string>
+	<key>MinimumOSVersion</key>
+	<string>3.0</string>
+	<key>NSMainNibFile</key>
+	<string>MainWindowIphone</string>
+	<key>NSMainNibFile~ipad</key>
+	<string>MainWindowIpad</string>
+	<key>UIDeviceFamily</key>
+	<array>
+		<string>1</string>
+		<string>2</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>

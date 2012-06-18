@@ -1,0 +1,225 @@
+Import('_default_env nib kVersion')
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    ArtworkCache.cs
+    ButtonHoverPush.cs
+    Controllers.cs
+    DragData.cs
+    DragDropManager.cs
+    FontManager.cs
+    HelperKinskyDesktop.cs
+    MainMenu.cs
+    MainWindow.cs
+    MediaProviderSupport.cs
+    Models.cs
+    OptionPageGeneral.cs
+    Program.cs
+    ResourcesManager.cs
+    ViewAddBookmark.cs
+    ViewBrowserContent.cs
+    ViewHourglass.cs
+    ViewRotary.cs
+    ViewSelectionBookmark.cs
+    ViewSelectionRoom.cs
+    ViewSelectionSource.cs
+    ViewUtils.cs
+    WindowPopover.cs
+    WindowUpdate.cs
+""");
+
+linnLinkCliLibs = Split("""
+    OssCore
+    OssToolkitCocoa
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssKinsky
+""")
+
+otherLinkCliLibs = Split("""
+    Monobjc
+    Monobjc.Cocoa
+    Monobjc.ImageKit
+""")
+
+otherNonLinkCliLibs = Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+    policy.2.0.taglib-sharp
+""")
+
+linkCliLibs = []
+linkCliLibs.extend(linnLinkCliLibs)
+linkCliLibs.extend(otherLinkCliLibs)
+linkCliLibs.append('System.Drawing')
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+
+
+# build the main application assembly
+progAssembly = _default_env.CliProgram('Kinsky', files, CSCTARGET=target, CLILIBS=linkCliLibs)
+Depends(progAssembly, nib)
+
+
+# build a list of all required assembly files
+reqAssemblies = [File(_default_env.subst('$install_dir/lib/Linn/' + l + '.dll')) for l in linnLinkCliLibs]
+reqAssemblies.extend( [File(_default_env.subst('$install_dir/lib/' + l + '.dll')) for l in otherLinkCliLibs] )
+reqAssemblies.extend( [File(_default_env.subst('$install_dir/lib/' + l + '.dll')) for l in otherNonLinkCliLibs] )
+
+
+# make list of native libraries
+nativeLibs = []
+nativeLibs.append(File(_default_env.subst('$install_dir/lib/libmonobjc.2.dylib')))
+
+
+# add additional nib files
+nibs = nib
+nibs.append(File(_default_env.subst('$install_dir/bin/UserLog.nib')))
+
+
+# build everything that needs to go in the "Resource" folder
+resources = {}
+
+imageResourceNames = Split("""
+    About.png
+    Array.png
+    BottomFiller.png
+    BottomLeftEdge.png
+    BottomRightEdge.png
+    BoxDownFiller.png
+    BoxDownLeft.png
+    BoxDownRight.png
+    BoxFiller.png
+    BoxLeft.png
+    BoxOverFiller.png
+    BoxOverLeft.png
+    BoxOverRight.png
+    BoxRight.png
+    KmodeFiller.png
+    KmodeLeft.png
+    KmodeRight.png
+    LeftFiller.png
+    LinnLogo.png
+    Pause.png
+    PauseDown.png
+    PauseOver.png
+    Play.png
+    PlayDown.png
+    PlayOver.png
+    RightFiller.png
+    Rocker.png
+    RockerLeftDown.png
+    RockerLeftOver.png
+    RockerRightDown.png
+    RockerRightOver.png
+    Screws.png
+    SkipBack.png
+    SkipBackDown.png
+    SkipBackOver.png
+    SkipForward.png
+    SkipForwardDown.png
+    SkipForwardOver.png
+    Stop.png
+    StopDown.png
+    StopOver.png
+    TopBarFiller.png
+    TopFiller.png
+    TopLeftEdge.png
+    TopRightEdge.png
+    TramLines.png
+    Wheel.png
+    WheelMute.png
+    WheelOver.png
+""")
+
+
+iconResourceNames = Split("""
+    Album.png
+    AlbumArtError.png
+    AlbumArtNone.png
+    Artist.png
+    Back.png
+    BackDown.png
+    CD.png
+    Delete.png
+    Error.png
+    Folder.png
+    HourGlass.png
+    HourGlass2.png
+    IconBookmark.png
+    Library.png
+    List.png
+    Loading.png
+    OsXClose.png
+    OsXCloseMouse.png
+    OsXCloseTouch.png
+    OsXMaximize.png
+    OsXMaximizeMouse.png
+    OsXMaximizeTouch.png
+    OsXMini.png
+    OsXMinimize.png
+    OsXMinimizeMouse.png
+    OsXMinimizeTouch.png
+    OsXMiniMouse.png
+    OsXMiniTouch.png
+    Playing.png
+    Playlist.png
+    PlaylistItem.png
+    PlaylistSource.png
+    Radio.png
+    Receiver.png
+    Repeat.png
+    RepeatOn.png
+    Room.png
+    Save.png
+    Sender.png
+    Shuffle.png
+    ShuffleOn.png
+    Size.png
+    Source.png
+    Standby.png
+    StandbyOn.png
+    Thumbs.png
+    Track.png
+    UPNP.png
+    Video.png
+""")
+
+resources['Images'] = [ File( '../../../../../../Layouts/Kinsky/Desktop2/Images/' + name) for name in imageResourceNames]
+resources['Icons'] = [ File('../../../../../../Layouts/Kinsky/Desktop2/Icons/' + name) for name in iconResourceNames]
+
+
+pluginNames = Split("""
+    Bbc
+    Folder
+    Itunes
+    MovieTrailers
+    Wfmu
+""")
+
+exeResources = {}
+exeResources['Plugins'] = [ Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/' + p)) for p in pluginNames ]
+
+
+# build the Mac OSX .app bundle and .pkg installer and install them
+pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerKinsky', progAssembly,
+                    APPNAME = 'Kinsky',
+                    APPINSTFOLDER = '$install_dir/bin',
+                    PKGINSTFOLDER = '$install_dir/share/Kinsky',
+                    APPCERT = '"3rd Party Mac Developer Application: Linn Products Ltd"',
+                    PKGCERT = '"3rd Party Mac Developer Installer: Linn Products Ltd"',
+                    CLILIBS = reqAssemblies,
+                    NATIVELIBS = nativeLibs,
+                    NIBS = nibs,
+                    RESOURCES = resources,
+                    EXERESOURCES = exeResources,
+                    ICON = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
+                    VERSION = kVersion)
+
+Alias('Lib', pkg)
+

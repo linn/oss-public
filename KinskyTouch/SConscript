@@ -1,0 +1,231 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+nib  = _default_env.IbTool('ArtworkTileView', 'ArtworkTileView.xib')
+nib += _default_env.IbTool('CellBrowser', 'CellBrowser.xib')
+nib += _default_env.IbTool('CellBrowserHeader', 'CellBrowserHeader.xib')
+nib += _default_env.IbTool('CellBrowserItem', 'CellBrowserItem.xib')
+nib += _default_env.IbTool('CellDefault', 'CellDefault.xib')
+nib += _default_env.IbTool('CellPlaylist', 'CellPlaylist.xib')
+nib += _default_env.IbTool('CellPlaylistItem', 'CellPlaylistItem.xib')
+nib += _default_env.IbTool('CellSender', 'CellSender.xib')
+nib += _default_env.IbTool('MainWindowIpad', 'MainWindowIpad.xib')
+nib += _default_env.IbTool('MainWindowIphone', 'MainWindowIphone.xib')
+nib += _default_env.IbTool('SaveDialog', 'SaveDialog.xib')
+nib += _default_env.IbTool('TimeButtons', 'TimeButtons.xib')
+nib += _default_env.IbTool('TimeRotary', 'TimeRotary.xib')
+nib += _default_env.IbTool('VolumeButtons', 'VolumeButtons.xib')
+nib += _default_env.IbTool('VolumeRotary', 'VolumeRotary.xib')
+
+res = Split("""
+    ../Layouts/Kinsky/Desktop2/Images/ClockIcon.png
+    ../Layouts/Kinsky/Desktop2/Images/ClockIconElapsed.png
+    ../Layouts/Kinsky/Desktop2/Images/ClockIconRemaining.png
+    ../Layouts/Kinsky/Desktop2/Images/MuteIcon.png
+    ../Layouts/Kinsky/Desktop2/Images/Mute.png
+    ../Layouts/Kinsky/Desktop2/Images/MuteActive.png
+    ../Layouts/Kinsky/Desktop2/Images/LeftFiller.png
+    ../Layouts/Kinsky/Desktop2/Images/TopRightEdge.png
+    ../Layouts/Kinsky/Desktop2/Images/TopLeftEdge.png
+    ../Layouts/Kinsky/Desktop2/Images/TopFiller.png
+    ../Layouts/Kinsky/Desktop2/Images/BottomLeftEdge.png
+    ../Layouts/Kinsky/Desktop2/Images/BottomRightEdge.png
+    ../Layouts/Kinsky/Desktop2/Images/BottomFiller.png
+    ../Layouts/Kinsky/Desktop2/Images/Button.png
+    ../Layouts/Kinsky/Desktop2/Images/FfwdButton.png
+    ../Layouts/Kinsky/Desktop2/Images/FrwdButton.png
+    ../Layouts/Kinsky/Desktop2/Images/RightFiller.png
+    ../Layouts/Kinsky/Desktop2/Images/SkipBack.png
+    ../Layouts/Kinsky/Desktop2/Images/SkipBackDown.png
+    ../Layouts/Kinsky/Desktop2/Images/SkipForward.png
+    ../Layouts/Kinsky/Desktop2/Images/SkipForwardDown.png
+    ../Layouts/Kinsky/Desktop2/Images/Pause.png
+    ../Layouts/Kinsky/Desktop2/Images/Play.png
+    ../Layouts/Kinsky/Desktop2/Images/Stop.png
+    ../Layouts/Kinsky/Desktop2/Images/Array.png
+    ../Layouts/Kinsky/Desktop2/Images/PauseOver.png
+    ../Layouts/Kinsky/Desktop2/Images/PlayOver.png
+    ../Layouts/Kinsky/Desktop2/Images/StopOver.png
+    ../Layouts/Kinsky/Desktop2/Images/Wheel.png
+    ../Layouts/Kinsky/Desktop2/Images/WheelLarge.png
+    ../Layouts/Kinsky/Desktop2/Images/WheelLargeOver.png
+    ../Layouts/Kinsky/Desktop2/Images/Screws.png
+    ../Layouts/Kinsky/Desktop2/Images/ScrewsLarge.png
+    ../Layouts/Kinsky/Desktop2/Images/WheelOver.png
+    ../Layouts/Kinsky/Desktop2/Images/Rocker.png
+    ../Layouts/Kinsky/Desktop2/Images/RockerLeftDown.png
+    ../Layouts/Kinsky/Desktop2/Images/RockerRightDown.png
+    ../Layouts/Kinsky/Desktop2/Images/WheelMute.png
+    ../Layouts/Kinsky/Desktop2/Icons/Shuffle.png
+    ../Layouts/Kinsky/Desktop2/Icons/ShuffleDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/ShuffleOn.png
+    ../Layouts/Kinsky/Desktop2/Icons/ShuffleOnDown.png
+    ../Layouts/Kinsky/Desktop2/Images/PauseDown.png
+    ../Layouts/Kinsky/Desktop2/Images/PlayDown.png
+    ../Layouts/Kinsky/Desktop2/Images/StopDown.png
+    ../Layouts/Kinsky/Desktop2/Images/SkipBackOver.png
+    ../Layouts/Kinsky/Desktop2/Images/SkipForwardOver.png
+    ../Layouts/Kinsky/Desktop2/Icons/Repeat.png
+    ../Layouts/Kinsky/Desktop2/Icons/RepeatDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/RepeatOn.png
+    ../Layouts/Kinsky/Desktop2/Icons/RepeatOnDown.png
+    ../Layouts/Kinsky/Desktop2/Images/RoomSource.png
+    ../Layouts/Kinsky/Desktop2/Images/LinnLogo.png
+    ../Layouts/Kinsky/Desktop2/Images/TramLines.png
+    ../Layouts/Kinsky/Desktop2/Icons/Home.png
+    ../Layouts/Kinsky/Desktop2/Icons/HomeDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/HourGlass.png
+    ../Layouts/Kinsky/Desktop2/Icons/HourGlass2.png
+    ../Layouts/Kinsky/Desktop2/Icons/List.png
+    ../Layouts/Kinsky/Desktop2/Icons/Settings.png
+    ../Layouts/Kinsky/Desktop2/Icons/Delete.png
+    ../Layouts/Kinsky/Desktop2/Icons/DeleteDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/Save.png
+    ../Layouts/Kinsky/Desktop2/Icons/SaveDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/Standby.png
+    ../Layouts/Kinsky/Desktop2/Icons/StandbyDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/StandbyOn.png
+    ../Layouts/Kinsky/Desktop2/Icons/Multi.png
+    ../Layouts/Kinsky/Desktop2/Icons/MultiDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/MultiOnDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/StandbyOnDown.png
+    ../Layouts/Kinsky/Desktop2/Icons/HomeOn.png
+    ../Layouts/Kinsky/Desktop2/Icons/MultiOn.png
+    ../Layouts/Kinsky/Desktop2/Icons/Album.png
+    ../Layouts/Kinsky/Desktop2/Icons/AlbumArtError.png
+    ../Layouts/Kinsky/Desktop2/Icons/Artist.png
+    ../Layouts/Kinsky/Desktop2/Icons/Directory.png
+    ../Layouts/Kinsky/Desktop2/Icons/DisclosureIndicator.png
+    ../Layouts/Kinsky/Desktop2/Icons/Error.png
+    ../Layouts/Kinsky/Desktop2/Icons/Folder.png
+    ../Layouts/Kinsky/Desktop2/Icons/Library.png
+    ../Layouts/Kinsky/Desktop2/Icons/Loading.png
+    ../Layouts/Kinsky/Desktop2/Icons/Playing.png
+    ../Layouts/Kinsky/Desktop2/Icons/Playlist.png
+    ../Layouts/Kinsky/Desktop2/Icons/PlaylistItem.png
+    ../Layouts/Kinsky/Desktop2/Icons/PlaylistSource.png
+    ../Layouts/Kinsky/Desktop2/Icons/CD.png
+    ../Layouts/Kinsky/Desktop2/Icons/Radio.png
+    ../Layouts/Kinsky/Desktop2/Icons/Room.png
+    ../Layouts/Kinsky/Desktop2/Icons/Source.png
+    ../Layouts/Kinsky/Desktop2/Icons/Sender.png
+    ../Layouts/Kinsky/Desktop2/Icons/SenderNoSend.png
+    ../Layouts/Kinsky/Desktop2/Icons/Track.png
+    ../Layouts/Kinsky/Desktop2/Icons/UPNP.png
+    ../Layouts/Kinsky/Desktop2/Icons/Video.png
+    KinskyLogoAbout.png
+    Resources/Default-Landscape.png
+    Resources/Default-Portrait.png
+    Resources/Default~iphone.png
+    Resources/KinskyLogoIphone.png
+    Resources/KinskyLogoSpotlightIphone.png
+    Resources/KinskyLogo.png
+    Resources/KinskyLogoSpotlight.png
+    Resources/KinskyLogoIphone4.png
+    Resources/KinskyLogoSpotlightIphone4.png
+    ../MediaProviderPlugins/Bbc/Bbc.png
+    ../MediaProviderPlugins/MovieTrailers/MovieTrailers.png
+    ../MediaProviderPlugins/Wfmu/Wfmu.png
+""")
+
+itunes_res = Split("""
+	Installer/iTunesArtwork
+	Installer/iTunesMetadata.plist
+""")
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    AppDelegateIpad.cs
+    AppDelegateIphone.cs
+    AppRestartHandler.cs
+    ArtworkCache.cs
+    ArtworkTileView.cs
+    ArtworkTileView.xib.designer.cs
+    BrowserToolbar.cs
+    CellBrowser.cs
+    CellBrowser.xib.designer.cs
+    CellBrowserHeader.cs
+    CellBrowserHeader.xib.designer.cs
+    CellBrowserItem.cs
+    CellBrowserItem.xib.designer.cs
+    CellDefault.cs
+    CellDefault.xib.designer.cs
+    CellLazyLoadImage.cs
+    CellPlaylist.cs
+    CellPlaylist.xib.designer.cs
+    CellPlaylistItem.cs
+    CellPlaylistItem.xib.designer.cs
+    CellSender.cs
+    CellSender.xib.designer.cs
+    ConfigController.cs
+    HelperKinskyTouch.cs
+    Main.cs
+    MainWindowIpad.xib.designer.cs
+    MainWindowIphone.xib.designer.cs
+    MediaProviderSupport.cs
+    OptionInsertMode.cs
+    OptionPageGeneral.cs
+    Reachability.cs
+    ResourceManager.cs
+    SaveDialog.xib.designer.cs
+    SaveViewController.cs
+    SourceToolbar.cs
+    TimeButtons.xib.designer.cs
+    TimeController.cs
+    TimeRotary.xib.designer.cs
+    UIControlRotary.cs
+    UIViewControllerKinskyTouch.cs
+    UIViewInfo.cs
+    Views.cs
+    ViewWidgetBrowser.cs
+    ViewWidgetButtons.cs
+    ViewWidgetPlaylist.cs
+    ViewWidgetSelectors.cs
+    ViewWidgetSenderReceiver.cs
+    ViewWidgetTime.cs
+    ViewWidgetTrack.cs
+    ViewWidgetVolume.cs
+    VolumeButtons.xib.designer.cs
+    VolumeController.cs
+    VolumeRotary.xib.designer.cs
+""")
+
+prog = _default_env.CliProgram('Kinsky', files, CLILIBPATH=['$CLILIBPATH', '$install_dir/lib/Linn/Plugins/Bbc', '$install_dir/lib/Linn/Plugins/MovieTrailers', '$install_dir/lib/Linn/Plugins/Wfmu'], CLILIBS=['OssCore', 'OssToolkitIos', 'OssControl', 'OssDidlLite', 'OssTopology', 'OssKinsky', 'monotouch'])#, 'OssKinskyMppBbc', 'OssKinskyMppMovieTrailers', 'OssKinskyMppWfmu'])
+Depends(prog, nib)
+
+bundle = _default_env.ReleaseInstallerIos('$install_dir/share/Kinsky/Development', prog,
+                                          CLILIBS = ['OssCore', 'OssToolkitIos', 'OssControl', 'OssDidlLite', 'OssTopology', 'OssKinsky', 'monotouch'],#, '$install_dir/lib/Linn/Plugins/Bbc/OssKinskyMppBbc', '$install_dir/lib/Linn/Plugins/MovieTrailers/OssKinskyMppMovieTrailers', '$install_dir/lib/Linn/Plugins/Wfmu/OssKinskyMppWfmu'],
+                                          RESOURCES = res + nib,
+                                          ITUNESRESOURCES = itunes_res,
+                                          PRODUCT         = 'Kinsky',
+                                          BUNDLEID        = 'KinskyTouch',
+                                          VERSION      	  = kVersion,
+                                          IDENTITY        = "iPhone Developer: Keith Robertson (N5FMX5CWP6)",
+                                          PROFILE         = "KinskyTouch")
+
+if _default_env['variant'] == 'release':
+    bundle += _default_env.ReleaseInstallerIos('$install_dir/share/Kinsky/AdHoc', prog,
+                                               CLILIBS = ['OssCore', 'OssToolkitIos', 'OssControl', 'OssDidlLite', 'OssTopology', 'OssKinsky', 'monotouch'],#, '$install_dir/lib/Linn/Plugins/Bbc/OssKinskyMppBbc', '$install_dir/lib/Linn/Plugins/MovieTrailers/OssKinskyMppMovieTrailers', '$install_dir/lib/Linn/Plugins/Wfmu/OssKinskyMppWfmu'],
+                                               RESOURCES = res + nib,
+                                               ITUNESRESOURCES = itunes_res,
+                                               PRODUCT         = 'Kinsky',
+                                               BUNDLEID        = 'KinskyTouch',
+                                               VERSION         = kVersion,
+                                               IDENTITY        = "iPhone Distribution: Linn Products Ltd",
+                                               PROFILE         = "Kinsky Ad Hoc")
+	                                          
+    bundle += _default_env.ReleaseInstallerIos('$install_dir/share/Kinsky/AppStore', prog,
+                                               CLILIBS = ['OssCore', 'OssToolkitIos', 'OssControl', 'OssDidlLite', 'OssTopology', 'OssKinsky', 'monotouch'],#, '$install_dir/lib/Linn/Plugins/Bbc/OssKinskyMppBbc', '$install_dir/lib/Linn/Plugins/MovieTrailers/OssKinskyMppMovieTrailers', '$install_dir/lib/Linn/Plugins/Wfmu/OssKinskyMppWfmu'],
+                                               RESOURCES = res + nib,
+                                               ITUNESRESOURCES = itunes_res,
+                                               PRODUCT         = 'Kinsky',
+                                               BUNDLEID        = 'KinskyTouch',
+                                               VERSION         = kVersion,
+                                               IDENTITY        = "iPhone Distribution: Linn Products Ltd",
+                                               PROFILE         = "Kinsky App Store")
+
+Alias('Lib', bundle)
+Alias('Test', 'Lib')
+
+Default('Test')

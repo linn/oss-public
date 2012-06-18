@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{12CCB91F-A1B4-4ECC-8EEA-04D0D38DF574}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn.KinskyEd</RootNamespace>
+    <AssemblyName>KinskyEd</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\install\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\install\release\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EditorAboutBox.resx">
+      <DependentUpon>EditorAboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorForm.resx">
+      <DependentUpon>EditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewLayoutDialog.resx">
+      <DependentUpon>NewLayoutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PreferencesDialog.resx">
+      <DependentUpon>PreferencesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScenegraphForm.resx">
+      <DependentUpon>ScenegraphForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EditorAboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorAboutBox.Designer.cs">
+      <DependentUpon>EditorAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EditorCanvas.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditorController.cs" />
+    <Compile Include="EditorFactory.cs" />
+    <Compile Include="EditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditorForm.Designer.cs">
+      <DependentUpon>EditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorMessage.cs" />
+    <Compile Include="EditorNode.cs" />
+    <Compile Include="EditorNodeFont.cs" />
+    <Compile Include="EditorNodeHit.cs" />
+    <Compile Include="EditorNodeInput.cs" />
+    <Compile Include="EditorNodeList.cs" />
+    <Compile Include="EditorNodePolygon.cs" />
+    <Compile Include="EditorNodeSlider.cs" />
+    <Compile Include="EditorNodeText.cs" />
+    <Compile Include="EditorPlugin.cs" />
+    <Compile Include="EditorSettings.cs" />
+    <Compile Include="EditorTextureArray.cs" />
+    <Compile Include="KinskyEd.cs" />
+    <Compile Include="NewLayoutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewLayoutDialog.Designer.cs">
+      <DependentUpon>NewLayoutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreferencesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PreferencesDialog.Designer.cs">
+      <DependentUpon>PreferencesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RendererGdiEditor.cs" />
+    <Compile Include="ScenegraphForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScenegraphForm.Designer.cs">
+      <DependentUpon>ScenegraphForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UndoRedo\Command.cs" />
+    <Compile Include="UndoRedo\CommandController.cs" />
+    <Compile Include="UndoRedo\CommandNode.cs" />
+    <Compile Include="UndoRedo\CommandNodeFont.cs" />
+    <Compile Include="UndoRedo\CommandNodeHit.cs" />
+    <Compile Include="UndoRedo\CommandNodeInput.cs" />
+    <Compile Include="UndoRedo\CommandNodeList.cs" />
+    <Compile Include="UndoRedo\CommandNodePolygon.cs" />
+    <Compile Include="UndoRedo\CommandNodeSlider.cs" />
+    <Compile Include="UndoRedo\CommandNodeText.cs" />
+    <Compile Include="UndoRedo\CommandPlugin.cs" />
+    <Compile Include="UndoRedo\CommandTextureArray.cs" />
+    <Compile Include="UndoRedo\UndoRedoManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Control\ControlOss.csproj">
+      <Project>{3ABC421D-7768-486A-90B9-4AFF931C250E}</Project>
+      <Name>ControlOss</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\CoreOss.csproj">
+      <Project>{1D96106F-4DA4-4668-AD2D-3B2370A36402}</Project>
+      <Name>CoreOss</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GuiOss.csproj">
+      <Project>{3768CDC8-2945-4F0E-88C9-5F464BB20B09}</Project>
+      <Name>GuiOss</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

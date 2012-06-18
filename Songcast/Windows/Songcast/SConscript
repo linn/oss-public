@@ -1,0 +1,52 @@
+Import('_default_env kBuildInfo')
+
+libs = Split("""
+    OssCore
+    PresentationCore
+    PresentationFramework
+    System
+    System.Drawing
+    System.Windows.Forms
+    System.Xml
+    WindowsBase
+""")
+libs += [('ohSongcast.net', _default_env.subst('$install_dir/lib/Linn/ohSongcast.net.dll'))]
+
+ass = _default_env.TagReplace(_default_env.subst('$build_variant_dir/share/Songcast/AssemblyInfo.cs'), 'Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
+
+files = Split("""
+    Properties/Resources.resx
+    Properties/Resources.Designer.cs
+    App.xaml
+    App.xaml.cs
+    CrashLogDumperWindow.xaml
+    CrashLogDumperWindow.xaml.cs
+    FormSysTray.cs
+    FormSysTray.Designer.cs
+    FormSysTray.resx
+    MainWindow.xaml
+    MainWindow.xaml.cs
+    MediaPlayerList.cs
+    ModelController.cs
+    PreferencesWindow.xaml
+    PreferencesWindow.xaml.cs
+    ReceiverList.cs
+    ResourceManager.cs
+    SubnetList.cs
+    UpdateMessageBoxWindow.xaml
+    UpdateMessageBoxWindow.xaml.cs
+    UpdateWindow.xaml
+    UpdateWindow.xaml.cs
+""")
+	
+_default_env['OutputType'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OutputType'] = 'Exe'
+msproj = _default_env.MSBuildFileGenerator('Songcast', files + ass, CLILIBS=libs, CLIPLATFORMTARGET='x86', LINKS=files + ass, ICON=_default_env.subst('$variant_dir/share/Linn/Songcast/Songcast.ico'), APPLICATIONDEFINITION='App', ROOTNAMESPACE='Linn.Songcast')
+app = _default_env.MSBuildExeBuilder('Songcast', msproj, CLILIBS=libs)
+
+Depends(msproj, files)
+Depends(app, files)
+
+Return('app')
+

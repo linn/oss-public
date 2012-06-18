@@ -1,0 +1,94 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssCoreDroid", "OssCoreDroid\OssCoreDroid.csproj", "{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssControlDroid", "OssControlDroid\OssControlDroid.csproj", "{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssSysLibDroid", "OssSysLibDroid\OssSysLibDroid.csproj", "{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssDidlLiteDroid", "OssDidlLiteDroid\OssDidlLiteDroid.csproj", "{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssServicesDroid", "OssServicesDroid\OssServicesDroid.csproj", "{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssTopologyDroid", "OssTopologyDroid\OssTopologyDroid.csproj", "{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssKinskyDroid", "OssKinskyDroid\OssKinskyDroid.csproj", "{74C4439C-6179-492E-992D-797E68090B69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssToolkitDroid", "OssToolkitDroid\OssToolkitDroid.csproj", "{16923BF8-1DA5-4A15-B603-9E0210E0919B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinskyDroid", "KinskyDroid\KinskyDroid.csproj", "{8B63D778-7DA9-4598-A632-7FD2815FA985}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinnTopologyDroid", "LinnTopologyDroid\LinnTopologyDroid.csproj", "{8B63D778-7DA9-4598-A632-7FB2815DA984}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C4439C-6179-492E-992D-797E68090B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C4439C-6179-492E-992D-797E68090B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C4439C-6179-492E-992D-797E68090B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C4439C-6179-492E-992D-797E68090B69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16923BF8-1DA5-4A15-B603-9E0210E0919B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16923BF8-1DA5-4A15-B603-9E0210E0919B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16923BF8-1DA5-4A15-B603-9E0210E0919B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16923BF8-1DA5-4A15-B603-9E0210E0919B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B63D778-7DA9-4598-A632-7FD2815FA985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B63D778-7DA9-4598-A632-7FD2815FA985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B63D778-7DA9-4598-A632-7FD2815FA985}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8B63D778-7DA9-4598-A632-7FD2815FA985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B63D778-7DA9-4598-A632-7FD2815FA985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B63D778-7DA9-4598-A632-7FD2815FA985}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8B63D778-7DA9-4598-A632-7FB2815DA984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B63D778-7DA9-4598-A632-7FB2815DA984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B63D778-7DA9-4598-A632-7FB2815DA984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B63D778-7DA9-4598-A632-7FB2815DA984}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = LinnTopologyDroid\LinnTopologyDroid.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.StandardHeader = $2
+		$2.Text = 
+		$2.inheritsSet = Apache2License
+		$0.VersionControlPolicy = $3
+		$3.inheritsSet = Mono
+		$0.ChangeLogPolicy = $4
+		$4.UpdateMode = None
+		$4.MessageStyle = $5
+		$5.LineAlign = 0
+		$4.inheritsSet = Mono
+		outputpath = ..\install\droid
+	EndGlobalSection
+EndGlobal

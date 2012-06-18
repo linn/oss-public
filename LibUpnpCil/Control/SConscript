@@ -1,0 +1,95 @@
+Import('_default_env')
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Linn/ControlPoint/Service.cs   
+    Linn/Control/Service.cs
+    Linn/Control/ServiceType.cs
+    Linn/Control/Ssdp/Ssdp.cs
+    Linn/ControlPoint/Upnp/Service.cs
+    Linn/ControlPoint/Upnp/Discovery.cs
+    Linn/ControlPoint/Upnp/EventServer.cs
+    Linn/Control/Http/Http.cs 
+    Linn/ControlPoint/Discovery.cs
+""")
+ 
+pcFiles = Split("""
+    Linn/Control/Nct/Client.cs
+""")
+
+if _default_env['hardware'] != 'PocketPc':
+    files.append(pcFiles)
+
+res=[] 
+clilibs = ['OssSysLib', 'OssCore', 'mscorlib', 'System', 'System.Xml', 'System.Web.Services']
+if _default_env['hardware'] != 'Droid':
+    lib = _default_env.CliLibrary('OssControl', files, CLILIBS=clilibs, CLIRESOURCES=res)
+else:
+    msproj = _default_env.MSBuildFileGenerator('OssControl', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Control')
+    lib = _default_env.MSBuildLibBuilder('OssControl', msproj, CLILIBS=clilibs)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Control.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Control', DOXYGENNAMESPACE='OssControl')
+
+Alias('Lib', lib)
+
+upnpspy = Split("""
+    UpnpSpy/AssemblyInfo.cs
+    UpnpSpy/Form1.cs
+    UpnpSpy/Form1.designer.cs
+    UpnpSpy/UpnpSpy.cs
+""")
+
+utils = []
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+    utils = _default_env.CliProgram('UpnpSpy', upnpspy, CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
+    utils += _default_env.CliProgram('NctClient', ['Linn/Control/Nct/Program.cs'], CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl'])
+Alias('Lib', utils)
+
+# Diagnostic tools package
+ 
+utils.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+utils.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+utils.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+utils.append(File(_default_env.subst('$variant_dir/share/Linn/Core/linn.ico')))
+
+installer = []
+if _default_env['installers'] and _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Control', 'UpnpDiagnostics',
+                        FILES      = {''             : utils },
+                        TEMPLATE   = 'UpnpDiagnosticsNsiTemplate.txt',
+                        RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Core/linn.ico'),
+                                      'header'  : _default_env.subst('$variant_dir/share/Linn/Core/header.bmp'),
+                                      'finish'  : _default_env.subst('$variant_dir/share/Linn/Core/finish.bmp'),
+                                      'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT    = 'UpnpDiagnostics',
+                        VERSION    = 'development',
+                        CERT       = '',
+                        LAUNCHFILE = '')
+Alias('Lib', installer)
+ 
+# Generated service C# files
+
+xml = _default_env.Install('$variant_dir/share/Linn/Control/Upnp/Test', 'Linn/Control/Upnp/Test/Test.xml')
+ 
+service = _default_env.Kodegen('UpnpControlPointTest.cs', xml, KODE="UpnpControlPointCs.kode", ARGS="linn.co.uk Test 1")
+
+#prog  = _default_env.CliProgram('Test/TestUpnpMsearch', 'Linn/Control/Upnp/Test/TestUpnpMsearch.cs', CLILIBS=['OssTestFramework', 'OssControl', 'OssCore'])
+#prog += _default_env.CliProgram('Test/TestUpnpSsdp', 'Linn/Control/Upnp/Test/TestSsdp.cs', CLILIBS=['OssTestFramework', 'OssControl', 'OssCore'])
+#prog += _default_env.CliProgram('Test/TestUpnpControl', ['Linn/Control/Upnp/Test/TestUpnpControl.cs'] + service, CLILIBS=['OssTestFramework', 'OssControl', 'OssSysLib', 'OssCore', 'System.Web.Services'])
+#Alias('Test', prog)
+
+if _default_env['hardware'] != 'Ios':
+    files = Split("""
+        Test/TestWebRequestSync/Properties/AssemblyInfo.cs
+        Test/TestWebRequestSync/Form1.cs
+        Test/TestWebRequestSync/Form1.Designer.cs
+        Test/TestWebRequestSync/Program.cs
+    """)
+    test = _default_env.CliProgram('Test/TestWebRequestSync', files, CLILIBS=['mscorlib', 'System', 'System.Windows.Forms', 'System.Drawing'])
+    
+    Alias('Test', test)
+
+Alias('Test', 'Lib')
+Alias('Docs', docs)
+
+Default(['Test','Docs'])

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="roomlist">Rooms</string>
+  <string name="mediaserverlist">Media Servers</string>
+  <string name="app_name">LinnTopologyDroid</string>
+</resources>

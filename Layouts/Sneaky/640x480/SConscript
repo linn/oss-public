@@ -1,0 +1,27 @@
+import os.path
+
+Import("_default_env")
+
+installDir = '$variant_dir/share/Linn/Gui/Skins/Sneaky/640x480/Bitmaps'
+currentDir = os.getcwd() + '/images'
+
+images = []
+for filename in os.listdir(currentDir):
+    if filename.endswith(('.png', '.jpg')) :
+        images += _default_env.Install(installDir, currentDir + '/' + filename)        
+
+files = Split("""
+    CurrentTrack.xml
+    Library.xml
+    Main.xml
+    Playlist.xml
+    RoomSelection.xml
+    SourceSelection.xml
+    StatusBar.xml
+    VolumeControl.xml
+""")
+result = _default_env.Install('$variant_dir/share/Linn/Gui/Skins/Sneaky/640x480', files)
+
+Alias('Sneaky', result + images)
+
+ 

@@ -1,0 +1,42 @@
+Import('_default_env')
+import re
+import BuildInfo
+
+
+def Family(aVersion):
+    families = ['Auskerry', 'Bute', 'Cara', 'Davaar']
+    try:
+        num = int(aVersion.split('.')[0])
+        return families[num-1]
+    except:
+        return ''
+
+def TypeString(aType):
+    if aType == 'release':
+        return ''
+    elif aType == 'beta':
+        return ' (Beta)'
+    elif aType == 'development':
+        return ' (Development)'
+    elif aType == 'nightly':
+        return ' (Nightly Build)'
+    elif aType == 'developer':
+        return ' (Developer)'
+    else:
+        return ' (' + aType + ')'
+
+kBuildInfo = {}
+kBuildInfo['BUILD_INFO_VERSION'] = BuildInfo.kBuildVersion
+kBuildInfo['BUILD_INFO_FAMILY'] = Family(BuildInfo.kBuildVersion)
+kBuildInfo['BUILD_INFO_TYPE'] = TypeString(BuildInfo.kBuildType)
+kBuildInfo['BUILD_INFO_SVN_REVISION'] = re.match("[0-9]+", _default_env.subst('$svn_rev')).group()
+
+    
+if _default_env['hardware'] == 'Windows':
+    SConscript('Windows/SConscript', exports = ['_default_env', 'kBuildInfo'])
+elif _default_env['hardware'] == 'MacOsX':
+    SConscript('MacOsX/SConscript', exports = ['_default_env', 'kBuildInfo'])
+
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])

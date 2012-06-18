@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{247ECE1F-DDBC-45CA-A1B0-4DD2D7E13215}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KinskyEd</RootNamespace>
+    <AssemblyName>KinskyEd</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Gui\KinskyEd\EditorAboutBox.cs">
+      <Link>EditorAboutBox.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorAboutBox.Designer.cs">
+      <Link>EditorAboutBox.Designer.cs</Link>
+      <DependentUpon>EditorAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorCanvas.cs">
+      <Link>EditorCanvas.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorController.cs">
+      <Link>EditorController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorFactory.cs">
+      <Link>EditorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorForm.cs">
+      <Link>EditorForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorForm.Designer.cs">
+      <Link>EditorForm.Designer.cs</Link>
+      <DependentUpon>EditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorMessage.cs">
+      <Link>EditorMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNode.cs">
+      <Link>EditorNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodeFont.cs">
+      <Link>EditorNodeFont.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodeHit.cs">
+      <Link>EditorNodeHit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodeInput.cs">
+      <Link>EditorNodeInput.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodeList.cs">
+      <Link>EditorNodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodePolygon.cs">
+      <Link>EditorNodePolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodeSlider.cs">
+      <Link>EditorNodeSlider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorNodeText.cs">
+      <Link>EditorNodeText.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorPlugin.cs">
+      <Link>EditorPlugin.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorSettings.cs">
+      <Link>EditorSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\EditorTextureArray.cs">
+      <Link>EditorTextureArray.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\KinskyEd.cs">
+      <Link>KinskyEd.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\NewLayoutDialog.cs">
+      <Link>NewLayoutDialog.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\NewLayoutDialog.Designer.cs">
+      <Link>NewLayoutDialog.Designer.cs</Link>
+      <DependentUpon>NewLayoutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\PreferencesDialog.cs">
+      <Link>PreferencesDialog.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\PreferencesDialog.Designer.cs">
+      <Link>PreferencesDialog.Designer.cs</Link>
+      <DependentUpon>PreferencesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\RendererGdiEditor.cs">
+      <Link>RendererGdiEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\ScenegraphForm.cs">
+      <Link>ScenegraphForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\ScenegraphForm.Designer.cs">
+      <Link>ScenegraphForm.Designer.cs</Link>
+      <DependentUpon>ScenegraphForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\Command.cs">
+      <Link>UndoRedo\Command.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandController.cs">
+      <Link>UndoRedo\CommandController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNode.cs">
+      <Link>UndoRedo\CommandNode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodeFont.cs">
+      <Link>UndoRedo\CommandNodeFont.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodeHit.cs">
+      <Link>UndoRedo\CommandNodeHit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodeInput.cs">
+      <Link>UndoRedo\CommandNodeInput.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodeList.cs">
+      <Link>UndoRedo\CommandNodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodePolygon.cs">
+      <Link>UndoRedo\CommandNodePolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodeSlider.cs">
+      <Link>UndoRedo\CommandNodeSlider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandNodeText.cs">
+      <Link>UndoRedo\CommandNodeText.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandPlugin.cs">
+      <Link>UndoRedo\CommandPlugin.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\CommandTextureArray.cs">
+      <Link>UndoRedo\CommandTextureArray.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Gui\KinskyEd\UndoRedo\UndoRedoManager.cs">
+      <Link>UndoRedo\UndoRedoManager.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Gui\KinskyEd\EditorAboutBox.resx">
+      <Link>EditorAboutBox.resx</Link>
+      <DependentUpon>EditorAboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Gui\KinskyEd\EditorForm.resx">
+      <Link>EditorForm.resx</Link>
+      <DependentUpon>EditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Gui\KinskyEd\NewLayoutDialog.resx">
+      <Link>NewLayoutDialog.resx</Link>
+      <DependentUpon>NewLayoutDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Gui\KinskyEd\PreferencesDialog.resx">
+      <Link>PreferencesDialog.resx</Link>
+      <DependentUpon>PreferencesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\Gui\KinskyEd\ScenegraphForm.resx">
+      <Link>ScenegraphForm.resx</Link>
+      <DependentUpon>ScenegraphForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssGui\OssGui.csproj">
+      <Project>{2A43DCF0-3153-479A-8C9F-905E4D488379}</Project>
+      <Name>OssGui</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

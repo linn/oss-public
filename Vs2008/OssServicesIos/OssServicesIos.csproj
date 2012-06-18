@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D4007AEC-E0D6-4FCD-B275-E6247FC5331C}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OssServices</RootNamespace>
+    <BaseDirectory>..\..\LibUpnpCil\Services</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchLink>None</MtouchLink>
+    <AssemblyName>OssServices</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <AssemblyName>OssServices</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <AssemblyName>OssServices</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <AssemblyName>OssServices</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\distribution\bin\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>OssServicesIos</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Distribution</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>OssServicesIos</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Services\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\share\Services\UpnpControlPointConfiguration.cs">
+      <Link>UpnpControlPointConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDebug.cs">
+      <Link>UpnpControlPointDebug.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDelay.cs">
+      <Link>UpnpControlPointDelay.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDiagnostics.cs">
+      <Link>UpnpControlPointDiagnostics.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointFlash.cs">
+      <Link>UpnpControlPointFlash.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointInfo.cs">
+      <Link>UpnpControlPointInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointJukebox.cs">
+      <Link>UpnpControlPointJukebox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointPlaylist.cs">
+      <Link>UpnpControlPointPlaylist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProduct.cs">
+      <Link>UpnpControlPointProduct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV1.cs">
+      <Link>UpnpControlPointProductV1.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV2.cs">
+      <Link>UpnpControlPointProductV2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV3.cs">
+      <Link>UpnpControlPointProductV3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProxy.cs">
+      <Link>UpnpControlPointProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointRadio.cs">
+      <Link>UpnpControlPointRadio.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointReceiver.cs">
+      <Link>UpnpControlPointReceiver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSdp.cs">
+      <Link>UpnpControlPointSdp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSender.cs">
+      <Link>UpnpControlPointSender.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSoundcard.cs">
+      <Link>UpnpControlPointSoundcard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointTime.cs">
+      <Link>UpnpControlPointTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVideo.cs">
+      <Link>UpnpControlPointVideo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVolkano.cs">
+      <Link>UpnpControlPointVolkano.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVolume.cs">
+      <Link>UpnpControlPointVolume.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointAVTransport.cs">
+      <Link>UpnpControlPointAVTransport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointConnectionManager.cs">
+      <Link>UpnpControlPointConnectionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointContentDirectory.cs">
+      <Link>UpnpControlPointContentDirectory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDeviceProperties.cs">
+      <Link>UpnpControlPointDeviceProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointRenderingControl.cs">
+      <Link>UpnpControlPointRenderingControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointPlaylistManager.cs">
+      <Link>UpnpControlPointPlaylistManager.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControlIos\OssControlIos.csproj">
+      <Project>{06C84AB5-457C-4731-9FA6-72EA3BB7E9E7}</Project>
+      <Name>OssControlIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">
+      <Project>{FADD2631-1259-4A92-B87F-69A4364AE7B6}</Project>
+      <Name>OssCoreIos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\LibUpnpCil\Services\Linn\AVTransport.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Configuration.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\ConnectionManager.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Debug.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Delay.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Diagnostics.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Ds.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Flash.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Info.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Jukebox.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Media.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\MediaTime.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Multipus.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\MultipusSender.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Playlist.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Preamp.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Product.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\ProductV1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\ProductV2.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Proxy.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Radio.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\RenderingControl.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Sdp.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Soundcard.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Time.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Video.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Volkano.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Linn\Volume.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Info1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Playlist1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Product1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Radio1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Receiver1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Sender1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Time1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\Volume1.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\AlarmClock.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\AudioIn.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\DeviceProperties.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\GroupManagement.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\MusicServices.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\SystemProperties.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Sonos\ZoneGroupTopology.xml" />
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\AVTransport.xml" />
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\ConnectionManager.xml" />
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\ContentDirectory.xml" />
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\RenderingControl.xml" />
+    <None Include="..\..\LibUpnpCil\Services\Openhome\PlaylistManager1.xml" />
+  </ItemGroup>
+</Project>

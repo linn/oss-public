@@ -1,0 +1,101 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+files = Split("""
+    Installer/Header.bmp
+    Installer/KinskyNsiTemplate.txt
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/KinskyClassic', files)
+
+if _default_env['hardware'] != 'PocketPc':
+    files = Split("""
+        KinskyClassic/Properties/Resources.Designer.cs
+        KinskyClassic/AdapterBrowser.cs
+        KinskyClassic/AdapterLibrary.cs
+        KinskyClassic/AdapterPlaylist.cs
+        KinskyClassic/AdapterRadio.cs
+        KinskyClassic/AdapterRoom.cs
+        KinskyClassic/AdapterSource.cs
+        KinskyClassic/AppKinskyClassic.cs
+        KinskyClassic/ApplicationCanvas.cs
+        KinskyClassic/ApplicationCanvas.Designer.cs
+        KinskyClassic/AppRestartHandler.cs
+        KinskyClassic/OptionsPageGeneral.cs
+        KinskyClassic/Support.cs
+        KinskyClassic/Views.cs
+    """)
+    res  = _default_env.Resgen('KinskyClassic.Properties.Resources.resources', 'KinskyClassic/Properties/Resources.resx')
+    res += _default_env.Resgen('KinskyClassic.ApplicationCanvas.resources', 'KinskyClassic/ApplicationCanvas.resx')
+    
+    lib = _default_env.CliLibrary('OssKinskyPc', files, CLILIBS=['OssCore', 'OssToolkitWinForms', 'OssControl', 'OssGui', 'OssServices', 'OssDidlLite', 'OssTopology', 'OssKinsky', 'System.Drawing', 'System.Windows.Forms'], CLIRESOURCES=res)
+    
+    target = 'winexe'
+    if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+        target = 'exe'
+    app = _default_env.CliProgram("KinskyClassic", ['KinskyClassic/Properties/AssemblyInfo.cs', 'KinskyClassic/Application.cs'], CSCTARGET=target, CLILIBS=['OssCore', 'OssControl', 'OssToolkitWinForms', 'OssKinsky', 'OssKinskyPc', 'System.Drawing', 'System.Windows.Forms'], WINICON='$variant_dir/share/Linn/Kinsky/Kinsky.ico')
+    
+    kinsky = []
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssToolkitWinForms.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssGui.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssDidlLite.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssKinsky.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssKinskyPc.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.dll')))
+    kinsky.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.config')))
+    kinsky.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico')))
+    kinsky.append(File(_default_env.subst('$variant_dir/share/Linn/Gui/Editor/Default/NotFound.png')))
+    
+    skin1 = [Dir(_default_env.subst('$variant_dir/share/Linn/Gui/Skins/Klimax/1024x600'))]
+    skin2 = [Dir(_default_env.subst('$variant_dir/share/Linn/Gui/Skins/Klimax/800x480'))]
+    
+    
+    installer = []
+    if _default_env['installers']:
+        installer  = _default_env.ReleaseInstallerWin32('$install_dir/share/KinskyClassic', 'InstallerKinskyClassic',
+                        FILES      = {''             : kinsky + app},
+                        DIRS       = {'Skins/Klimax' : skin1 + skin2},
+                        TEMPLATE   = _default_env.subst('$variant_dir/share/Linn/KinskyClassic/KinskyNsiTemplate.txt'),
+                        RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico'),
+                                      'header'  : _default_env.subst('$variant_dir/share/Linn/KinskyClassic/Header.bmp'),
+                                      'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish.bmp'),
+                                      'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT    = 'KinskyClassic',
+                        VERSION    = kVersion,
+                        LAUNCHFILE = 'KinskyClassic.exe')
+
+        installer += _default_env.ReleaseInstallerDebian('$install_dir/share/KinskyClassic', 'InstallerKinskyClassic',
+                        FILES        = {'usr/lib/KinskyClassic'              : kinsky + app},
+                        DIRS         = {'usr/lib/KinskyClassic/Skins/Klimax' : skin1 + skin2},
+                        MAINTAINER   = 'Linn [http://oss.linn.co.uk]',
+                        DEPENDECIES  = 'libmono-winforms2.0-cil (>= 2.0.1), mono-gmcs (>= 2.0.1)',
+                        ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky.xpm',
+                        DESCRIPTION  = 'UPnP control point designed for use on a touchscreen.',
+                        CATEGORIES   = 'AudioVideo;Audio;Video;Player;',
+                        PRODUCT      = 'KinskyClassic',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyClassic.exe')
+        
+        installer += _default_env.ReleaseInstallerMacOsX('$install_dir/share/KinskyClassic', 'InstallerKinskyClassic',
+                        FILES        = {''             : kinsky + app,
+                                        'Skins/Klimax' : skin1 + skin2},
+                        ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
+                        DESCRIPTION  = 'UPnP control point designed for use on a touchscreen.',
+                        PRODUCT      = 'KinskyClassic',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyClassic.exe')
+
+SConscript('Scripts/SConscript', exports = '_default_env')
+
+Alias('Lib', installerResources)
+Alias('Lib', installer)
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])

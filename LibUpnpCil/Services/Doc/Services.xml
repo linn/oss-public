@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<services>
+    <service>AVTransport</service>
+    <service>Component</service>
+    <service>ConnectionManager</service>
+    <service>Debug</service>
+    <service>Diagnostics</service>
+    <service>Ds</service>
+    <service>AudioTime</service>
+    <service>Flash</service>
+    <service>Jukebox</service>
+    <service>Playlist</service>
+    <service>Preamp</service>
+    <service>Product</service>
+    <service>Proxy</service>
+    <service>ProxyManager</service>
+    <service>Ptest</service>
+    <service>RenderingControl</service>
+    <service>Sdp</service>
+    <service>Ui</service>
+    <service>Volkano</service>
+</services>
