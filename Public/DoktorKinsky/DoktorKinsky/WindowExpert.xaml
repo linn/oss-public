@@ -1,0 +1,188 @@
+﻿<Window x:Class="DoktorKinsky.WindowExpert"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dk="clr-namespace:DoktorKinsky"
+    Title="DoktorKinsky (Expert)" Height="400" Width="800">
+    
+    <Window.Resources>
+
+        <!-- Icon Styles -->
+
+        <Style x:Key="IconTest">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Ellipse Width="10" Height="10" StrokeThickness="0" Margin="0 7 7 0" VerticalAlignment="Top" Fill="Black">
+                        </Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="IconParameter">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Ellipse Width="10" Height="10" StrokeThickness="0" Margin="0 7 7 0" VerticalAlignment="Top">
+                            <Ellipse.Style>
+                                <Style TargetType="Ellipse">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Valid}" Value="true">
+                                            <Setter Property="Fill" Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=Valid}" Value="false">
+                                            <Setter Property="Fill" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--List Box Item Styles -->
+
+        <Style x:Key="ListBoxItemParameter">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Kind}" Value="Normal">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <DockPanel LastChildFill="True">
+                                    <ContentControl DockPanel.Dock="Left" Style="{StaticResource IconParameter}"/>
+                                    <StackPanel>
+                                        <DockPanel LastChildFill="True">
+                                            <StackPanel DockPanel.Dock="Left" Width ="200">
+                                                <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding Path=Name}" />
+                                                <TextBlock FontSize="10" FontStyle="Italic" Text="{Binding Path=Description}" TextWrapping="Wrap" />
+                                            </StackPanel>
+                                            <TextBox Margin="0 8 4 2" FontSize="16" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}" MaxLines="1"/>
+                                        </DockPanel>
+                                        <Separator/>
+                                    </StackPanel>
+                                </DockPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Kind}" Value="Enumerated">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <DockPanel LastChildFill="True">
+                                    <ContentControl DockPanel.Dock="Left" Style="{StaticResource IconParameter}"/>
+                                    <StackPanel>
+                                        <DockPanel LastChildFill="True">
+                                            <StackPanel DockPanel.Dock="Left" Width ="200">
+                                                <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding Path=Name}" />
+                                            <TextBlock FontSize="10" FontStyle="Italic" Text="{Binding Path=Description}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                            <ComboBox Margin="0 8 4 2" FontSize="16" Text="{Binding Path=Value}" ItemsSource="{Binding Path=AllowedValues}"/>
+                                        </DockPanel>
+                                        <Separator/>
+                                    </StackPanel>
+                                </DockPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Kind}" Value="Nodal">
+                    <Setter Property="Control.Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <DockPanel LastChildFill="True">
+                                    <ContentControl DockPanel.Dock="Left" Style="{StaticResource IconParameter}"/>
+                                    <StackPanel>
+                                        <DockPanel LastChildFill="True">
+                                            <StackPanel DockPanel.Dock="Left" Width ="200">
+                                                <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding Path=Name}" />
+                                            <TextBlock FontSize="10" FontStyle="Italic" Text="{Binding Path=Description}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                            <ComboBox Margin="0 8 4 2" FontSize="16" Text="{Binding Path=Value}" ItemsSource="{Binding Path=AllowedValues}"/>
+                                        </DockPanel>
+                                        <Separator/>
+                                    </StackPanel>
+                                </DockPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- List Box Styles -->
+
+        <Style x:Key="ListBoxTests" TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />            
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="True">
+                            <ContentControl DockPanel.Dock="Left" Style="{StaticResource IconTest}"/>
+                            <StackPanel>
+                                <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding Path=Name}" />
+                                <TextBlock FontSize="10" FontStyle="Italic" Text="{Binding Path=Description}" TextWrapping="Wrap" />
+                                <Separator/>
+                            </StackPanel>
+                        </DockPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ListBoxParameters" TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <ContentControl Style="{StaticResource ListBoxItemParameter}"/>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".4*"/>
+                <ColumnDefinition Width=".6*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock FontSize="16" FontWeight="Bold" Text="Tests" Margin="4" />
+                    <Separator/>
+                </StackPanel>
+                <ListBox Name="listBoxTests" Style="{StaticResource ListBoxTests}" />
+            </DockPanel>
+            <GridSplitter Width="2" Background="Black" />
+            <DockPanel Grid.Column="1" LastChildFill="True">
+                <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                    <Button DockPanel.Dock="Right" Padding="8 2 8 2" Margin="0 4 9 2" Name="buttonRun">Run...</Button>
+                    <Button DockPanel.Dock="Right" Padding="8 2 8 2" Margin="0 4 9 2" Name="buttonReset">Reset</Button>
+                    <StackPanel>
+                        <TextBlock FontSize="16" FontWeight="Bold" Text="Parameters" Margin="4" />
+                    </StackPanel>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top" />
+                <ListBox Name="listBoxParameters" Style="{StaticResource ListBoxParameters}"/>
+            </DockPanel>
+        </Grid>
+        <StatusBar Name="statusBar" Grid.Row="1">
+        </StatusBar>
+    </Grid>
+    
+</Window>

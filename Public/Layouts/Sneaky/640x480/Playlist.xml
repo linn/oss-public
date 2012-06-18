@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>Playlist</Namespace>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Playlist.Playlist</Child>
+    </Children>
+    <Width>480</Width>
+    <Height>483</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="NodeList">
+    <Name>Playlist</Name>
+    <Plugin />
+    <Parent>Playlist.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Playlist.PlaylistInput</Child>
+      <Child>Playlist.Highlight</Child>
+    </Children>
+    <Width>480</Width>
+    <Height>483</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>128</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>10</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <LineCount>8</LineCount>
+    <Highlight>Playlist.Highlight</Highlight>
+  </Plugin>
+  <Plugin class="NodeInput">
+    <Name>PlaylistInput</Name>
+    <Plugin />
+    <Parent>Playlist.Playlist</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>480</Width>
+    <Height>483</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState />
+    <ClampToTextureSize>True</ClampToTextureSize>
+    <MsgReceiver>Playlist.Playlist</MsgReceiver>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Highlight</Name>
+    <Plugin>Playlist.Highlight.TextureArrayFixed</Plugin>
+    <Parent>Playlist.Playlist</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Playlist.DeleteTrack</Child>
+    </Children>
+    <Width>480</Width>
+    <Height>61</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/HighlightBar.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Highlight.TextureArrayFixed</Name>
+    <Plugin>Playlist.Highlight</Plugin>
+    <Texture>Bitmaps/HighlightBar.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>DeleteTrack</Name>
+    <Plugin>Playlist.DeleteTrack.Monostable</Plugin>
+    <Parent>Playlist.Highlight</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>438</X>
+        <Y>24</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>17</Width>
+    <Height>18</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/Delete.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>DeleteTrack.Monostable</Name>
+    <Plugin>Playlist.DeleteTrack.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>DeleteTrack.TextureArrayFixed</Name>
+    <Plugin>Playlist.DeleteTrack</Plugin>
+    <Texture>Bitmaps/Delete.png</Texture>
+    <Texture>Bitmaps/Delete_on.png</Texture>
+  </Plugin>
+</Package>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Songcast</string>
+	<key>CFBundleIconFile</key>
+	<string>Icon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>uk.co.linn.songcast</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Linn Songcast</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$BUILD_INFO_VERSION</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$BUILD_INFO_SVN_REVISION</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.6</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>LSUIElement</key>
+	<string>1</string>
+	<key>SongcastPreferencesId</key>
+	<string>uk.co.linn.songcast</string>
+	<key>SongcastPreferencePane</key>
+	<string>/Library/PreferencePanes/LinnSongcast.prefPane</string>
+	<key>SongcastDomain</key>
+	<string>linn.co.uk</string>
+	<key>SongcastManufacturerName</key>
+	<string>Linn</string>
+	<key>SongcastManufacturerUrl</key>
+	<string>http://www.linn.co.uk</string>
+	<key>SongcastModelUrl</key>
+	<string>http://www.linn.co.uk</string>
+	<key>SongcastProductId</key>
+	<string>Songcast</string>
+	<key>SongcastCrashLogUrl</key>
+	<string>http://products.linn.co.uk/cgi-bin/form.cgi</string>
+	<key>SongcastAutoUpdateUrl</key>
+	<string>http://oss.linn.co.uk/Feeds/Updates/Application.xml</string>
+</dict>
+</plist>

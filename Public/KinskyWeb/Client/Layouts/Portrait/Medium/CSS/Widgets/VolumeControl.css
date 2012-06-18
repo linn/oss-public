@@ -1,0 +1,38 @@
+#VolumeControlContainer
+{
+	position:relative;
+	padding:0;
+	display:inline-block;	
+}
+
+
+#VolumeControlButtonDown
+{
+	position:absolute;
+	border-style:none;
+	top:5px;
+	z-index:1;
+}
+
+#VolumeControlButtonUp
+{
+	position:absolute;
+	border-style:none;
+	left:217px;
+	top:4px;
+	z-index:1;
+}
+
+#VolumeControlVolumeDisplay
+{
+	position:absolute;
+	z-index:1;
+	cursor:default;	
+	text-align:center;
+	vertical-align:middle;
+	display:inline;
+	width:40px;
+	min-height:20px;
+	top:55px;
+	left:223px;
+}

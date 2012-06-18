@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8B63D778-7DA9-4598-A632-7FB2815DA984}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>LinnTopologyDroid</RootNamespace>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AssemblyName>LinnTopology</AssemblyName>
+    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <BaseDirectory>..\..\LibUpnpCil\Topology\LinnTopology\Droid</BaseDirectory>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\droid\debug\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\droid\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Activities.cs">
+      <Link>Activities.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Stack.cs">
+      <Link>Stack.cs</Link>
+    </Compile>
+    <Compile Include="Resources\Resource.designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\Main.axml">
+      <Link>Resources\Layout\Main.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Values\Strings.xml">
+      <Link>Resources\Values\Strings.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\OssControlDroid\OssControlDroid.csproj">
+      <Project>{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}</Project>
+      <Name>OssControlDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreDroid\OssCoreDroid.csproj">
+      <Project>{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}</Project>
+      <Name>OssCoreDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLiteDroid\OssDidlLiteDroid.csproj">
+      <Project>{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}</Project>
+      <Name>OssDidlLiteDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinskyDroid\OssKinskyDroid.csproj">
+      <Project>{74C4439C-6179-492E-992D-797E68090B69}</Project>
+      <Name>OssKinskyDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServicesDroid\OssServicesDroid.csproj">
+      <Project>{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}</Project>
+      <Name>OssServicesDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssSysLibDroid\OssSysLibDroid.csproj">
+      <Project>{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}</Project>
+      <Name>OssSysLibDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitDroid\OssToolkitDroid.csproj">
+      <Project>{16923BF8-1DA5-4A15-B603-9E0210E0919B}</Project>
+      <Name>OssToolkitDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopologyDroid\OssTopologyDroid.csproj">
+      <Project>{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}</Project>
+      <Name>OssTopologyDroid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Drawable-hdpi\Icon.png">
+      <Link>Resources\Drawable-hdpi\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Drawable-ldpi\Icon.png">
+      <Link>Resources\Drawable-ldpi\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Drawable-mdpi\Icon.png">
+      <Link>Resources\Drawable-mdpi\Icon.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\Playing.png">
+      <Link>Resources\Drawable\Playing.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Drawable\ListTextColour.xml">
+      <Link>Resources\Drawable\ListTextColour.xml</Link>
+    </AndroidResource>
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\RoomList.axml">
+      <Link>Resources\Layout\RoomList.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\Room.axml">
+      <Link>Resources\Layout\Room.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\SourceList.axml">
+      <Link>Resources\Layout\SourceList.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\Source.axml">
+      <Link>Resources\Layout\Source.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\RoomSourceList.axml">
+      <Link>Resources\Layout\RoomSourceList.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\MediaServer.axml">
+      <Link>Resources\Layout\MediaServer.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\LibUpnpCil\Topology\LinnTopology\Droid\Resources\Layout\MediaServerList.axml">
+      <Link>Resources\Layout\MediaServerList.axml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup />
+</Project>

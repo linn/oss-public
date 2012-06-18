@@ -1,0 +1,34 @@
+import os.path
+
+Import("_default_env")
+
+installDir = '$variant_dir/share/Linn/Gui/Skins/Klimax/800x480/Bitmaps'
+currentDir = os.getcwd() +'/images'
+
+images = []
+for filename in os.listdir(currentDir):
+    if filename.endswith('.png'):
+        images += _default_env.Install(installDir, currentDir + '/' + filename)        
+
+files = Split("""
+    Touchscreen/ControlPanel.xml
+    Touchscreen/CurrentPlaylist.xml
+    Touchscreen/Library.xml
+    Touchscreen/Main.xml
+    Touchscreen/RoomSelection.xml
+    Touchscreen/SourceSelection.xml
+    Touchscreen/StatusBar.xml
+""")
+result = _default_env.Install('$variant_dir/share/Linn/Gui/Skins/Klimax/800x480/Touchscreen', files)
+files = Split("""
+    Laptop/ControlPanel.xml
+    Laptop/CurrentPlaylist.xml
+    Laptop/Library.xml
+    Laptop/Main.xml
+    Laptop/RoomSelection.xml
+    Laptop/SourceSelection.xml
+    Laptop/StatusBar.xml
+""")
+result += _default_env.Install('$variant_dir/share/Linn/Gui/Skins/Klimax/800x480/Laptop', files)
+
+Alias('Klimax', result + images)

@@ -1,0 +1,37 @@
+#header {
+	background-color: white;
+}
+
+#body {
+	padding-left: 30;
+	background-color: white;
+}
+
+#service #header {
+	background-color: blue;
+}
+
+#details #header {
+	background-color: red;
+}
+
+#actions #header {
+	background-color: red;
+}
+
+#action #header {
+	background-color: green;
+}
+
+#input #header {
+	background-color: yellow;
+}
+
+#output #header {
+	background-color: yellow;
+}
+
+
+
+
+

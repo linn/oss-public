@@ -1,0 +1,69 @@
+Import('_default_env')
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+    
+files = Split("""
+    Applet/Config/AppletConfig.cs
+    Applet/Config/Config.cs
+    Applet/Config/Config.designer.cs
+    Applet/Diagnostic/AppletDiagnostic.cs
+    Applet/Diagnostic/Diagnostic.cs
+    Applet/Diagnostic/Diagnostic.designer.cs
+    Applet/Presentation/AppletPresentation.cs
+    Applet/Presentation/Presentation.cs
+    Applet/Presentation/Presentation.designer.cs
+    Applet/Reflash/AppletReflash.cs
+    Applet/Reflash/Reflash.cs
+    Applet/Reflash/Reflash.designer.cs
+    Applet/Applet.cs
+    Applet/AppletFactory.cs
+    Applet/AppletManager.cs
+    Properties/AssemblyInfo.cs
+    Properties/Resources.Designer.cs
+    Properties/Settings.Designer.cs
+    MainForm.cs
+    MainForm.Designer.cs
+    Target.cs    
+    TargetMediator.cs
+    Program.cs
+    Settings.cs
+    AboutBox.cs
+    AboutBox.Designer.cs
+    SettingsDialog.cs
+    SettingsDialog.Designer.cs
+""")
+
+resource = _default_env.Resgen("LinnSetup.Properties.Resources.resources", "Properties/Resources.resx")
+resource += _default_env.Resgen("LinnSetup.Diagnostic.resources", "Applet/Diagnostic/Diagnostic.resx")
+resource += _default_env.Resgen("LinnSetup.Presentation.resources", "Applet/Presentation/Presentation.resx")
+resource += _default_env.Resgen("LinnSetup.Config.resources", "Applet/Config/Config.resx")
+resource += _default_env.Resgen("LinnSetup.MainForm.resources", "MainForm.resx")
+resource += _default_env.Resgen("LinnSetup.Reflash.resources", "Applet/Reflash/Reflash.resx")
+
+linnSetup = _default_env.CliProgram("LinnSetup", files, CSCTARGET=target, CLILIBS=['OssServices', 'OssSysLib', 'OssCore', 'OssControl', 'OssTopology', 'System.Drawing', 'System.Windows.Forms'], CLIRESOURCES=resource)
+
+linnSetup.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+linnSetup.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+linnSetup.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+linnSetup.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+linnSetup.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+                       
+installer = []
+if _default_env['installers']:
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/LinnSetup', 'InstallerLinnSetup',
+                        FILES      = {''             : linnSetup },
+                        TEMPLATE   = 'Installer/NsiTemplate.txt',
+                        RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Core/linn.ico'),
+                                      'header'  : _default_env.subst('$variant_dir/share/Linn/Core/header.bmp'),
+                                      'finish'  : _default_env.subst('$variant_dir/share/Linn/Core/finish.bmp'),
+                                      'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT    = 'LinnSetup',
+                        VERSION    = 'development',
+                        LAUNCHFILE = 'LinnSetup.exe')
+
+Alias('Lib', installer)
+Alias('Test', 'Lib')
+
+Default('Test')

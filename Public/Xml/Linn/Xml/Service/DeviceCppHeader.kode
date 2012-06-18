@@ -1,0 +1,385 @@
+﻿//
+// Use the reference section to name additional assemblies
+// required to execute the template.
+//
+// The following assemblies are provided by default:
+//		System.dll
+//		System.Xml.dll
+//		LinnGen.exe
+//
+// Name one additional assembly on each line of the reference section
+//
+
+<* reference *>
+
+KodegenService.exe
+
+<* reference *>
+
+//
+// Use the import section for additional using directives.
+//
+// The following directives are provided by default
+//
+//		using System;
+//		using System.Text;
+//		using System.IO;
+//		using System.Xml;
+//		using System.Xml.XPath;
+//		using System.Collections.Generic;
+//
+
+<* import *>
+
+using Kodegen.Service;
+
+<* import *>
+
+//
+// Use the function section to provide helper functions
+// that can be called from within the body section
+//
+
+<* function *>
+
+string accesstype;
+string accesstypecurrent;
+
+public void SetAccessType(string type)
+{
+	if (type == accesstypecurrent) {
+		accesstype = null;
+	}
+	else {
+		accesstype = type + ":\r\n";
+		accesstypecurrent = type;
+	}
+}
+
+public void ForceSetAccessType(string type)
+{
+	accesstype = type + ":\r\n";
+	accesstypecurrent = type;
+}
+
+<* function *>
+
+//
+// The body section contains the generated text
+//
+// C# code can be embedded within <% %> tags
+//
+// <%=name%> will output the contents of the named variable
+//
+// args is an array of strings containing the generator arguments
+//
+// XPathNavigator LoadXmlFile(filename) is provided for loading
+// and navigating xml files
+//
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+	ServiceXml s = new ServiceXml(args[0]);
+%>
+#ifndef <%=s.guard%>
+#define <%=s.guard%>
+
+#include <Linn/Standard.h>
+#include <Linn/Event.h>
+#include <Linn/Control/Service.h>
+
+<%  foreach (string n in s.namespaces) { %>
+namespace <%=n%> {
+<%  } %>
+
+<%  foreach (Model m in s.models) { %>
+class <%=m.name%>;
+<%  } %>
+
+<%  foreach (Model m in s.models) { %>
+<%
+	// Implementation Interface Declaration
+%>
+class I<%=m.name%>Driver
+{
+<%      ForceSetAccessType("public"); %><%=accesstype%>
+	Initialise(<%=m.name%>& a<%=m.name%>) = 0;
+<%
+
+	// Interface Methods
+	
+%>
+<%      foreach (Method x in m.methods) { %>
+    virtual <%=x.name%>(<%=m.name%>& a<%=m.name%>) = 0;
+<%      } %>
+<%
+
+	// Model Property Changed Accessors (Derived Implementation)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access == "rw") { %>
+    virtual void <%=p.name%>Changed(<%=m.name%>& a<%=m.name%>, <%=p.get%> a<%=p.name%>) = 0;
+<%          } %>
+<%      } %>
+};
+
+<%
+
+	// Class Declaration
+	
+%>
+<%      if (m == s.model) { %>
+class <%=m.name%> : public Linn::Control::Service
+{
+<%          foreach (Model t in s.Related(m)) { %>
+<%              if (t != s.model) { %>
+    friend class <%=t.name%>;
+<%              } %>
+<%          } %>
+<%      } %>
+<%      else { %>
+class <%=m.name%>
+{
+<%      } %>
+<%
+
+	// Constructor
+	
+%>
+<%      SetAccessType("protected"); %><%=accesstype%>
+<%      if (m.name == s.name) { %>
+	<%=m.name%>(I<%=m.name%>Driver a<%=m.name%>Driver, TUint aInstance = 0);
+<%      } %>
+<%      else { %>
+    <%=m.name%>(I<%=m.name%>Driver a<%=m.name%>Driver, <%=s.name%>& a<%=s.name%>);
+<%      } %>
+<%
+
+	// Model Get Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access != "no") { %>
+<%              SetAccessType("public"); %><%=accesstype%>
+    <%=p.get%> <%=p.name%>() const;
+<%          } %>
+<%      } %>
+<%
+
+	// Model Set Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%      if (p.access == "rw") { %>
+<%          SetAccessType("public"); %><%=accesstype%>
+	void Set<%=p.name%>(<%=p.get%> a<%=p.name%>); %>
+<%          } %>
+<%      } %>
+<%
+
+	// Model Record Count Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+<%              SetAccessType("public"); %><%=accesstype%>
+	<%=p.get%> <%=p.model%>Count() const;
+<%          } %>
+<%      } %>
+<%
+
+	// Model Record Accessors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+<%              SetAccessType("public"); %><%=accesstype%>
+	<%=p.model%>& Get<%=p.model%>(TUint a<%=p.name%>) const;
+<%          } %>
+<%      } %>
+<%
+
+	// Interface Methods
+	
+%>
+<%      foreach (Method x in m.methods) { %>
+<%          SetAccessType("public"); %><%=accesstype%>
+    virtual <%=x.name%>() = 0;
+<%      } %>
+<%
+
+	// Model Event Producer Accessors
+	
+%>
+<%      if (m == s.model) { %>
+<%          foreach (Model t in s.Related(m)) { %>
+<%              foreach (Property p in t.properties) { %>
+<%                  SetAccessType("public"); %><%=accesstype%>
+<%                  if (p.evented) { %>
+<%                      if (t == s.model) { %>
+    Producer& <%=p.name%>Changed() const;
+<%                      } %>
+<%                      else { %>
+    Producer& <%=t.name%><%=p.name%>Changed() const;
+<%                      } %>
+<%                  } %>
+<%              } %>
+<%          } %>
+<%      } %>
+<%
+
+	// Model Initialise Accessors (Derived Implementation)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access != "no") { %>
+<%              SetAccessType("protected"); %><%=accesstype%>
+    void Initialise<%=p.name%>(<%=p.get%> a<%=p.name%>);
+<%          } %>
+<%      } %>
+<%
+	// Model Set Accessors (Derived Implementation)
+%>
+<%      foreach (Property p in m.properties) { %>
+<%      if (p.access == "rv") { %>
+<%          SetAccessType("protected"); %><%=accesstype%>
+	void Set<%=p.name%>(<%=p.get%> a<%=p.name%>); %>
+<%          } %>
+<%      } %>
+<%
+
+	// Model Add Record Accessors (Derived Implementation)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+<%              SetAccessType("protected"); %><%=accesstype%>
+    void Add(<%=p.model%>* a<%=p.model%>);
+<%          } %>
+<%      } %>
+<%
+
+	// Model Property Changed Accessors (Derived Implementation)
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access == "rw") { %>
+<%              SetAccessType("private"); %><%=accesstype%>
+    virtual void <%=p.name%>Changed(<%=p.get%> a<%=p.name%>) = 0;
+<%          } %>
+<%      } %>
+<%
+
+	// Service Methods (Network Control)
+	
+%>
+<%      if (m == s.model) { %>
+<%          SetAccessType("private"); %><%=accesstype%>
+    virtual const Brx& UpnpDescription();
+    virtual void StreamUpnpDescription(IStreamWriter& aStream);
+    virtual void Invoke(InvokeToken& aToken, TUint aVersion, const Brx& aAction);
+<%          SetAccessType("protected"); %><%=accesstype%>
+    void InvokedResponseError(InvokeToken& aToken, TUint aCode, const Brx& aDescription);
+<%      } %>
+<%      foreach (Model t in s.Related(m)) { %>
+<%		    string prefix = s.Prefix(t, m); %>
+<%
+
+	// Service Model Get Accessors (Network Control)
+	
+%>
+<%          foreach (Property p in t.properties) { %>
+<%              if (p.access != "no") { %>
+<%                  SetAccessType("private"); %><%=accesstype%>
+    void Invoke<%=prefix%><%=p.name%>(aToken, aVersion);
+<%              } %>
+<%          } %>
+<%
+
+	// Service Model Set Accessors (Network Control)
+	
+%>
+<%          foreach (Property p in t.properties) { %>
+<%              if (p.access == "rw") { %>
+<%                  SetAccessType("private"); %><%=accesstype%>
+    void InvokeSet<%=prefix%><%=p.name%>(aToken, aVersion);
+<%              } %>
+<%          } %>
+<%
+
+	// Find Service Model Record Count Accessors (Network Control)
+	
+%>
+<%          foreach (Property p in t.properties) { %>
+<%              if (p.type == "record") { %>
+<%                  SetAccessType("private"); %><%=accesstype%>
+    void Invoke<%=prefix%><%=p.model%>Count(aToken, aVersion);
+<%              } %>
+<%          } %>
+<%
+
+	// Find Service Interface Method Accessors (Network Control)
+	
+%>
+<%          foreach (Method x in t.methods) { %>
+<%              SetAccessType("private"); %><%=accesstype%>
+    void Invoke<%=prefix%><%=x.name%>(aToken, aVersion);
+<%          } %>
+<%      } %>
+<%
+	// Model Properties (Evented)
+%>
+<%      ForceSetAccessType("private"); %><%=accesstype%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.access == "rw" && m == s.model) { %>
+	Property<%=p.kind%>* i<%=p.name%>;
+<%          } %>
+<%          else if (p.access != "no") { %>
+	<%=p.instance%> i<%=p.name%>;
+<%          } %>
+<%      } %>
+<%
+
+	// Model Event Producer Accessors
+	
+%>
+<%      if (m == s.model) { %>
+<%          foreach (Model t in s.Related(m)) { %>
+<%              foreach (Property p in t.properties) { %>
+<%                  if (p.evented) { %>
+<%                      SetAccessType("private"); %><%=accesstype%>
+<%                      if (t == s.model) { %>
+    Producer& i<%=p.name%>Changed;
+<%                      } %>
+<%                      else { %>
+    Producer& i<%=t.name%><%=p.name%>Changed;
+<%                      } %>
+<%                  } %>
+<%              } %>
+<%          } %>
+<%      } %>
+<%
+
+	// Model Record Vectors
+	
+%>
+<%      foreach (Property p in m.properties) { %>
+<%          if (p.type == "record") { %>
+<%              SetAccessType("private"); %><%=accesstype%>
+	std::vector<<%=p.model%>*> i<%=p.model%>Vector;
+<%          } %>
+<%      } %>
+};
+
+<%  } %>
+<%  foreach (string n in s.namespaces) { %>
+}; // namespace <%=n%>
+<%  } %>
+
+#endif // <%=s.guard%>
+<* body *>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Rom">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice maxOccurs="unbounded">
+                    <xs:element name="Store" type="StoreRegion"/>
+                    <xs:element name="Binary" type="BinaryRegion"/>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="layout" type="xs:string" use="required" />
+            <xs:attribute name="tags" type="xs:string" use="required" />
+            <xs:attribute name="fallback" type="xs:boolean" use="required" />
+            <xs:attribute name="installroot" type="xs:string" use="required" />
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="StoreRegion">
+        <xs:sequence>
+            <xs:element name="Tag" type="xs:string" />
+            <xs:element name="Type" type="xs:string" />
+            <xs:element name="Value" type="StoreRegionValue"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="StoreRegionValue" mixed="true">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="Store" type="Store"/>
+        </xs:sequence>
+        <xs:attribute name="source" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="Store">
+        <xs:sequence>
+            <xs:element name="Entry" type="Entry" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Entry">
+        <xs:sequence>
+            <xs:element name="Tag" type="xs:string" />
+            <xs:element name="Value" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="BinaryRegion">
+        <xs:sequence>
+            <xs:element name="Tag" type="xs:string" />
+            <xs:element name="Value" type="BinaryRegionValue"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="BinaryRegionValue">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="source" type="xs:string" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+</xs:schema>

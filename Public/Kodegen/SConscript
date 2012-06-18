@@ -1,0 +1,21 @@
+Import('_tool_env')
+
+# Kodegen.exe
+
+files = Split("""
+    Kodegen/Program.cs
+    Kodegen/Generator.cs
+    Kodegen/AssemblyInfo.cs
+""")
+
+exe = _tool_env.CliProgram("Kodegen", files)
+
+# Templates
+
+template  = _tool_env.Install('$hardware_dir/share/Kodegen', 'Kode/UpnpControlPointCs.kode')
+
+Alias('Lib', [template, exe])
+Alias('Test', 'Lib')
+Alias('Docs', 'Test')
+Default(['Test','Docs'])
+

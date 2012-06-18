@@ -1,0 +1,64 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+    
+files = Split("""
+    Properties/AssemblyInfo.cs
+    LinnSysTrayForm.cs
+    LinnSysTrayForm.Designer.cs
+    Program.cs
+""")
+resource = _default_env.Resgen("LinnSysTray.LinnSysTrayForm.resources", "LinnSysTrayForm.resx")
+linnSysTray = _default_env.CliProgram("LinnSysTray", files, CSCTARGET=target, CLILIBS=['OssCore', 'OssToolkitWinForms', 'OssControl', 'OssServices', 'OssDidlLite', 'OssTopology', 'System.Drawing', 'System.Windows.Forms'], CLIRESOURCES=resource)
+
+linnSysTray.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+linnSysTray.append(File(_default_env.subst('$install_dir/lib/Linn/OssToolkitWinForms.dll')))
+linnSysTray.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+linnSysTray.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+linnSysTray.append(File(_default_env.subst('$install_dir/lib/Linn/OssDidlLite.dll')))
+linnSysTray.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+linnSysTray.append(File(_default_env.subst('$variant_dir/share/Linn/Core/linn.ico')))
+
+installer = []
+if _default_env['installers']  and _default_env['hardware'] == 'Windows':
+    installer  = _default_env.ReleaseInstallerWin32('$install_dir/share/LinnSysTray', 'InstallerLinnSysTray',
+                        FILES      = {''             : linnSysTray },
+                        TEMPLATE   = _default_env.subst('$variant_dir/share/Linn/Core/NsiTemplate.txt'),
+                        RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Core/linn.ico'),
+                                      'header'  : _default_env.subst('$variant_dir/share/Linn/Core/header.bmp'),
+                                      'finish'  : _default_env.subst('$variant_dir/share/Linn/Core/finish.bmp'),
+                                      'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT    = 'LinnSysTray',
+                        VERSION    = kVersion,
+                        CERT       = '',
+                        LAUNCHFILE = 'LinnSysTray.exe')
+    
+if _default_env['installers']  and _default_env['hardware'] == 'Linux':
+    installer += _default_env.ReleaseInstallerDebian('$install_dir/share/LinnSysTray', 'InstallerLinnSysTray',
+                        FILES        = {'usr/lib/LinnSysTray' : linnSysTray},
+                        MAINTAINER   = 'Linn [http://oss.linn.co.uk]',
+                        DEPENDECIES  = 'libmono-winforms2.0-cil (>= 2.0.1), mono-gmcs (>= 2.0.1)',
+                        ICON         = '$variant_dir/share/Linn/Core/linn.xpm',
+                        DESCRIPTION  = 'Simple SysTray UPnP control point.',
+                        CATEGORIES   = 'AudioVideo;Audio;Video;Player;',
+                        PRODUCT      = 'LinnSysTray',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'LinnSysTray.exe')
+
+if _default_env['installers']  and _default_env['hardware'] == 'MacOsX':    
+    installer += _default_env.ReleaseInstallerMacOsX('$install_dir/share/LinnSysTray', 'InstallerLinnSysTray',
+                        FILES        = {''        : linnSysTray},
+                        ICON         = '$variant_dir/share/Linn/Core/linn.icns',
+                        DESCRIPTION  = 'Simple SysTray UPnP control point.',
+                        PRODUCT      = 'LinnSysTray',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'LinnSysTray.exe')
+
+Alias('Lib', installer)
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])

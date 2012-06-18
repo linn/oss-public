@@ -1,0 +1,8 @@
+$VOLKANO_INSTALL_ROOT/bin/Test/TestGuiLayout.py
+$VOLKANO_INSTALL_ROOT/bin/Test/TestSceneGraph.py
+$VOLKANO_INSTALL_ROOT/bin/Test/TestSceneGraphEvent.py
+$VOLKANO_INSTALL_ROOT/bin/Test/TestSrt.py
+
+$VOLKANO_INSTALL_ROOT/bin/RunGuiTests d
+$VOLKANO_INSTALL_ROOT/bin/RunGuiTests t
+$VOLKANO_INSTALL_ROOT/bin/RunGuiTests r

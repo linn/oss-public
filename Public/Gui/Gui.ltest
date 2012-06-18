@@ -1,0 +1,10 @@
+if __config.startswith('xxx'):
+    LTest('Linn/Gui/Test/TestEditorTranslatorList')
+    LTest('Linn/Gui/Test/TestGuiLayout')
+    LTest('Linn/Gui/Test/TestNodeInput')
+    LTest('Linn/Gui/Test/TestPackage')
+    LTest('Linn/Gui/Test/TestPackageManager')
+    LTest('Linn/Gui/Test/TestSceneGraph')
+    LTest('Linn/Gui/Test/TestSceneGraphEvent')
+    LTest('Linn/Gui/Test/TestSrt')
+    LTest('Linn/Gui/Test/TestTextureManager')

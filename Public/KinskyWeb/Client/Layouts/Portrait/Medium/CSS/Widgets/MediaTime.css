@@ -1,0 +1,22 @@
+#MediaTimeContainer
+{
+	position:relative;	
+	padding:0;
+	display:inline-block;
+}
+#MediaTimeButtonSkipBack,
+#MediaTimeButtonSkipForward,
+#MediaTimeSecondsBackground
+{
+	display:none;
+}
+
+
+#MediaTimeSeconds
+{
+	position:absolute;
+	top:55px;
+	left:5px;
+	width:40px;
+	min-height:20px;
+}

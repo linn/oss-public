@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Linn.Services</RootNamespace>
+    <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
+    <AssemblyName>OssServices</AssemblyName>
+    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <BaseDirectory>..\..\LibUpnpCil\Services</BaseDirectory>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\debug\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\..\Kodegen\Kode\UpnpControlPointCs.kode">
+      <Link>Kode\UpnpControlPointCs.kode</Link>
+    </None>
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\AVTransport.xml" />
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\ConnectionManager.xml" />
+    <None Include="..\..\LibUpnpCil\Services\UpnpAv\RenderingControl.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControlDroid\OssControlDroid.csproj">
+      <Project>{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}</Project>
+      <Name>OssControlDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreDroid\OssCoreDroid.csproj">
+      <Project>{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}</Project>
+      <Name>OssCoreDroid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointAVTransport.cs">
+      <Link>Generated\UpnpControlPointAVTransport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointConfiguration.cs">
+      <Link>Generated\UpnpControlPointConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointConnectionManager.cs">
+      <Link>Generated\UpnpControlPointConnectionManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointContentDirectory.cs">
+      <Link>Generated\UpnpControlPointContentDirectory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDebug.cs">
+      <Link>Generated\UpnpControlPointDebug.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDelay.cs">
+      <Link>Generated\UpnpControlPointDelay.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDeviceProperties.cs">
+      <Link>Generated\UpnpControlPointDeviceProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointDiagnostics.cs">
+      <Link>Generated\UpnpControlPointDiagnostics.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointFlash.cs">
+      <Link>Generated\UpnpControlPointFlash.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointInfo.cs">
+      <Link>Generated\UpnpControlPointInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointJukebox.cs">
+      <Link>Generated\UpnpControlPointJukebox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointPlaylist.cs">
+      <Link>Generated\UpnpControlPointPlaylist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProduct.cs">
+      <Link>Generated\UpnpControlPointProduct.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV1.cs">
+      <Link>Generated\UpnpControlPointProductV1.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV2.cs">
+      <Link>Generated\UpnpControlPointProductV2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProductV3.cs">
+      <Link>Generated\UpnpControlPointProductV3.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointProxy.cs">
+      <Link>Generated\UpnpControlPointProxy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointRadio.cs">
+      <Link>Generated\UpnpControlPointRadio.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointReceiver.cs">
+      <Link>Generated\UpnpControlPointReceiver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointRenderingControl.cs">
+      <Link>Generated\UpnpControlPointRenderingControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSdp.cs">
+      <Link>Generated\UpnpControlPointSdp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSender.cs">
+      <Link>Generated\UpnpControlPointSender.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointSoundcard.cs">
+      <Link>Generated\UpnpControlPointSoundcard.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointTime.cs">
+      <Link>Generated\UpnpControlPointTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVideo.cs">
+      <Link>Generated\UpnpControlPointVideo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVolkano.cs">
+      <Link>Generated\UpnpControlPointVolkano.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointVolume.cs">
+      <Link>Generated\UpnpControlPointVolume.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Services\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Services\UpnpControlPointPlaylistManager.cs">
+      <Link>Generated\UpnpControlPointPlaylistManager.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\AVTransport.xml">
+      <Link>Linn\AVTransport.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Configuration.xml">
+      <Link>Linn\Configuration.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\ConnectionManager.xml">
+      <Link>Linn\ConnectionManager.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Debug.xml">
+      <Link>Linn\Debug.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Delay.xml">
+      <Link>Linn\Delay.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Diagnostics.xml">
+      <Link>Linn\Diagnostics.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Ds.xml">
+      <Link>Linn\Ds.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Flash.xml">
+      <Link>Linn\Flash.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Info.xml">
+      <Link>Linn\Info.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Jukebox.xml">
+      <Link>Linn\Jukebox.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Media.xml">
+      <Link>Linn\Media.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\MediaTime.xml">
+      <Link>Linn\MediaTime.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Multipus.xml">
+      <Link>Linn\Multipus.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\MultipusSender.xml">
+      <Link>Linn\MultipusSender.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Playlist.xml">
+      <Link>Linn\Playlist.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Preamp.xml">
+      <Link>Linn\Preamp.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Product.xml">
+      <Link>Linn\Product.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\ProductV1.xml">
+      <Link>Linn\ProductV1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\ProductV2.xml">
+      <Link>Linn\ProductV2.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Proxy.xml">
+      <Link>Linn\Proxy.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Radio.xml">
+      <Link>Linn\Radio.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\RenderingControl.xml">
+      <Link>Linn\RenderingControl.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Sdp.xml">
+      <Link>Linn\Sdp.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Soundcard.xml">
+      <Link>Linn\Soundcard.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Time.xml">
+      <Link>Linn\Time.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Video.xml">
+      <Link>Linn\Video.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Volkano.xml">
+      <Link>Linn\Volkano.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Linn\Volume.xml">
+      <Link>Linn\Volume.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Info1.xml">
+      <Link>Openhome\Info1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Playlist1.xml">
+      <Link>Openhome\Playlist1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Product1.xml">
+      <Link>Openhome\Product1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Radio1.xml">
+      <Link>Openhome\Radio1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Receiver1.xml">
+      <Link>Openhome\Receiver1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Sender1.xml">
+      <Link>Openhome\Sender1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Time1.xml">
+      <Link>Openhome\Time1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Openhome\Volume1.xml">
+      <Link>Openhome\Volume1.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\AlarmClock.xml">
+      <Link>Sonos\AlarmClock.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\AudioIn.xml">
+      <Link>Sonos\AudioIn.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\DeviceProperties.xml">
+      <Link>Sonos\DeviceProperties.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\GroupManagement.xml">
+      <Link>Sonos\GroupManagement.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\MusicServices.xml">
+      <Link>Sonos\MusicServices.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\SystemProperties.xml">
+      <Link>Sonos\SystemProperties.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\Sonos\ZoneGroupTopology.xml">
+      <Link>Sonos\ZoneGroupTopology.xml</Link>
+    </Content>
+    <Content Include="..\..\LibUpnpCil\Services\UpnpAv\ContentDirectory.xml">
+      <Link>UpnpAv\ContentDirectory.xml</Link>
+    </Content>
+  </ItemGroup>
+</Project>

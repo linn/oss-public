@@ -1,0 +1,209 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A64AAC11-67BD-4093-9D5F-1AAADD4BFCF5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn.Kinsky</RootNamespace>
+    <AssemblyName>OssKinsky</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>PocketPC</PlatformFamilyName>
+    <PlatformID>4118C335-430C-497f-BE48-11C3316B135E</PlatformID>
+    <OSVersion>5.1</OSVersion>
+    <DeployDirSuffix>OssKinskyCf</DeployDirSuffix>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <NativePlatformName>Windows Mobile 5.0 Pocket PC SDK</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <LinnConfiguration>debug</LinnConfiguration>
+    <IntermediateOutputPath>..\..\build\PocketPc\$(LinnConfiguration)\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\PocketPc\$(LinnConfiguration)\bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;PocketPC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <LinnConfiguration>trace</LinnConfiguration>
+    <IntermediateOutputPath>..\..\build\PocketPc\$(LinnConfiguration)\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\PocketPc\$(LinnConfiguration)\bin\</OutputPath>
+    <DefineConstants>TRACE;PocketPC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <LinnConfiguration>release</LinnConfiguration>
+    <IntermediateOutputPath>..\..\build\PocketPc\$(LinnConfiguration)\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\PocketPc\$(LinnConfiguration)\bin\</OutputPath>
+    <DefineConstants>PocketPC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <GenerateSerializationAssemblies>off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\External\Framework\Compact\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Windowsce.Forms" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\ArtworkCache.cs">
+      <Link>Linn\Kinsky\ArtworkCache.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\BookmarkManager.cs">
+      <Link>Linn\Kinsky\BookmarkManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Browser.cs">
+      <Link>Linn\Kinsky\Browser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Container.cs">
+      <Link>Linn\Kinsky\Container.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\ContentCollector.cs">
+      <Link>Linn\Kinsky\ContentCollector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\ContentDirectoryLocator.cs">
+      <Link>Linn\Kinsky\ContentDirectoryLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Controllers.cs">
+      <Link>Linn\Kinsky\Controllers.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\FileItc2.cs">
+      <Link>Linn\Kinsky\FileItc2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Framework\Compact\DisplayManager.cs">
+      <Link>Linn\Kinsky\Framework\Compact\DisplayManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Framework\Compact\KeyBindings.cs">
+      <Link>Linn\Kinsky\Framework\Compact\KeyBindings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\HelperKinsky.cs">
+      <Link>Linn\Kinsky\HelperKinsky.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\HttpClient.cs">
+      <Link>Linn\Kinsky\HttpClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\HttpServer.cs">
+      <Link>Linn\Kinsky\HttpServer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Library.cs">
+      <Link>Linn\Kinsky\Library.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\MediaProvider.cs">
+      <Link>Linn\Kinsky\MediaProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\MediaRetriever.cs">
+      <Link>Linn\Kinsky\MediaRetriever.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Mediators.cs">
+      <Link>Linn\Kinsky\Mediators.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Models.cs">
+      <Link>Linn\Kinsky\Models.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\OptionStartupRoom.cs">
+      <Link>Linn\Kinsky\OptionStartupRoom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Playlist.cs">
+      <Link>Linn\Kinsky\Playlist.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\PlaylistSupport.cs">
+      <Link>Linn\Kinsky\PlaylistSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\PluginManager.cs">
+      <Link>Linn\Kinsky\PluginManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Support.cs">
+      <Link>Linn\Kinsky\Support.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\ViewMasters.cs">
+      <Link>Linn\Kinsky\ViewMasters.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\Views.cs">
+      <Link>Linn\Kinsky\Views.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="..\..\Kinsky\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControlCf\OssControlCf.csproj">
+      <Project>{8B40E738-4B79-4606-B191-C810F18F162D}</Project>
+      <Name>OssControlCf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreCf\OssCoreCf.csproj">
+      <Project>{50AACFB3-0D3D-4C1C-9D75-370686FE09D5}</Project>
+      <Name>OssCoreCf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLiteCf\OssDidlLiteCf.csproj">
+      <Project>{91AD9AE3-8974-4C32-9A16-9CF00E795C44}</Project>
+      <Name>OssDidlLiteCf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServicesCf\OssServicesCf.csproj">
+      <Project>{4BED3814-B713-4882-8CF2-6D820CC15FC9}</Project>
+      <Name>OssServicesCf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssSysLibCf\OssSysLibCf.csproj">
+      <Project>{3E763FEA-A211-483A-BE11-A1CBC5F29530}</Project>
+      <Name>OssSysLibCf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopologyCf\OssTopologyCf.csproj">
+      <Project>{B77C559E-6F09-442D-9200-511174E61DF3}</Project>
+      <Name>OssTopologyCf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

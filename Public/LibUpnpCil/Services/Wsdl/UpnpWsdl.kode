@@ -1,0 +1,190 @@
+﻿<* reference *>
+
+XmlUpnp.dll
+
+<* reference *>
+
+<* import *>
+
+using Linn.Xml.Upnp;
+
+<* import *>
+
+<* function *>
+
+<* function *>
+
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Service Description File not specified"));
+    }
+
+    if (args.Length < 2)
+    {
+        throw (new TemplateException("Service Domain not specified"));
+    }
+
+    if (args.Length < 3)
+    {
+        throw (new TemplateException("Service Type not specified"));
+    }
+
+    if (args.Length < 4)
+    {
+        throw (new TemplateException("Service Version not specified"));
+    }
+
+    string domain = args[1];
+    string type = args[2];
+    uint version;
+
+    try
+    {
+        version = Convert.ToUInt32(args[3]);
+    }
+    catch (FormatException)
+    {
+        throw (new TemplateException("Invalid version number specified"));
+    }
+    catch (OverflowException)
+    {
+        throw (new TemplateException("Invalid version number specified"));
+    }
+
+    string upnpdomain = domain;
+
+    upnpdomain = upnpdomain.Replace(".", "-");
+
+    if (upnpdomain.StartsWith("upnp-"))
+    {
+        upnpdomain = "schemas-" + upnpdomain;
+    }
+
+    string name = upnpdomain + "-" + type + "-" + version.ToString();
+
+    UpnpXml u = new UpnpXml(args[0]);
+    
+    Dictionary<string,string> types = new Dictionary<string,string>();
+    
+    types.Add("boolean", "boolean");
+    types.Add("ui1", "unsignedByte");
+    types.Add("ui2", "unsignedShort");
+    types.Add("ui4", "unsignedInt");
+    types.Add("i1", "byte");
+    types.Add("i2", "short");
+    types.Add("i4", "int");
+    types.Add("int", "int");
+    types.Add("string", "string");
+    types.Add("bin.base64", "base64Binary");
+    types.Add("bin.hex", "hexBinary");
+    types.Add("r4", "float");
+    types.Add("r8", "double");
+    types.Add("float", "float");
+    types.Add("number", "double");
+    types.Add("fixed.14.4", "double");
+    types.Add("date", "date");
+    types.Add("time", "time");
+    types.Add("time.tz", "time");
+    types.Add("dateTime", "dateTime");
+    types.Add("dateTime.tz", "dateTime");
+    types.Add("uri", "anyURI");
+    types.Add("uuid", "string");
+%>
+<?xml version="1.0"?>
+
+<definitions name="<%=type%>"
+    targetNamespace="<%=name%>"
+    xmlns:svc="<%=name%>"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:upnp="urn:schemas-upnp-org:control-1-0"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <xsd:schema elementFormDefault="qualified" targetNamespace="urn:schemas-upnp-org:control-1-0">
+            <xsd:complexType name="UpnpErrorDetail">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="UPnPError">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element minOccurs="1" maxOccurs="1" name="errorCode" type="xsd:unsignedInt"/>
+                                <xsd:element minOccurs="1" maxOccurs="1" name="errorDescription" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+    
+    <message name="UpnpErrorMessage">
+        <part name="fault" element="upnp:UpnpErrorDetail"/>
+    </message>
+    
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+    <message name="<%=a.name%>Input">
+<%      foreach (Argument i in a.inargs) %>
+<%      { %>
+        <part name="<%=i.name%>" type="xsd:<%=types[i.variable.type]%>"/>
+<%      } %>
+    </message>
+    
+    <message name="<%=a.name%>Output">
+<%  foreach (Argument o in a.outargs) %>
+<%  { %>
+        <part name="<%=o.name%>" type="xsd:<%=types[o.variable.type]%>"/>
+<%  } %>
+    </message>
+
+    <portType name="<%=a.name%>PortType">
+        <operation name="<%=a.name%>">
+            <input message="svc:<%=a.name%>Input"/>
+            <output message="svc:<%=a.name%>Output"/>
+            <fault name="fault" message="svc:UpnpErrorMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="<%=a.name%>Binding" type="svc:<%=a.name%>PortType">
+        <soap:binding 
+            style="rpc"
+            transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="<%=a.name%>">
+            <soap:operation
+                soapAction="urn:<%=upnpdomain%>:service:<%=type%>:<%=version.ToString()%>#<%=a.name%>"/>
+            <input>
+                <soap:body
+                    use="encoded"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                    namespace = "urn:<%=upnpdomain%>:service:<%=type%>:<%=version.ToString()%>"/>
+            </input>
+            <output>
+                <soap:body
+                    use="encoded"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                    namespace = "urn:<%=upnpdomain%>:service:<%=type%>:<%=version.ToString()%>"/>
+            </output>
+            <fault name="fault">
+                <soap:fault
+                    name="fault"
+                    use="encoded"/>
+            </fault>
+        </operation>
+    </binding>
+
+<%  } %>
+
+    <service name="<%=type%>Service">
+<%  foreach (Method a in u.methods) %>
+<%  { %>
+        <port name="<%=a.name%>Port" binding="svc:<%=a.name%>Binding">
+            <soap:address location="<%=type%>" />
+        </port>
+<%  } %>
+    </service>
+
+</definitions>
+
+<* body *>

@@ -1,0 +1,108 @@
+Import('_default_env')
+
+# files = Split("""
+    # Installer/Header.bmp
+    # Installer/NsiTemplate.txt
+# """)
+# installerResources = _default_env.Install('$variant_dir/share/Linn/KinskyDesktop/Wpf', files)
+
+installedLibs = _default_env.Install('$install_dir/bin/x86/', 'libx86/PcapDotNet.Base.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x86/', 'libx86/PcapDotNet.Core.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x86/', 'libx86/PcapDotNet.Core.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x86/', 'libx86/PcapDotNet.Core.Extensions.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x86/', 'libx86/PcapDotNet.Packets.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x86/', 'libx86/PcapDotNet.Analysis.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x64/', 'libx64/PcapDotNet.Base.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x64/', 'libx64/PcapDotNet.Core.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x64/', 'libx64/PcapDotNet.Core.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x64/', 'libx64/PcapDotNet.Core.Extensions.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x64/', 'libx64/PcapDotNet.Packets.dll')
+installedLibs += _default_env.Install('$install_dir/bin/x64/', 'libx64/PcapDotNet.Analysis.dll')
+
+libs = [
+    'System',
+    'System.Core',
+    'System.Xaml',
+    'System.Xml.Linq',
+    'System.Data.DataSetExtensions',
+    'System.Xml',
+    'System.Drawing',
+    'UIAutomationProvider',
+    'WindowsBase',
+    'PresentationCore',
+    'PresentationFramework',
+    'System.Windows.Forms'
+]
+libsx86 = libs + []
+libsx86 += [('PcapDotNet.Base', _default_env.subst('$install_dir/bin/x86/PcapDotNet.Base.dll'))]
+libsx86 += [('PcapDotNet.Core', _default_env.subst('$install_dir/bin/x86/PcapDotNet.Core.dll'))]
+libsx86 += [('PcapDotNet.Core.Extensions', _default_env.subst('$install_dir/bin/x86/PcapDotNet.Core.Extensions.dll'))]
+libsx86 += [('PcapDotNet.Packets', _default_env.subst('$install_dir/bin/x86/PcapDotNet.Packets.dll'))]
+libsx86 += [('PcapDotNet.Analysis', _default_env.subst('$install_dir/bin/x86/PcapDotNet.Analysis.dll'))]
+
+libsx64 = libs + []
+libsx64 += [('PcapDotNet.Base', _default_env.subst('$install_dir/bin/x64/PcapDotNet.Base.dll'))]
+libsx64 += [('PcapDotNet.Core', _default_env.subst('$install_dir/bin/x64/PcapDotNet.Core.dll'))]
+libsx64 += [('PcapDotNet.Core.Extensions', _default_env.subst('$install_dir/bin/x64/PcapDotNet.Core.Extensions.dll'))]
+libsx64 += [('PcapDotNet.Packets', _default_env.subst('$install_dir/bin/x64/PcapDotNet.Packets.dll'))]
+libsx64 += [('PcapDotNet.Analysis', _default_env.subst('$install_dir/bin/x64/PcapDotNet.Analysis.dll'))]
+
+files = Split("""
+    Linn/DsTrace/App.xaml
+    Linn/DsTrace/App.xaml.cs
+	Linn/DsTrace/MainWindow.xaml
+	Linn/DsTrace/MainWindow.xaml.cs
+""")
+
+_default_env['OUTPUTTYPE'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OUTPUTTYPE'] = 'Exe'
+	
+msprojx64 = _default_env.MSBuildFileGenerator('x64/DsTrace', files, CLILIBS=libsx64, LINKS=files, TARGETFRAMEWORKVERSION="4.0", APPLICATIONDEFINITION="App")
+appx64 = _default_env.MSBuildExeBuilder('x64/DsTrace', msprojx64)
+
+appx64.append(File('libx64/PcapDotNet.Base.dll'))
+appx64.append(File('libx64/PcapDotNet.Core.dll'))
+appx64.append(File('libx64/PcapDotNet.Core.Extensions.dll'))
+appx64.append(File('libx64/PcapDotNet.Packets.dll'))
+appx64.append(File('libx64/PcapDotNet.Analysis.dll'))
+
+	
+msprojx86 = _default_env.MSBuildFileGenerator('x86/DsTrace', files, CLILIBS=libsx86, LINKS=files, TARGETFRAMEWORKVERSION="4.0", APPLICATIONDEFINITION="App")
+appx86 = _default_env.MSBuildExeBuilder('x86/DsTrace', msprojx86)
+
+appx86.append(File('libx86/PcapDotNet.Base.dll'))
+appx86.append(File('libx86/PcapDotNet.Core.dll'))
+appx86.append(File('libx86/PcapDotNet.Core.Extensions.dll'))
+appx86.append(File('libx86/PcapDotNet.Packets.dll'))
+appx86.append(File('libx86/PcapDotNet.Analysis.dll'))
+
+# installer = []
+# if _default_env['installers'] and _default_env['hardware'] == 'Windows':
+    # installer = _default_env.ReleaseInstallerWin32('$install_dir/share/DsTrace', 'InstallerDsTrace',
+                        # FILES        = {''         : app,
+                                        # 'Plugins'  : plugins,
+                                        # 'Resources' : resources},
+                        # TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/DsTrace/NsiTemplate.txt'),
+                        # RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico'),
+                                        # 'header'  : _default_env.subst('$variant_dir/share/Linn/DsTrace/Header.bmp'),
+                                        # 'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish2.bmp'),
+                                        # 'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        # PRODUCT      = 'DsTrace',
+                        # VERSION      = kVersion,
+                        # LAUNCHFILE   = 'DsTrace.exe')
+
+# Depends(installer, installerResources)
+
+# if _default_env['hardware'] == 'Windows':
+    # resources2 = [
+        # (_default_env.subst('$install_dir/share/KinskyDesktop/InstallerDsTrace.exe'), "InstallerDsTrace.exe")
+    # ]
+
+#Alias('Lib', installerResources)
+#Alias('Lib', installer)     
+Alias('Lib', appx64)   
+Alias('Lib', appx86)
+Alias('Test', 'Lib')
+
+Default('Test')

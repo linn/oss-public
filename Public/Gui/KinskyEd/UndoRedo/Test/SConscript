@@ -1,0 +1,2 @@
+test = CliProgram( 'Test/TestUndoRedo', 'TestUndoRedo.cs', LINNCILLIBS=['OssTestFramework', 'OssGui'] )
+Depends(test, 'Gui')

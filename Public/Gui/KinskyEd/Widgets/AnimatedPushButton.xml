@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Package type='Widget'>
+  <Version>8</Version>
+  <Namespace>AnimatedPushButtonWidget</Namespace>
+  <Plugin class='NodePolygon'>
+    <Name>AnimatedPushButton</Name>
+    <Plugin>AnimatedPushButtonWidget.AnimatedPushButton.Monostable</Plugin>
+    <Parent/>
+    <Active>true</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator/>
+    <Children/>
+    <Width>128</Width>
+    <Height>128</Height>
+    <RenderState>
+      <Texture>Default/AnimatedDefault1.jpg</Texture>
+    </RenderState>
+  </Plugin>
+  <Plugin class='Monostable'>
+    <Name>AnimatedPushButton.Monostable</Name>
+    <Plugin>AnimatedPushButtonWidget.AnimatedPushButton.Counter</Plugin>
+    <Period>0.0</Period>
+  </Plugin>
+  <Plugin class='Counter'>
+    <Name>AnimatedPushButton.Counter</Name>
+    <Plugin>AnimatedPushButtonWidget.AnimatedPushButton.TextureArray</Plugin>
+    <MaxCount>4</MaxCount>
+    <CountsPerSecond>1000</CountsPerSecond>
+    <Loop>false</Loop>
+    <Counting>false</Counting>
+  </Plugin>
+  <Plugin class='TextureArray'>
+    <Name>AnimatedPushButton.TextureArray</Name>
+    <Plugin>AnimatedPushButtonWidget.AnimatedPushButton</Plugin>
+    <Texture>Default/AnimatedDefault1.jpg</Texture>
+    <Texture>Default/AnimatedDefault2.jpg</Texture>
+    <Texture>Default/AnimatedDefault3.jpg</Texture>
+    <Texture>Default/AnimatedDefault4.jpg</Texture>
+  </Plugin>
+</Package>

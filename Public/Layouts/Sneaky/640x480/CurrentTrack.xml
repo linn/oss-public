@@ -1,0 +1,547 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>CurrentTrack</Namespace>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.Track</Child>
+      <Child>CurrentTrack.ArtistAlbum</Child>
+      <Child>CurrentTrack.ElapsedTime</Child>
+      <Child>CurrentTrack.RemainingTime</Child>
+      <Child>CurrentTrack.Line</Child>
+      <Child>CurrentTrack.Play</Child>
+      <Child>CurrentTrack.CoverArt</Child>
+      <Child>CurrentTrack.TimeSlider</Child>
+    </Children>
+    <Width>480</Width>
+    <Height>483</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>Track</Name>
+    <Plugin />
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>5</X>
+        <Y>350</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.TrackDropShadow</Child>
+    </Children>
+    <Width>470</Width>
+    <Height>30</Height>
+    <AllowHits>False</AllowHits>
+    <Justification>1</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>2</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>18</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>A song for you</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>ArtistAlbum</Name>
+    <Plugin />
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>5</X>
+        <Y>390</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.ArtistAlbumDropShadow</Child>
+    </Children>
+    <Width>470</Width>
+    <Height>20</Height>
+    <AllowHits>False</AllowHits>
+    <Justification>1</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>5</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Claire Martin - He never mentioned love</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>ElapsedTime</Name>
+    <Plugin />
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>450</Y>
+        <Z>5</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.ElapsedTimeDropShadow</Child>
+    </Children>
+    <Width>80</Width>
+    <Height>20</Height>
+    <AllowHits>False</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>4:08</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>RemainingTime</Name>
+    <Plugin />
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>391</X>
+        <Y>450</Y>
+        <Z>6</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.RemainingTimeDropShadow</Child>
+    </Children>
+    <Width>80</Width>
+    <Height>20</Height>
+    <AllowHits>False</AllowHits>
+    <Justification>2</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>-3:48</Text>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Line</Name>
+    <Plugin>CurrentTrack.Line.TextureArrayFixed</Plugin>
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>539</Y>
+        <Z>7</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>480</Width>
+    <Height>1</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/line.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Line.TextureArrayFixed</Name>
+    <Plugin>CurrentTrack.Line</Plugin>
+    <Texture>Bitmaps/line.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Play</Name>
+    <Plugin>CurrentTrack.Play.TextureArrayFixed</Plugin>
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>120</X>
+        <Y>50</Y>
+        <Z>8</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>256</Width>
+    <Height>256</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/Play.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>False</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Play.TextureArrayFixed</Name>
+    <Plugin>CurrentTrack.Play</Plugin>
+    <Texture>Bitmaps/Play.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>CoverArt</Name>
+    <Plugin>CurrentTrack.CoverArt.Monostable</Plugin>
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>120</X>
+        <Y>50</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.CoverArtReflection</Child>
+    </Children>
+    <Width>256</Width>
+    <Height>256</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Default/Off.jpg</Texture>
+    </RenderState>
+    <ClampToTextureSize>False</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>CoverArt.Monostable</Name>
+    <Plugin>CurrentTrack.CoverArt.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>CoverArt.TextureArrayFixed</Name>
+    <Plugin>CurrentTrack.CoverArt</Plugin>
+    <Texture>Default/Off.jpg</Texture>
+    <Texture>Default/On.jpg</Texture>
+  </Plugin>
+  <Plugin class="NodeSlider">
+    <Name>TimeSlider</Name>
+    <Plugin>CurrentTrack.TimeSlider.TextureArrayFixed</Plugin>
+    <Parent>CurrentTrack.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>10</X>
+        <Y>440</Y>
+        <Z>9</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>460</Width>
+    <Height>5</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState />
+    <ClampToTextureSize>False</ClampToTextureSize>
+    <SliderTexture>Bitmaps/SeekBar.png</SliderTexture>
+    <Value>0.1934783</Value>
+    <Orientation>EO_Horizontal</Orientation>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>TimeSlider.TextureArrayFixed</Name>
+    <Plugin>CurrentTrack.TimeSlider</Plugin>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>CoverArtReflection</Name>
+    <Plugin>CurrentTrack.CoverArtReflection.TextureArrayFixed</Plugin>
+    <Parent>CurrentTrack.CoverArt</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>255</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>256</Width>
+    <Height>256</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Default/Default.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>False</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>CoverArtReflection.TextureArrayFixed</Name>
+    <Plugin>CurrentTrack.CoverArtReflection</Plugin>
+    <Texture>Default/Default.png</Texture>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>TrackDropShadow</Name>
+    <Plugin />
+    <Parent>CurrentTrack.Track</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>-1</X>
+        <Y>1</Y>
+        <Z>-1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>470</Width>
+    <Height>30</Height>
+    <AllowHits>False</AllowHits>
+    <Justification>1</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>2</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>0</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>18</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>A song for you</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>ArtistAlbumDropShadow</Name>
+    <Plugin />
+    <Parent>CurrentTrack.ArtistAlbum</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>-1</X>
+        <Y>1</Y>
+        <Z>-1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>470</Width>
+    <Height>20</Height>
+    <AllowHits>False</AllowHits>
+    <Justification>1</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>2</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>0</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>Claire Martin - He never mentioned love</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>ElapsedTimeDropShadow</Name>
+    <Plugin />
+    <Parent>CurrentTrack.ElapsedTime</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>-1</X>
+        <Y>1</Y>
+        <Z>-1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>80</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>0</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>4:08</Text>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>RemainingTimeDropShadow</Name>
+    <Plugin />
+    <Parent>CurrentTrack.RemainingTime</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>-1</X>
+        <Y>1</Y>
+        <Z>-1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>80</Width>
+    <Height>20</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>2</Justification>
+    <Alignment>1</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>0</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>-3:48</Text>
+  </Plugin>
+</Package>

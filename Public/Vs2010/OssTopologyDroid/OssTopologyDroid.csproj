@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B96976C3-8FFC-4B2D-8C57-5A7B3308F679}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Linn.Topology</RootNamespace>
+    <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
+    <AssemblyName>OssTopology</AssemblyName>
+    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <BaseDirectory>..\..\LibUpnpCil\Topology</BaseDirectory>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\debug\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\OssControlDroid\OssControlDroid.csproj">
+      <Project>{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}</Project>
+      <Name>OssControlDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreDroid\OssCoreDroid.csproj">
+      <Project>{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}</Project>
+      <Name>OssCoreDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLiteDroid\OssDidlLiteDroid.csproj">
+      <Project>{55F6634B-F0D8-4FA1-A1C8-D9FDC0987B01}</Project>
+      <Name>OssDidlLiteDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServicesDroid\OssServicesDroid.csproj">
+      <Project>{4C206BA7-4BAA-4F3E-9E8B-47A210205CAF}</Project>
+      <Name>OssServicesDroid</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Boxes.cs">
+      <Link>Linn\Topology\Boxes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\DeviceFinder.cs">
+      <Link>Linn\Topology\DeviceFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\House0.cs">
+      <Link>Linn\Topology\House0.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\House1.cs">
+      <Link>Linn\Topology\House1.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\House2.cs">
+      <Link>Linn\Topology\House2.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Library.cs">
+      <Link>Linn\Topology\Library.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelFactory.cs">
+      <Link>Linn\Topology\ModelFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelIdArray.cs">
+      <Link>Linn\Topology\ModelIdArray.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelInfo.cs">
+      <Link>Linn\Topology\ModelInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelLibrary.cs">
+      <Link>Linn\Topology\ModelLibrary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelMediaServer.cs">
+      <Link>Linn\Topology\ModelMediaServer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelMultipusSender.cs">
+      <Link>Linn\Topology\ModelMultipusSender.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelMultipusSenders.cs">
+      <Link>Linn\Topology\ModelMultipusSenders.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSource.cs">
+      <Link>Linn\Topology\ModelSource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceAuxiliary.cs">
+      <Link>Linn\Topology\ModelSourceAuxiliary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceDiscPlayer.cs">
+      <Link>Linn\Topology\ModelSourceDiscPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceDiscPlayerSdp.cs">
+      <Link>Linn\Topology\ModelSourceDiscPlayerSdp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceMediaRenderer.cs">
+      <Link>Linn\Topology\ModelSourceMediaRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceMediaRendererDs.cs">
+      <Link>Linn\Topology\ModelSourceMediaRendererDs.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceMediaRendererUpnpAv.cs">
+      <Link>Linn\Topology\ModelSourceMediaRendererUpnpAv.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceMultipus.cs">
+      <Link>Linn\Topology\ModelSourceMultipus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelSourceRadio.cs">
+      <Link>Linn\Topology\ModelSourceRadio.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelTime.cs">
+      <Link>Linn\Topology\ModelTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelVolumeControl.cs">
+      <Link>Linn\Topology\ModelVolumeControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelVolumeControlPreamp.cs">
+      <Link>Linn\Topology\ModelVolumeControlPreamp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelVolumeControlUpnpAv.cs">
+      <Link>Linn\Topology\ModelVolumeControlUpnpAv.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\MultipusSenders.cs">
+      <Link>Linn\Topology\MultipusSenders.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\SourceList.cs">
+      <Link>Linn\Topology\SourceList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Tree.cs">
+      <Link>Linn\Topology\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\PlaylistManager.cs">
+      <Link>Linn\Topology\PlaylistManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\ModelPlaylistManager.cs">
+      <Link>Linn\Topology\ModelPlaylistManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Topology\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>

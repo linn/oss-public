@@ -1,0 +1,56 @@
+Import('_default_env')
+
+_default_env.Install('$variant_dir/share/SneakyLastFm', 'Installer/LastFm.ico')
+_default_env.Install('$variant_dir/share/SneakyLastFm', 'Installer/header.bmp')
+_default_env.Install('$variant_dir/share/SneakyLastFm', 'Installer/finish.bmp')
+_default_env.Install('$variant_dir/share/SneakyLastFm', 'Installer/license.txt')
+
+files = Split("""
+   FormSneakyLastFm.cs
+   FormSneakyLastFm.Designer.cs
+   FormCoverArt.cs
+   FormCoverArt.Designer.cs
+   LastFmService.cs
+   Program.cs
+   Properties/AssemblyInfo.cs
+   Properties/Resources.Designer.cs
+   Properties/Settings.Designer.cs
+   Settings.cs
+""")
+
+res  = SConscript('Properties/SConscript', exports = '_default_env')
+res += _default_env.Resgen('SneakyLastFm.FormSneakyLastFm.resources', 'FormSneakyLastFm.resx')
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+app = _default_env.CliProgram('SneakyLastFm', files, CSCTARGET=target, CLILIBS=['OssCore', 'OssControl', 'OssServices', 'OssTopology', 'System.Data', 'System.Drawing', 'System.Windows.Forms'], CLIRESOURCES=res)
+script = _default_env.Install('$install_dir/bin', 'Installer/SneakyLastFm')
+
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+app.append(File(_default_env.subst('$variant_dir/share/SneakyLastFm/LastFm.ico')))
+
+installer = []
+if _default_env['installers']:
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/SneakyLastFm', 'InstallerSneakyLastFm',
+                        FILES      = {''             : app },
+                        TEMPLATE   = 'Installer/NsiTemplate.txt',
+                        RESOURCES  = {'icon'    : _default_env.subst('$variant_dir/share/SneakyLastFm/LastFm.ico'),
+                                      'header'  : _default_env.subst('$variant_dir/share/SneakyLastFm/header.bmp'),
+                                      'finish'  : _default_env.subst('$variant_dir/share/SneakyLastFm/finish.bmp'),
+                                      'license' : _default_env.subst('$variant_dir/share/SneakyLastFm/license.txt')},
+                        PRODUCT    = 'SneakyLastFm',
+                        VERSION    = 'development',
+                        LAUNCHFILE = 'SneakyLastFm.exe')
+    import sys
+    if sys.platform == 'linux2':
+        SConscript('Installer/SConscript', exports = '_default_env')
+
+Alias('Lib', script)
+Alias('Lib', installer)
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])
+

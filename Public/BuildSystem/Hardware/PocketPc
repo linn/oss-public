@@ -1,0 +1,7 @@
+Import('env')
+
+del env['ENV']['SystemRoot']
+env.Tool('cscc', toolpath=['../../BuildSystem/Tool'])
+env.Tool('resgen', toolpath=['../../BuildSystem/Tool'])
+
+

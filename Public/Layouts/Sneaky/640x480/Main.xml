@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>Main</Namespace>
+  <Package>Library.xml</Package>
+  <Package>StatusBar.xml</Package>
+  <Package>Playlist.xml</Package>
+  <Package>RoomSelection.xml</Package>
+  <Package>CurrentTrack.xml</Package>
+  <Package>SourceSelection.xml</Package>
+  <Package>VolumeControl.xml</Package>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Main.Library</Child>
+      <Child>Main.StatusBar</Child>
+      <Child>Main.Playlist</Child>
+      <Child>Main.WibbleSpeed</Child>
+      <Child>Main.RoomSelection</Child>
+      <Child>Main.CurrentTrack</Child>
+      <Child>Main.SourceSelection</Child>
+      <Child>Main.VolumeControl</Child>
+    </Children>
+    <Width>480</Width>
+    <Height>640</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Library</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>109</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Library.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>StatusBar</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>StatusBar.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>Playlist</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>109</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>Playlist.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="NodeText">
+    <Name>WibbleSpeed</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>60</Y>
+        <Z>7</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>480</Width>
+    <Height>40</Height>
+    <AllowHits>True</AllowHits>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>0</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Tahoma</FaceName>
+      <PointSize>8.25</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <Text>0</Text>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>RoomSelection</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>109</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>RoomSelection.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>CurrentTrack</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>109</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>CurrentTrack.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>SourceSelection</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>109</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>SourceSelection.Root</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>VolumeControl</Name>
+    <Plugin />
+    <Parent>Main.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>280</X>
+        <Y>440</Y>
+        <Z>36</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>VolumeControl.Root</Child>
+    </Children>
+  </Plugin>
+</Package>

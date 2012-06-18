@@ -1,0 +1,43 @@
+#SourceSelector 
+{
+	margin:0px;
+	padding:0px;
+	padding-bottom:1px;
+	padding-left:1px;
+	padding-right:1px;
+}
+#SourceSelectorToggleView
+{
+	display:inline-block;
+	width:100%;
+	min-height:40px;
+	text-align:left;
+	line-height:40px;
+}
+#SourceSelectorSourceList
+{
+	display:inline-block;
+}
+#SourceSelectorPanel
+{
+	max-width:100%;
+	overflow:hidden;
+}
+#SourceSelectorToggleViewImage
+{
+	height:40px;
+	margin-right:5px;
+	vertical-align:middle;
+}
+#SourceSelectorToggleViewText
+{
+	vertical-align:middle;
+	font-size:large;
+}
+#SourceSelectorCancel
+{
+	min-height:40px;
+	float:right;
+	margin-right:5px;
+	text-decoration:underline;
+}

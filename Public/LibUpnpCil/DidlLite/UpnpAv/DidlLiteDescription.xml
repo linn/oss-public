@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hierarchy>
+    <namespace prefix="didl">urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/</namespace>
+    <namespace prefix="upnp">urn:schemas-upnp-org:metadata-1-0/upnp/</namespace>
+    <namespace prefix="dc">http://purl.org/dc/elements/1.1/</namespace>
+    <namespace prefix="ldl">urn:linn-co-uk/DIDL-Lite</namespace>
+    <class name="resource">
+        <property type="long" xpath="@size">Size</property>
+        <property type="string" xpath="@duration">Duration</property>
+        <property type="int" xpath="@bitrate">Bitrate</property>
+        <property type="int" xpath="@sampleFrequency">SampleFrequency</property>
+        <property type="int" xpath="@bitsPerSample">BitsPerSample</property>
+        <property type="int" xpath="@nrAudioChannels">NrAudioChannels</property>
+        <property type="string" xpath="@resolution">Resolution</property>
+        <property type="int" xpath="@colourDepth">ColourDepth</property>
+        <property type="string" xpath="@protocolInfo">ProtocolInfo</property>
+        <property type="string" xpath="@protection">Protection</property>
+        <property type="string" xpath="@importURI">ImportUri</property>
+        <property type="string" xpath=".">Uri</property>
+    </class>
+    <class name="searchClass">
+        <property type="bool" xpath="@includeDerived">IncludeDerived</property>
+        <property type="string" xpath="@name">Name</property>
+        <property type="string" xpath=".">SearchClass</property>
+    </class>
+    <class name="createClass">
+        <property type="bool" xpath="@includeDerived">IncludeDerived</property>
+        <property type="string" xpath="@name">Name</property>
+        <property type="string" xpath=".">CreateClass</property>
+    </class>
+    <class name="artist">
+        <property type="string" xpath="@role">Role</property>
+        <property type="string" xpath=".">Artist</property>
+    </class>
+    <class name="actor">
+        <property type="string" xpath="@role">Role</property>
+        <property type="string" xpath=".">Actor</property>
+    </class>
+    <class name="author">
+        <property type="string" xpath="@role">Role</property>
+        <property type="string" xpath=".">Author</property>
+    </class>
+    <class name="upnpObject">
+        <property type="string" xpath="@id">Id</property>
+        <property type="string" xpath="@parentID">ParentId</property>
+        <property type="string" xpath="dc:title">Title</property>
+        <property type="string" xpath="dc:creator">Creator</property>
+        <property type="string" xpath="upnp:class">Class</property>
+        <property type="list" element="resource" xpath="didl:res">Res</property>
+        <property type="bool" xpath="@restricted">Restricted</property>
+        <property type="string" xpath="upnp:writeStatus">WriteStatus</property>
+        <property type="string" xpath="upnp:icon">Icon</property>
+        <property type="list" element="string" xpath="upnp:albumArtURI">AlbumArtUri</property>
+        <property type="list" element="string" xpath="upnp:artworkURI">ArtworkUri</property>
+        <property type="string" xpath="upnp:UDN">Udn</property>
+    </class>
+    <class name="item" extends="upnpObject" classType="object.item">
+        <property type="string" xpath="@refID">RefId</property>
+    </class>
+    <class name="container" extends="upnpObject" classType="object.container">
+        <property type="int" xpath="@childCount">ChildCount</property>
+        <property type="list" element="createClass" xpath="upnp:createClass">CreateClass</property>
+        <property type="list" element="searchClass" xpath="upnp:searchClass">SearchClass</property>
+        <property type="bool" xpath="@searchable">Searchable</property>
+    </class>
+    <class name="audioItem" extends="item" classType="object.item.audioItem">
+        <property type="list" element="string" xpath="upnp:genre">Genre</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="list" element="string" xpath="dc:publisher">Publisher</property>
+        <property type="string" xpath="dc:language">Language</property>
+        <property type="list" element="string" xpath="dc:relation">Relation</property>
+        <property type="list" element="string" xpath="dc:rights">Rights</property>
+    </class>
+    <class name="musicTrack" extends="audioItem" classType="object.item.audioItem.musicTrack">
+        <property type="list" element="artist" xpath="upnp:artist">Artist</property>
+        <property type="list" element="string" xpath="upnp:album">Album</property>
+        <property type="int" xpath="upnp:originalTrackNumber">OriginalTrackNumber</property>
+        <property type="list" element="string" xpath="upnp:playlist">Playlist</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="list" element="string" xpath="dc:contributor">Contributor</property>
+        <property type="string" xpath="dc:date">Date</property>
+        <property type="int" xpath="upnp:originalDiscNumber">OriginalDiscNumber</property>
+        <property type="int" xpath="upnp:originalDiscCount">OriginalDiscCount</property>
+        <property type="string" xpath="upnp:replayGainAlbum">ReplayGainAlbum</property>
+        <property type="string" xpath="upnp:replayGainAlbumPeak">ReplayGainAlbumPeak</property>
+        <property type="string" xpath="upnp:replayGainTrack">ReplayGainTrack</property>
+        <property type="string" xpath="upnp:replayGainTrackPeak">ReplayGainTrackPeak</property>
+    </class>
+    <class name="audioBroadcast" extends="audioItem" classType="object.item.audioItem.audioBroadcast">
+        <property type="string" xpath="upnp:region">Region</property>
+        <property type="string" xpath="upnp:radioCallSign">RadioCallSign</property>
+        <property type="string" xpath="upnp:radioStationID">RadioStatioID</property>
+        <property type="string" xpath="upnp:radioBand">RadioBand</property>
+        <property type="int" xpath="upnp:channelNr">ChannelNr</property>
+    </class>
+    <class name="audioBook" extends="audioItem" classType="object.item.audioItem.audioBook">
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="list" element="string" xpath="upnp:producer">Producer</property>
+        <property type="list" element="string" xpath="dc:contributor">Contributor</property>
+        <property type="string" xpath="dc:date">Date</property>
+    </class>
+    <class name="videoItem" extends="item" classType="object.item.videoItem">
+        <property type="list" element="string" xpath="upnp:genre">Genre</property>
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="list" element="string" xpath="upnp:producer">Producer</property>
+        <property type="string" xpath="upnp:rating">Rating</property>
+        <property type="list" element="actor" xpath="upnp:actor">Actor</property>
+        <property type="list" element="string" xpath="upnp:director">Director</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="string" xpath="dc:publisher">Publisher</property>
+        <property type="string" xpath="dc:language">Language</property>
+        <property type="list" element="string" xpath="dc:relation">Relation</property>
+    </class>
+    <class name="movie" extends="videoItem" classType="object.item.videoItem.movie">
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="int" xpath="upnp:DVDRegionCode">DvdRegionCode</property>
+        <property type="string" xpath="upnp:channelName">ChannelName</property>
+        <property type="list" element="string" xpath="upnp:scheduledStartTime">ScheduledStartTime</property>
+        <property type="list" element="string" xpath="upnp:scheduledEndTime">ScheduledEndTime</property>
+    </class>
+    <class name="videoBroadcast" extends="videoItem" classType="object.item.videoItem.videoBroadcast">
+        <property type="string" xpath="upnp:region">Region</property>
+        <property type="string" xpath="upnp:channelNr">ChannelNr</property>
+    </class>
+    <class name="musicVideoClip" extends="videoItem" classType="object.item.videoItem.musicVideoClip">
+        <property type="list" element="artist" xpath="upnp:artist">Artist</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="list" element="string" xpath="upnp:album">Album</property>
+        <property type="list" element="string" xpath="upnp:scheduledStartTime">ScheduledStartTime</property>
+        <property type="list" element="string" xpath="upnp:scheduledEndTime">ScheduledEndTime</property>
+        <property type="list" element="string" xpath="dc:contributor">Contributor</property>
+        <property type="string" xpath="dc:date">Date</property>
+    </class>
+    <class name="imageItem" extends="item" classType="object.item.imageItem">
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="string" xpath="upnp:rating">Rating</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="list" element="string" xpath="dc:publisher">Publisher</property>
+        <property type="string" xpath="dc:date">Date</property>
+        <property type="list" element="string" xpath="dc:rights">Rights</property>
+    </class>
+    <class name="photo" extends="imageItem" classType="object.item.imageItem.photo">
+        <property type="list" element="string" xpath="upnp:album">Album</property>
+    </class>
+    <class name="playlistItem" extends="item" classType="object.item.playlistItem">
+        <property type="list" element="artist" xpath="upnp:artist">Artist</property>
+        <property type="list" element="string" xpath="upnp:genre">Genre</property>
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="string" xpath="dc:date">Date</property>
+        <property type="string" xpath="dc:language">Language</property>
+    </class>
+    <class name="textItem" extends="item" classType="object.item.textItem">
+        <property type="list" element="author" xpath="upnp:author">Author</property>
+        <property type="string" xpath="upnp:protection">Protection</property>
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="string" xpath="upnp:rating">Rating</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="list" element="string" xpath="dc:publisher">Publisher</property>
+        <property type="list" element="string" xpath="dc:contributor">Contributor</property>
+        <property type="string" xpath="dc:date">Date</property>
+        <property type="list" element="string" xpath="dc:relation">Relation</property>
+        <property type="string" xpath="dc:language">Language</property>
+        <property type="list" element="string" xpath="dc:rights">Rights</property>
+    </class>
+    <class name="album" extends="container" classType="object.container.album">
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="list" element="string" xpath="dc:publisher">Publisher</property>
+        <property type="list" element="string" xpath="dc:contributor">Contributor</property>
+        <property type="string" xpath="dc:date">Date</property>
+        <property type="list" element="string" xpath="dc:relation">Relation</property>
+        <property type="list" element="string" xpath="dc:rights">Rights</property>
+    </class>
+    <class name="musicAlbum" extends="album" classType="object.container.album.musicAlbum">
+        <property type="list" element="artist" xpath="upnp:artist">Artist</property>
+        <property type="list" element="string" xpath="upnp:genre">Genre</property>
+        <property type="list" element="string" xpath="upnp:producer">Producer</property>
+        <property type="string" xpath="upnp:toc">Toc</property>
+    </class>
+    <class name="photoAlbum" extends="album" classType="object.container.album.photoAlbum"></class>
+    <class name="genre" extends="container" classType="object.container.genre">
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="string" xpath="dc:description">Description</property>
+    </class>
+    <class name="musicGenre" extends="genre" classType="object.container.genre.musicGenre"></class>
+    <class name="movieGenre" extends="genre" classType="object.container.genre.movieGenre"></class>
+    <class name="playlistContainer" extends="container" classType="object.container.playlistContainer">
+        <property type="list" element="artist" xpath="upnp:artist">Artist</property>
+        <property type="list" element="string" xpath="upnp:genre">Genre</property>
+        <property type="string" xpath="upnp:longDescription">LongDescription</property>
+        <property type="list" element="string" xpath="upnp:producer">Producer</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+        <property type="string" xpath="dc:description">Description</property>
+        <property type="list" element="string" xpath="dc:contributor">Contributor</property>
+        <property type="string" xpath="dc:date">Date</property>
+        <property type="string" xpath="dc:language">Language</property>
+        <property type="list" element="string" xpath="dc:rights">Rights</property>
+    </class>
+    <class name="person" extends="container" classType="object.container.person">
+        <property type="string" xpath="dc:language">Language</property>
+    </class>
+    <class name="musicArtist" extends="person" classType="object.container.person.musicArtist">
+        <property type="list" element="string" xpath="upnp:genre">Genre</property>
+        <property type="string" xpath="upnp:artistDiscographyURI">ArtistDiscographyUri</property>
+    </class>
+    <class name="storageSystem" extends="container" classType="object.container.storageSystem">
+        <property type="long" xpath="upnp:storageTotal">StorageTotal</property>
+        <property type="long" xpath="upnp:storageUsed">StorageUsed</property>
+        <property type="long" xpath="upnp:storageFree">StorageFree</property>
+        <property type="long" xpath="upnp:storageMaxPartition">StorageMaxParition</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+    </class>
+    <class name="storageVolume" extends="container" classType="object.container.storageVolume">
+        <property type="string" xpath="upnp:storageTotal">StorageTotal</property>
+        <property type="string" xpath="upnp:storageUsed">StorageUsed</property>
+        <property type="long" xpath="upnp:storageFree">StorageFree</property>
+        <property type="string" xpath="upnp:storageMedium">StorageMedium</property>
+    </class>
+    <class name="storageFolder" extends="container" classType="object.container.storageFolder">
+        <property type="long" xpath="upnp:storageUsed">StorageUsed</property>
+    </class>
+</hierarchy>

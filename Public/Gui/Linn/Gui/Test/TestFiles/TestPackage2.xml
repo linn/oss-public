@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Package type='Layout'>
+  <Version>8</Version>
+  <Namespace>TestNs</Namespace>
+  <Plugin class='NodeHit'>
+    <Name>TestPlugin1</Name>
+    <Plugin/>
+    <Parent/>
+    <Active>true</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>40</X>
+        <Y>50</Y>
+        <Z>60</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator/>
+    <Children/>
+    <Width>0</Width>
+    <Height>0</Height>
+  </Plugin>
+  <Plugin class='Plugin'>
+    <Name>TestPlugin2</Name>
+    <Plugin>TestNs.TestPlugin3</Plugin>
+  </Plugin>
+  <Plugin class='Plugin'>
+    <Name>TestPlugin3</Name>
+    <Plugin/>
+  </Plugin>
+</Package>

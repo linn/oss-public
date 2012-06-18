@@ -1,0 +1,32 @@
+Import('_tool_env')
+
+files = Split("""
+   Doxyclean/doxyclean.py
+   Doxyclean/index2html.xslt
+   Doxyclean/object.xslt
+   Doxyclean/object2html.xslt
+""")
+
+doxyclean  = _tool_env.Install('$hardware_dir/bin/Doxyclean', files)
+
+css = Split("""
+   css/common.css
+   css/print.css
+   css/screen.css
+""")
+
+doxyclean += _tool_env.Install('$hardware_dir/bin/Doxyclean/css', css)
+
+files = Split("""
+   index.html
+""")
+
+index =  _tool_env.Install('$hardware_dir/share/Docs/css', css)
+index +=  _tool_env.Install('$hardware_dir/share/Docs/', files)
+
+Alias('Lib', doxyclean)
+Alias('Lib', index)
+Alias('Test', 'Lib')
+Alias('Docs', 'Lib')
+Default(['Test','Docs'])
+

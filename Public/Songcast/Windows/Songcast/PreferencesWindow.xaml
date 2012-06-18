@@ -1,0 +1,242 @@
+﻿<Window x:Class="Linn.Songcast.PreferencesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Linn Songcast Preferences" WindowStyle="SingleBorderWindow" WindowState="Normal" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"  Height="395" Width="641" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+
+    <Window.Resources>
+        <Style x:Key="StatusTextBlock" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="Gray" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Attached}" Value="True">
+                    <Setter Property="Foreground" Value="Black" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <DynamicResource ResourceKey="{x:Static SystemColors.HighlightTextBrushKey}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBoxItem}}, Path=IsFocused}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <DynamicResource ResourceKey="{x:Static SystemColors.WindowTextBrushKey}" />
+                        </Setter.Value>
+                    </Setter>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Window}}, Path=IsActive}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground">
+                        <Setter.Value>
+                            <DynamicResource ResourceKey="{x:Static SystemColors.WindowTextBrushKey}" />
+                        </Setter.Value>
+                    </Setter>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel>
+        <Border BorderBrush="Black" BorderThickness="1" Name="border1" Margin="10,5" CornerRadius="7">
+            <Grid Margin="5,10,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="235" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Image Height="120" Name="image1" Stretch="Fill" Width="120" Margin="0,0,0,10" />
+                    <Button Content="Turn Linn Songcast Off" Height="23" Name="button1" Click="button1_Click" Margin="20,0,20,15" />
+                    <TextBlock Name="textBlockProduct" Text="TextBlock" HorizontalAlignment="Center" />
+                    <TextBlock Name="textBlockVersion" Text="TextBlock" HorizontalAlignment="Center" />
+                    <TextBlock Name="textBlockCopyright" Text="TextBlock" HorizontalAlignment="Center" />
+                    <Separator Width="150" Margin="0,5,0,10"></Separator>
+                    <TextBlock Height="68" Name="textBlock1" Text="Linn Songcast will send the audio from all applications running on this computer, such as iTunes, Windows Media Player and Explorer, to the connected Songcast receivers" Width="225" TextAlignment="Left" TextWrapping="WrapWithOverflow" FontSize="11" />
+                </StackPanel>
+                <Rectangle Width="3" Fill="Black" Margin="5,0,0,0" Grid.Column="1" />
+                <Border BorderBrush="Black" BorderThickness="1" Name="border2" CornerRadius="7" Margin="10" Grid.Column="2" Panel.ZIndex="1">
+                    <StackPanel Name="stackPanelStart">
+                        <TextBlock Name="textBlock3" Text="Getting Started" FontSize="20" FontWeight="Bold" Margin="5,20,0,0" />
+                        <TextBlock Name="textBlock4" Text="Step 1:" FontSize="14" FontWeight="Bold" Margin="5,10,0,5" />
+                        <TextBlock Name="textBlock5" Text="Turn on Linn Songcast" Margin="15,0" TextWrapping="Wrap" />
+                        <TextBlock Name="textBlock6" Text="Step 2:" FontSize="14" FontWeight="Bold" Margin="5,10,0,5" />
+                        <Button Content="Select Songcast receivers to send audio to" Height="23" Name="buttonStart" Click="buttonStart_Click" Margin="15,0" />
+                    </StackPanel>
+                </Border>
+                <TabControl Name="tabControl1" BorderThickness="0,2,0,0" Margin="10,0" VerticalAlignment="Top" Visibility="Collapsed" Grid.Column="2">
+                    <TabControl.Resources>
+                        <Style TargetType="{x:Type TabPanel}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </TabControl.Resources>
+                    <TabItem Name="tabItem1" Header="General">
+                        <StackPanel>
+                            <ListBox Name="listBox1" Height="200" Margin="0,10,0,0">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <CheckBox Height="16" Margin="10,0,5,0" IsChecked="{Binding Attached}"/>
+                                            <DockPanel>
+                                                <TextBlock Style="{StaticResource StatusTextBlock}" DockPanel.Dock="Top" Text="{Binding Description}" Margin="5,5,0,0" />
+                                                <DockPanel>
+                                                    <Image DockPanel.Dock="Left" Source="{Binding StatusImage}" Height="10" Name="image1" Margin="5,5,0,5" Stretch="Fill" Width="10" Visibility="{Binding Visible}" />
+                                                    <Grid>
+                                                        <TextBlock Text="{Binding Status}" Margin="5,5,0,5" VerticalAlignment="Center" Visibility="{Binding Visible}"/>
+                                                    </Grid>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <DockPanel LastChildFill="False">
+                                <Button Content="Refresh" Height="23" Name="button4" Width="52" Click="button4_Click" Margin="0,10,0,0" />
+                                <Button DockPanel.Dock="Right" Content="Reconnect Selected Receivers" Height="23" Name="button2" Width="185" Click="button2_Click" Margin="0,10,0,0" />
+                            </DockPanel>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Advanced" Name="tabItem2">
+                        <StackPanel Margin="0,5,0,0">
+                            <GroupBox Header="Network Settings" Name="groupBox1">
+                                <StackPanel>
+                                    <DockPanel Margin="5,10,0,5">
+                                        <ComboBox Height="23" Name="comboBoxNetwork" SelectedIndex="{Binding Path=SelectedSubnetIndex}" Margin="0,0,9,0">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Path=Description}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <Separator></Separator>
+                                    <Grid Margin="0,5,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110" />
+                                            <ColumnDefinition Width="75" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Songcast mode" Height="28" Name="label4" />
+                                        <RadioButton Content="Unicast" Height="16" Name="radioButton1" IsChecked="{Binding Path=Unicast}" Grid.Column="1" />
+                                        <RadioButton Grid.Column="2" Content="Multicast" Height="16" Name="radioButton2" IsChecked="{Binding Path=Multicast}" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110" />
+                                            <ColumnDefinition Width="45" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Multicast channel" Height="28" Name="label2" />
+                                        <TextBox Height="23" Name="textBox1" Text="{Binding Path=Channel}" IsReadOnly="True" Grid.Column="1" />
+                                        <Button Content="New" Grid.Column="2" Height="23" HorizontalAlignment="Left" Margin="9,2,0,2" Name="button5" VerticalAlignment="Center" Width="44" Click="buttonNew_Click" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="110" />
+                                            <ColumnDefinition Width="45" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Latency (ms)" Height="28" />
+                                        <TextBox Height="23" Name="textBox4" Text="{Binding Path=Latency}" IsReadOnly="True" Grid.Column="1" />
+                                        <Slider Grid.Column="2" Height="23" Value="{Binding Path=Latency}" HorizontalAlignment="Stretch" Name="sliderLatency" VerticalContentAlignment="Center" Margin="9,2" Maximum="2000" Minimum="50" LargeChange="100" IsSnapToTickEnabled="True" IsSelectionRangeEnabled="False" Interval="100" TickPlacement="TopLeft" SelectionStart="50" SmallChange="50" TickFrequency="50" />
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Update Settings" Name="groupBox2" Margin="0,5,0,0">
+                                <StackPanel>
+                                    <Grid Margin="0,10,0,0" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="85" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Automatic update checks" Height="28"/>
+                                        <CheckBox Name="checkBoxAutoUpdate" Height="16" IsChecked="{Binding Path=AutomaticUpdateChecks}" Click="checkBoxAutoUpdate_Clicked" Grid.Column="1" />
+                                        <Button Content="Check Now" Height="23" HorizontalAlignment="Right" Name="buttonUpdateCheck" VerticalAlignment="Center" Width="75" Click="buttonUpdateCheck_Click" Grid.Column="2" Margin="0,0,9,0" />
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="160" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="Participate in beta program" Height="28" />
+                                        <CheckBox Height="16" Name="checkBoxBeta" IsChecked="{Binding Path=ParticipateInBeta}" Click="checkBoxBeta_Clicked" Grid.Column="1" />
+                                    </Grid>
+                                </StackPanel>
+                            </GroupBox>
+                            <Separator Margin="0,12,0,2" Visibility="Collapsed"></Separator>
+                            <DockPanel Visibility="Collapsed">
+                                <Label Content="TTL" Height="28" Name="label1" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="2*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Height="23" Name="textBox2"  Text="{Binding Path=Ttl}" Margin="30,0,0,0" IsReadOnly="True" />
+                                    <Slider Grid.Column="1"  Height="23" Name="sliderTtl" Value="{Binding Path=Ttl}" Minimum="1" Maximum="8" TickPlacement="TopLeft" IsSnapToTickEnabled="True" Margin="5,0,10,0" />
+                                </Grid>
+                            </DockPanel>
+                            <DockPanel Visibility="Collapsed">
+                                <Label Content="Preset" Height="28" Name="label5" Margin="0,0,58,0" Visibility="Hidden" />
+                                <TextBox Height="23" Name="textBox3" Text="{Binding Path=Preset}" Margin="30,0,160,0" Visibility="Hidden" />
+                            </DockPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Border>
+    <!--<Rectangle Grid.Column="1" Grid.Row="1" Height="270" HorizontalAlignment="Left" Margin="4,5,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="2" Fill="Black" />
+    <DockPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,0">
+        <TabControl DockPanel.Dock="Left" HorizontalAlignment="Left" Name="tabControl1" VerticalAlignment="Top" Grid.ColumnSpan="2" Background="#FFD4D0C8" BorderThickness="0,2,0,0" Height="282" Width="344">
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabPanel}">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="General" Name="tabItem1" Background="#FFD4D0C8">
+                <Grid Background="#FFD4D0C8">
+                    <ListBox Height="191" HorizontalAlignment="Left" Margin="20,12,0,0" Name="listBox1" VerticalAlignment="Top" Width="295">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <CheckBox Height="16" Margin="10,0,5,0" IsChecked="{Binding Attached}"/>
+                                    <DockPanel>
+                                        <TextBlock Style="{StaticResource StatusTextBlock}" DockPanel.Dock="Top" Text="{Binding Description}" Margin="5,5,0,0" />
+                                        <DockPanel>
+                                            <Image DockPanel.Dock="Left" Source="{Binding StatusImage}" Height="10" Name="image1" Margin="5,5,0,5" Stretch="Fill" Width="10" Visibility="{Binding Visible}" />
+                                            <Grid>
+                                                <TextBlock Text="{Binding Status}" Margin="5,5,0,5" VerticalAlignment="Center" Visibility="{Binding Visible}"/>
+                                            </Grid>
+                                        </DockPanel>
+                                    </DockPanel>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button Content="Refresh" Grid.Column="2" Height="23" HorizontalAlignment="Left" Margin="20,209,0,0" Name="button4" VerticalAlignment="Top" Width="75" Click="button4_Click" Background="#FFD4D0C8" />
+                    <Button Content="Reconnect Selected Receivers" Height="23" HorizontalAlignment="Left" Margin="130,209,0,0" Name="button2" VerticalAlignment="Top" Width="185" Click="button2_Click" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Network" Name="tabItem2">
+                <Grid />
+            </TabItem>
+            <TabItem Header="Update" Name="tabItem3">
+                <Grid />
+            </TabItem>
+        </TabControl>
+    </DockPanel>-->
+        <DockPanel>
+            <CheckBox Content="Show Linn Songcast in the menu bar" Height="16" Margin="10,10,0,0" Name="checkBox1" Width="352" Checked="checkBox1_Checked" Unchecked="checkBox1_Unchecked" IsChecked="True" />
+            <Button Content="Close" Height="23" Name="button3" Width="75" Click="button3_Click" Margin="8,5,10,0" DockPanel.Dock="Right" HorizontalAlignment="Right" />
+            <Button Content="Help" Height="23" Name="button6" Width="75" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,5,0,0" Click="buttonHelp_Click" />
+        </DockPanel>
+    </StackPanel>
+</Window>

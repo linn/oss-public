@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>7</Version>
+  <Namespace>TestWibbler1</Namespace>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children>
+      <Child>TestWibbler1.Background</Child>
+      <Child>TestWibbler1.NodeList1</Child>
+      <Child>TestWibbler1.ExitButton</Child>
+      <Child>TestWibbler1.NodeInput</Child>
+      <Child>TestWibbler1.NodeList2</Child>
+      <Child>TestWibbler1.List1ToggleButton</Child>
+      <Child>TestWibbler1.List2ToggleButton</Child>
+      <Child>TestWibbler1.Surface33</Child>
+    </Children>
+    <Width>800</Width>
+    <Height>480</Height>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Background</Name>
+    <Plugin>TestWibbler1.Background.TextureArrayFixed</Plugin>
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>800</Width>
+    <Height>480</Height>
+    <RenderState>
+      <Texture>Bitmaps/Background2.bmp</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Background.TextureArrayFixed</Name>
+    <Plugin>TestWibbler1.Background</Plugin>
+    <Texture>Bitmaps/Background2.bmp</Texture>
+  </Plugin>
+  <Plugin class="NodeList">
+    <Name>NodeList1</Name>
+    <Plugin />
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>188</X>
+        <Y>131</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>240</Width>
+    <Height>195</Height>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <MaxVisible>10</MaxVisible>
+    <ItemWidth>240</ItemWidth>
+    <ItemHeight>20</ItemHeight>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>ExitButton</Name>
+    <Plugin>TestWibbler1.ExitButton.Monostable</Plugin>
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>774</X>
+        <Y>8</Y>
+        <Z>5</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>20</Width>
+    <Height>20</Height>
+    <RenderState>
+      <Texture>Bitmaps/Exit.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>ExitButton.Monostable</Name>
+    <Plugin>TestWibbler1.ExitButton.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>ExitButton.TextureArrayFixed</Name>
+    <Plugin>TestWibbler1.ExitButton</Plugin>
+    <Texture>Bitmaps/Exit.png</Texture>
+    <Texture>Bitmaps/Exit.png</Texture>
+  </Plugin>
+  <Plugin class="NodeInput">
+    <Name>NodeInput</Name>
+    <Plugin />
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>655</X>
+        <Y>339</Y>
+        <Z>37</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>127</Width>
+    <Height>127</Height>
+    <RenderState />
+    <ClampToTextureSize>True</ClampToTextureSize>
+    <MsgReceiver />
+  </Plugin>
+  <Plugin class="NodeList">
+    <Name>NodeList2</Name>
+    <Plugin />
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>571</X>
+        <Y>131</Y>
+        <Z>38</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>223</Width>
+    <Height>195</Height>
+    <Justification>0</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>0</R>
+      <G>0</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>12</PointSize>
+      <Bold>True</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <MaxVisible>10</MaxVisible>
+    <ItemWidth>210</ItemWidth>
+    <ItemHeight>20</ItemHeight>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>List1ToggleButton</Name>
+    <Plugin>TestWibbler1.List1ToggleButton.Bistable</Plugin>
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>188</X>
+        <Y>112</Y>
+        <Z>40</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>TestWibbler1.List1ToggleButton.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>TestWibbler1.List2ToggleButton.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>241</Width>
+    <Height>19</Height>
+    <RenderState>
+      <Texture>Bitmaps/FocusOff1.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>List1ToggleButton.Bistable</Name>
+    <Plugin>TestWibbler1.List1ToggleButton.TextureArrayFixed</Plugin>
+    <StartState>False</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>List1ToggleButton.TextureArrayFixed</Name>
+    <Plugin>TestWibbler1.List1ToggleButton</Plugin>
+    <Texture>Bitmaps/FocusOff1.png</Texture>
+    <Texture>Bitmaps/FocusOn1.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>List2ToggleButton</Name>
+    <Plugin>TestWibbler1.List2ToggleButton.Bistable</Plugin>
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>571</X>
+        <Y>112</Y>
+        <Z>41</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgStateChanged">
+          <Fullname>TestWibbler1.List2ToggleButton.Bistable</Fullname>
+          <OldState>False</OldState>
+          <NewState>True</NewState>
+        </FromMessage>
+        <ToMessage class="MsgSetState">
+          <Fullname>TestWibbler1.List1ToggleButton.Bistable</Fullname>
+          <State>False</State>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>222</Width>
+    <Height>19</Height>
+    <RenderState>
+      <Texture>Bitmaps/FocusOff2.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Bistable">
+    <Name>List2ToggleButton.Bistable</Name>
+    <Plugin>TestWibbler1.List2ToggleButton.TextureArrayFixed</Plugin>
+    <StartState>False</StartState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>List2ToggleButton.TextureArrayFixed</Name>
+    <Plugin>TestWibbler1.List2ToggleButton</Plugin>
+    <Texture>Bitmaps/FocusOff2.png</Texture>
+    <Texture>Bitmaps/FocusOn2.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Surface33</Name>
+    <Plugin>TestWibbler1.Surface33.TextureArrayFixed</Plugin>
+    <Parent>TestWibbler1.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>663</X>
+        <Y>347</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>110</Width>
+    <Height>110</Height>
+    <RenderState>
+      <Texture>Bitmaps/wheel.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>False</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Surface33.TextureArrayFixed</Name>
+    <Plugin>TestWibbler1.Surface33</Plugin>
+    <Texture>Bitmaps/wheel.png</Texture>
+  </Plugin>
+</Package>

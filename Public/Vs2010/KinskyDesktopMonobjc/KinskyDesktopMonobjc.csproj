@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{34D69E66-D626-40AE-8DD8-1F546E13D230}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>KinskyDesktop</RootNamespace>
+    <BaseDirectory>..\..\KinskyDesktop\Cocoa\Monobjc</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>KinskyMonobjc</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>KinskyMonobjc</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>KinskyMonobjc</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>KinskyMonobjc</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>KinskyMonobjc</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>KinskyMonobjc</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="bash ../../../Vs2010/KinskyDesktopMonobjc/BuildExtras ${TargetDir}" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <AssemblyName>Kinsky</AssemblyName>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="bash ../../../Vs2010/KinskyDesktopMonobjc/BuildExtras ${TargetDir}" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <AssemblyName>Kinsky</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="bash ../../../Vs2010/KinskyDesktopMonobjc/BuildExtras ${TargetDir}" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <AssemblyName>Kinsky</AssemblyName>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ArtworkCache.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ButtonHoverPush.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\Controllers.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\DragData.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\DragDropManager.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\HelperKinskyDesktop.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\MainMenu.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\MainWindow.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\MediaProviderSupport.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\Models.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\OptionPageGeneral.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\Program.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ResourcesManager.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewBrowserContent.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewHourglass.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewRotary.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewSelectionRoom.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewSelectionSource.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewUtils.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\WindowPopover.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\FontManager.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\WindowUpdate.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewSelectionBookmark.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewAddBookmark.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Monobjc.Cocoa">
+      <HintPath>..\..\External\Monobjc.Cocoa.dll</HintPath>
+    </Reference>
+    <Reference Include="Monobjc">
+      <HintPath>..\..\External\Monobjc.dll</HintPath>
+    </Reference>
+    <Reference Include="Monobjc.ImageKit">
+      <HintPath>..\..\External\Monobjc.ImageKit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssSysLib\OssSysLib.csproj">
+      <Project>{755ACE40-6CE2-4386-BF88-E63BCDFED1EB}</Project>
+      <Name>OssSysLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitCocoa\OssToolkitCocoa.csproj">
+      <Project>{A3B345FA-E8C8-499B-8053-CED36AA353FF}</Project>
+      <Name>OssToolkitCocoa</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopology\OssTopology.csproj">
+      <Project>{DDD50783-4131-4138-85E6-72377C232B1C}</Project>
+      <Name>OssTopology</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServices\OssServices.csproj">
+      <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
+      <Name>OssServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLite\OssDidlLite.csproj">
+      <Project>{D07487C1-8D3F-43C8-BE1B-C1BFB5B2C562}</Project>
+      <Name>OssDidlLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BuildExtras">
+      <Link>BuildExtras</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\MainMenu.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">MainMenu.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\MainWindow.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">MainWindow.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\ViewBrowserContent.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">ViewBrowserContent.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\ViewSelectionRoom.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">ViewSelectionRoom.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\ViewSelectionSource.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">ViewSelectionSource.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\WindowPopover.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">WindowPopover.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\WindowAbout.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">WindowAbout.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\WindowUpdate.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">WindowUpdate.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\ViewSelectionBookmark.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">ViewSelectionBookmark.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\ViewAddBookmark.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">ViewAddBookmark.xib</Link>
+    </InterfaceDefinition>
+  </ItemGroup>
+</Project>

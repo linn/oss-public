@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html  xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+
+    <script type="text/javascript" src="/Common/Scripts/jquery-1.4.2.min.js"></script>
+	<!-- jquery 1.4.2 appears to have a memory leak in an ajax request on IE8. -->
+	<script type="text/javascript" src="/Common/Scripts/prototype.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/jquery-ui-1.8rc3.custom.min.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/jquery.json.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/jquery.xml2json.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/jquery.timer.js"></script>
+	<script type="text/javascript" src="/Common/Scripts/jquery.jsonrequest.js"></script>
+	<script type="text/javascript" src="/Common/Scripts/jquery.selectboxes.min.js"></script>
+	<script type="text/javascript" src="/Common/Scripts/jquery.contextmenu.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/splitpane.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/core.js"></script>
+
+    <script type="text/javascript" src="/Common/Scripts/Widgets/Widget.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/WidgetContainer.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/VolumeControl.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/Browser.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/TransportControl.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/RoomSelector.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/SourceSelector.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/MediaTime.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/Playlist.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/Track.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/Breadcrumb.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/UpDirectory.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/PlayMode.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/WasteBin.js"></script>
+    <script type="text/javascript" src="/Common/Scripts/Widgets/StandbyButton.js"></script>
+    <script type="text/javascript" src="/Layouts/Desktop/Scripts/kinsky.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/Common/Themes/ui-darkness/jquery-ui-1.8rc3.custom.css" />
+    <link rel="stylesheet" type="text/css" href="/Common/CSS/jquery.contextmenu.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/kinsky.css" />
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/kinsky_ie7.css" /><![endif]-->  
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/VolumeControl.css" />
+  	<link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/Browser.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/TransportControl.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/RoomSelector.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/SourceSelector.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/MediaTime.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/Track.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/Breadcrumb.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/UpDirectory.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/PlayMode.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/WasteBin.css" />
+    <link rel="stylesheet" type="text/css" href="/Layouts/Desktop/CSS/Widgets/StandbyButton.css" />
+</head>
+<body>
+    <div id="Container" class="ui-widget ui-widget-content ui-corner-all">
+        <div id="Track"></div>
+        <div id="NavigationContainer">
+            <div id="UpDirectory"></div>
+            <div id="Breadcrumb"></div>
+            <div id="Standby"></div>
+            <div id="WasteBin"></div>
+            <div id="PlayMode"></div>
+        </div>
+      <div id="Selectors">
+        <div id="RoomSelector"></div>
+        <div id="SourceSelector"></div>
+      </div>
+        <div id="BrowsePane">
+            <div id="Browser"></div>
+            <div id="Playlist"></div>
+        </div>
+        <div id="Controls">
+            <div id="MediaTime"></div>
+            <div id="TransportControl"></div>
+            <div id="VolumeControl"></div>
+        </div>
+    </div>
+    <span id="DisconnectOverlay">
+        <span id="OpacityOverlay"></span>
+        <span id="DisconnectMessage" class="ui-corner-all">Connecting...</span>
+    </span>  
+</body>
+</html>

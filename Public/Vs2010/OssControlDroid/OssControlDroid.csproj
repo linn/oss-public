@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1B25DAB4-AC30-403D-BDBB-46AD79B2A30A}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Linn.Control</RootNamespace>
+    <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
+    <AssemblyName>OssControl</AssemblyName>
+    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <BaseDirectory>..\..\LibUpnpCil\Control</BaseDirectory>
+    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
+    <AndroidStoreUncompressedFileExtensions />
+    <MandroidI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\debug\bin</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Droid\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="System.Web.Services" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\ControlPoint\Discovery.cs">
+      <Link>Linn\ControlPoint\Discovery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\ControlPoint\Service.cs">
+      <Link>Linn\ControlPoint\Service.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\ControlPoint\Upnp\Discovery.cs">
+      <Link>Linn\ControlPoint\Upnp\Discovery.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\ControlPoint\Upnp\EventServer.cs">
+      <Link>Linn\ControlPoint\Upnp\EventServer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\ControlPoint\Upnp\Service.cs">
+      <Link>Linn\ControlPoint\Upnp\Service.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\Control\Http\Http.cs">
+      <Link>Linn\Control\Http\Http.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\Control\Nct\Client.cs">
+      <Link>Linn\Control\Nct\Client.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\Control\Nct\Program.cs">
+      <Link>Linn\Control\Nct\Program.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\Control\Service.cs">
+      <Link>Linn\Control\Service.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\Control\ServiceType.cs">
+      <Link>Linn\Control\ServiceType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Linn\Control\Ssdp\Ssdp.cs">
+      <Link>Linn\Control\Ssdp\Ssdp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Control\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCoreDroid\OssCoreDroid.csproj">
+      <Project>{E48F40F7-9E08-4EFB-8F7D-ABCA1FA269E5}</Project>
+      <Name>OssCoreDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssSysLibDroid\OssSysLibDroid.csproj">
+      <Project>{9A829BB3-ED61-4319-9CD3-1DE51B5094DC}</Project>
+      <Name>OssSysLibDroid</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

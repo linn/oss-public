@@ -1,0 +1,50 @@
+#!/bin/sh
+
+
+# define paths for setting permissions
+
+driver="/Library/Linn/LinnSongcast.kext"
+
+folders=("/Library/Linn/LinnSongcast.kext"
+         "/Library/Linn/LinnSongcast.app"
+         "/Library/PreferencePanes/LinnSongcast.prefPane")
+
+exefiles=("/Library/Linn/LinnSongcast.app/Contents/MacOS/Songcast"
+          "/Library/Linn/LinnSongcast.app/Contents/MacOS/libohSongcast.so"
+          "/Library/PreferencePanes/LinnSongcast.prefPane/Contents/MacOS/Songcast")
+
+agent_path="/Library/LaunchAgents/uk.co.linn.songcast.plist"
+
+
+
+# ensure permissions for all files are correctly set
+
+for f in "${folders[@]}"; do
+    chown -R root:wheel "$f"
+    find "$f" -type d -exec chmod 0755 {} \;
+    find "$f" -type f -exec chmod 0644 {} \;
+done
+
+for f in "${exefiles[@]}"; do
+    chmod 0755 "$f"
+done
+
+chown root:wheel "$agent_path"
+chmod 0644 "$agent_path"
+
+
+# the kext is originally installed into a temporary location so that the permissions can be set
+# correctly before it is moved to the correct location - this is to get around problems with
+# packagemaker:
+# 1. using packagemaker without the "-m" option does not add the kext to the pkg with the correct
+#    permissions (files have "rw-rw-r--" instead of "rw-r--r--")
+# 2. setting the permissions to be correct while the kext is in its correct place causes
+#    occasional installer errors "System extension can not be used... installed improperly..."
+# 3. Using packagemaker with "-m" means that the files have to be set to the correct owner
+#    and permissions before packagemaker is run - this means that files owned by root will
+#    exist in the build tree and you have to enter passwords when building! No thanks.
+# 4. the solution to all this is to install the kext to a temporary location, change the permissions
+#    to be correct in this script and then move it to the correct location
+mv "$driver" /System/Library/Extensions/
+
+

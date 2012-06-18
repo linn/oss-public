@@ -1,0 +1,177 @@
+Import('_default_env kVersion')
+
+files = Split("""
+    Installer/Header.bmp
+    Installer/NsiTemplate.txt
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/Kinsky/Wpf', files)
+
+clilibs = Split("""
+    System
+    System.Core
+    System.Xml.Linq
+    System.Data.DataSetExtensions
+    System.Xml
+    System.Drawing
+    UIAutomationProvider
+    WindowsBase
+    PresentationCore
+    PresentationFramework
+    OssCore
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssKinsky
+    System.Windows.Forms
+""")
+
+files = Split("""
+    App.xaml
+    App.xaml.cs
+    Resources\Shared.xaml
+    Resources\ComboBox.xaml
+    Resources\ScrollBar.xaml
+    Resources\ControlStyles.xaml
+    Resources\ControlStyles.xaml.cs
+    Resources\ListBox.xaml
+    Resources\MenuItem.xaml
+    Resources\Slider.xaml
+    Resources\TileViewStyle.xaml
+    Resources\TileViewStyle.xaml.cs
+    Resources\WindowChromeStyle.xaml
+    Resources\WindowChromeStyle.xaml.cs
+    Controls\VirtualizingTilePanel.cs
+    Controls\DistributingWrapPanel.cs
+    Controls\AboutDialog.xaml
+    Controls\AboutDialog.xaml.cs
+    Controls\KinskyDesktop.xaml
+    Controls\KinskyDesktop.xaml.cs
+    Controls\PlaylistWidget.xaml
+    Controls\PlaylistWidget.xaml.cs
+    Controls\ViewKinsky.xaml
+    Controls\ViewKinsky.xaml.cs
+    Controls\SavePlaylistDialog.xaml
+    Controls\SavePlaylistDialog.xaml.cs
+    Controls\WindowChrome.cs
+    Controls\TileView.cs
+    Controls\ViewWidgetBrowser.xaml
+    Controls\ViewWidgetBrowser.xaml.cs
+    Controls\ViewWidgetBreadcrumb.xaml
+    Controls\ViewWidgetBreadcrumb.xaml.cs
+    Controls\ThreekArray.xaml
+    Controls\ThreekArray.xaml.cs
+    Controls\BreadcrumbPanel.cs
+    Controls\Kontrol.cs
+    Controls\KontrolInnerRing.cs
+    Controls\RockerControl.xaml
+    Controls\RockerControl.xaml.cs
+    Controls\RotaryControl.xaml
+    Controls\RotaryControl.xaml.cs
+    Controls\IndeterminateProgressBar.xaml
+    Controls\IndeterminateProgressBar.xaml.cs
+    Controls\PlaylistWidgetAux.xaml
+    Controls\PlaylistWidgetAux.xaml.cs
+    Controls\ViewWidgetTrackDisplay.xaml
+    Controls\ViewWidgetTrackDisplay.xaml.cs
+    Controls\UserLogDialog.xaml
+    Controls\UserLogDialog.xaml.cs
+    Controls\OptionsDialog.xaml
+    Controls\OptionsDialog.xaml.cs
+    Controls\SystrayForm.cs
+    Controls\SystrayForm.designer.cs
+    Controls\DetailsDialog.xaml
+    Controls\DetailsDialog.xaml.cs
+    Controls\UpnpObjectDetailsDisplay.xaml
+    Controls\UpnpObjectDetailsDisplay.xaml.cs
+    Controls\CrashLogDialog.xaml
+    Controls\CrashLogDialog.xaml.cs
+	Controls\UpdateDialog.xaml
+	Controls\UpdateDialog.xaml.cs
+    Controls\BookmarkNotFoundDialog.xaml
+    Controls\BookmarkNotFoundDialog.xaml.cs
+    Controls\StringInputDialog.xaml
+    Controls\StringInputDialog.xaml.cs
+    Classes\IPlaylistWidget.cs
+    Classes\AppRestartHandler.cs
+    Classes\MediaProviderSupport.cs
+    Classes\Extensions.cs
+    Classes\DropConverter.cs
+    Classes\ListViewColumnsResizer.cs
+    Classes\ValueConverters.cs
+    Classes\Views.cs
+    Classes\DragHelper.cs
+    Classes\Commands.cs
+    Classes\UIOptions.cs
+    Classes\StackStatusHandlerWpf.cs
+    Classes\LazyLoadingList.cs
+    Classes\ViewModels.cs
+    Classes\CrashLogDumperForm.cs
+    Classes\ImageLoader.cs
+    Properties\AssemblyInfo.cs
+    Properties\Resources.Designer.cs
+    Properties\Resources.resx
+    Properties\Settings.settings
+    Properties\Settings.Designer.cs
+""")
+
+_default_env['OUTPUTTYPE'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OUTPUTTYPE'] = 'Exe'
+	
+msproj = _default_env.MSBuildFileGenerator('Kinsky', files, LINKS=files, CLILIBS=clilibs, ICON=_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico'), ROOTNAMESPACE='KinskyDesktopWpf')
+app = _default_env.MSBuildExeBuilder('Kinsky', msproj, CLILIBS=clilibs)
+
+app.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssDidlLite.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssTopology.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssKinsky.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.config')))
+
+plugins = []
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Bbc'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Folder'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Itunes'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/MovieTrailers'))])
+plugins.extend([Dir(_default_env.subst('$install_dir/lib/Linn/Plugins/Wfmu'))])
+
+resources = []
+
+installer = []
+if _default_env['installers'] and _default_env['hardware'] == 'Windows':
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Kinsky', 'InstallerKinsky',
+                        FILES        = {''         : app,
+                                        'Plugins'  : plugins,
+                                        'Resources' : resources},
+                        TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/Kinsky/Wpf/NsiTemplate.txt'),
+                        RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico'),
+                                        'header'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/Wpf/Header.bmp'),
+                                        'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish2.bmp'),
+                                        'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT      = 'Kinsky',
+                        VERSION      = kVersion,
+                        CERT         = '',
+                        LAUNCHFILE   = 'Kinsky.exe')
+
+Depends(installer, installerResources)
+
+if _default_env['hardware'] == 'Windows':
+    resources2 = [
+        (_default_env.subst('$install_dir/share/Kinsky/InstallerKinsky.exe'), "InstallerKinsky.exe")
+    ]
+    updateinstaller = _default_env.CliLibrary('UpdaterKinsky_win', 'Installer/Updater.cs', CLILIBS=['System.Windows.Forms'], CLIRESOURCES=resources2)
+    installer += _default_env.Install('$install_dir/share/Kinsky/', updateinstaller)
+
+Alias('Lib', installerResources)
+Alias('Lib', installer)     
+Alias('Lib', app)
+Alias('Test', 'Lib')
+
+Default('Test')

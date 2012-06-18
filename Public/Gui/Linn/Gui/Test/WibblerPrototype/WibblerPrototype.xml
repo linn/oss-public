@@ -1,0 +1,292 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>7</Version>
+  <Namespace>WibblerPrototype</Namespace>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children>
+      <Child>WibblerPrototype.NodeInput</Child>
+      <Child>WibblerPrototype.ExitButton</Child>
+      <Child>WibblerPrototype.Background</Child>
+      <Child>WibblerPrototype.NodeInputVolume</Child>
+      <Child>WibblerPrototype.NodeList</Child>
+      <Child>WibblerPrototype.NodeVolume</Child>
+    </Children>
+    <Width>800</Width>
+    <Height>480</Height>
+  </Plugin>
+  <Plugin class="NodeInput">
+    <Name>NodeInput</Name>
+    <Plugin>WibblerPrototype.NodeInput.TextureArrayFixed</Plugin>
+    <Parent>WibblerPrototype.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>655</X>
+        <Y>339</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgInputClockwise">
+          <Fullname>WibblerPrototype.NodeInput</Fullname>
+        </FromMessage>
+        <ToMessage class="MsgInputClockwise">
+          <Fullname>WibblerPrototype.NodeList</Fullname>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgInputAntiClockwise">
+          <Fullname>WibblerPrototype.NodeInput</Fullname>
+        </FromMessage>
+        <ToMessage class="MsgInputAntiClockwise">
+          <Fullname>WibblerPrototype.NodeList</Fullname>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgInputForwards">
+          <Fullname>WibblerPrototype.NodeInput</Fullname>
+        </FromMessage>
+        <ToMessage class="MsgInputForwards">
+          <Fullname>WibblerPrototype.NodeList</Fullname>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgInputBackwards">
+          <Fullname>WibblerPrototype.NodeInput</Fullname>
+        </FromMessage>
+        <ToMessage class="MsgInputBackwards">
+          <Fullname>WibblerPrototype.NodeList</Fullname>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>128</Width>
+    <Height>128</Height>
+    <RenderState>
+      <Texture>Bitmaps/Wibbler.png</Texture>
+    </RenderState>
+    <MsgReceiver>WibblerPrototype.NodeList</MsgReceiver>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>NodeInput.TextureArrayFixed</Name>
+    <Plugin>WibblerPrototype.NodeInput</Plugin>
+    <Texture>Bitmaps/Wibbler.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>ExitButton</Name>
+    <Plugin>WibblerPrototype.ExitButton.Monostable</Plugin>
+    <Parent>WibblerPrototype.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>775</X>
+        <Y>5</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>20</Width>
+    <Height>20</Height>
+    <RenderState>
+      <Texture>Bitmaps/Exit.png</Texture>
+    </RenderState>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>ExitButton.Monostable</Name>
+    <Plugin>WibblerPrototype.ExitButton.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>ExitButton.TextureArrayFixed</Name>
+    <Plugin>WibblerPrototype.ExitButton</Plugin>
+    <Texture>Bitmaps/Exit.png</Texture>
+    <Texture>Bitmaps/Exit.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Background</Name>
+    <Plugin>WibblerPrototype.Background.TextureArrayFixed</Plugin>
+    <Parent>WibblerPrototype.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>800</Width>
+    <Height>480</Height>
+    <RenderState>
+      <Texture>Bitmaps/Background.png</Texture>
+    </RenderState>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Background.TextureArrayFixed</Name>
+    <Plugin>WibblerPrototype.Background</Plugin>
+    <Texture>Bitmaps/Background.png</Texture>
+  </Plugin>
+  <Plugin class="NodeInput">
+    <Name>NodeInputVolume</Name>
+    <Plugin />
+    <Parent>WibblerPrototype.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>528</X>
+        <Y>59</Y>
+        <Z>4</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator>
+      <Translator>
+        <FromMessage class="MsgInputClockwise">
+          <Fullname>WibblerPrototype.NodeInputVolume</Fullname>
+        </FromMessage>
+        <ToMessage class="MsgInputClockwise">
+          <Fullname>WibblerPrototype.NodeVolume</Fullname>
+        </ToMessage>
+      </Translator>
+      <Translator>
+        <FromMessage class="MsgInputAntiClockwise">
+          <Fullname>WibblerPrototype.NodeInputVolume</Fullname>
+        </FromMessage>
+        <ToMessage class="MsgInputAntiClockwise">
+          <Fullname>WibblerPrototype.NodeVolume</Fullname>
+        </ToMessage>
+      </Translator>
+    </OutMessageTranslator>
+    <Children />
+    <Width>60</Width>
+    <Height>60</Height>
+    <RenderState />
+    <MsgReceiver>WibblerPrototype.NodeVolume</MsgReceiver>
+  </Plugin>
+  <Plugin class="NodeList">
+    <Name>NodeList</Name>
+    <Plugin />
+    <Parent>WibblerPrototype.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>5</X>
+        <Y>125</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>0</Width>
+    <Height>0</Height>
+    <Justification>0</Justification>
+    <Alignment>2</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>8</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+    <MaxVisible>14</MaxVisible>
+    <ItemWidth>790</ItemWidth>
+    <ItemHeight>14</ItemHeight>
+  </Plugin>
+  <Plugin class="NodeVolume">
+    <Name>NodeVolume</Name>
+    <Plugin />
+    <Parent>WibblerPrototype.Root</Parent>
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>531</X>
+        <Y>76</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator />
+    <Children />
+    <Width>50</Width>
+    <Height>26</Height>
+    <Text>0</Text>
+    <Justification>1</Justification>
+    <Alignment>0</Alignment>
+    <Trimming>0</Trimming>
+    <Colour>
+      <R>255</R>
+      <G>255</G>
+      <B>255</B>
+      <A>255</A>
+    </Colour>
+    <Font>
+      <FaceName>Arial</FaceName>
+      <PointSize>18</PointSize>
+      <Bold>False</Bold>
+      <Italic>False</Italic>
+      <Underlined>False</Underlined>
+    </Font>
+  </Plugin>
+</Package>

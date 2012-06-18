@@ -1,0 +1,612 @@
+Import('_default_env', '_tool_env')
+
+# Kode
+
+kode  = _tool_env.Install('$hardware_dir/share/Kodegen', 'Gwt/UpnpControlPointGwt.kode')
+kode += _tool_env.Install('$hardware_dir/share/Kodegen', 'Wsdl/UpnpWsdl.kode')
+kode += _tool_env.Install('$hardware_dir/share/Kodegen', 'Silverlight/UpnpSilverlightWsdl.kode')
+kode += _tool_env.Install('$hardware_dir/share/Kodegen', 'Doc/UpnpIndexDocHtml.kode')
+kode += _tool_env.Install('$hardware_dir/share/Kodegen', 'Doc/UpnpServiceDocHtml.kode')
+kode += _tool_env.Install('$hardware_dir/share/Kodegen', 'Js/UpnpControlPointJs.kode')
+
+# Documentation
+
+docs  = _default_env.Install('$hardware_dir/share/Services/Doc', 'Doc/Services.css')
+
+xml   = _default_env.Install('$hardware_dir/share/Services/Doc', 'Doc/Services.xml')
+doc   = _default_env.Kodegen('index.html', xml, KODE="UpnpIndexDocHtml.kode")
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+# Debug
+
+args  = "linn.co.uk Debug 1" 
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Debug.xml')
+
+ws    = _default_env.Kodegen('Debug.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl  = _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Debug.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Debug.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceDebug.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt   = _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceDebug.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   = _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv  = _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointDebug.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Diagnostics
+
+args  = "linn.co.uk Diagnostics 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Diagnostics.xml')
+
+ws    = _default_env.Kodegen('Diagnostics.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Diagnostics.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Diagnostics.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceDiagnostics.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceDiagnostics.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv  += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointDiagnostics.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Info
+
+args  = "av.openhome.org Info 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Info1.xml')
+
+ws    = _default_env.Kodegen('Info.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Info.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Info.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceInfo.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceInfo.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointInfo.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# NetworkMonitor
+
+args  = "av.openhome.org NetworkMonitor 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/NetworkMonitor1.xml')
+
+ws    = _default_env.Kodegen('NetworkMonitor.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('NetworkMonitor.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('NetworkMonitor.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceNetworkMonitor.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceNetworkMonitor.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointNetworkMonitor.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Time
+
+args  = "av.openhome.org Time 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Time1.xml')
+
+ws    = _default_env.Kodegen('Time.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Time.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Time.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceTime.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceTime.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointTime.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Flash
+
+args  = "linn.co.uk Flash 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Flash.xml')
+
+ws    = _default_env.Kodegen('Flash.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Flash.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Flash.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceFlash.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceFlash.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointFlash.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Jukebox
+
+args  = "linn.co.uk Jukebox 3"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Jukebox.xml')
+
+ws    = _default_env.Kodegen('Jukebox.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Jukebox.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Jukebox.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceJukebox.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceJukebox.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointJukebox.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Playlist (Openhome)
+
+args  = "av.openhome.org Playlist 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Playlist1.xml')
+
+ws    = _default_env.Kodegen('Playlist.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Playlist.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Playlist.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServicePlaylist.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServicePlaylist.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointPlaylist.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# PlaylistManager (Openhome)
+
+args  = "av.openhome.org PlaylistManager 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/PlaylistManager1.xml')
+
+ws    = _default_env.Kodegen('PlaylistManager.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('PlaylistManager.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('PlaylistManager.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServicePlaylistManager.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServicePlaylistManager.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointPlaylistManager.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Radio (Openhome)
+
+args  = "av.openhome.org Radio 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Radio1.xml')
+
+ws    = _default_env.Kodegen('Radio.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Radio.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Radio.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceRadio.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceRadio.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointRadio.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Soundcard
+
+args  = "linn.co.uk Soundcard 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Soundcard.xml')
+
+ws    = _default_env.Kodegen('Soundcard.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Soundcard.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Soundcard.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceSoundcard.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceSoundcard.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointSoundcard.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Receiver
+
+args  = "av.openhome.org Receiver 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Receiver1.xml')
+
+ws    = _default_env.Kodegen('Receiver.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Receiver.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Receiver.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceReceiver.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointReceiver.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Sender
+
+args  = "av.openhome.org Sender 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Sender1.xml')
+
+ws    = _default_env.Kodegen('Sender.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Sender.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Sender.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceSender.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointSender.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Volume
+
+args  = "av.openhome.org Volume 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Volume1.xml')
+
+ws    = _default_env.Kodegen('Volume.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Volume.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Volume.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceVolume.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceVolume.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointVolume.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+
+# ProductV1
+
+args  = "linn.co.uk Product 1 V1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/ProductV1.xml')
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointProductV1.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# ProductV2
+
+args  = "linn.co.uk Product 2 V2"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/ProductV2.xml')
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointProductV2.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# ProductV3
+
+args  = "linn.co.uk Product 3 V3"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Product.xml')
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointProductV3.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Product
+
+args  = "av.openhome.org Product 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Openhome', 'Openhome/Product1.xml')
+
+ws    = _default_env.Kodegen('Product.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+ws    = _default_env.Kodegen('Product.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Openhome', ws)
+
+doc   = _default_env.Kodegen('Product.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceProduct.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceProduct.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointProduct.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Configuration
+
+args  = "linn.co.uk Configuration 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Configuration.xml')
+
+ws    = _default_env.Kodegen('Configuration.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Configuration.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Configuration.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceConfiguration.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceConfiguration.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointConfiguration.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Delay
+
+args  = "linn.co.uk Delay 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Delay.xml')
+
+ws    = _default_env.Kodegen('Delay.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Delay.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Delay.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceDelay.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceDelay.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointDelay.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Proxy
+
+args  = "linn.co.uk Proxy 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Proxy.xml')
+
+doc   = _default_env.Kodegen('Proxy.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+ws    = _default_env.Kodegen('Proxy.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Proxy.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+cp    = _default_env.Kodegen('ServiceProxy.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceProxy.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointProxy.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Sdp
+
+args  = "linn.co.uk Sdp 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Sdp.xml')
+
+ws    = _default_env.Kodegen('Sdp.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Sdp.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Sdp.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceSdp.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceSdp.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointSdp.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Video
+
+args  = "linn.co.uk Video 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Video.xml')
+
+ws    = _default_env.Kodegen('Video.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Video.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+cp    = _default_env.Kodegen('ServiceVideo.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceVideo.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointVideo.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# Volkano
+
+args  = "linn.co.uk Volkano 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/Volkano.xml')
+
+ws    = _default_env.Kodegen('Volkano.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('Volkano.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('Volkano.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceVolkano.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceVolkano.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointVolkano.cs', xml, KODE="UpnpControlPointCs.kode", ARGS=args)
+
+# AVTransport
+
+args  = "upnp.org AVTransport 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/AVTransport.xml')
+
+ws    = _default_env.Kodegen('AVTransport.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('AVTransport.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('AvTransport.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceAVTransport.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceAVTransport.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+# ConnectionManager
+
+args  = "upnp.org ConnectionManager 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/ConnectionManager.xml')
+
+ws    = _default_env.Kodegen('ConnectionManager.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('ConnectionManager.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('ConnectionManager.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceConnectionManager.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceConnectionManager.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+# RenderingControl
+
+args  = "upnp.org RenderingControl 1"
+xml   = _default_env.Install('$hardware_dir/share/Services/Linn', 'Linn/RenderingControl.xml')
+
+ws    = _default_env.Kodegen('RenderingControl.wsdl', xml, KODE="UpnpWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+ws    = _default_env.Kodegen('RenderingControl.Silverlight.wsdl', xml, KODE="UpnpSilverlightWsdl.kode", ARGS=args)
+wsdl += _default_env.Install('$hardware_dir/share/Services/Linn', ws)
+
+doc   = _default_env.Kodegen('RenderingControl.html', xml, KODE="UpnpServiceDocHtml.kode", ARGS=args)
+docs += _default_env.Install('$hardware_dir/share/Services/Doc', doc)
+
+cp    = _default_env.Kodegen('ServiceRenderingControl.java', xml, KODE="UpnpControlPointGwt.kode", ARGS=args)
+gwt  += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', cp)
+
+cp    = _default_env.Kodegen('ServiceRenderingControl.js', xml, KODE="UpnpControlPointJs.kode", ARGS=args)
+js   += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', cp)
+
+# Sonos control point services
+
+xml   = _default_env.Install('$hardware_dir/share/Services/Sonos', 'Sonos/DeviceProperties.xml')
+
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointDeviceProperties.cs', xml, KODE="UpnpControlPointCs.kode", ARGS="upnp.org DeviceProperties 1")
+
+# UpnpAv control point services
+
+xml   = _default_env.Install('$hardware_dir/share/Services/UpnpAv', 'UpnpAv/AVTransport.xml')
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointAVTransport.cs', xml, KODE="UpnpControlPointCs.kode", ARGS="upnp.org AVTransport 1")
+
+xml   = _default_env.Install('$hardware_dir/share/Services/UpnpAv', 'UpnpAv/ConnectionManager.xml')
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointConnectionManager.cs', xml, KODE="UpnpControlPointCs.kode", ARGS="upnp.org ConnectionManager 1")
+
+xml   = _default_env.Install('$hardware_dir/share/Services/UpnpAv', 'UpnpAv/ContentDirectory.xml')
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointContentDirectory.cs', xml, KODE="UpnpControlPointCs.kode", ARGS="upnp.org ContentDirectory 1")
+
+xml   = _default_env.Install('$hardware_dir/share/Services/UpnpAv', 'UpnpAv/RenderingControl.xml')
+serv += _default_env.Kodegen('$sconsign_dir/share/Services/UpnpControlPointRenderingControl.cs', xml, KODE="UpnpControlPointCs.kode", ARGS="upnp.org RenderingControl 1")
+
+# Gwt files
+
+gwt += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services', 'Gwt/Service.gwt.xml')
+gwt += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', 'Gwt/Service.java')
+gwt += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/services/client', 'Gwt/ServiceException.java')
+
+# Js files
+
+js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/ServiceCollection.js')
+js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/Helpers.js')
+js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/Prototype.js')
+js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/SoapRequest.js')
+
+# Build library
+
+serv += ['Properties/AssemblyInfo.cs']
+
+clilibs = ['mscorlib', 'System', 'System.Xml', 'OssControl', 'OssCore', 'System.Web.Services']
+if _default_env['hardware'] != 'Droid':
+    lib =  _default_env.CliLibrary('OssServices', serv, CLILIBS=clilibs)
+else:
+    msproj = _default_env.MSBuildFileGenerator('OssServices', serv, LINKS=serv, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Services')
+    lib = _default_env.MSBuildLibBuilder('OssServices', msproj, CLILIBS=clilibs)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Services.tar', serv, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Services', DOXYGENNAMESPACE='OssServices', DOXYGENINPUT='Linn ' + _default_env.subst('$sconsign_dir/share/Services'))
+
+Alias('Docs', docs)
+
+Alias('Lib', kode)
+Alias('Lib', wsdl)
+Alias('Lib', gwt)
+Alias('Lib', js)
+Alias('Lib', lib)
+
+Alias('Test', 'Lib')
+
+Default(['Test','Docs'])

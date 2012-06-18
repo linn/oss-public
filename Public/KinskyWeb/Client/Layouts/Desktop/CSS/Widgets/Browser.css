@@ -1,0 +1,124 @@
+.BrowserItemOverlay
+{
+	position:absolute;
+	z-index:1;
+	width:100%;
+	height:100%;	
+	cursor:pointer;
+}
+.BrowserItem
+{
+	width:100%;
+	float:left;
+	cursor:default;
+	color:#AAA;
+	position:relative;
+}
+.title
+{
+	text-align:left;
+}
+.BrowserItem.dragging .title
+{
+	display:none;
+}
+.BrowserItem.highlight
+{
+	color:#FFF;
+	background-color:#333;
+}
+
+#BrowserPager
+{
+	display:inline-block;
+	min-height:40px;
+	width:100%;
+	text-align:center;
+}
+
+#BrowserPager span
+{
+	vertical-align:middle;
+	text-decoration:underline;
+	padding:5px;
+	cursor:pointer;
+}
+#BrowserPager span.Selected
+{
+	text-decoration:none;
+	cursor:default;
+}
+
+.BrowserItem.ui-state-hover,
+.BrowserItem.ui-state-highlight
+{
+	font-weight:normal !important;
+	border-style:none !important;
+	background-color:#aaa !important;
+}
+
+.BrowserItemBody span
+{
+	white-space: nowrap;
+	font-size:small;
+	float:left;
+}
+
+span.img
+{
+	float:left;
+	width:60px;
+	margin-left:5px;
+	text-align:right;
+}
+.BrowseDownImage
+{
+	display:none;
+}
+.albumart
+{
+	height:40px;
+	vertical-align:middle;
+}
+span.Playing
+{
+	background-image:url('../../Images/Widgets/Playing.png');
+	background-position:left;
+	background-repeat:no-repeat;
+}
+
+#BrowserPanel
+{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+#BrowserContent
+{
+	width:100%;
+	height:90%;
+	overflow:auto;
+}
+
+#BrowserHeader
+{
+	white-space: nowrap;	
+	padding-left:5px;
+}
+
+#LoadProgress
+{
+	background-image:url('../../Images/ajax-loader.gif');
+	background-repeat:no-repeat;
+	background-position:50% 50%;
+	background-color:#000;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	width:100%;
+	display:inline;
+	z-index:2;
+	opacity:0.5;
+}

@@ -1,0 +1,134 @@
+Import('_default_env')
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Linn/Kinsky/Browser.cs
+    Linn/Kinsky/Container.cs
+    Linn/Kinsky/BookmarkManager.cs
+    Linn/Kinsky/ContentCollector.cs
+    Linn/Kinsky/ContentDirectoryLocator.cs
+    Linn/Kinsky/Controllers.cs
+    Linn/Kinsky/FileItc2.cs
+    Linn/Kinsky/HelperKinsky.cs
+    Linn/Kinsky/HttpClient.cs
+    Linn/Kinsky/HttpServer.cs
+    Linn/Kinsky/Library.cs
+    Linn/Kinsky/LocalPlaylists.cs
+    Linn/Kinsky/MediaProvider.cs
+    Linn/Kinsky/MediaRetriever.cs
+    Linn/Kinsky/Mediators.cs
+    Linn/Kinsky/Models.cs
+    Linn/Kinsky/MultipusSourceList.cs
+    Linn/Kinsky/OptionStartupRoom.cs
+    Linn/Kinsky/Playlist.cs
+    Linn/Kinsky/PlaylistSupport.cs
+    Linn/Kinsky/PluginManager.cs
+    Linn/Kinsky/SaveSupport.cs
+    Linn/Kinsky/Support.cs
+    Linn/Kinsky/RemotePlaylists.cs
+    Linn/Kinsky/ViewMasters.cs
+    Linn/Kinsky/Views.cs
+    Linn/Kinsky/IconResolver.cs
+    Linn/Kinsky/ItemInfo.cs
+""")
+
+pocketPcFiles = Split("""
+    Properties/Resources.Designer.cs
+    Linn/Kinsky/ArtworkCache.cs
+    Linn/Kinsky/Framework/Compact/DisplayManager.cs
+    Linn/Kinsky/Framework/Compact/KeyBindings.cs
+""")
+
+pcFiles = Split("""
+    Properties/Resources.Designer.cs
+    Linn/Kinsky/ArtworkCache.cs
+    Linn/Kinsky/Framework/Full/DropConverter.cs
+    Linn/Kinsky/Framework/Full/KeyBindings.cs
+    Linn/Kinsky/Framework/Full/UpnpObjectFactory.cs
+""")
+
+res  = _default_env.Resgen('Linn.Kinsky.Properties.Resources.resources', 'Properties/Resources.resx')
+
+clilibs = Split("""
+    mscorlib
+    OssTopology
+    OssDidlLite
+    OssServices
+    OssControl
+    OssSysLib
+    OssCore
+    System
+    System.Xml
+    ICSharpCode.SharpZipLib
+""")
+
+pocketPcLibs = Split("""
+    System.Windows.Forms
+    System.Drawing
+    Microsoft.WindowsCE.Forms
+""")
+
+pcLibs = Split("""
+    System.Windows.Forms
+    System.Drawing
+    taglib-sharp
+    policy.2.0.taglib-sharp
+""")
+
+if _default_env['hardware'] == 'PocketPc':
+    files.extend(pocketPcFiles)
+    clilibs.extend(pocketPcLibs)
+elif _default_env['hardware'] == 'Ios' or _default_env['hardware'] == 'Droid':
+    res = []
+else:
+    files.extend(pcFiles)
+    clilibs.extend(pcLibs)
+
+if _default_env['hardware'] != 'Droid':
+    lib = _default_env.CliLibrary('OssKinsky', files, CLILIBS=clilibs, CLIRESOURCES=res)
+else:
+    msproj = _default_env.MSBuildFileGenerator('OssKinsky', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Kinsky')
+    lib = _default_env.MSBuildLibBuilder('OssKinsky', msproj, CLILIBS=clilibs)
+
+testfiles = Split("""
+	Linn/Kinsky/Test/TestHouse.cs
+""")
+
+testlibs = Split("""
+	OssCore
+	OssKinsky
+	OssTopology
+	OssDidlLite
+	OssTestFramework
+	Moq
+""")
+
+
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+    prog  = _default_env.CliProgram('Test/TestKeyBindings', 'Linn/Kinsky/Test/TestKeyBindings.cs', CLILIBS=['OssTestFramework', 'OssCore', 'OssKinsky', 'System.Windows.Forms'])
+    prog += _default_env.CliProgram('Test/TestKinsky', testfiles, CLILIBS=testlibs)
+#if _default_env['hardware'] == 'PocketPc':
+    #prog += _default_env.CliProgram('Test/TestRoomSourceSelection', 'TestRoomSourceSelection.cs', CLILIBS=['OssTestFramework', 'OssCore', 'OssControl', 'OssKinsky', 'OssTopology'])
+    Alias('Test', prog)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Kinsky.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Kinsky', DOXYGENNAMESPACE='OssKinsky')
+
+files = Split("""
+    Installer/finish.bmp
+    Installer/finish2.bmp
+    Resources/Kinsky.ico
+    Resources/Kinsky2.ico
+    Resources/Kinsky.icns
+    Resources/Kinsky2.icns
+    Resources/Kinsky.xpm
+    Resources/KinskyJukebox.xpm
+    Resources/Kinsky2.xpm
+""")
+resources = _default_env.Install('$variant_dir/share/Linn/Kinsky', files)
+Alias('Lib', resources)
+
+Alias('Lib', lib)
+Alias('Test', 'Lib')
+Alias('Docs', docs)
+
+Default(['Test','Docs'])

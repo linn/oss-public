@@ -1,0 +1,8 @@
+Import('_default_env kVersion')
+
+resources = [ (_default_env.subst('$install_dir/share/Kinsky/InstallerKinsky.pkg'), 'InstallerKinsky.pkg') ]
+updater = _default_env.CliLibrary('UpdaterKinsky_osx', 'Updater.cs', CLIRESOURCES=resources)
+installed = _default_env.Install('$install_dir/share/Kinsky', updater)
+
+Alias('Lib', installed)
+

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+             android:layout_alignParentBottom="true"
+             android:paddingLeft="5dip"
+             android:paddingRight="5dip">
+
+  <RelativeLayout android:id="@+id/leftbuttons"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               style="@style/splitterleft"
+                        >
+    <ImageButton
+        android:id="@+id/settingsbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/settings"
+        android:background="@drawable/buttonbackground"
+        android:layout_centerVertical="true"
+    style="@style/textviewtext"
+        android:layout_marginRight="5dip" />
+
+    <Button
+        android:id="@+id/playnownextlaterbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonbackground"
+        android:layout_toRightOf="@id/settingsbutton"
+        android:layout_centerVertical="true"
+        android:text="Play Now"
+        style="@style/textviewtext" />
+
+  </RelativeLayout>
+
+  <LinearLayout android:id="@+id/rightbuttons"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               style="@style/splitterright"
+               android:layout_alignParentRight="true"
+               android:layout_centerVertical="true"
+               android:paddingLeft="5dip"
+                android:orientation="horizontal"
+                android:gravity="right"
+                        >
+
+
+    <ToggleButton
+        android:id="@+id/repeatbutton"
+        android:layout_width="45dip"
+        android:layout_height="wrap_content"
+        android:background="@drawable/repeatbutton"
+        android:textOff=""
+        android:textOn=""
+        android:layout_gravity="center"
+        style="@style/textviewtext"
+        android:layout_marginRight="5dip" />
+
+    <ToggleButton
+        android:id="@+id/shufflebutton"
+        android:layout_width="45dip"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shufflebutton"
+        android:textOff=""
+        android:textOn=""
+        android:layout_gravity="center"
+        style="@style/textviewtext"
+        android:layout_marginRight="15dip" />
+
+    <ToggleButton  android:id="@+id/editmodebutton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/editmodebutton"
+      android:textOff="Edit"
+      android:textOn="Done"
+      android:layout_gravity="center"
+      style="@style/textviewtext"
+        android:layout_marginRight="5dip"
+                     />
+
+
+    <Button  android:id="@+id/savebutton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/buttonbackground"
+      android:layout_gravity="center"
+      style="@style/textviewtext"
+      android:text="Save" />
+
+    <ImageButton  android:id="@+id/deletebutton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:background="@drawable/buttonbackground"
+      android:src="@drawable/delete"
+      android:layout_gravity="center"
+      android:visibility="gone"/>
+
+
+  </LinearLayout>
+</LinearLayout>

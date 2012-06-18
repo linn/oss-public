@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Kinsky</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Resources/KinskyLogoIphone.png</string>
+		<string>Resources/KinskyLogoIphone4.png</string>
+		<string>Resources/KinskyLogo.png</string>
+		<string>Resources/KinskyLogoSpotlightIphone.png</string>
+		<string>Resources/KinskyLogoSpotlightIphone4.png</string>
+		<string>Resources/KinskyLogoSpotlight.png</string>
+	</array>
+	<key>CFBundleIdentifier</key>
+	<string>uk.co.linn.KinskyTouch</string>
+	<key>CFBundleVersion</key>
+	<string>4.2.4</string>
+	<key>MinimumOSVersion</key>
+	<string>3.2</string>
+	<key>NSMainNibFile</key>
+	<string>MainWindowIphone</string>
+	<key>NSMainNibFile~ipad</key>
+	<string>MainWindowIpad</string>
+	<key>UIDeviceFamily</key>
+	<array>
+		<string>1</string>
+		<string>2</string>
+	</array>
+	<key>UIFileSharingEnabled</key>
+	<string>YES</string>
+	<key>UIPrerenderedIcon</key>
+	<true/>
+	<key>UIRequiresPersistentWiFi</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>

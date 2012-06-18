@@ -1,0 +1,125 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=8" />
+		<title>Linn Controller</title>
+		<meta name="viewport" content="width=device-width,height=device-height,user-scalable=no" />
+		<script type="text/javascript" src="../../../Common/Scripts/jquery-1.4.4.min.js"></script>
+		<script type="text/javascript" src="../../../Common/Scripts/jquery.xml2json.js"></script>   
+		<script type="text/javascript" src="../../../Common/Scripts/helpers.js"></script>  
+		<!-- jQuery needs to come before Prototype -->
+		<script type="text/javascript" src="../../../ServiceProxies/Prototype.js"></script>
+		<script type="text/javascript" src="../../../ServiceProxies/Helpers.js"></script>   
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceCollection.js"></script>   
+		<script type="text/javascript" src="../../../ServiceProxies/SoapRequest.js"></script>     
+		
+		<script type="text/javascript" src="../../../ServiceProxies/ServicePlaylist.js"></script>    
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceProduct.js"></script>   
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceRadio.js"></script>  
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceInfo.js"></script>    
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceJukebox.js"></script>     
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceVolume.js"></script>    
+		<script type="text/javascript" src="../../../ServiceProxies/ServiceReceiver.js"></script>    
+
+		<script type="text/javascript" src="../../Common/Scripts/WidgetContainer.js"></script>   
+		<script type="text/javascript" src="../../Common/Scripts/WidgetBase.js"></script>   
+		<script type="text/javascript" src="../../Common/Scripts/DidlLiteParser.js"></script>   
+
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/PagedList.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/Playlist.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/Standby.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/SourceSelection.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/Track.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/TransportControl.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/Numpad.js"></script>  
+		<script type="text/javascript" src="../../Common/Scripts/Widgets/VolumeControl.js"></script>  
+
+
+		<script type="text/javascript" src="Scripts/Application.js"></script>   
+
+		<link rel="stylesheet" type="text/css" href="CSS/Application.css" />
+		
+		<!--[if IE]>
+			<style>
+				.TabContainer div.TwoColumn
+				{
+					width:49.9% !important;
+				}
+			</style>
+		<![endif]-->
+		
+	</head>
+	<body ontouchmove="touchMove(event);">		
+		<div id="NowPlayingContainer" class="Active">
+			<div id="NowPlayingButtons">
+				<div id="StandbyButton"></div>
+				<div id="TransportButton"><div id="TransportButtonImage"></div></div>
+				<div id="ShuffleButton"></div>
+				<div id="RepeatButton"></div>
+			</div>
+			<div id="TrackContainer">
+				<span id="TrackAlbumArtContainer"><div id="TransportControlToggleState"></div><img id="TrackAlbumArt" src="Images/NoAlbumArt.png"></img></span>
+				<div id="TrackTitle"></div>
+				<div id="TrackArtist"></div>
+				<div id="TrackAlbum"></div>
+				<div id="TrackBitRate"></div>
+				<div id="TrackSampleRate"></div>
+				<div id="TrackCodec"></div>
+			</div>
+		</div>
+		<div id="NumpadContainer">
+			<div id="1">1</div>
+			<div id="2">2</div>
+			<div id="3">3</div>
+			<div id="4">4</div>
+			<div id="5">5</div>
+			<div id="6">6</div>
+			<div id="7">7</div>
+			<div id="8">8</div>
+			<div id="9">9</div>
+			<div id="NumpadBottomLeft">&nbsp;</div>
+			<div id="0">0</div>
+			<div id="NumpadBottomRight">&nbsp;</div>
+		</div> 
+		<div id="SourceSelectionContainer"></div>
+		<div id="VolumeDisplayContainer"><div id="VolumeDisplay"></div><span id="VolumeDisplayTooltip"></span></div>
+		<div id="TabContainers" class="Active">			
+			<div id="TransportControlTabs" class="TabContainer Active">
+				<div class="Tab"><span class="Tab"><span id="TransportControlPrevious"></span></span></div>
+				<div class="Tab TwoColumn"><span class="Tab"><span id="TransportControlDisplay"></span></span></div>
+				<div class="Tab"><span class="Tab"><span id="TransportControlNext"></span></span></div>
+			</div>
+			<div id="SourceSelectionTabs" class="TabContainer">
+				<div class="Tab"><span class="Tab"><span id="SourceSelectionPreviousPage"></span></span></div>
+				<div class="Tab TwoColumn"><span class="Tab"><span id="SourceSelectionDisplay"></span></span></div>
+				<div class="Tab"><span class="Tab"><span id="SourceSelectionNextPage"></span></span></div>
+			</div>
+			<div id="VolumeControlTabs" class="TabContainer">		
+				<div class="Tab VolumeDown"><span><span id="VolumeDown"></span></span></div>
+				<div class="Tab VolumeMute"><span><span id="VolumeMute"></span></span></div>
+				<div class="Tab VolumeUp"><span><span id="VolumeUp"></span></span></div>
+			</div>
+			<div id="NumpadTabs" class="TabContainer">
+				<div class="Tab"><span class="Tab"><span id="NumpadClear"></span></span></div>
+				<div class="Tab TwoColumn"><span class="Tab"><span id="NumpadDisplay"></span></span></div>
+				<div class="Tab"><span class="Tab"><span id="NumpadEnter"></span></span></div>
+			</div>
+			<div id="BottomTabs" class="TabContainer Active">
+				<div id="ToggleNumpad" class="Tab"><span class="Tab"><span id="NumpadImage"></span></span></div>
+				<div id="ToggleSourceSelection" class="Tab TwoColumn"><span class="Tab"><span id="CurrentSource"></span></span></div>
+				<div id="ToggleVolumeControl" class="Tab"><span class="Tab"><span id="VolumeControlImage" class="Inactive"></span></span></div>
+			</div>
+		</div>
+		<div id="PlaylistContainer">
+			<div id="PlaylistPaging">
+				<span id="PlaylistPrevious"></span>
+				<span id="PlaylistLinks"></span>
+				<span id="PlaylistNext"></span>
+			</div>
+			<div id="PlaylistClose"></div>
+			<div id="Playlist"></div>
+		</div>
+	</body>
+</html>

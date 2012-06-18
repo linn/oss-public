@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="Hal" type ="Hal"/>
+    <xs:complexType name="Hal">
+        <xs:sequence>
+            <xs:element name="Entity" type="Entity" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Entity">
+        <xs:attribute name="interface" type="xs:string" />
+        <xs:attribute name="index" type="xs:string" />
+        <xs:attribute name="implementation" type="xs:string" />
+        <xs:attribute name="arguments" type="xs:string" />
+        <xs:attribute name="include" type="xs:string" />
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,91 @@
+[Version]
+Signature="$Windows NT$"
+Provider="Linn"
+CESignature="$Windows CE$"
+
+[CEStrings]
+AppName="Kinsky"
+InstallDir=%CE1%\%AppName%
+
+[Strings]
+Manufacturer="Linn"
+
+[CEDevice]
+VersionMin=4.0
+VersionMax=6.99
+BuildMax=0xE0000000
+
+[DefaultInstall]
+CEShortcuts=Shortcuts
+AddReg=RegKeys
+CopyFiles=Files.App; ,Files.Bbc,Files.MovieTrailers,Files.Shoutcast,Files.Wfmu
+
+[SourceDisksNames]
+1=,"App Files",,"$install_dir\bin\"
+; 2=,"Bbc Files",,"$install_dir\bin\Plugins\Bbc"
+; 3=,"MovieTrailer Files",,"$install_dir\bin\Plugins\MovieTrailers"
+; 4=,"Shoutcast Files",,"$install_dir\bin\Plugins\Shoutcast"
+; 5=,"Wfmu Files",,"$install_dir\bin\Plugins\Wfmu"
+
+[SourceDisksFiles]
+Kinsky.exe = 1
+ICSharpCode.SharpZipLib.dll = 1
+OssControl.dll = 1
+OssCore.dll = 1
+OssDidlLite.dll = 1
+OssKinsky.dll = 1
+OssServices.dll = 1
+OssSysLib.dll = 1
+OssToolkitWinForms.dll = 1
+OssTopology.dll = 1
+; Bbc.png = 2
+; OssKinskyMppBbc.dll = 2
+; Icon.png = 3
+; OssKinskyMppMovieTrailers.dll = 3
+; OssKinskyMppShoutcast.dll = 4
+; Shoutcast.png = 4
+; OssKinskyMppWfmu.dll = 5
+; Wfmu.png = 5
+
+
+[DestinationDirs]
+Shortcuts=0,%CE2%\Start Menu
+Files.App = 0,"%InstallDir%"
+; Files.Bbc = 0,"%InstallDir%\Plugins\Bbc"
+; Files.MovieTrailers = 0,"%InstallDir%\Plugins\MovieTrailers"
+; Files.Shoutcast = 0,"%InstallDir%\Plugins\Shoutcast"
+; Files.Wfmu = 0,"%InstallDir%\Plugins\Wfmu"
+
+[Files.App]
+Kinsky.exe,,,0
+ICSharpCode.SharpZipLib.dll,,,0
+OssControl.dll,,,0
+OssCore.dll,,,0
+OssDidlLite.dll,,,0
+OssKinsky.dll,,,0
+OssServices.dll,,,0
+OssSysLib.dll,,,0
+OssToolkitWinForms.dll,,,0
+OssTopology.dll,,,0
+
+; [Files.Bbc]
+; Bbc.png,,,0
+; OssKinskyMppBbc.dll,,,0
+
+; [Files.MovieTrailers]
+; Icon.png,,,0
+; OssKinskyMppMovieTrailers.dll,,,0
+
+; [Files.Shoutcast]
+; OssKinskyMppShoutcast.dll,,,0
+; Shoutcast.png,,,0
+
+; [Files.Wfmu]
+; OssKinskyMppWfmu.dll,,,0
+; Wfmu.png,,,0
+
+
+[Shortcuts]
+"Kinsky",0,"Kinsky.exe","%CE11%"
+
+[RegKeys]

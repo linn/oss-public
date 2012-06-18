@@ -1,0 +1,99 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+files = Split("""
+    Installer/Header.bmp
+    Installer/NsiTemplate.txt
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/KinskyJukebox', files)
+
+files = Split("""
+    Properties/AssemblyInfo.cs
+    Properties/Resources.Designer.cs
+    ApplicationOptions.cs
+    FormDevices.cs
+    FormDevices.Designer.cs
+    FormKinskyJukebox.cs
+    FormKinskyJukebox.Designer.cs
+    FormPrint.cs
+    FormPrint.Designer.cs
+    FormTrackMetadata.cs
+    FormTrackMetadata.Designer.cs
+    FormUpdate.cs
+    FormUpdate.Designer.cs
+    FormWizard.cs
+    FormWizard.Designer.cs
+    GetMedia.cs
+    OptionPageOrganisation.cs
+    OptionPageSetup.cs
+    OptionPageWizard.cs
+    Presets.cs
+    Program.cs
+""")
+
+res  = _default_env.Resgen('KinskyJukebox.Properties.Resources.resources', 'Properties/Resources.resx')
+res += _default_env.Resgen('KinskyJukebox.FormDevices.resources', 'FormDevices.resx')
+res += _default_env.Resgen('KinskyJukebox.FormKinskyJukebox.resources', 'FormKinskyJukebox.resx')
+res += _default_env.Resgen('KinskyJukebox.FormPrint.resources', 'FormPrint.resx')
+res += _default_env.Resgen('KinskyJukebox.FormTrackMetadata.resources', 'FormTrackMetadata.resx')
+res += _default_env.Resgen('KinskyJukebox.FormUpdate.resources', 'FormUpdate.resx')
+res += _default_env.Resgen('KinskyJukebox.FormWizard.resources', 'FormWizard.resx')
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+app = _default_env.CliProgram('KinskyJukebox', files, CSCTARGET=target, CLILIBS=['OssCore', 'OssToolkitWinForms', 'OssSysLib', 'OssControl', 'OssServices', 'OssDidlLite', 'OssKinsky', 'System.Data', 'System.Drawing', 'System.Windows.Forms', 'itextsharp', 'taglib-sharp', 'policy.2.0.taglib-sharp'], CLIRESOURCES=res, WINICON='$variant_dir/share/Linn/Kinsky/Kinsky.ico')
+
+app.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssToolkitWinForms.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssSysLib.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssServices.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssDidlLite.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssKinsky.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/itextsharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.config')))
+
+installer = []
+if _default_env['installers']:
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/KinskyJukebox', 'InstallerKinskyJukebox',
+                        FILES        = {''        : app},
+                        TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/KinskyJukebox/NsiTemplate.txt'),
+                        RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico'),
+                                        'header'  : _default_env.subst('$variant_dir/share/Linn/KinskyJukebox/Header.bmp'),
+                                        'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish.bmp'),
+                                        'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                        PRODUCT      = 'KinskyJukebox',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyJukebox.exe')
+    
+    installer += _default_env.ReleaseInstallerDebian('$install_dir/share/KinskyJukebox', 'InstallerKinskyJukebox',
+                        FILES        = {'usr/lib/KinskyJukebox'         : app},
+                        MAINTAINER   = 'Linn [http://oss.linn.co.uk]',
+                        DEPENDECIES  = 'libmono-winforms2.0-cil (>= 2.0.1), mono-gmcs (>= 2.0.1)',
+                        ICON         = '$variant_dir/share/Linn/Kinsky/KinskyJukebox.xpm',
+                        DESCRIPTION  = 'Manages playlists and presets for the Linn Jukebox service.',
+                        CATEGORIES   = 'Utility;',
+                        PRODUCT      = 'KinskyJukebox',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyJukebox.exe')
+    
+    installer += _default_env.ReleaseInstallerMacOsX('$install_dir/share/KinskyJukebox', 'InstallerKinskyJukebox',
+                        FILES        = {''        : app},
+                        ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky.icns',
+                        DESCRIPTION  = 'Manages playlists and presets for the Linn Jukebox service.',
+                        PRODUCT      = 'KinskyJukebox',
+                        VERSION      = kVersion,
+                        LAUNCHFILE   = 'KinskyJukebox.exe')
+    Depends(installer, installerResources)
+
+Alias('Lib', installerResources)
+Alias('Lib', installer)
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])
+

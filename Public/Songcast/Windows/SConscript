@@ -1,0 +1,80 @@
+Import('_default_env kBuildInfo')
+
+external  = _default_env.Install('$install_dir/lib/Linn', 'ohSongcast.net.dll')
+external += _default_env.Install('$install_dir/lib/Linn', 'ohSongcast.dll')
+external += _default_env.Install('$install_dir/bin', 'ohSongcast.net.dll')
+external += _default_env.Install('$install_dir/bin', 'ohSongcast.dll')
+
+files = Split("""
+    ../Resources/Songcast.ico
+    Installer/finish.bmp
+    Installer/header.bmp
+    Installer/NsiTemplate.txt
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/Songcast', files)
+
+drivers32  = _default_env.Install('$build_dir/Windows/Driver32', 'Driver/songcast.inf')
+drivers32 += _default_env.InstallAs('$build_dir/Windows/Driver32/songcast.sys', 'Driver/ohSongcast32.sys')
+drivers32 += _default_env.Install('$build_dir/Windows/', 'Driver/Install32.exe')
+drivers32 += _default_env.Command('$build_dir/Windows/Driver32/songcast.cat', '$build_dir/Windows/Driver32/songcast.sys', ['Inf2Cat /driver:$build_dir/Windows/Driver32 /os:Vista_X86,7_X86 /v', 'signtool sign /sm /v /a /ac Windows\Driver\gsrootr1.crt /t http://timestamp.verisign.com/scripts/timestamp.dll $TARGET $SOURCE'])
+
+drivers64  = _default_env.Install('$build_dir/Windows/Driver64', 'Driver/songcast.inf')
+drivers64 += _default_env.InstallAs('$build_dir/Windows/Driver64/songcast.sys', 'Driver/ohSongcast64.sys')
+drivers64 += _default_env.Install('$build_dir/Windows/', 'Driver/Install64.exe')
+drivers64 += _default_env.Command('$build_dir/Windows/Driver64/songcast.cat', '$build_dir/Windows/Driver64/songcast.sys', ['Inf2Cat /driver:$build_dir/Windows/Driver64 /os:Vista_X64,7_X64 /v', 'signtool sign /sm /v /a /ac Windows\Driver\gsrootr1.crt /t http://timestamp.verisign.com/scripts/timestamp.dll $TARGET $SOURCE'])
+
+app = SConscript('Songcast/SConscript', exports = ['_default_env', 'kBuildInfo'])
+Depends(app, external)
+
+app.append(File(_default_env.subst('$install_dir/lib/Linn/ohSongcast.net.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/ohSongcast.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
+
+libs = Split("""
+    PresentationCore
+    PresentationFramework
+    System
+    System.Drawing
+    System.Windows.Forms
+    WindowsBase
+""")
+
+ass = _default_env.TagReplace(_default_env.subst('$build_variant_dir/share/Songcast/Preferences/AssemblyInfo.cs'), 'Preferences/Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
+
+files = Split("""
+    Preferences/App.xaml
+    Preferences/App.xaml.cs
+    Preferences/MainWindow.xaml
+    Preferences/MainWindow.xaml.cs
+""")
+	
+_default_env['OutputType'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OutputType'] = 'Exe'
+msproj = _default_env.MSBuildFileGenerator('SongcastPreferences', files + ass, CLILIBS=libs, LINKS=files + ass, ICON=_default_env.subst('$variant_dir/share/Linn/Songcast/Songcast.ico'), APPLICATIONDEFINITION='App')
+preferences = _default_env.MSBuildExeBuilder('SongcastPreferences', msproj, CLILIBS=libs)
+
+if _default_env['installers'] and _default_env['hardware'] == 'Windows':
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Songcast', 'InstallerSongcast',
+                                                    FILES        = {''         : app + preferences,
+                                                                    'Driver32' : drivers32,
+                                                                    'Driver64' : drivers64},
+                                                    TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/Songcast/NsiTemplate.txt'),
+                                                    RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Songcast/Songcast.ico'),
+                                                                    'header'  : _default_env.subst('$variant_dir/share/Linn/Songcast/header.bmp'),
+                                                                    'finish'  : _default_env.subst('$variant_dir/share/Linn/Songcast/finish.bmp'),
+                                                                    'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                                                    PRODUCT      = 'Songcast',
+                                                    VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
+                                                    CERT         = '',
+                                                    LAUNCHFILE   = 'Songcast.exe')
+                                                
+Alias('Lib', installerResources)
+Alias('Lib', installer)
+Alias('Lib', drivers32 + drivers64)
+
+if _default_env['hardware'] == 'Windows':
+    resources = [ (_default_env.subst('$install_dir/share/Songcast/InstallerSongcast.exe'), 'InstallerSongcast.exe') ]
+    updater = _default_env.CliLibrary('UpdaterSongcast_win', 'Installer/Updater.cs', CLIRESOURCES=resources)
+    installed = _default_env.Install('$install_dir/share/Songcast', updater)
+    Alias('Lib', installed)

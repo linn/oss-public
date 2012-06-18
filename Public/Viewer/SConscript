@@ -1,0 +1,78 @@
+Import('_default_env')
+
+libs = Split("""
+	OssCore
+	PresentationCore
+	PresentationFramework
+	System
+	System.Core
+	System.Data
+        System.XML
+	WindowsBase
+	ZappControl
+	ZappServices
+	ZappTopology
+""")
+
+src = Split("""
+	App.xaml
+	App.xaml.cs
+	ProgressBarWindow.xaml
+	ProgressBarWindow.xaml.cs
+        DeviceSelectionWindow.xaml
+        DeviceSelectionWindow.xaml.cs
+	Terminal.cs
+	ViewerManager.cs
+	WindowMain.xaml
+	WindowMain.xaml.cs
+""")
+
+files = Split("""
+        Installer/NsiTemplate.txt
+        Installer/linn.ico
+        Installer/finish.bmp
+        Installer/license.txt
+        Installer/header.bmp
+    """)
+
+filesInstall = _default_env.Install('$install_dir/share/Viewer', files)
+libInstall = _default_env.Install('$build_dir/bin', '$install_dir/lib/ZappControl.dll')
+libInstall += _default_env.Install('$build_dir/bin', '$install_dir/lib/ZappServices.dll')
+libInstall += _default_env.Install('$build_dir/bin', '$install_dir/lib/ZappTopology.dll')
+libInstall += _default_env.Install('$build_dir/bin', '$install_dir/lib/Linn/OssCore.dll')
+Alias('Viewer', filesInstall)
+Alias('Viewer', libInstall)
+
+#Set up environment variables required by MSBuildFileGenerator
+_default_env['CLILIBS'] = libs
+_default_env['LINKS'] = src
+_default_env['MSBuildTarget'] = _default_env.subst('$build_dir/bin/Viewer')
+
+msproj = _default_env.MSBuildFileGenerator('$build_dir/Viewer', src, _default_env)
+app = _default_env.MSBuildExeBuilder('$build_dir/bin/Viewer', msproj, CLILIBS=libs)
+Depends(app, src)
+
+app.append(File(_default_env.subst('$install_dir/lib/linn/OssCore.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ZappControl.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ZappServices.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ZappTopology.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/ZappUpnp.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/CpLinnCoUkDebug2.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/msvcp100.dll')))
+app.append(File(_default_env.subst('$install_dir/lib/msvcr100.dll')))
+
+Alias('Viewer', app)
+Default('Viewer')
+
+installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Viewer/', 'InstallerViewer',
+                        FILES        = {''         : app},
+                        TEMPLATE     = _default_env.subst('$install_dir/share/Viewer/NsiTemplate.txt'),
+                        RESOURCES    = {'icon'    : _default_env.subst('$install_dir/share/Viewer/linn.ico'),
+                                        'finish'  : _default_env.subst('$install_dir/share/Viewer/finish.bmp'),
+                                        'header'  : _default_env.subst('$install_dir/share/Viewer/header.bmp'),
+                                        'license' : _default_env.subst('$install_dir/share/Viewer/license.txt')},
+                        PRODUCT      = 'Viewer',
+                        VERSION      = 'Release',
+                        LAUNCHFILE   = 'Viewer.exe')
+
+Alias('Viewer', installer)

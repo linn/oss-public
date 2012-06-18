@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Package type='Widget'>
+  <Version>8</Version>
+  <Namespace>SliderWidget</Namespace>
+  <Plugin class='NodeSlider'>
+    <Name>Slider</Name>
+    <Plugin>SliderWidget.Slider.TextureArrayFixed</Plugin>
+    <Parent/>
+    <Active>true</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator/>
+    <OutMessageTranslator/>
+    <Children/>
+    <Width>300</Width>
+    <Height>30</Height>
+    <RenderState>
+      <Texture>Default/SliderBackground.png</Texture>
+    </RenderState>
+    <SliderTexture>Default/SliderBar.png</SliderTexture>
+    <Value>0</Value>
+  </Plugin>
+  <Plugin class='TextureArrayFixed'>
+    <Name>Slider.TextureArrayFixed</Name>
+    <Plugin>SliderWidget.Slider</Plugin>
+    <Texture>Default/SliderBackground.png</Texture>
+  </Plugin>
+</Package>

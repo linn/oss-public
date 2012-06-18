@@ -1,0 +1,12 @@
+#WasteBinButton
+{	
+	min-width:36px;
+	height:36px;
+	background-repeat: no-repeat;
+	float: left;
+	background-image: url("../../Images/Widgets/Bin.png");
+}
+#WasteBinButton.Hover
+{
+	background-image: url("../../Images/Widgets/BinMouse.png");
+}

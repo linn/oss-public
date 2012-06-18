@@ -1,0 +1,11 @@
+#Controls
+{
+	width: 310px !important;
+}
+#MediaTime,
+#TransportControl,
+#VolumeControl
+{
+	margin: 0px !important;
+	float: left !important;
+}

@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31015215-E24D-4990-BBB3-949125162907}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Linn.Toolkit.WinForms</RootNamespace>
+    <AssemblyName>OssToolkitWinForms</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <BaseDirectory>..\..\LibUpnpCil\Toolkit</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\CrashLogDumperForm.cs">
+      <Link>Linn\Toolkit\CrashLogDumperForm.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormAboutBox.cs">
+      <SubType>Form</SubType>
+      <Link>Linn\Toolkit\FormAboutBox.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormAboutBox.Designer.cs">
+      <Link>Linn\Toolkit\FormAboutBox.Designer.cs</Link>
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormCrashLogDumper.cs">
+      <SubType>Form</SubType>
+      <Link>Linn\Toolkit\FormCrashLogDumper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormCrashLogDumper.Designer.cs">
+      <Link>Linn\Toolkit\FormCrashLogDumper.Designer.cs</Link>
+      <DependentUpon>FormCrashLogDumper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormOptions.cs">
+      <SubType>Form</SubType>
+      <Link>Linn\Toolkit\FormOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormOptions.Designer.cs">
+      <Link>Linn\Toolkit\FormOptions.Designer.cs</Link>
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormUserLog.cs">
+      <SubType>Form</SubType>
+      <Link>Linn\Toolkit\FormUserLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormUserLog.Designer.cs">
+      <Link>Linn\Toolkit\FormUserLog.Designer.cs</Link>
+      <DependentUpon>FormUserLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\OptionPageWinForms.cs">
+      <Link>Linn\Toolkit\OptionPageWinForms.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\OptionWinForms.cs">
+      <SubType>Component</SubType>
+      <Link>Linn\Toolkit\OptionWinForms.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\StackStatusHandlerWinForms.cs">
+      <Link>Linn\Toolkit\StackStatusHandlerWinForms.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Invoker.cs">
+      <Link>Linn\Toolkit\Invoker.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\ProductImages.cs">
+      <Link>Linn\Toolkit\ProductImages.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormAboutBox.resx">
+      <Link>Linn\Toolkit\FormAboutBox.resx</Link>
+      <DependentUpon>FormAboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormCrashLogDumper.resx">
+      <Link>Linn\Toolkit\FormCrashLogDumper.resx</Link>
+      <DependentUpon>FormCrashLogDumper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormOptions.resx">
+      <Link>Linn\Toolkit\FormOptions.resx</Link>
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Full\FormUserLog.resx">
+      <Link>Linn\Toolkit\FormUserLog.resx</Link>
+      <DependentUpon>FormUserLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LogicalName>Linn.Toolkit.WinForms.Properties.Resources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

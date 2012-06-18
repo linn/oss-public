@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FADD2631-1259-4A92-B87F-69A4364AE7B6}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OssCore</RootNamespace>
+    <BaseDirectory>..\..\LibUpnpCil\Core</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchLink>None</MtouchLink>
+    <AssemblyName>OssCore</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <AssemblyName>OssCore</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <AssemblyName>OssCore</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <AssemblyName>OssCore</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\distribution\bin\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>OssCoreIos</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Distribution</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>OssCoreIos</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="monotouch" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\LibUpnpCil\Core\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\AssemblyInfoModel.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Debug.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Helper.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\NetworkInfoModel.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPageUpdates.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionParser.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Stack.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Standard.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Stream.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\SystemInfoModel.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Ticker.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLog.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLogFile.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\Network.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\WebRequest.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\DebugReport.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\ProductSupport.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\AssemblyInfo.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkInfo.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\ServiceInfo.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemEvents.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\Timer.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Option.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionManager.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionPage.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\BitConverter.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Scheduler.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfoIos.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\IInvoker.cs" />
+  </ItemGroup>
+</Project>

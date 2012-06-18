@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+# SharpDevelop 3.2.0.5505
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProntoMonitor", "ProntoMonitor\ProntoMonitor.csproj", "{A18CBB4E-BB92-4EB5-AA0D-B71C7769E277}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A18CBB4E-BB92-4EB5-AA0D-B71C7769E277}.Debug|x86.Build.0 = Debug|x86
+		{A18CBB4E-BB92-4EB5-AA0D-B71C7769E277}.Debug|x86.ActiveCfg = Debug|x86
+		{A18CBB4E-BB92-4EB5-AA0D-B71C7769E277}.Release|x86.Build.0 = Release|x86
+		{A18CBB4E-BB92-4EB5-AA0D-B71C7769E277}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+EndGlobal

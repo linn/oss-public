@@ -1,0 +1,635 @@
+<?xml version="1.0"?>
+<Package type="Layout">
+  <Version>8</Version>
+  <Namespace>ControlPanel</Namespace>
+  <Plugin class="NodeHit">
+    <Name>Root</Name>
+    <Plugin />
+    <Parent />
+    <Active>True</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>0</X>
+        <Y>0</Y>
+        <Z>0</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>ControlPanel.VolumeControl</Child>
+      <Child>ControlPanel.PlaybackControl</Child>
+      <Child>ControlPanel.PlaybackControlEx</Child>
+      <Child>ControlPanel.PlayBlue</Child>
+      <Child>ControlPanel.PauseBlue</Child>
+      <Child>ControlPanel.StopBlue</Child>
+      <Child>ControlPanel.MuteBlue</Child>
+    </Children>
+    <Width>1024</Width>
+    <Height>156</Height>
+    <AllowHits>True</AllowHits>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Skip Forward</Name>
+    <Plugin>ControlPanel.Skip Forward.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>860</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/next_track_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Skip Forward.Monostable</Name>
+    <Plugin>ControlPanel.Skip Forward.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Skip Forward.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Skip Forward</Plugin>
+    <Texture>Bitmaps/next_track_01.png</Texture>
+    <Texture>Bitmaps/next_track_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>VolumeDown</Name>
+    <Plugin>ControlPanel.VolumeDown.Monostable</Plugin>
+    <Parent>ControlPanel.VolumeControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>144</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/vol_down_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>VolumeDown.Monostable</Name>
+    <Plugin>ControlPanel.VolumeDown.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>VolumeDown.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.VolumeDown</Plugin>
+    <Texture>Bitmaps/vol_down_01.png</Texture>
+    <Texture>Bitmaps/vol_down_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Skip Backward</Name>
+    <Plugin>ControlPanel.Skip Backward.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>770</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/previous_track_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Skip Backward.Monostable</Name>
+    <Plugin>ControlPanel.Skip Backward.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Skip Backward.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Skip Backward</Plugin>
+    <Texture>Bitmaps/previous_track_01.png</Texture>
+    <Texture>Bitmaps/previous_track_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>VolumeUp</Name>
+    <Plugin>ControlPanel.VolumeUp.Monostable</Plugin>
+    <Parent>ControlPanel.VolumeControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>234</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/vol_up_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>VolumeUp.Monostable</Name>
+    <Plugin>ControlPanel.VolumeUp.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>VolumeUp.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.VolumeUp</Plugin>
+    <Texture>Bitmaps/vol_up_01.png</Texture>
+    <Texture>Bitmaps/vol_up_02.png</Texture>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>VolumeControl</Name>
+    <Plugin />
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>13</X>
+        <Y>13</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>ControlPanel.VolumeUp</Child>
+      <Child>ControlPanel.VolumeDown</Child>
+      <Child>ControlPanel.Mute</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>PlaybackControl</Name>
+    <Plugin />
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>13</X>
+        <Y>13</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>ControlPanel.Skip Forward</Child>
+      <Child>ControlPanel.Skip Backward</Child>
+      <Child>ControlPanel.Play</Child>
+      <Child>ControlPanel.Pause</Child>
+      <Child>ControlPanel.Stop</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="Node">
+    <Name>PlaybackControlEx</Name>
+    <Plugin />
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>13</X>
+        <Y>13</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children>
+      <Child>ControlPanel.Repeat</Child>
+      <Child>ControlPanel.Shuffle</Child>
+    </Children>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Play</Name>
+    <Plugin>ControlPanel.Play.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>500</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/play_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Play.Monostable</Name>
+    <Plugin>ControlPanel.Play.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Play.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Play</Plugin>
+    <Texture>Bitmaps/play_01.png</Texture>
+    <Texture>Bitmaps/play_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Pause</Name>
+    <Plugin>ControlPanel.Pause.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>590</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/pause_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Pause.Monostable</Name>
+    <Plugin>ControlPanel.Pause.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Pause.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Pause</Plugin>
+    <Texture>Bitmaps/pause_01.png</Texture>
+    <Texture>Bitmaps/pause_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Stop</Name>
+    <Plugin>ControlPanel.Stop.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>680</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/stop_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Stop.Monostable</Name>
+    <Plugin>ControlPanel.Stop.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Stop.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Stop</Plugin>
+    <Texture>Bitmaps/stop_01.png</Texture>
+    <Texture>Bitmaps/stop_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Mute</Name>
+    <Plugin>ControlPanel.Mute.Monostable</Plugin>
+    <Parent>ControlPanel.VolumeControl</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>54</X>
+        <Y>28</Y>
+        <Z>1</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/mute_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Mute.Monostable</Name>
+    <Plugin>ControlPanel.Mute.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Mute.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Mute</Plugin>
+    <Texture>Bitmaps/mute_01.png</Texture>
+    <Texture>Bitmaps/mute_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Repeat</Name>
+    <Plugin>ControlPanel.Repeat.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControlEx</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>904</X>
+        <Y>-13</Y>
+        <Z>2</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>34</Width>
+    <Height>31</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/repeat_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Repeat.Monostable</Name>
+    <Plugin>ControlPanel.Repeat.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Repeat.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Repeat</Plugin>
+    <Texture>Bitmaps/repeat_01.png</Texture>
+    <Texture>Bitmaps/repeat_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>Shuffle</Name>
+    <Plugin>ControlPanel.Shuffle.Monostable</Plugin>
+    <Parent>ControlPanel.PlaybackControlEx</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>872</X>
+        <Y>-13</Y>
+        <Z>3</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>32</Width>
+    <Height>31</Height>
+    <AllowHits>True</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/shuffle_01.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="Monostable">
+    <Name>Shuffle.Monostable</Name>
+    <Plugin>ControlPanel.Shuffle.TextureArrayFixed</Plugin>
+    <Period>0</Period>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>Shuffle.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.Shuffle</Plugin>
+    <Texture>Bitmaps/shuffle_01.png</Texture>
+    <Texture>Bitmaps/shuffle_02.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>PlayBlue</Name>
+    <Plugin>ControlPanel.PlayBlue.TextureArrayFixed</Plugin>
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>513</X>
+        <Y>41</Y>
+        <Z>5</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/play_blue.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>PlayBlue.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.PlayBlue</Plugin>
+    <Texture>Bitmaps/play_blue.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>PauseBlue</Name>
+    <Plugin>ControlPanel.PauseBlue.TextureArrayFixed</Plugin>
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>603</X>
+        <Y>41</Y>
+        <Z>6</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/pause_blue.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>PauseBlue.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.PauseBlue</Plugin>
+    <Texture>Bitmaps/pause_blue.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>StopBlue</Name>
+    <Plugin>ControlPanel.StopBlue.TextureArrayFixed</Plugin>
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>693</X>
+        <Y>41</Y>
+        <Z>7</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/stop_blue.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>StopBlue.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.StopBlue</Plugin>
+    <Texture>Bitmaps/stop_blue.png</Texture>
+  </Plugin>
+  <Plugin class="NodePolygon">
+    <Name>MuteBlue</Name>
+    <Plugin>ControlPanel.MuteBlue.TextureArrayFixed</Plugin>
+    <Parent>ControlPanel.Root</Parent>
+    <Active>False</Active>
+    <Srt>
+      <Scale>
+        <X>1</X>
+        <Y>1</Y>
+        <Z>1</Z>
+      </Scale>
+      <Translation>
+        <X>67</X>
+        <Y>41</Y>
+        <Z>10</Z>
+      </Translation>
+    </Srt>
+    <InMessageTranslator />
+    <OutMessageTranslator />
+    <Children />
+    <Width>86</Width>
+    <Height>86</Height>
+    <AllowHits>False</AllowHits>
+    <RenderState>
+      <Texture>Bitmaps/mute_blue.png</Texture>
+    </RenderState>
+    <ClampToTextureSize>True</ClampToTextureSize>
+  </Plugin>
+  <Plugin class="TextureArrayFixed">
+    <Name>MuteBlue.TextureArrayFixed</Name>
+    <Plugin>ControlPanel.MuteBlue</Plugin>
+    <Texture>Bitmaps/mute_blue.png</Texture>
+  </Plugin>
+</Package>

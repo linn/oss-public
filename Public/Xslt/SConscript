@@ -1,0 +1,15 @@
+Import('_tool_env')
+
+# Xslt.exe
+
+files = Split("""
+    Xslt.cs
+    AssemblyInfo.cs
+""")
+
+exe = _tool_env.CliProgram("Xslt", files)
+
+Alias('Lib', exe)
+
+Default('Lib')
+

@@ -1,0 +1,17 @@
+Import('_default_env')
+
+kVersion = 'development'
+
+SConscript('WinForms/SConscript', exports = ['_default_env', 'kVersion'])
+
+if _default_env['hardware'] == 'MacOsX':
+    SConscript('Cocoa/SConscript', exports = ['_default_env', 'kVersion'])
+
+# can only build wpf on windows platform due to MSBuild currently being the only xaml compiler available
+import sys
+if sys.platform == 'win32' and _default_env['hardware'] == 'Windows':
+    SConscript('Wpf/SConscript', exports = ['_default_env', 'kVersion'])
+
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])
