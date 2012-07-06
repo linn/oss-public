@@ -161,14 +161,15 @@ namespace Linn.Kinsky
         {
             if (aRelativeLocation.Count > 0)
             {
+                IContainer container = aLocation.Current;
                 try
                 {
-                    uint count = aLocation.Current.Open();
+                    uint count = container.Open();
 
                     uint index = 0;
                     while (index < count)
                     {
-                        DidlLite didl = aLocation.Current.Items(index, kCountPerCall);
+                        DidlLite didl = container.Items(index, kCountPerCall);
 
                         foreach (upnpObject o in didl)
                         {
@@ -176,7 +177,7 @@ namespace Linn.Kinsky
                             {
                                 if (o.Id == aRelativeLocation[0])
                                 {
-                                    Location location = new Location(aLocation, aLocation.Current.ChildContainer(o as container));
+                                    Location location = new Location(aLocation, container.ChildContainer(o as container));
                                     if (aRelativeLocation.Count > 1)
                                     {
                                         List<string> relativeLocation = aRelativeLocation.GetRange(1, aRelativeLocation.Count - 1);
@@ -193,6 +194,10 @@ namespace Linn.Kinsky
                 catch (Exception e)
                 {
                     Trace.WriteLine(Trace.kKinsky, "Error retrieving container content (" + e.Message + ")");
+                }
+                finally
+                {
+                    container.Close();
                 }
             }
 
@@ -521,9 +526,32 @@ namespace Linn.Kinsky
             throw new NotImplementedException();
         }
 
-        public event EventHandler<EventArgs> EventContentUpdated { add { } remove { } }
+        public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public OptionBool Add(string aId, IContainer aRoot)
         {
@@ -551,7 +579,7 @@ namespace Linn.Kinsky
                 if (aKey.Id != "Library")
                 {
                     bool state = true;
-                    if (aKey.Id == "Movie Trailers" || aKey.Id == "Shoutcast" || aKey.Id == "WFMU" || aKey.Id == RemotePlaylists.kRootId)
+                    if (aKey.Id == "Movie Trailers" || aKey.Id == "Shoutcast" || aKey.Id == "WFMU")
                     {
                         state = false;
                     }
@@ -563,6 +591,9 @@ namespace Linn.Kinsky
                     if (option.Native)
                     {
                         iEnabledContentDirectories.Add(aKey, aRoot);
+                        aRoot.EventContentAdded += PluginContentChanged;
+                        aRoot.EventContentRemoved += PluginContentChanged;
+                        aRoot.EventContentUpdated += PluginContentChanged;
                     }
                     else
                     {
@@ -572,6 +603,9 @@ namespace Linn.Kinsky
                 else
                 {
                     iEnabledContentDirectories.Add(aKey, aRoot);
+                    aRoot.EventContentAdded += PluginContentChanged;
+                    aRoot.EventContentRemoved += PluginContentChanged;
+                    aRoot.EventContentUpdated += PluginContentChanged;
                 }
             }
             finally
@@ -607,6 +641,9 @@ namespace Linn.Kinsky
                     {
                         root = iDisabledContentDirectories[aKey];
                     }
+                    root.EventContentAdded -= PluginContentChanged;
+                    root.EventContentRemoved -= PluginContentChanged;
+                    root.EventContentUpdated -= PluginContentChanged;
                     // remove from the list
                     iEnabledContentDirectories.Remove(aKey);
                     iDisabledContentDirectories.Remove(aKey);
@@ -668,6 +705,9 @@ namespace Linn.Kinsky
                 {
                     iDisabledContentDirectories.Remove(key);
                     iEnabledContentDirectories.Add(key, root);
+                    root.EventContentAdded += PluginContentChanged;
+                    root.EventContentRemoved += PluginContentChanged;
+                    root.EventContentUpdated += PluginContentChanged;
                 }
             }
             else
@@ -676,6 +716,9 @@ namespace Linn.Kinsky
                 {
                     iEnabledContentDirectories.Remove(key);
                     iDisabledContentDirectories.Add(key, root);
+                    root.EventContentAdded -= PluginContentChanged;
+                    root.EventContentRemoved -= PluginContentChanged;
+                    root.EventContentUpdated -= PluginContentChanged;
                 }
             }
 
@@ -689,6 +732,15 @@ namespace Linn.Kinsky
             if (!option.Native && root != null && EventContentRemoved != null)
             {
                 EventContentRemoved(this, new EventArgsContentRemoved(root.Metadata.Id));
+            }
+        }
+
+        private void PluginContentChanged(object sender, EventArgs e)
+        {
+            EventHandler<EventArgs> del = EventContentUpdated;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
             }
         }
 
@@ -751,7 +803,7 @@ namespace Linn.Kinsky
                 get { return (iPlugin != null && !iPlugin.IsStandardPlugin); }
             }
 
-            private List<string> iPluginOrder = new List<string>(new string[] { "Library", "Folder", "Itunes", "Local Playlists", "Remote Playlists", "BBC", "Shoutcast", "WFMU", "Movie Trailers" });
+            private List<string> iPluginOrder = new List<string>(new string[] { "Library", "Folder", "Itunes", "Local Playlists", "Shared Playlists", "BBC", "Shoutcast", "WFMU", "Movie Trailers" });
             private Plugin iPlugin;
             private string iId;
         }

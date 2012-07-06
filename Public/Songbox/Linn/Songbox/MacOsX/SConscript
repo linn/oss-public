@@ -1,0 +1,117 @@
+Import('_default_env kBuildInfo')
+
+files = Split("""
+    ../Resources/Icon.icns
+""")
+installerRes = _default_env.Install('$variant_dir/share/Linn/Songbox', files)
+
+# build the assembly
+
+ass = _default_env.TagReplace(_default_env.subst('$build_variant_dir/share/Songbox/MacOsX/AssemblyInfo.cs'), 'Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
+files = Split("""
+    AppDelegate.cs
+    AppDelegate.designer.cs
+    ConfigurationWindow.cs
+    ConfigurationWindow.designer.cs
+    ConfigurationWindowController.cs
+    Main.cs
+""")
+
+linkCliLibs = Split("""
+    MonoMac
+    OpenHome/MacOsX/ohMediaServer
+    OpenHome/MacOsX/ohXappViewer
+    OssCore
+    OssToolkitMonoMac
+""")
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+
+progAssembly = _default_env.CliProgram('Songbox', files + ass, CSCTARGET=target, CLILIBS=linkCliLibs, TARGETFRAMEWORKVERSION='4.0')
+_default_env.Depends(progAssembly, installerRes)
+
+# build the nib files
+
+nibs  = _default_env.IbTool('MainMenu.nib', 'MainMenu.xib')
+nibs += _default_env.IbTool('ConfigurationWindow.nib', 'ConfigurationWindow.xib')
+nibs.append(File(_default_env.subst('$install_dir/bin/CrashLogDumperWindow.nib')))
+nibs.append(File(_default_env.subst('$install_dir/bin/UpdateWindow.nib')))
+_default_env.Depends(progAssembly, nibs)
+
+
+# build a list of all required assembly files
+reqAssemblies = []
+reqAssemblies.extend(linkCliLibs)
+reqAssemblies.extend(Split("""
+    OpenHome/MacOsX/DvAvOpenHomeOrgPlaylistManager1.net
+    OpenHome/MacOsX/DvUpnpOrgConnectionManager1.net
+    OpenHome/MacOsX/DvUpnpOrgContentDirectory1.net
+    OpenHome/MacOsX/ohGit
+    OpenHome/MacOsX/ohNet.net
+    OpenHome/MacOsX/ohPlaylistManager
+    OpenHome/MacOsX/ohXapp
+    OpenHome/MacOsX/ohXen
+    OpenHome/MacOsX/HtmlAgilityPack
+"""))
+
+
+# SharpZipLib is a different version to the one bundled with mono. The mmp builder always seems to use
+# the mono version, even if we specify the absolute path to the new version on the command line for mmp,
+# so copy the lib as an exe resource
+exeResources = { '' : [ File('../../../OpenHome/MacOsX/ICSharpCode.SharpZipLib.dll') ] }
+
+
+# create list of native libraries
+nativeLibs = [ File('../../../OpenHome/MacOsX/libohNet.dylib') ]
+
+
+# build everything that needs to go in the "Resource" folder
+rootResources = Split("""
+    ../Resources/Icon106x106.png
+    ../Resources/SysTrayIcon.png
+    ../../../OpenHome/presentation
+""")
+rootResources = [File(f) for f in rootResources];
+
+resources = { '' : rootResources }
+
+
+# create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
+infoPlist = {
+    'LSUIElement' : '1',
+    'NSMainNibFile' : 'MainMenu',
+    'NSPrincipalClass' : 'NSApplication'
+}
+
+
+# build the helper app
+helper = SConscript('HelperApp/SConscript', exports = ['_default_env', 'kBuildInfo'])
+
+others = { 'Library/LoginItems' : [ helper ] }
+
+
+# build the Mac OSX .app bundle and .pkg installer and install them
+pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerSongbox', progAssembly,
+                    APPNAME = 'Songbox',
+                    APPINSTFOLDER = '$install_dir/bin',
+                    PKGINSTFOLDER = '$install_dir/share/Songbox',
+                    APPCERT = '"Developer ID Application: Linn Products Ltd"',
+                    PKGCERT = '"Developer ID Installer: Linn Products Ltd"',
+                    CLILIBS = reqAssemblies,
+                    NATIVELIBS = nativeLibs,
+                    NIBS = nibs,
+                    RESOURCES = resources,
+                    EXERESOURCES = exeResources,
+                    OTHERRESOURCES = others,
+                    ICON = '$variant_dir/share/Linn/Songbox/Icon.icns',
+                    INFOPLIST = infoPlist,
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+                    
+resources = [ (_default_env.subst('$install_dir/share/Songbox/InstallerSongbox.pkg'), 'InstallerSongbox.pkg') ]
+updater = _default_env.CliLibrary('UpdaterSongbox_osx', 'Installer/Updater.cs', CLIRESOURCES=resources)
+pkg += _default_env.Install('$install_dir/share/Songbox', updater)
+
+Alias('Lib', pkg)
+

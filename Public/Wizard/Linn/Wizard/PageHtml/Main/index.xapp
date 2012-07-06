@@ -1,0 +1,58 @@
+<div id="all">
+<!-- Main -->
+<!-- >>>>>>> THIS SECTION IS UNIFORM FOR ALL PAGES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+  <script src="../Linn.js" type="text/javascript"></script>
+
+  <div id="Background" class="background" style="background-image: url(../Resources/Images/Miscellaneous/SelectSystemBackground.png)"></div>
+  <div id="navigation_background"></div>
+
+  <div id="pagesection">
+    <div id="header" class="section">
+      <div id="navigation_bar">
+        <ul>
+          <li class="navigation_tab_initial_main" id="NavTab1Main" type="button" onclick="gotoPage('Main');"></li>
+          <li class="navigation_tab" id="NavTab2" type="button" style="visibility:hidden"></li>
+        </ul>
+      </div>
+      <div>
+        <a target="_blank" href="http://www.linn.co.uk/">
+          <img id="LinnWebLink" src="../Resources/Images/Miscellaneous/Logo.png"/>
+        </a>
+        <img id="just_listen" src="../Resources/Images/Miscellaneous/JustListen.png"/>
+      </div>
+    </div>
+    <!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+
+
+    <div class="section">
+      <div id ="Main">
+        <div id="MainPagePromptLine">
+          <h3 id="MainPagePromptText"></h3>
+          <button class="dark_button" id="TroubleshootButton" style="visibility:hidden" onclick="genericClick(this);" ></button>
+        </div>
+        <div class="productselectorl">
+          <input class="productimage" id="KikoDsm" type="image" style="visibility:hidden" onclick="SelectProductModel('KikoDsm');">
+            <h3 class="producttext" id="KikoDsmLabel"></h3>
+          </input>
+        </div>
+        <div class="productselectorr">
+          <input class="productimage" id="MajikDsm" type="image" style="visibility:hidden" onclick="SelectProductModel('MajikDsm');">
+            <h3 class="producttext" id="MajikDsmLabel"></h3>
+          </input>
+        </div>
+        <div class="productselectorl">
+          <input class="productimage" id="AkurateDsm" type="image" style="visibility:hidden" onclick="SelectProductModel('AkurateDsm');">
+            <h3 class="producttext" id="AkurateDsmLabel"></h3>
+          </input>
+        </div>
+        <div class="productselectorr">
+          <input class="productimage" id="KlimaxDsm" type="image" style="visibility:hidden" onclick="SelectProductModel('KlimaxDsm');">
+            <h3 class="producttext" id="KlimaxDsmLabel"></h3>
+          </input>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

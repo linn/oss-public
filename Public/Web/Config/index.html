@@ -11,10 +11,14 @@
             if (qs.service){
                 service = "#service=" + qs.service;
             }
+            var device = "";
+            if (qs.device){
+                device = "#device=" + qs.device;
+            }
             <!-- Only apply service if explicitly included. -->
             <!-- This means DS + Proxy devices will be shown in one page (with tabs) if no service is used, -->
             <!-- and each device can be viewed separately using the service (Ds/Preamp/Cd) -->
-            window.location="Layouts/Default/index.html" + service;
+            window.location="Layouts/Default/index.html" + service + device;
         </script>
 	</head>
 </html>

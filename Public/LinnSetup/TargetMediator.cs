@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+using Linn;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
     public class TargetMediator
     {
-        public TargetMediator(Target aTarget, AppletManager aManager, EventServerUpnp aEventServer) {
+        public TargetMediator(Target aTarget, AppletManager aManager) {
             iTarget = aTarget;
-            iApplets = aManager.CreateApplets(iTarget, aEventServer);
+            iApplets = aManager.CreateApplets(iTarget);
             iCurrentApplet = iApplets[0];
         }
         

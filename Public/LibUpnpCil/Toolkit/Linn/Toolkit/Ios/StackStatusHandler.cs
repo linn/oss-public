@@ -15,11 +15,11 @@ namespace Linn.Toolkit.Ios
             {
                 if(aButtonIndex == 0)
                 {
-                    Console.WriteLine("asked to configure");
+					Trace.WriteLine(Trace.kTest, "asked to configure");
                 }
                 else if(aButtonIndex == 1)
                 {
-                    Console.WriteLine("asked to close");
+					Trace.WriteLine(Trace.kTest, "asked to close");
                 }
             }
         }

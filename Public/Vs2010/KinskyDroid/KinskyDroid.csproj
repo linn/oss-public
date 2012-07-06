@@ -14,8 +14,8 @@
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AssemblyName>Kinsky</AssemblyName>
-    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
-    <BaseDirectory>..\..\KinskyDroid\Linn\Kinsky\</BaseDirectory>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
+    <BaseDirectory>..\..\KinskyDesktop\Android\Linn\Kinsky\</BaseDirectory>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
@@ -32,8 +32,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -46,40 +45,38 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Support.v4" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Activities.cs">
+    <Compile Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Activities.cs">
       <Link>Activities.cs</Link>
     </Compile>
-    <Compile Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Properties\AssemblyInfo.cs">
+    <Compile Include="..\..\build\share\Kinsky\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Stack.cs">
+    <Compile Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Stack.cs">
       <Link>Stack.cs</Link>
     </Compile>
-    <Compile Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Views.cs">
+    <Compile Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Views.cs">
       <Link>Views.cs</Link>
     </Compile>
     <Compile Include="Resources\Resource.designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable-ldpi\Icon.png">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable-ldpi\Icon.png">
       <Link>Resources\Drawable-ldpi\Icon.png</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable-mdpi\Icon.png">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable-mdpi\Icon.png">
       <Link>Resources\Drawable-mdpi\Icon.png</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable-hdpi\Icon.png">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable-hdpi\Icon.png">
       <Link>Resources\Drawable-hdpi\Icon.png</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\Main.axml">
-      <Link>Resources\Layout\Main.axml</Link>
-    </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Values\Strings.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Values\Strings.xml">
       <Link>Resources\Values\Strings.xml</Link>
     </AndroidResource>
     <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\ClockIcon.png">
@@ -169,7 +166,7 @@
     <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\Stop.png">
       <Link>Resources\Drawable\Stop.png</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\Array.png">
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\ArrayCropped.png">
       <Link>Resources\Drawable\Array.png</Link>
     </AndroidResource>
     <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\PauseOver.png">
@@ -346,6 +343,9 @@
     <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\Playing.png">
       <Link>Resources\Drawable\Playing.png</Link>
     </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\Tick.png">
+      <Link>Resources\Drawable\Tick.png</Link>
+    </AndroidResource>
     <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\Playlist.png">
       <Link>Resources\Drawable\Playlist.png</Link>
     </AndroidResource>
@@ -391,6 +391,12 @@
     <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\TopBarFiller.png">
       <Link>Resources\Drawable\TopBarFiller.png</Link>
     </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\VolumeUp.png">
+      <Link>Resources\Drawable\VolumeUp.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\VolumeDown.png">
+      <Link>Resources\Drawable\VolumeDown.png</Link>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
@@ -428,91 +434,264 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\BrowserItem.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserItem.axml">
       <Link>Resources\Layout\BrowserItem.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\RoomListItem.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomListItem.axml">
       <Link>Resources\Layout\RoomListItem.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\RoomList.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomList.axml">
       <Link>Resources\Layout\RoomList.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\SourceList.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\SourceList.axml">
       <Link>Resources\Layout\SourceList.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\SourceListItem.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\SourceListItem.axml">
       <Link>Resources\Layout\SourceListItem.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\VolumeAndTransportControls.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\VolumeAndTransportControls.axml">
       <Link>Resources\Layout\VolumeAndTransportControls.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\TrackControls.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\TrackControls.axml">
       <Link>Resources\Layout\TrackControls.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\BrowserControls.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserControls.axml">
       <Link>Resources\Layout\BrowserControls.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\RoomAndSourceControls.axml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomAndSourceControls.axml">
       <Link>Resources\Layout\RoomAndSourceControls.axml</Link>
     </AndroidResource>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Layout\BottomBar.axml">
-      <Link>Resources\Layout\BottomBar.axml</Link>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RequestDeleteButton.axml">
+      <Link>Resources\Layout\RequestDeleteButton.axml</Link>
     </AndroidResource>
-    <None Include="Properties\AndroidManifest.xml" />
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\ConfirmDeleteButton.axml">
+      <Link>Resources\Layout\ConfirmDeleteButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\MoveUpButton.axml">
+      <Link>Resources\Layout\MoveUpButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\MoveDownButton.axml">
+      <Link>Resources\Layout\MoveDownButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RotaryControl.axml">
+      <Link>Resources\Layout\RotaryControl.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\PlaylistItem.axml">
+      <Link>Resources\Layout\PlaylistItem.axml</Link>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserErrorPanel.axml">
+      <Link>Resources\Layout\BrowserErrorPanel.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BackButton.axml">
+      <Link>Resources\Layout\BackButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\HelpAbout.axml">
+      <Link>Resources\Layout\HelpAbout.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\EditButton.axml">
+      <Link>Resources\Layout\EditButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\ButtonControl.axml">
+      <Link>Resources\Layout\ButtonControl.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\TrackControlsFullscreen.axml">
+      <Link>Resources\Layout\TrackControlsFullscreen.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\SaveButton.axml">
+      <Link>Resources\Layout\SaveButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserMenu.axml">
+      <Link>Resources\Layout\BrowserMenu.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\MainPhone.axml">
+      <Link>Resources\Layout\MainPhone.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\MainTablet.axml">
+      <Link>Resources\Layout\MainTablet.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserButtons.axml">
+      <Link>Resources\Layout\BrowserButtons.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\PlaylistButtons.axml">
+      <Link>Resources\Layout\PlaylistButtons.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomAndSourceControlsPhone.axml">
+      <Link>Resources\Layout\RoomAndSourceControlsPhone.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\PlaylistScreenPhone.axml">
+      <Link>Resources\Layout\PlaylistScreenPhone.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserScreenPhone.axml">
+      <Link>Resources\Layout\BrowserScreenPhone.axml</Link>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\TrackControlsPhone.axml">
+      <Link>Resources\Layout\TrackControlsPhone.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\PlaylistButtonsPhone.axml">
+      <Link>Resources\Layout\PlaylistButtonsPhone.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\CancelButton.axml">
+      <Link>Resources\Layout\CancelButton.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\DummyPhone.axml">
+      <Link>Resources\Layout\DummyPhone.axml</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\DummyTablet.axml">
+      <Link>Resources\Layout\DummyTablet.axml</Link>
+    </AndroidResource>
+    <None Include="Properties\AndroidManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\ButtonBackground.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\ButtonBackground.xml">
       <Link>Resources\Drawable\ButtonBackground.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\ShuffleButton.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\ShuffleButton.xml">
       <Link>Resources\Drawable\ShuffleButton.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\ShuffleButtonForeground.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\ShuffleButtonForeground.xml">
       <Link>Resources\Drawable\ShuffleButtonForeground.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\RepeatButton.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\RepeatButton.xml">
       <Link>Resources\Drawable\RepeatButton.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\RepeatButtonForeground.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\RepeatButtonForeground.xml">
       <Link>Resources\Drawable\RepeatButtonForeground.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\BackButton.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\BackButton.xml">
       <Link>Resources\Drawable\BackButton.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\StandbyButton.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\StandbyButton.xml">
       <Link>Resources\Drawable\StandbyButton.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\StandbyButtonForeground.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\StandbyButtonForeground.xml">
       <Link>Resources\Drawable\StandbyButtonForeground.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Values\Styles.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Values\Styles.xml">
       <Link>Resources\Values\Styles.xml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Values-Land\Styles.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Values-Land\Styles.xml">
       <Link>Resources\Values-Land\Styles.xml</Link>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="..\..\KinskyDroid\Linn\Kinsky\Droid\Resources\Drawable\EditModeButton.xml">
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\EditModeButton.xml">
       <Link>Resources\Drawable\EditModeButton.xml</Link>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\RequestDeleteButton.xml">
+      <Link>Resources\Drawable\RequestDeleteButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\RequestDelete.png">
+      <Link>Resources\Drawable\RequestDelete.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\RequestDeleteConfirm.png">
+      <Link>Resources\Drawable\RequestDeleteConfirm.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\MoveDown.png">
+      <Link>Resources\Drawable\MoveDown.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\MoveUp.png">
+      <Link>Resources\Drawable\MoveUp.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\MoveDownButton.xml">
+      <Link>Resources\Drawable\MoveDownButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\MoveUpButton.xml">
+      <Link>Resources\Drawable\MoveUpButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\MoveDownDisabled.png">
+      <Link>Resources\Drawable\MoveDownDisabled.png</Link>
+    </AndroidResource>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Icons\MoveUpDisabled.png">
+      <Link>Resources\Drawable\MoveUpDisabled.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\SkipBackButton.xml">
+      <Link>Resources\Drawable\SkipBackButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\SkipForwardButton.xml">
+      <Link>Resources\Drawable\SkipForwardButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\PauseButton.xml">
+      <Link>Resources\Drawable\PauseButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\PlayButton.xml">
+      <Link>Resources\Drawable\PlayButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\StopButton.xml">
+      <Link>Resources\Drawable\StopButton.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\WheelBackground.xml">
+      <Link>Resources\Drawable\WheelBackground.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\WheelGrip.xml">
+      <Link>Resources\Drawable\WheelGrip.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\Layouts\Kinsky\Desktop2\Images\BrowserDown.png">
+      <Link>Resources\Drawable\BrowserDown.png</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\GradientBackground.xml">
+      <Link>Resources\Drawable\GradientBackground.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\Anim\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidJavaLibrary Include="..\..\External\android-support-v4.jar">
+      <Link>android-support-v4.jar</Link>
+    </AndroidJavaLibrary>
   </ItemGroup>
 </Project>

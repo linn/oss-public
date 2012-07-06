@@ -342,8 +342,12 @@ namespace Linn.ControlPoint.Upnp
         public Service<%=type%><%=suffix%>(Device aDevice, IEventUpnpProvider aEventServer)
             : base(aDevice, ServiceType(), new ProtocolUpnp(), aEventServer)
         {
+<%  if (u.evented.Count > 0) %>
+<%  { %>
 			iWatchdogLock = new object();
 			iExpectedSequenceNumber = 0;
+<%  } %>
+
             Action action = null;
             
 <%  foreach (Method a in u.methods) %>
@@ -753,10 +757,16 @@ namespace Linn.ControlPoint.Upnp
 			base.Unsubscribe();
 		}
 		
-		private void Resubscribe()
-		{
-			Unsubscribe();
-			Subscribe();
+		public override void Close()
+		{			
+			KillWatchdog();
+			base.Close();
+		}
+		
+		public override void Kill()
+		{			
+			KillWatchdog();
+			base.Kill();
 		}
 
         public event EventHandler<EventArgs> EventState;
@@ -769,11 +779,11 @@ namespace Linn.ControlPoint.Upnp
 <%      { %>
         public <%=argtype[s.type]%> <%=s.name%>;
 <%      } %>
-<%  } %>
-		private const int kWatchdogTimeout = 10000;
+		private const int kWatchdogTimeout = 30000;
 		private System.Threading.Timer iWatchdog;
 		private object iWatchdogLock;
 		private uint iExpectedSequenceNumber;
+<%  } %>
     }
 }
     

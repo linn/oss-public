@@ -702,7 +702,7 @@ namespace KinskyDesktopWpf
         {
             // See how big we are
             return new Size(iChildrenPerRow * this.ItemSize,
-                this.ItemSize * Math.Ceiling((double)itemCount / iChildrenPerRow));
+                (this.ItemSize * Math.Ceiling((double)itemCount / iChildrenPerRow)) + (this.ItemSize / 2));
         }
 
         /// <summary>

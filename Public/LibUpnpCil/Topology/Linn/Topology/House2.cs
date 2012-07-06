@@ -54,7 +54,7 @@ namespace Linn.Topology
         string Name { get; }
         string Type { get; }
         void Select();
-        bool Standby { set; }
+        bool Standby { get; set; }
         IRoom Room { get; }
     }
 
@@ -76,6 +76,8 @@ namespace Linn.Topology
     public interface IGroup
     {
         string Name { get; }
+        bool HasInfo { get; }
+        bool HasTime { get; }
     }
 
     public interface IHouse
@@ -85,6 +87,7 @@ namespace Linn.Topology
         event EventHandler<EventArgsRoom> EventRoomAdded;
         event EventHandler<EventArgsRoom> EventRoomRemoved;
         IModelFactory ModelFactory { get; }
+        void RemoveDevice(Device aDevice);
     }
 
     public interface IPreamp
@@ -440,6 +443,10 @@ namespace Linn.Topology
 
         public bool Standby
         {
+            get
+            {
+                return iGroup.Standby;
+            }
             set
             {
                 iGroup.SetStandby(value);
@@ -690,6 +697,22 @@ namespace Linn.Topology
             }
         }
 
+        public bool HasInfo
+        {
+            get
+            {
+                return iGroup.HasInfo;
+            }
+        }
+
+        public bool HasTime
+        {
+            get
+            {
+                return iGroup.HasTime;
+            }
+        }
+
         Room iRoom;
 
         Layer1.IGroup iGroup;
@@ -841,7 +864,6 @@ namespace Linn.Topology
                         {
                             Remove(source);
                         }
-
                         source.RegisterChild(aGroup);
                     }
                 }
@@ -861,7 +883,11 @@ namespace Linn.Topology
                 SetCurrentSourceAndPreamp(group.CurrentSource);
             }
 
+            Lock();
+
             iGroupList.Add(group);
+
+            Unlock();
             group.EventStandbyChanged += StandbyChanged;
         }
 
@@ -904,7 +930,11 @@ namespace Linn.Topology
                         }
                     }
 
+                    Lock();
+
                     iGroupList.Remove(group);
+
+                    Unlock();
 
                     group.Kill();
                     group.EventStandbyChanged -= StandbyChanged;
@@ -929,7 +959,7 @@ namespace Linn.Topology
             {
                 if (group.Parent == null)
                 {
-                    if (group.Name == aSource.Name)
+                    if (group.Name == aSource.Name && !aSource.IsDescendedFrom(group)) // circular dependency protection
                     {
                         aSource.RegisterChild(group);
                     }
@@ -1246,6 +1276,10 @@ namespace Linn.Topology
 
         #endregion
 
+        public void RemoveDevice(Device aDevice)
+        {
+            iLayer1.RemoveDevice(aDevice);
+        }
 
         IEventUpnpProvider iEventServer;
 

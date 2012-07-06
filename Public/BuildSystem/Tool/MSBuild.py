@@ -23,7 +23,7 @@ def generate(env):
     env['BUILDERS']['MSBuildExeBuilder'] = MSBuildExeBuilder	
     env['BUILDERS']['MSBuildLibBuilder'] = MSBuildLibBuilder
     env['BUILDERS']['MSBuildApkBuilder'] = MSBuildApkBuilder	
-    env['MSBuild']            = 'MSBuild' if sys.platform == 'win32' else 'mdtool build'
+    env['MSBuild']            = 'MSBuild' if sys.platform == 'win32' else 'mdtool build' if sys.platform == 'darwin' else 'xbuild'
     env['MSBuildFlags']       = SCons.Util.CLVar('')
     env['MSBuildCOM']         = SCons.Action.Action(msbuildcom)
     env['MSPROGSUFFIX']   = '.exe'

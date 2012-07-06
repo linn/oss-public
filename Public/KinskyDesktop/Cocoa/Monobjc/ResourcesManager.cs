@@ -150,6 +150,8 @@ namespace KinskyDesktop.Properties
         public static ResourceImage IconUpnp = new ResourceImage("Icons/UPNP");
         public static ResourceImage IconVideo = new ResourceImage("Icons/Video");
 
+        public static ResourceImage IconTick = new ResourceImage("Icons/Tick");
+        public static ResourceImage IconRefreshButton = new ResourceImage("Icons/RefreshButton");
 
         public static ResourceImage IconSourceRadio = new ResourceImage("Icons/Radio");
     }

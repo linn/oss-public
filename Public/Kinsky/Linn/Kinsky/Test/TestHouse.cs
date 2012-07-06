@@ -68,7 +68,7 @@ namespace Linn.Kinsky.Test
 
             // kinsky house
             iHouse = new House(iMockTopologyHouse.Object, iInvoker, iMockModelSenders.Object);
-
+            iHouse.Start(null);
             // mock main room
             iMockMainRoom = iRepository.Create<Topology.IRoom>();
             iMockMainRoom.Setup(m => m.Name).Returns("Main Room");
@@ -81,8 +81,12 @@ namespace Linn.Kinsky.Test
             });
             iMockMainRoomGroup1 = iRepository.Create<Topology.IGroup>();
             iMockMainRoomGroup1.Setup(g => g.Name).Returns("Group1");
+            iMockMainRoomGroup1.Setup(g => g.HasInfo).Returns(true);
+            iMockMainRoomGroup1.Setup(g => g.HasTime).Returns(true);
             iMockMainRoomGroup2 = iRepository.Create<Topology.IGroup>();
             iMockMainRoomGroup2.Setup(g => g.Name).Returns("Group2");
+            iMockMainRoomGroup2.Setup(g => g.HasInfo).Returns(true);
+            iMockMainRoomGroup2.Setup(g => g.HasTime).Returns(true);
             iMockMainRoomPreamp1 = iRepository.Create<Topology.IPreamp>();
             iMockMainRoomPreamp2 = iRepository.Create<Topology.IPreamp>();
             iMainRoomPreamp = iMockMainRoomPreamp1.Object;
@@ -95,6 +99,8 @@ namespace Linn.Kinsky.Test
             // mock main room, mock radio source
             iMockMainRoomRadioSource1 = iRepository.Create<Topology.ISource>();
             SetupSource(iMockMainRoom, iMockMainRoomRadioSource1, "Radio", "Radio1Udn", Source.kSourceRadio, iMockMainRoomGroup1.Object);
+            iMainRoomCurrentSource = iMockMainRoomRadioSource1.Object;
+
 
             // mock main room, mock playlist source 2
             iMockMainRoomPlaylistSource2 = iRepository.Create<Topology.ISource>();
@@ -1303,9 +1309,11 @@ namespace Linn.Kinsky.Test
         private bool Room_Add_Should_Raise_EventRoomInserted(IHouse aHouse, Mock<Topology.IHouse> aMockHouse, Mock<Topology.IRoom> aMockRoom)
         {
             bool eventHandled = false;
-            EventHandler<EventArgsItemInsert<Kinsky.IRoom>> handler = (d, e) => { if (e.Item.Name == aMockRoom.Object.Name) eventHandled = true; };
+            ManualResetEvent waitHandle = new ManualResetEvent(false);
+            EventHandler<EventArgsItemInsert<Kinsky.IRoom>> handler = (d, e) => { if (e.Item.Name == aMockRoom.Object.Name) eventHandled = true; waitHandle.Set(); };
             aHouse.EventRoomInserted += handler;
             aMockHouse.Raise(m => m.EventRoomAdded += null, new Topology.EventArgsRoom(aMockRoom.Object));
+            waitHandle.WaitOne();
             aHouse.EventRoomInserted -= handler;
             return eventHandled;
         }

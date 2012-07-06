@@ -6,8 +6,9 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
 
+using Linn;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
@@ -16,7 +17,7 @@ namespace LinnSetup
         public AppletFactoryPresentation() : base("Portal") {
         }
 
-        public override Applet Create(Target aTarget, EventServerUpnp aEventServer) {
+        public override Applet Create(Target aTarget) {
             return new AppletPresentation(aTarget);
         }
     }

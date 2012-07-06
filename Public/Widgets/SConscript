@@ -1,0 +1,13 @@
+Import('_default_env')
+
+inst = []
+inst += _default_env.RecursiveInstall('$hardware_dir/share/Linn/Resources/Widgets/Common', _default_env.Dir('Common').srcnode())
+inst += _default_env.RecursiveInstall('$hardware_dir/share/Linn/Resources/Widgets/Fonts', _default_env.Dir('Fonts').srcnode())
+inst += _default_env.RecursiveInstall('$hardware_dir/share/Linn/Resources/Widgets/ToggleButton', _default_env.Dir('ToggleButton').srcnode())
+inst += _default_env.RecursiveInstall('$hardware_dir/share/Linn/Resources/Widgets/Rotary', _default_env.Dir('Rotary').srcnode())
+inst += _default_env.RecursiveInstall('$hardware_dir/share/Linn/Resources/Widgets/Rocker', _default_env.Dir('Rocker').srcnode())
+
+Alias('Lib', inst)
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])

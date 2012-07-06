@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A26F1BBA-162A-495D-9061-F28345E2ECB2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>KinskyDesktopGtk</RootNamespace>
+    <AssemblyName>Kinsky</AssemblyName>
+    <BaseDirectory>..\..\KinskyDesktop\Gtk</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Mono.Posix" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\KinskyDesktop\Gtk\AssemblyInfo.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\Controller.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\HelperKinskyDesktop.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\Main.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\MainWindow.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\MediaProviderSupport.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\Model.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\ResourceManager.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\gtk-gui\generated.cs" />
+    <Compile Include="..\..\KinskyDesktop\Gtk\gtk-gui\KinskyDesktopGtk.MainWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\KinskyDesktop\Gtk\gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLite\OssDidlLite.csproj">
+      <Project>{D07487C1-8D3F-43C8-BE1B-C1BFB5B2C562}</Project>
+      <Name>OssDidlLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServices\OssServices.csproj">
+      <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
+      <Name>OssServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssSysLib\OssSysLib.csproj">
+      <Project>{755ACE40-6CE2-4386-BF88-E63BCDFED1EB}</Project>
+      <Name>OssSysLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssTopology\OssTopology.csproj">
+      <Project>{DDD50783-4131-4138-85E6-72377C232B1C}</Project>
+      <Name>OssTopology</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

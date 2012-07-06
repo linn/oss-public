@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>uk.co.linn.songcast</string>
+	<key>CFBundleName</key>
+	<string>Songcast</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.6</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+    <key>SongcastPreferencesId</key>
+    <string>uk.co.linn.songcast</string>
+    <key>SongcastPreferencePane</key>
+    <string>/Library/PreferencePanes/LinnSongcast.prefPane</string>
+    <key>SongcastDomain</key>
+    <string>linn.co.uk</string>
+    <key>SongcastManufacturerName</key>
+    <string>Linn</string>
+    <key>SongcastManufacturerUrl</key>
+    <string>http://www.linn.co.uk</string>
+    <key>SongcastModelUrl</key>
+    <string>http://www.linn.co.uk</string>
+    <key>SongcastProductId</key>
+    <string>Songcast</string>
+    <key>SongcastCrashLogUrl</key>
+    <string>http://products.linn.co.uk/cgi-bin/form.cgi</string>
+    <key>SongcastAutoUpdateUrl</key>
+    <string>http://oss.linn.co.uk/Feeds/Updates/Application.xml</string>
+</dict>
+</plist>

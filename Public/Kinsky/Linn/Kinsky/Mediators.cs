@@ -92,8 +92,6 @@ namespace Linn.Kinsky
             iHouse = aHelper.House;
 
             iMediatorSource = new MediatorSource(aHelper, aModel);
-            iHouse.EventRoomInserted += EventRoomInserted;
-            iHouse.EventRoomRemoved += EventRoomRemoved;
 
             iModelSelectorRoom = aModel.ModelWidgetSelectorRoom;
             iModelStandby = aModel.ModelWidgetButtonStandby;
@@ -109,27 +107,24 @@ namespace Linn.Kinsky
         delegate void DAddExistingRooms();
         internal void AddExistingRooms()
         {
-            Delegate del = new DAddExistingRooms(delegate()
+            int index = 0;
+            foreach (Room room in iHouse.Rooms)
             {
-                int index = 0;
-                foreach (Room room in iHouse.Rooms)
+                iRooms.Add(room);
+                room.EventStandbyChanged += EventStandbyChanged;
+                if (iOpen)
                 {
-                    iRooms.Add(room);
-                    if (iOpen)
-                    {
-                        iModelSelectorRoom.InsertItem(index++, room);
-                    }
+                    iModelSelectorRoom.InsertItem(index++, room);
                 }
-            });
-            if (iInvoker.TryBeginInvoke(del))
-                return;
-            del.Method.Invoke(del.Target, new object[] { });
+            }
         }
 
         internal void Open()
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             Assert.Check(!iOpen);
+            iHouse.EventRoomInserted += EventRoomInserted;
+            iHouse.EventRoomRemoved += EventRoomRemoved;
 
             iModelStandby.EventClick += EventStandbyClick;
 
@@ -149,8 +144,13 @@ namespace Linn.Kinsky
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             if (iOpen)
             {
+                iHouse.EventRoomInserted -= EventRoomInserted;
+                iHouse.EventRoomRemoved -= EventRoomRemoved;
                 iMediatorSource.Close();
-
+                foreach (Room r in iRooms)
+                {
+                    r.EventStandbyChanged -= EventStandbyChanged;
+                }
                 iRooms.Clear();
                 SelectRoom(null);
                 iModelSelectorRoom.Close();
@@ -172,7 +172,6 @@ namespace Linn.Kinsky
                 if (iRoom != null)
                 {
                     UserLog.WriteLine(DateTime.Now + ": Left " + iRoom);
-                    iRoom.EventStandbyChanged -= EventStandbyChanged;
                     iInfo.EventOpened -= EventInfoOpened;
                     iTime.EventOpened -= EventTimeOpened;
                     iVolume.EventOpened -= EventVolumeOpened;
@@ -209,7 +208,6 @@ namespace Linn.Kinsky
                     iInfo = iRoom.Info;
                     iTime = iRoom.Time;
 
-                    iRoom.EventStandbyChanged += EventStandbyChanged;
                     iInfo.EventOpened += EventInfoOpened;
                     iTime.EventOpened += EventTimeOpened;
                     iVolume.EventOpened += EventVolumeOpened;
@@ -244,7 +242,6 @@ namespace Linn.Kinsky
                     iModelStandby.Close();
                     iRoom.Standby = false;
                     iModelStandby.Open();
-                    iRoom.EventStandbyChanged += EventStandbyChanged;
                     iLastRoom = iRoom.Name;
                     iLastSelectedRoom.Set(iRoom.Name);
                     iMediatorSource.Open(iRoom);
@@ -302,6 +299,13 @@ namespace Linn.Kinsky
                 {
                     iInfoOpen = true;
                     iViewWidgetTrack.Open();
+                    iViewWidgetTrack.SetBitrate(iInfo.Bitrate);
+                    iViewWidgetTrack.SetSampleRate(iInfo.SampleRate);
+                    iViewWidgetTrack.SetBitDepth(iInfo.BitDepth);
+                    iViewWidgetTrack.SetCodec(iInfo.Codec);
+                    iViewWidgetTrack.SetLossless(iInfo.Lossless);
+                    iViewWidgetTrack.SetItem(iInfo.Track);
+                    iViewWidgetTrack.SetMetatext(iInfo.Metatext);
                 }
                 iViewWidgetTrack.Initialised();
             }
@@ -349,10 +353,18 @@ namespace Linn.Kinsky
                 if (!iTimeOpen)
                 {
                     iTimeOpen = true;
+                    Assert.Check(iTime != null, "iTime != null");
+                    Assert.Check(iViewWidgetTime != null, "iViewWidgetTime != null");
+                    Assert.Check(iRoom != null, "iRoom != null");
                     iViewWidgetTime.Open();
                     iViewWidgetTime.SetDuration(iTime.Duration);
                     iViewWidgetTime.SetSeconds(iTime.Seconds);
-                    iViewWidgetTime.SetTransportState(iRoom.Current.TransportState);
+                    ETransportState transportState = ETransportState.eStopped;
+                    if (iRoom.Current != null)
+                    {
+                        transportState = iRoom.Current.TransportState;
+                    }
+                    iViewWidgetTime.SetTransportState(transportState);
                 }
                 iViewWidgetTime.Initialised();
             }
@@ -442,21 +454,24 @@ namespace Linn.Kinsky
         private void EventStandbyChanged(object sender, EventArgs args)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            if (iOpen && iRoom == sender)
+            if (iOpen)
             {
-                Trace.WriteLine(Trace.kKinsky, "MediatorRoom.EventStandbyChanged");
-                if (iRoom.Standby)
+                if (iRoom == sender)
                 {
-                    iLastRoom = string.Empty;
-                    SelectRoom(null);
+                    Trace.WriteLine(Trace.kKinsky, "MediatorRoom.EventStandbyChanged");
+                    if (iRoom.Standby)
+                    {
+                        iLastRoom = string.Empty;
+                        SelectRoom(null);
+                    }
                 }
+                iModelSelectorRoom.ItemChanged(sender as Room);
             }
         }
 
         private void EventRoomInserted(object sender, EventArgsItemInsert<IRoom> e)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-
             Trace.WriteLine(Trace.kKinsky, "MediatorRoom.EventRoomInserted: " + e.Item);
             if (!iRooms.Contains(e.Item))
             {
@@ -465,6 +480,7 @@ namespace Linn.Kinsky
                 {
                     InsertModelRoom(e.Index, e.Item as Room);
                 }
+                e.Item.EventStandbyChanged += EventStandbyChanged;
             }
         }
 
@@ -506,6 +522,7 @@ namespace Linn.Kinsky
                         iModelSelectorRoom.SetSelected(null);
                     }
                 }
+                e.Item.EventStandbyChanged -= EventStandbyChanged;
             }
         }
 
@@ -670,7 +687,15 @@ namespace Linn.Kinsky
                     iRoom.EventSourceInserted -= EventSourceInserted;
                     iRoom.EventSourceRemoved -= EventSourceRemoved;
                     iRoom.EventCurrentChanged -= EventCurrentChanged;
+
+                    ReadOnlyCollection<ISource> sources = iRoom.Sources;
+                    for (int i = 0; i < sources.Count; i++)
+                    {
+                        Trace.WriteLine(Trace.kKinsky, "Manual source remove: " + i + sources[i].Name);
+                        EventSourceRemoved(this, new EventArgsItem<ISource>(sources[i]));
+                    }
                 }
+
                 SelectSource(null);
             }
 
@@ -723,7 +748,6 @@ namespace Linn.Kinsky
 
                 // set the selected source in the view
                 UserLog.WriteLine(DateTime.Now + ": Selected " + iSource);
-                Console.WriteLine("MediatorSource.SelectSource: " + iSource);
                 Trace.WriteLine(Trace.kKinsky, "MediatorSource.SelectSource: " + iSource);
 
                 iModelSelectorSource.SetSelected(iSource as Source);
@@ -994,6 +1018,10 @@ namespace Linn.Kinsky
                     catch (ArgumentOutOfRangeException)
                     {
                     }
+                    catch (Exception ex)
+                    {
+                        UserLog.WriteLine("PlayInsert exception caught: " + ex);
+                    }
                 }
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
@@ -1021,6 +1049,10 @@ namespace Linn.Kinsky
                 catch (ArgumentOutOfRangeException)
                 {
                 }
+                catch (Exception ex)
+                {
+                    UserLog.WriteLine("PlayNow exception caught: " + ex);
+                }
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
                 return;
@@ -1047,6 +1079,10 @@ namespace Linn.Kinsky
                 catch (ArgumentOutOfRangeException)
                 {
                 }
+                catch (Exception ex)
+                {
+                    UserLog.WriteLine("PlayNext exception caught: " + ex);
+                }
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
                 return;
@@ -1072,6 +1108,10 @@ namespace Linn.Kinsky
                 }
                 catch (ArgumentOutOfRangeException)
                 {
+                }
+                catch (Exception ex)
+                {
+                    UserLog.WriteLine("PlayLater exception caught: " + ex);
                 }
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
@@ -1128,6 +1168,7 @@ namespace Linn.Kinsky
             {
                 IReceiverSource source = iSource as IReceiverSource;
                 source.SetChannel(e.Retriever.Media);
+                source.Play();
             }
         }
 

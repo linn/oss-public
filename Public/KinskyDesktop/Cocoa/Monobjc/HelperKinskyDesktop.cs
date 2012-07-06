@@ -47,6 +47,34 @@ namespace KinskyDesktop
 
             iOptionPageUpdates = new OptionPageUpdates(this);
             AddOptionPage(iOptionPageUpdates);
+
+            // check for valid window coordinates - reset to defaults if:
+            // - the window width is greater than 1.5 times the screen width OR
+            // - the window height is greater than 1.5 times the screen height OR
+            // - the window rect does not intersect the screen rect
+            if (iOptionWindowWidth.Native > 1.5f*aScreenRect.Width ||
+                iOptionWindowHeight.Native > 1.5f*aScreenRect.Height ||
+                !aScreenRect.Intersects(new Rect(iOptionWindowX.Native, iOptionWindowY.Native, iOptionWindowWidth.Native, iOptionWindowHeight.Native)))
+            {
+                iOptionWindowX.ResetToDefault();
+                iOptionWindowY.ResetToDefault();
+                iOptionWindowWidth.ResetToDefault();
+                iOptionWindowHeight.ResetToDefault();
+            }
+
+            // check validity of other options
+            if (iOptionSplitterFraction.Native < 0.0f || iOptionSplitterFraction.Native > 1.0f)
+            {
+                iOptionSplitterFraction.ResetToDefault();
+            }
+            if (iOptionContainerSizeThumbs.Native < 0.0f || iOptionContainerSizeThumbs.Native > 1.0f)
+            {
+                iOptionContainerSizeThumbs.ResetToDefault();
+            }
+            if (iOptionContainerSizeList.Native < 0.0f || iOptionContainerSizeList.Native > 1.0f)
+            {
+                iOptionContainerSizeList.ResetToDefault();
+            }
 		}
 
         public OptionPageUpdates OptionPageUpdates

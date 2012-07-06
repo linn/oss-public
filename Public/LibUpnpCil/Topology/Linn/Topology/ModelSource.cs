@@ -77,7 +77,6 @@ namespace Linn.Topology
     public interface IModelSource
     {
         void Close();
-        void Kill();
         string Name { get; }
         void Open();
         Linn.Topology.Source Source { get; }
@@ -96,7 +95,6 @@ namespace Linn.Topology
 
         public abstract void Open();
         public abstract void Close();
-        public abstract void Kill();
 
         public abstract string Name { get; }
 

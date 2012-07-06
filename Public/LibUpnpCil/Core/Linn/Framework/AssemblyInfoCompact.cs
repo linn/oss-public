@@ -70,7 +70,8 @@ namespace Linn
                                                                                          ,company
                                                                                          ,copyright
                                                                                          ,title
-                                                                                         ,product);
+                                                                                         ,product
+                                                                                         ,version);
             
             return properties;			
 		}

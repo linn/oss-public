@@ -8,9 +8,9 @@ namespace Linn
     /// <summary>
     /// Description of Environment.
     /// </summary>
-    internal static class SystemInfo
+    public static class SystemInfo
     {		
-        internal static string ServicePack
+        public static string ServicePack
         {
             get
             {
@@ -18,7 +18,7 @@ namespace Linn
             }
         }
 
-        internal static PlatformId Platform
+        public static PlatformId Platform
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Linn
             }
         }
 
-        internal static string VersionString
+        public static string VersionString
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Linn
             }
         }
 
-        internal static string ComputerName
+        public static string ComputerName
         {
             get
             {
@@ -42,7 +42,7 @@ namespace Linn
             }
         }
         
-        internal static DirectoryInfo DataPathForApp(string aAppTitle)
+        public static DirectoryInfo DataPathForApp(string aAppTitle)
         {			
             return new DirectoryInfo(Path.Combine(
 					Path.Combine(
@@ -51,7 +51,7 @@ namespace Linn
                 aAppTitle));
         }
 						        
-		internal static DirectoryInfo ExePathForApp(string aAppTitle)
+		public static DirectoryInfo ExePathForApp(string aAppTitle)
         {
             return new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName));
         }

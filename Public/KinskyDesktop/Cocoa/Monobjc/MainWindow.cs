@@ -11,6 +11,8 @@ using Upnp;
 using Monobjc;
 using Monobjc.Cocoa;
 
+using System.Linq;
+
 
 // View classes that correspond to the MainWindow.xib file
 
@@ -287,42 +289,9 @@ namespace KinskyDesktop
         {
             Assert.Check(!NSApplication.NSApp.InvokeRequired);
 
-            iSaveSupport = e.SaveSupport;
-
-            NSString dir = NSString.StringWithUTF8String(iModel.LocalPlaylists.SaveDirectory.Native);
-            NSString file = NSString.StringWithUTF8String(iSaveSupport.DefaultName);
-            NSString ext = NSString.StringWithUTF8String(Playlist.kPlaylistExtension.Replace(".", ""));
-            NSString msg = NSString.StringWithUTF8String("Please select the location in which to save the playlist");
-
-            NSSavePanel panel = NSSavePanel.SavePanel;
-            panel.AllowedFileTypes = NSArray.ArrayWithObject(ext);
-            panel.Message = msg;
-            panel.BeginSheetForDirectoryFileModalForWindowModalDelegateDidEndSelectorContextInfo(dir, file, Window,
-                                                                                                 SavePlaylistEnd, IntPtr.Zero);
-        }
-
-        private void SavePlaylistEnd(NSSavePanel aPanel, int aReturnCode, IntPtr aContextInfo)
-        {
-            try
-            {
-                if (aReturnCode == NSSavePanel.NSOKButton)
-                {
-                    string filename = System.IO.Path.Combine(aPanel.Directory.ToString(), aPanel.Filename.ToString());
-                    iSaveSupport.Save(filename, string.Empty, 0);
-                }
-            }
-            catch (Playlist.SaveException aExc)
-            {
-                UserLog.WriteLine(DateTime.Now + ": Could not save playlist file: " + aExc);
-
-                // dismiss the save playlist sheet before we show the error alert
-                aPanel.OrderOut(this);
-
-                IViewMainWindow v = this;
-                v.ShowAlertPanel("Error saving playlist", "Could not create the playlist file: " + aExc.Filename);
-            }
-
-            iSaveSupport = null;
+            WindowSave windowSave = new WindowSave(e.SaveSupport);
+            windowSave.Show();
+            windowSave.Release();
         }
 
         private void AutoUpdateFound(object sender, AutoUpdate.EventArgsUpdateFound e)
@@ -429,7 +398,6 @@ namespace KinskyDesktop
 
         private ModelMain iModel;
         private ControllerMainWindow iController;
-        private ISaveSupport iSaveSupport;
         private NSViewAnimation iAnimKompactMode;
     }
 
@@ -488,15 +456,6 @@ namespace KinskyDesktop
         [ObjectiveCMessage("windowWillUseStandardFrame:defaultFrame:")]
         public NSRect WindowWillUseStandardFrame(NSWindow aWindow, NSRect aDefaultFrame)
         {
-            if (this.Screen == null)
-            {
-                UserLog.WriteLine(DateTime.Now + ": Logging for #812 - Number of screens = " + NSScreen.Screens.Count);
-                for (uint i=0 ; i<NSScreen.Screens.Count ; i++)
-                {
-                    NSScreen screen = NSScreen.Screens[(int)i].CastAs<NSScreen>();
-                    UserLog.WriteLine(DateTime.Now + ": Logging for #812 - Screens " + i + " " + screen.Frame);
-                }
-            }
             return this.Screen.VisibleFrame;
         }
 
@@ -1071,15 +1030,18 @@ namespace KinskyDesktop
         #region IViewAddBookmark methods
         public void ShowAddBookmark(Location aLocation)
         {
-            // calculate the mid point of the button in screen coordinates
-            NSPoint anchor = new NSPoint(ButtonBookmarkAdd.Bounds.MidX, ButtonBookmarkAdd.Bounds.MidY);
-            anchor = ButtonBookmarkAdd.ConvertPointToView(anchor, null);
-            anchor = ButtonBookmarkAdd.Window.ConvertBaseToScreen(anchor);
-
-            // create the view and popover
-            ViewAddBookmark view = new ViewAddBookmark(ModelMain.Instance.Helper.BookmarkManager, aLocation);
-            WindowPopover popover = new WindowPopover(view);
-            popover.Show(anchor, false, new NSSize(500, 220));
+            if (aLocation != null)
+            {
+                // calculate the mid point of the button in screen coordinates
+                NSPoint anchor = new NSPoint(ButtonBookmarkAdd.Bounds.MidX, ButtonBookmarkAdd.Bounds.MidY);
+                anchor = ButtonBookmarkAdd.ConvertPointToView(anchor, null);
+                anchor = ButtonBookmarkAdd.Window.ConvertBaseToScreen(anchor);
+    
+                // create the view and popover
+                ViewAddBookmark view = new ViewAddBookmark(ModelMain.Instance.Helper.BookmarkManager, aLocation);
+                WindowPopover popover = new WindowPopover(view);
+                popover.Show(anchor, false, new NSSize(500, 220));
+            }
         }
         #endregion IViewAddBookmark methods
 
@@ -1509,9 +1471,19 @@ namespace KinskyDesktop
 
                 if (aRowIndex == iModel.CurrentSenderIndex)
                 {
-                    cell.Image = Properties.Resources.IconRoom;
-                    cell.AlternateImage = Properties.Resources.IconRoom;
-                    cell.IsEnabled = true;
+                    Linn.Kinsky.IRoom room = FindRoom(iModel.Channel);
+                    if (room != null)
+                    {
+                        cell.Image = Properties.Resources.IconRoom;
+                        cell.AlternateImage = Properties.Resources.IconRoom;
+                        cell.IsEnabled = true;
+                    }
+                    else
+                    {
+                        cell.Image = null;
+                        cell.AlternateImage = null;
+                        cell.IsEnabled = false;
+                    }
                 }
                 else
                 {
@@ -1540,25 +1512,39 @@ namespace KinskyDesktop
 
         private void ButtonGotoRoomClicked(Id aSender)
         {
-            Linn.Kinsky.Room room = null;
-            Linn.Topology.ModelSender sender = iModel.Senders[iModel.CurrentSenderIndex];
-
-            foreach (Linn.Kinsky.Room r in iModelRooms.Items)
+            Linn.Kinsky.Room room = FindRoom (iModel.Channel);
+            if (room != null)
             {
-                foreach (Linn.Kinsky.ISource s in r.Sources)
+                Console.WriteLine("Goto room: " + room.Name);
+                iModelRooms.SelectedItem = room;
+            }
+        }
+
+        private Linn.Kinsky.Room FindRoom(Channel aChannel)
+        {
+            Linn.Kinsky.Room result = null;
+            if (aChannel != null)
+            {
+                foreach(ModelSender modelSender in iModel.Senders)
                 {
-                    if (s.Udn == sender.Sender.Device.Udn)
+                    foreach(resource r in modelSender.Metadata[0].Res)
                     {
-                        room = r;
+                        if (r.Uri == aChannel.Uri)
+                        {
+                            result = (from room in iModelRooms.Items where room.Name == modelSender.Room select room).SingleOrDefault();
+                            if (result != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (result != null)
+                    {
                         break;
                     }
                 }
             }
-
-            if (room != null)
-            {
-                iModelRooms.SelectedItem = room;
-            }
+            return result;
         }
 
         [ObjectiveCField]
@@ -2696,6 +2682,7 @@ namespace KinskyDesktop
         [ObjectiveCMessage("awakeFromNib")]
         public void AwakeFromNib()
         {
+            iUriConverter = new ScalingUriConverter(kDesiredImageSize, true, true);
             ViewTrackInfoText.FontTitle = FontManager.FontLarge;
             ViewTrackInfoText.FontSubtitle = FontManager.FontSemiLarge;
             ViewTrackInfoText.FontTechInfo = FontManager.FontSmall;
@@ -2781,14 +2768,14 @@ namespace KinskyDesktop
                 ImageViewArtwork.Image = Properties.Resources.IconLoading;
                 WindowNowPlaying.ImageArtwork.Image = Properties.Resources.IconLoading;
             }
-            else if (track.ArtworkUri.CompareTo(iArtworkUri) != 0)
+            else if (iUriConverter.Convert(track.ArtworkUri).CompareTo(iArtworkUri) != 0)
             {
                 // artwork has changed - clear the displayed image and download the artwork
-                iArtworkUri = track.ArtworkUri;
+                iArtworkUri = iUriConverter.Convert(track.ArtworkUri);
                 ImageViewArtwork.Image = Properties.Resources.IconLoading;
                 WindowNowPlaying.ImageArtwork.Image = Properties.Resources.IconLoading;
 
-                NSURL artworkUri = NSURL.URLWithString(NSString.StringWithUTF8String(track.ArtworkUri));
+                NSURL artworkUri = NSURL.URLWithString(NSString.StringWithUTF8String(iArtworkUri));
 
                 this.PerformSelectorInBackgroundWithObject(ObjectiveCRuntime.Selector("downloadArtwork:"), artworkUri);
             }
@@ -2848,6 +2835,8 @@ namespace KinskyDesktop
         private IModelTrack iModel;
         private string iArtworkUri;
         private OptionBool iShowExtendedInfo;
+        private ScalingUriConverter iUriConverter;
+        private const int kDesiredImageSize = 2048;
     }
 
 

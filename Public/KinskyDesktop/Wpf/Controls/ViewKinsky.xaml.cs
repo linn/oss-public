@@ -30,44 +30,6 @@ namespace KinskyDesktopWpf
     /// </summary>
     public partial class ViewKinsky : UserControl
     {
-        private ViewWidgetPlaylistMediaRenderer iViewWidgetPlaylistMediaRenderer;
-        private ViewWidgetPlaylistRadio iViewWidgetPlaylistRadio;
-        private IViewWidgetButton iViewWidgetButtonStandby;
-        private IViewWidgetButton iViewWidgetButtonSave;
-        private IViewWidgetButton iViewWidgetButtonWasteBin;
-        private IViewWidgetPlayMode iViewWidgetPlayMode;
-        private IViewWidgetTransportControl iViewWidgetTransportControl;
-        private IViewWidgetVolumeControl iViewWidgetVolumeControl;
-        private IViewWidgetMediaTime iViewWidgetMediaTime;
-        private IViewWidgetPlaylistAux iViewWidgetPlaylistAux;
-        private IViewWidgetPlaylistDiscPlayer iViewWidgetPlaylistDiscPlayer;
-        private ViewWidgetPlaylistReceiver iViewWidgetPlaylistReceiver;
-        private DropConverter iViewDropConverter;
-        private bool iPopupOpen;
-
-        private ViewWidgetSelectorRoom iRoomSelector;
-        private ViewWidgetSelectorSource iSourceSelector;
-        private ViewWidgetTrack iViewWidgetTrack;
-        private ViewMaster iViewMaster;
-        internal UiOptions iUIOptions;
-        private IPlaylistSupport iPlaylistSupport;
-        private ViewWidgetBrowser iBrowserWidget;
-        private IBrowser iBrowser;
-        private HelperKinsky iHelperKinsky;
-
-        private const double kRoomSelectorHeight = 40;
-        private const double kRoomSelectorWidth = 500;
-        private ModelSenders iSenders;
-        private MediatorHouse iMediatorHouse;
-        private bool iInitialised = false;
-        public event EventHandler<EventArgs> EventStandby;
-
-        private ContentDirectoryLocator iLocator;
-        private DropConverter iBrowseDropConverter;
-        private ViewWidgetPlayNowNextLater iViewWidgetPlayNowNextLater;
-        private DateTime iLastTopPanelMouseDown = DateTime.MinValue;
-        private static uint iMouseDoubleClickTime = NativeWindowMethods.GetDoubleClickTime();
-        private ViewWidgetBookmarks iBookmarks;
 
         public ViewKinsky()
         {
@@ -131,11 +93,12 @@ namespace KinskyDesktopWpf
 
             breadcrumbBrowser.SetButtonUpDirectory(upButtonWidgetBrowser);
 
+            iNavigationController = new NavigationController(iBrowser, iLocator, breadcrumbBrowser, iHelperKinsky);
+
             iBookmarks = new ViewWidgetBookmarks(iHelperKinsky,
                                                                     iHelperKinsky.BookmarkManager,
                                                                     lstBookmarks,
                                                                     iBrowser,
-                                                                    iLocator,
                                                                     popupBookmarksList,
                                                                     popupAddBookmark,
                                                                     buttonShowBookmarksList,
@@ -145,19 +108,19 @@ namespace KinskyDesktopWpf
                                                                     txtTitle,
                                                                     txtBreadcrumb,
                                                                     pnlAddBookmark,
-                                                                    breadcrumbBrowser);
+                                                                    iNavigationController);
 
-            iBrowserWidget = new ViewWidgetBrowser(iBrowser,
-                                                iPlaylistSupport,
+            iBrowserWidget = new ViewWidgetBrowser(iPlaylistSupport,
                                                 iBrowseDropConverter,
                                                 buttonChangeSize,
                                                 buttonToggleListView,
                                                 iUIOptions,
                                                 sliderSize,
+                                                iNavigationController,
                                                 iBookmarks);
             pnlBrowser.Children.Add(iBrowserWidget);
 
-            iRoomSelector = new ViewWidgetSelectorRoom(lstRooms, ctlSelectRoom);
+            iRoomSelector = new ViewWidgetSelectorRoom(lstRooms, ctlSelectRoom, btnStandbyAll);
             IPlaylistWidget playlistMediaRenderer = new PlaylistWidget(aViewDropConverter, aPlaylistSupport, iUIOptions);
             IPlaylistWidget playlistRadio = new PlaylistWidget(aViewDropConverter, aPlaylistSupport, iUIOptions);
             IPlaylistWidget playlistReceiver = new PlaylistWidget(aViewDropConverter, aPlaylistSupport, iUIOptions);
@@ -192,7 +155,8 @@ namespace KinskyDesktopWpf
                                                buttonSelectRoom,
                                                buttonSelectSource,
                                                popupRoomSelection,
-                                               popupSourceSelection);
+                                               popupSourceSelection, 
+                                               btnStandbyAll);;
 
             aPlaylistGroupingOption.EventValueChanged += (d, e) =>
             {
@@ -240,6 +204,7 @@ namespace KinskyDesktopWpf
         {
             iBookmarks.Open();
             iBrowserWidget.Open();
+            iNavigationController.Open();
             iViewMaster.ViewWidgetSelectorRoom.Add(iViewWidgetPlaylistReceiver);
             iViewMaster.ViewWidgetSelectorRoom.Add(iRoomSelector);
             iViewMaster.ViewWidgetButtonStandby.Add(iViewWidgetButtonStandby);
@@ -270,6 +235,7 @@ namespace KinskyDesktopWpf
         {
             iBookmarks.Close();
             iBrowserWidget.Close();
+            iNavigationController.Close();
             iViewMaster.ViewWidgetSelectorRoom.Remove(iRoomSelector);
             iViewMaster.ViewWidgetSelectorRoom.Remove(iViewWidgetPlaylistReceiver);
             iViewMaster.ViewWidgetButtonStandby.Remove(iViewWidgetButtonStandby);
@@ -294,6 +260,12 @@ namespace KinskyDesktopWpf
             iViewMaster.ViewWidgetPlaylistReceiver.Remove(iViewWidgetTrack);
             iViewMaster.ViewWidgetButtonSave.Remove(iViewWidgetButtonSave);
             iViewMaster.ViewWidgetButtonWasteBin.Remove(iViewWidgetButtonWasteBin);
+        }
+
+        public void Rescan()
+        {
+            iLocator.Refresh();
+            iHelperKinsky.Rescan();
         }
 
 
@@ -402,12 +374,41 @@ namespace KinskyDesktopWpf
 
         private void btnStandby_Click(object sender, RoutedEventArgs e)
         {
-            if (EventStandby != null)
-            {
-                EventStandby(this, new EventArgs());
-            }
-            popupRoomSelection.IsOpen = false;
+            Linn.Kinsky.Room room = ((e.OriginalSource as FrameworkElement).FindVisualAncestor<ListViewItem>().Content as RoomViewModel).WrappedItem;
+            room.Standby = true;
             e.Handled = true;
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            iRefreshTimer = new System.Threading.Timer((a) =>
+            {
+                Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    if (iRefreshTimer != null)
+                    {
+                        iRefreshTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                        iRefreshTimer.Dispose();
+                        iRefreshTimer = null;
+                    }
+                    ShowThrobbers(false);
+                }));
+            });
+            iRefreshTimer.Change(kRefreshTimeout, Timeout.Infinite);
+            ShowThrobbers(true);
+            Rescan();
+        }
+
+        private void ShowThrobbers(bool aShow)
+        {
+            btnRefreshRooms.Visibility = aShow ? Visibility.Collapsed : Visibility.Visible;
+            btnRefreshSources.Visibility = aShow ? Visibility.Collapsed : Visibility.Visible;
+            progressRefreshRooms.Visibility = aShow ? Visibility.Visible : Visibility.Collapsed;
+            progressRefreshRooms.IsEnabled = aShow;
+            progressRefreshRooms.IsAnimating = aShow;
+            progressRefreshSources.Visibility = aShow ? Visibility.Visible : Visibility.Collapsed;
+            progressRefreshSources.IsEnabled = aShow;
+            progressRefreshSources.IsAnimating = aShow;
         }
 
         private void topPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -469,6 +470,46 @@ namespace KinskyDesktopWpf
             }
         }
 
+        private ViewWidgetPlaylistMediaRenderer iViewWidgetPlaylistMediaRenderer;
+        private ViewWidgetPlaylistRadio iViewWidgetPlaylistRadio;
+        private IViewWidgetButton iViewWidgetButtonStandby;
+        private IViewWidgetButton iViewWidgetButtonSave;
+        private IViewWidgetButton iViewWidgetButtonWasteBin;
+        private IViewWidgetPlayMode iViewWidgetPlayMode;
+        private IViewWidgetTransportControl iViewWidgetTransportControl;
+        private IViewWidgetVolumeControl iViewWidgetVolumeControl;
+        private IViewWidgetMediaTime iViewWidgetMediaTime;
+        private IViewWidgetPlaylistAux iViewWidgetPlaylistAux;
+        private IViewWidgetPlaylistDiscPlayer iViewWidgetPlaylistDiscPlayer;
+        private ViewWidgetPlaylistReceiver iViewWidgetPlaylistReceiver;
+        private DropConverter iViewDropConverter;
+        private bool iPopupOpen;
+
+        private ViewWidgetSelectorRoom iRoomSelector;
+        private ViewWidgetSelectorSource iSourceSelector;
+        private ViewWidgetTrack iViewWidgetTrack;
+        private ViewMaster iViewMaster;
+        internal UiOptions iUIOptions;
+        private IPlaylistSupport iPlaylistSupport;
+        private ViewWidgetBrowser iBrowserWidget;
+        private IBrowser iBrowser;
+        private HelperKinsky iHelperKinsky;
+
+        private const double kRoomSelectorHeight = 40;
+        private const double kRoomSelectorWidth = 500;
+        private ModelSenders iSenders;
+        private MediatorHouse iMediatorHouse;
+        private bool iInitialised = false;
+
+        private ContentDirectoryLocator iLocator;
+        private DropConverter iBrowseDropConverter;
+        private ViewWidgetPlayNowNextLater iViewWidgetPlayNowNextLater;
+        private DateTime iLastTopPanelMouseDown = DateTime.MinValue;
+        private static uint iMouseDoubleClickTime = NativeWindowMethods.GetDoubleClickTime();
+        private ViewWidgetBookmarks iBookmarks;
+        private NavigationController iNavigationController;
+        private System.Threading.Timer iRefreshTimer;
+        private const int kRefreshTimeout = 5000;
     }
 
 }

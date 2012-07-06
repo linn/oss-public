@@ -1,5 +1,6 @@
 using Linn;
 using Android.Content;
+using Android.Runtime;
 namespace OssToolkitDroid
 {
 
@@ -15,29 +16,55 @@ namespace OssToolkitDroid
         {
             Assert.Check(false);
         }
+
+        public WifiListener(System.IntPtr aIntPtr, JniHandleOwnership aHandleOwnership)
+            : base()
+        {
+            iLockObject = new object();
+        }
+
         public WifiListener(IHelper aHelper)
             : base()
         {
             iHelper = aHelper;
             iScheduler = new Scheduler("WifiStateChangeScheduler", 1);
+            iLockObject = new object();
+        }
+
+        public new void Dispose()
+        {
+            lock (iLockObject)
+            {
+                iScheduler.Stop();
+                iScheduler = null;
+            }
+            base.Dispose();
         }
 
         public override void OnReceive(Context aContext, Intent aIntent)
         {
             Refresh(aContext);
+            aIntent.Dispose();
         }
 
         public void Refresh(Context aContext)
         {
-            iScheduler.Schedule(() =>
+            lock (iLockObject)
             {
-                NetworkInfo.RefreshWifiInfo(aContext);
-                if (iHelper != null)
+                if (iScheduler != null)
                 {
-                    iHelper.Interface.NetworkChanged();
+                    iScheduler.Schedule(() =>
+                    {
+                        NetworkInfo.RefreshWifiInfo(aContext);
+                        if (iHelper != null)
+                        {
+                            iHelper.Interface.NetworkChanged();
+                        }
+                    });
                 }
-            });
+            }
         }
 
+        private object iLockObject;
     }
 }

@@ -68,6 +68,10 @@ namespace Linn.Kinsky
 
                 lock (iLock)
                 {
+                    foreach (ModelMediaServer m in iMediaServers.Values)
+                    {
+                        m.Close();
+                    }
                     iMediaServers.Clear();
                     iMetadata.ChildCount = 0;
                 }
@@ -188,6 +192,29 @@ namespace Linn.Kinsky
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+        
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
+
 
         private void CloudServersChanged(object sender, EventArgs e)
         {
@@ -200,6 +227,8 @@ namespace Linn.Kinsky
             try
             {
                 mediaServer = new ModelMediaServer(e.MediaServer, iEventProvider);
+                mediaServer.EventContainerUpdated += EventContainerUpdatedHandler;
+                mediaServer.EventSystemUpdateIDStateChanged += EventContainerUpdatedHandler;
                 mediaServer.Open();
             }
             catch (Exception)
@@ -233,6 +262,8 @@ namespace Linn.Kinsky
             {
                 if (iMediaServers.TryGetValue(e.MediaServer, out ms))
                 {
+                    ms.EventContainerUpdated -= EventContainerUpdatedHandler;
+                    ms.EventSystemUpdateIDStateChanged -= EventContainerUpdatedHandler;
                     ms.Close();
 
                     iMediaServers.Remove(e.MediaServer);
@@ -248,26 +279,39 @@ namespace Linn.Kinsky
             }
         }
 
+        private void EventContainerUpdatedHandler(object sender, EventArgs args)
+        {
+            OnEventTreeChanged();
+        }
+
         private class MediaServerComparer : IComparer<MediaServer>
         {
             public int Compare(MediaServer aMediaServer1, MediaServer aMediaServer2)
             {
-                // make sure servers with the same UDN are taken as identical
-                if (aMediaServer1.Device.Udn == aMediaServer2.Device.Udn)
+                try
                 {
-                    return 0;
-                }
+                    // make sure servers with the same UDN are taken as identical
+                    if (aMediaServer1.Device.Udn == aMediaServer2.Device.Udn)
+                    {
+                        return 0;
+                    }
 
-                // use the name as primary comparer for sorting - fallback to UDN
-                // if 2 separate servers have the same name
-                int nameCmp = string.Compare(aMediaServer1.Name, aMediaServer2.Name);
-                if (nameCmp != 0)
-                {
-                    return nameCmp;
+                    // use the name as primary comparer for sorting - fallback to UDN
+                    // if 2 separate servers have the same name
+                    int nameCmp = string.Compare(aMediaServer1.Name, aMediaServer2.Name);
+                    if (nameCmp != 0)
+                    {
+                        return nameCmp;
+                    }
+                    else
+                    {
+                        return aMediaServer1.Device.Udn.CompareTo(aMediaServer2.Device.Udn);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    return aMediaServer1.Device.Udn.CompareTo(aMediaServer2.Device.Udn);
+                    UserLog.WriteLine("Logging for #892: Exception caught in MediaServerComparer.Compare: " + e);
+                    throw e;
                 }
             }
         }
@@ -458,9 +502,9 @@ namespace Linn.Kinsky
                         updateId = iUpdateId;
                     }
 
-                    Console.WriteLine(aSearchCriterea + ", Id=" + id + ", aStartIndex=" + aStartIndex + ", aCount=" + aCount);
+                    Trace.WriteLine(Trace.kKinsky, aSearchCriterea + ", Id=" + id + ", aStartIndex=" + aStartIndex + ", aCount=" + aCount);
                     iMediaServer.Search(aSearchCriterea, id, aStartIndex, aCount, out didl, out count, out total, out newUpdateId);
-                    Console.WriteLine("count=" + count + ", total=" + total + ", updateId=" + iUpdateId);
+                    Trace.WriteLine(Trace.kKinsky, "count=" + count + ", total=" + total + ", updateId=" + iUpdateId);
 
                     if (updateId != iUpdateId)
                     {
@@ -481,7 +525,7 @@ namespace Linn.Kinsky
             }
             catch (ServiceException e)
             {
-                Console.WriteLine("ContainerMediaServer.Search: " + e.Message);
+                Trace.WriteLine(Trace.kKinsky, "ContainerMediaServer.Search: " + e.Message);
                 throw e;
             }
         }
@@ -489,6 +533,16 @@ namespace Linn.Kinsky
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded { add { } remove { } }
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved { add { } remove { } }
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
 
         private string Id
         {
@@ -503,6 +557,49 @@ namespace Linn.Kinsky
             }
         }
 
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                try
+                {
+                    bool changed = false;
+
+                    DidlLite didl;
+                    uint count;
+                    uint total;
+                    uint updateId;
+                    uint newUpdateId;
+                    string id;
+                    lock (iLock)
+                    {
+                        id = Id;
+                        updateId = iUpdateId;
+                    }
+                    iMediaServer.Browse(id, 0, 1, out didl, out count, out total, out newUpdateId);
+                    if (updateId != newUpdateId)
+                    {
+                        lock (iLock)
+                        {
+                            iUpdateId = newUpdateId;
+                        }
+                        changed = true;
+                    }
+                    return changed;
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
+
         private const int kErrorAccessDenied = 801;
         private const string kRootId = "0";
 
@@ -510,5 +607,6 @@ namespace Linn.Kinsky
         private container iMetadata;
         private ModelMediaServer iMediaServer;
         private object iLock;
+        
     }
 } 

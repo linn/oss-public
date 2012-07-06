@@ -1,4 +1,4 @@
-Import('_default_env kVersion')
+Import('_default_env kBuildInfo appAssemblyInfo')
 
 nib  = _default_env.IbTool('MainMenu.nib', 'MainMenu.xib')
 nib += _default_env.IbTool('MainWindow.nib', 'MainWindow.xib')
@@ -10,11 +10,12 @@ nib += _default_env.IbTool('ViewSelectionSource.nib', 'ViewSelectionSource.xib')
 nib += _default_env.IbTool('WindowAbout.nib', 'WindowAbout.xib')
 nib += _default_env.IbTool('WindowPopover.nib', 'WindowPopover.xib')
 nib += _default_env.IbTool('WindowUpdate.nib', 'WindowUpdate.xib')
+nib += _default_env.IbTool('WindowSave.nib', 'WindowSave.xib')
 nib  = _default_env.Install('$install_dir/bin/', nib)
 
-SConscript('Monobjc/SConscript', exports = ['_default_env', 'nib', 'kVersion'])
+SConscript('Monobjc/SConscript', exports = ['_default_env', 'nib', 'kBuildInfo', 'appAssemblyInfo'])
 
 # do sconscript for the updater after everything - this is because the scons node
 # for the installer pkg will now exist so dependencies can be correctly set up
-SConscript('Installer/SConscript', exports = ['_default_env', 'kVersion'])
+SConscript('Installer/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
 

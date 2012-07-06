@@ -1,0 +1,481 @@
+<div id="root" class="body">
+  <script src="scripts/jquery.select.js" type="text/javascript"></script>
+  <script src="scripts/jquery-ui-1.8.16.min.js" type="text/javascript"></script>
+  <div class="img-wrapper" id="systems-details-top">
+
+    <!-- toggle button functions -->
+
+    <script type="text/javascript">
+    
+      function linnSetUnselectable(element) {
+        element.attr('unselectable', 'on');
+
+        element.children().each(function(index) {
+          linnSetUnselectable($(this));
+        });
+      }
+      
+      linnSetUnselectable($('#root'));
+
+      $('select').selectBox();
+
+      function toggleButtonSetValue(button, value) {
+        if (value) {
+          button.addClass('on');
+          button.children('.on-label').addClass('on');
+          button.children('.off-label').removeClass('on');
+        }
+        else {
+          button.removeClass('on');
+          button.children('.on-label').removeClass('on');
+          button.children('.off-label').addClass('on');
+        }
+      }
+
+      function toggleButtonToggleValue(button) {
+        button.toggleClass('on');
+      }
+
+      function toggleButtonValue(button) {
+        return button.hasClass('on');
+      }
+
+      function toggleButtonPluginClick(button, plugin) {
+        toggleButtonToggleValue(button);
+
+        if (toggleButtonValue(button)) {
+          xappSend('plugin', plugin);
+        }
+        else {
+          xappSend('plugin', '!' + plugin);
+        }
+      }
+      
+      function toggleButtonTunesClick(button) {
+        toggleButtonToggleValue(button);
+            
+        if (toggleButtonValue(button)) {
+          xappSend('tunes-enabled', 'true');
+        }
+        else {
+          xappSend('tunes-enabled', 'false');
+        }
+      }
+
+      function toggleButtonPlaylistsClick(button) {
+        toggleButtonToggleValue(button);
+
+        if (toggleButtonValue(button)) {
+          xappSend('playlists', 'true');
+        }
+        else {
+          xappSend('playlists', 'false');
+        }
+      }
+
+      function refreshButtonUpdate(button, enabled, dormant)
+      {
+        if (!dormant && enabled) {
+          button.addClass('refreshing');
+        }
+        else {
+          button.removeClass('refreshing');
+        }
+
+        if (enabled) {
+          button.attr('disabled', !dormant);
+          if(button.attr('disabled') == true) {
+            if($.browser.msie) {
+              button.addClass('disabled').removeAttr('disabled');
+            }
+          }
+          else {
+            button.removeClass('disabled');
+          }
+        }
+        else {
+          button.attr('disabled', true);
+          if($.browser.msie) {
+            button.addClass('disabled').removeAttr('disabled');
+          }
+        }
+      }
+
+    </script>
+
+    <!-- top bar -->
+
+    <!--<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#"><span class="productname"/></a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="#">Home</a></li>
+              <li><a href="#itunes">iTunes</a></li>
+              <li><a href="#web">Media Apps</a></li>
+              <li><a href="#playlists">Shared Playlists</a></li>
+              <li><a href="#advanced">Advanced</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    <div id="header">
+      <div class="container">
+        <div class="logo-container">
+          <div class="logo">
+            <a href="#" title="LINN - Just Listen"></a>
+          </div>
+          <div class="strapline">
+            <img src="images/just-listen.png" alt="just listen" />
+          </div>
+        </div>
+      </div>
+      <div class="navigation">
+        <div class="container">
+          <ul>
+            <li class="nav-item">
+              <a href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="#itunes">iTunes</a>
+            </li>
+            <li class="nav-item">
+              <a href="#web">Media Apps</a>
+            </li>
+            <li class="nav-item">
+              <a href="#playlists">Shared Playlists</a>
+            </li>
+            <li class="nav-item">
+              <a href="#advanced">Advanced</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sub-navigation" />
+    </div>
+    <!-- end header -->
+    
+
+    <script type="text/javascript">
+
+        function onSetProduct(json) {
+            $('.productname').html(json.Product);
+            $('.productversion').html(json.Version);
+        }
+
+    </script>
+
+    <div id="header-background" style="top: 0px; left: 0px;"/>
+
+    <div class="container">
+
+    <!-- Main hero ====================================================== -->
+    <div class="hero-unit">
+      <h1>
+        <img src="images/logo.png" alt="" />
+        <span class="productname"/> <span class="productversion"/>
+      </h1>
+      <p>Welcome to the <span class="productname"/> configuration page. Scroll through the configuration options below, or use the navigation bar above to go directly to a particular configuration section.</p>
+    </div>
+
+    <script type="text/javascript">
+
+      function setTunes(value) {
+        toggleButtonSetValue($('#itunes-enabled'), value);
+      }
+
+      function onSetTunesLocation(json) {
+        $('#location').attr('value', json.Value);
+      }
+
+      function onSetTunesLocationButtons(json) {
+        $('#location-save').toggleClass('coloured', json.Value.Save);
+        $('#location-revert').toggleClass('coloured', json.Value.Revert);
+        $('#location-default').toggleClass('coloured', json.Value.Default);
+        json.Value.Save ?  $('#location-save').removeAttr('disabled').removeClass('disabled') : $('#location-save').attr('disabled', 'true'); if($.browser.msie) { $('#location-save').addClass('disabled').removeAttr('disabled') };
+        json.Value.Revert ? $('#location-revert').removeAttr('disabled').removeClass('disabled') : $('#location-revert').attr('disabled', 'true'); if($.browser.msie) { $('#location-revert').addClass('disabled').removeAttr('disabled') };
+        json.Value.Default ? $('#location-default').removeAttr('disabled').removeClass('disabled') : $('#location-default').attr('disabled', 'true'); if($.browser.msie) { $('#location-default').addClass('disabled').removeAttr('disabled') };
+      }
+      
+      function onSetTunesState(json) {
+        setTunes(json.Enabled);
+        $('button#itunes-resync').attr('disabled', json.Refreshing);
+      }
+
+    </script>
+
+    <!-- iTunes ========================================================= -->
+    <section id="itunes-section">
+      <div id="itunes" />
+      <div class="page-header">
+        <div class="row">
+            <div class="span1">
+                <img width="60px" src="images/itunes.png" />
+            </div>
+            <div class="span10">
+              <div class="toggle-button-section" id="itunes-enabled" onclick="toggleButtonTunesClick($(this))">
+                <div class="toggle-button-label on-label">ON</div>
+                <div class="toggle-button-label off-label">OFF</div>
+              </div>
+                <h1>
+                    iTunes
+                    <br />
+                    <small>
+                        Make music from your iTunes library available on your network
+                    </small>
+                </h1>
+            </div>
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="row">
+        <div class="span4">
+            <h2>Location</h2>
+            <p>iTunes publishes the contents of its music library using a file called &quot;iTunes Music Library.xml&quot;. Usually this file can be located automatically, but with non-standard iTunes installations this may not be possible. In this case you may use this setting to identify it manually.</p>
+        </div>
+        <div class="span7">
+            <h3>File</h3>
+            <input id="location" class="span7" onchange="xappSend('tunes-location', $('#location').val())" onkeyup="xappSend('tunes-location', $('#location').val())" type="text" spellcheck="false"/>
+            <button id="location-save" onclick="if(!$('#location-save').hasClass('disabled')) { xappSend('tunes-location-save', $('#location').val()) }" class="btn">SAVE</button>
+            <button id="location-revert" onclick="if(!$('#location-revert').hasClass('disabled')) { xappSend('tunes-location-revert', '') }" class="btn">REVERT</button>
+            <button id="location-default" onclick="if(!$('#location-default').hasClass('disabled')) { xappSend('tunes-location-default', '') }" class="btn">DEFAULT</button>
+        </div>
+      </div>
+
+      <!-- Synchronization -->
+      <div class="row">
+        <div class="span4">
+          <h2>Synchronisation</h2>
+          <p><span class="productname"/> automatically tracks changes to your iTunes library to ensure that the music on your network is up to date. But if your iTunes library is on a different computer to <span class="productname"/>, then it is possible for them to go out of sync. In this case you may use the button on the right to restore synchronisation.</p>
+        </div>
+        <div class="span7">
+          <h3>Restore synchronisation</h3>
+          <button id='itunes-resync' onclick="if(!$('#itunes-resync').hasClass('disabled')) { xappSend('tunes-refresh', 'itunes') }" class="btn button-refresh"><img src='images/refreshing.gif'/><div>RESYNC</div></button>
+        </div>
+      </div>
+    </section>
+
+    
+    <!-- Web ============================================================ -->
+    <script type="text/javascript">
+
+        function setWeb(value) {
+            toggleButtonSetValue($('#web-enabled'), value);
+        }
+
+        function ToggleButton(id) {
+            var onclick = "toggleButtonPluginClick($(this), '" + id + "')";
+            return ('<div class="toggle-button-app" id="app-enabled-' + id + '" onclick="' + onclick + '"><div class="toggle-button-app-label on-label">ON</div><div class="toggle-button-app-label off-label">OFF</div></div>');
+        }
+
+        function RefreshButton(id) {
+            var refresh = "xappSend('refresh', '" + id + "' )";
+            var refreshclick = "if($('#app-refresh-" + id + "').hasClass('disabled') == false) { " + refresh + "; }";
+            return ('<button class="btn button-refresh" id="app-refresh-' + id + '" onclick="' + refreshclick + '"><img src="images/refreshing.gif"/><div>REFRESH</div></button>');
+        }
+        
+        function refreshPlugin(id) {
+          /*if(!$('#app-refresh-" + id + "').hasClass('disabled')) {
+            xappSend("refresh", id);
+          }*/
+        }
+
+        function onSetWebApps(json) {
+            var apps = "";
+
+            for (var i in json.Value) {
+                var entry = json.Value[i];
+
+                var id = entry.Id;
+                var name = entry.Name;
+                var period = entry.Period;
+                var description = entry.Description;
+                var link = entry.Link;
+                var artwork = entry.Artwork;
+                var type = entry.Type;
+
+                if (type == "xsl") {
+                    apps += "<li>";
+                    apps += "<div class='app-artwork'><a href='" + link + "' target='_blank'>";
+                    if(artwork != "") {
+                      apps += "<img src='" + artwork + "'/>";
+                    }
+                    apps += "</a></div>";
+                    apps += "<div class='app-buttons'>"
+                    apps += ToggleButton(id);
+                    apps += RefreshButton(id);
+                    apps += "</div>";
+                    apps += "<div class='app-details'>"
+                    apps += "<div class='app-name'>" + name + "</div>";
+                    apps += "<div class='app-description'>" + description + "</div>";
+                    //apps += "<div class='app-period'>" + period + "</div>";
+                    apps += "</div>";
+                    apps += "</li>";
+                }
+            }
+
+            $('#web-apps').html(apps);
+        }
+
+        function onSetWebAppsState(json) {
+            for (var i in json.Value) {
+                var entry = json.Value[i];
+
+                var id = entry.Id;
+                var type = entry.Type;
+                var enabled = entry.Enabled;
+                var active = entry.Active;
+                var dormant = entry.Dormant;
+
+                if (id == "0") {
+                    setWeb(enabled);
+                }
+                else if (type == 'xsl') {
+                    toggleButtonSetValue($('#app-enabled-' + id), enabled);
+                    refreshButtonUpdate($('#app-refresh-' + id), enabled, dormant);
+                }
+            }
+        }
+
+    </script>
+
+    <section id="web-section">
+      <div id="web" />
+      <div class="page-header">
+        <div class="row">
+          <div class="span1">
+            <img width="60px" src="images/web.png" />
+          </div>
+          <div class="span10">
+            <div class="toggle-button-section" id="web-enabled" onclick="toggleButtonPluginClick($(this), '0')">
+              <div class="toggle-button-label on-label">ON</div>
+              <div class="toggle-button-label off-label">OFF</div>
+            </div>
+            <h1>
+                Media Apps
+                <br />
+                <small>
+                    Enable media apps on your network
+                </small>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apps -->
+      <div class="row">
+        <div class="span4">
+          <h2 onclick="xappSend('refresh', '')">Apps</h2>
+          <p><span class="productname"/> maintains a list of media apps that are used to make media available that is stored on the web. The media apps are listed here. Install or uninstall them to control the web-based media that is accessible on your network.</p>
+          <h2>Refresh</h2>
+          <p>Media apps periodically wake up to collect up to date information from the web. Depending on the kind of web media a media app makes available it might do this anywhere from twice a day to every six months. But you can do this manually by clicking their refresh button.</p>
+        </div>
+        <div class="span7">
+          <ul id="web-apps"/>
+        </div>
+      </div>
+    </section>
+
+ 
+    <script type="text/javascript">
+
+      function onSetPlaylists(json) {
+        toggleButtonSetValue($('#playlists-enabled'), json.Value);
+      }
+
+    </script>
+    
+    <!-- Playlists ======================================================== -->
+    <section id="playlists-section">
+      <div id="playlists" />
+      <div class="page-header">
+        <div class="row">
+          <div class="span1">
+            <img width="60px" src="images/playlists.png" />
+          </div>
+          <div class="span10">
+            <div class="toggle-button-section" id="playlists-enabled" onclick="toggleButtonPlaylistsClick($(this))" >
+              <div class="toggle-button-label on-label">ON</div>
+              <div class="toggle-button-label off-label">OFF</div>
+            </div>
+            <h1>
+                Shared Playlists
+                <br />
+                <small>
+                    Allow playlists to be shared across your network
+                </small>
+            </h1>
+         </div>
+      </div>
+
+    <script type="text/javascript">
+
+      function onSetAdvancedAdapters(json) {
+          var current = json.Current;
+          var adapters = "";
+
+          for (var i in json.Adapters) {
+            var adapter = json.Adapters[i];
+
+            if (i == current) {
+                    adapters += "<option selected='selected'>" + adapter + "</option>";
+                }
+                else {
+                    adapters += "<option>" + adapter + "</option>";
+                }
+          }
+
+          $('#advanced-adapters').html(adapters);
+          $("select").selectBox('destroy');
+          $("select").selectBox();
+      }
+
+    </script>
+
+
+    <!-- Advanced ======================================================== -->
+    <section id="advanced-section">
+      <div id="advanced" />
+      <div class="page-header">
+        <div class="row">
+          <div class="span1">
+            <img width="60px" src="images/advanced.png" />
+          </div>
+          <div class="span9">
+            <h1>
+                Advanced
+                <br />
+                <small>
+                    Change advanced settings
+                </small>
+            </h1>
+          </div>
+        </div>
+      </div>
+      <!-- Table structure -->
+      <div class="row">
+        <div class="span4">
+          <h2>Network Selection</h2>
+          <p>Select the network that <span class="productname"/> should use.</p>
+        </div>
+        <div class="span7">
+          <h3>Networks</h3>
+          <select id="advanced-adapters" class="span7" onchange="xappSend('adapter', selectedIndex)"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer ========================================================== -->
+    <footer>
+    </footer>
+
+    </div>
+    <!-- /container -->
+
+  </div>
+      
+</div>

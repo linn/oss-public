@@ -109,44 +109,62 @@ namespace Linn.Kinsky
 
             List<upnpObject> list = new List<upnpObject>();
 
-            foreach (string f in files)
+            try
             {
-                FileInfo fileInfo = new FileInfo(f);
-                bool isFolder = (fileInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-
-                if (isFolder && iExpandFolders)
+                foreach (string f in files)
                 {
-                    // this container is a folder that must be expanded
-                    DirectoryInfo dirInfo = new DirectoryInfo(f);
-                    list.AddRange(CreateUpnpList(dirInfo));
-                }
-                else if (isFolder)
-                {
-                    // this container is a folder that must not be expanded
-                    DirectoryInfo dirInfo = new DirectoryInfo(f);
-                    string artworkUri = UpnpObjectFactory.FindArtworkUri(dirInfo, iVirtualFileSystem);
-                    list.Add(UpnpObjectFactory.Create(dirInfo, artworkUri));
-                }
-                else
-                {
-                    if (fileInfo.Extension == PluginManager.kPluginExtension)
+                    try
                     {
-                        list.Add(UpnpObjectFactory.Create(fileInfo.Name, fileInfo.FullName, "application/zip"));
-                    }
-                    else if (fileInfo.Extension == Playlist.kPlaylistExtension)
-                    {
-                        list.Add(UpnpObjectFactory.Create(fileInfo, string.Empty, fileInfo.FullName));
-                    }
-                    else
-                    {
-                        string artworkUri = UpnpObjectFactory.FindArtworkUri(fileInfo.Directory, iVirtualFileSystem);
-                        upnpObject o = UpnpObjectFactory.Create(fileInfo, artworkUri, iVirtualFileSystem.Uri(fileInfo.FullName));
-                        if (o != null)
+                        FileInfo fileInfo = new FileInfo(f);
+                        bool isFolder = (fileInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+        
+                        if (isFolder && iExpandFolders)
                         {
-                            list.Add(o);
+                            // this container is a folder that must be expanded
+                            DirectoryInfo dirInfo = new DirectoryInfo(f);
+                            list.AddRange(CreateUpnpList(dirInfo));
+                        }
+                        else if (isFolder)
+                        {
+                            // this container is a folder that must not be expanded
+                            DirectoryInfo dirInfo = new DirectoryInfo(f);
+                            string artworkUri = UpnpObjectFactory.FindArtworkUri(dirInfo, iVirtualFileSystem);
+                            list.Add(UpnpObjectFactory.Create(dirInfo, artworkUri));
+                        }
+                        else
+                        {
+                            if (fileInfo.Extension == PluginManager.kPluginExtension)
+                            {
+                                list.Add(UpnpObjectFactory.Create(fileInfo.Name, fileInfo.FullName, "application/zip"));
+                            }
+                            else if (fileInfo.Extension == Playlist.kPlaylistExtension)
+                            {
+                                list.Add(UpnpObjectFactory.Create(fileInfo, string.Empty, fileInfo.FullName));
+                            }
+                            else
+                            {
+                                string artworkUri = UpnpObjectFactory.FindArtworkUri(fileInfo.Directory, iVirtualFileSystem);
+                                upnpObject o = UpnpObjectFactory.Create(fileInfo, artworkUri, iVirtualFileSystem.Uri(fileInfo.FullName));
+                                if (o != null)
+                                {
+                                    list.Add(o);
+                                }
+                            }
                         }
                     }
+                    catch (FileNotFoundException)
+                    {
+                        UserLog.WriteLine("Error retrieving content - file not found: " + f);
+                    }
+                    catch (IOException ex)
+                    {
+                        UserLog.WriteLine("Error retrieving content - IOException: " + ex + f);
+                    }
                 }
+            }
+            catch(HttpServerException ex)
+            {
+                UserLog.WriteLine("Error retrieving content: " + ex.Message);
             }
 
             return new MediaProviderDraggable(new MediaRetrieverNoRetrieve(list));

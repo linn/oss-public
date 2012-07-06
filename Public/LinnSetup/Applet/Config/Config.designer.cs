@@ -34,6 +34,8 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.buttonToggle = new System.Windows.Forms.ToolStripButton();
             this.uriLabel = new System.Windows.Forms.ToolStripLabel();
+            this.buttonBack = new System.Windows.Forms.ToolStripButton();
+            this.buttonForward = new System.Windows.Forms.ToolStripButton();
             this.buttonRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -53,14 +55,18 @@
             this.webBrowser2.Name = "webBrowser2";
             this.webBrowser2.Size = new System.Drawing.Size(150, 125);
             this.webBrowser2.TabIndex = 0;
+            this.webBrowser2.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(this.webBrowser2_Navigated);
+            this.webBrowser2.NewWindow += new System.ComponentModel.CancelEventHandler(this.webBrowser2_NewWindow);
             // 
             // toolStrip1
             // 
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buttonToggle,
-            this.uriLabel,
-            this.buttonRefresh});
+            this.buttonBack,
+            this.buttonForward,
+            this.buttonRefresh,
+            this.uriLabel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -82,6 +88,27 @@
             // 
             this.uriLabel.Name = "uriLabel";
             this.uriLabel.Size = new System.Drawing.Size(0, 22);
+            this.uriLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // buttonBack
+            // 
+            this.buttonBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonBack.Image = ((System.Drawing.Image)(resources.GetObject("buttonBack.Image")));
+            this.buttonBack.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonBack.Name = "buttonBack";
+            this.buttonBack.Size = new System.Drawing.Size(23, 22);
+            this.buttonBack.Text = "Back";
+            this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
+            // 
+            // buttonForward
+            // 
+            this.buttonForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.buttonForward.Image = ((System.Drawing.Image)(resources.GetObject("buttonForward.Image")));
+            this.buttonForward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.buttonForward.Name = "buttonForward";
+            this.buttonForward.Size = new System.Drawing.Size(23, 22);
+            this.buttonForward.Text = "Forward";
+            this.buttonForward.Click += new System.EventHandler(this.buttonForward_Click);
             // 
             // buttonRefresh
             // 
@@ -113,6 +140,8 @@
         private System.Windows.Forms.ToolStripLabel uriLabel;
         private System.Windows.Forms.ToolStripButton buttonToggle;
         private System.Windows.Forms.ToolStripButton buttonRefresh;
+        private System.Windows.Forms.ToolStripButton buttonBack;
+        private System.Windows.Forms.ToolStripButton buttonForward;
 
     }
 }

@@ -1,0 +1,94 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+# define files for libraries and source
+
+files = Split("""
+    ../../Model.cs
+    ../../NetworkMonitor.cs
+    ../../Preferences.cs
+    ../../XappController.cs
+    Properties/Resources.resx
+    Properties/Resources.Designer.cs
+    App.xaml
+    App.xaml.cs
+    FormSysTray.cs
+    FormSysTray.Designer.cs
+    FormSysTray.resx
+    MainWindow.xaml
+    MainWindow.xaml.cs
+    PreferencesBindings.cs
+    PreferencesWindow.xaml
+    PreferencesWindow.xaml.cs
+    ResourceManager.cs
+""")
+
+sysCliLibs = Split("""
+    PresentationCore
+    PresentationFramework
+    System
+    System.Drawing
+    System.Windows.Forms
+    System.Xaml
+    System.Xml
+    WindowsBase
+""")
+
+ohCliLibs = Split("""
+    ohSongcast.net
+    ohXen
+    ohXapp
+    ohXappViewer
+""")
+
+linnCliLibs = Split("""
+    OssCore
+    OssToolkitWpf
+""")
+
+# install OpenHome and Linn libs into install tree
+
+instOhLibs = ['../../../../OpenHome/Windows/' + f + '.dll' for f in ohCliLibs]
+instOhLibs.append('../../../../OpenHome/Windows/ohSongcast.dll')
+instOhLibs = _default_env.Install('$install_dir/bin/Songcast', instOhLibs)
+
+instLinnLibs = [File(_default_env.subst('$install_dir/lib/Linn/' + f + '.dll')) for f in linnCliLibs]
+instLinnLibs = _default_env.Install('$install_dir/bin/Songcast', instLinnLibs)
+
+# install resources
+
+instRes = _default_env.RecursiveInstall('$install_dir/bin/Songcast/presentation', _default_env.Dir('../../Resources/presentation').srcnode())
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Songcast/presentation/main/Widgets/Common', '$hardware_dir/share/Linn/Resources/Widgets/Common')
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Songcast/presentation/main/Widgets/Fonts', '$hardware_dir/share/Linn/Resources/Widgets/Fonts')
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Songcast/presentation/main/Widgets/ToggleButton', '$hardware_dir/share/Linn/Resources/Widgets/ToggleButton')
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Songcast/presentation/main/Widgets/Rotary', '$hardware_dir/share/Linn/Resources/Widgets/Rotary')
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Songcast/presentation/main/Widgets/Rocker', '$hardware_dir/share/Linn/Resources/Widgets/Rocker')
+
+# build the assembly
+	
+_default_env['OutputType'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OutputType'] = 'Exe'
+
+_default_env.PrependUnique(CLILIBPATH = ['$install_dir/bin/Songcast'])
+
+msproj = _default_env.MSBuildFileGenerator('Songcast', files + appAssemblyInfo,
+                                           CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs,
+                                           CLIPLATFORMTARGET='x86',
+                                           LINKS=files + appAssemblyInfo,
+                                           ICON=_default_env.subst('$variant_dir/share/Linn/Songcast/Songcast.ico'),
+                                           APPLICATIONDEFINITION='App',
+                                           ROOTNAMESPACE='Linn.Songcast',
+                                           TOOLSVERSION='4.0',
+                                           TARGETFRAMEWORKVERSION='4.0')
+
+# ensure that the referenced assemblies get installed before the assembly is built
+Depends(msproj, instOhLibs+instLinnLibs+instRes)
+
+app = _default_env.MSBuildExeBuilder('Songcast', msproj, CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs)
+app = _default_env.Install('$install_dir/bin/Songcast', app)
+
+ret = app + instOhLibs + instLinnLibs
+ret.append(_default_env.Dir('$install_dir/bin/Songcast/presentation'))
+
+Return('ret')
+

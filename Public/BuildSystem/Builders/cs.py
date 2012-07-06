@@ -2,7 +2,10 @@ Import('env')
 
 def CliLibraryLinn(target, source, **kw):
     import os
-    library = env._CliLibrary(target, source, **kw)
+    if('TARGETFRAMEWORKVERSION' in kw and kw['TARGETFRAMEWORKVERSION'] == '4.0'):
+        library = env._CliLibraryV4(target, source, **kw)
+    else:
+        library = env._CliLibraryV2(target, source, **kw)
     hack = env.Install('$install_dir/bin/' + os.path.split(target)[0], library)
     hack += env.Install('$install_dir/bin/Test/' + os.path.split(target)[0], library)
     install = env.Install('$install_dir/lib/Linn/' + os.path.split(target)[0], library)    
@@ -24,7 +27,10 @@ def CliLibraryLinn(target, source, **kw):
 
 def CliProgramLinn(target, source, **kw):
     import os
-    program = env._CliProgram(target, source, **kw)
+    if('TARGETFRAMEWORKVERSION' in kw and kw['TARGETFRAMEWORKVERSION'] == '4.0'):
+        program = env._CliProgramV4(target, source, **kw)
+    else:
+        program = env._CliProgramV2(target, source, **kw)
     install = env.Install('$install_dir/bin/' + os.path.split(target)[0], program)
     #config file is not needed and is giving me issues
     #config = env.CliProgramConfig(target, program)
@@ -77,9 +83,15 @@ def MSBuildApkBuilderLinn(target, source, **kw):
 try:
     # Tag original builder with a _
     # Override original builder with the new Linn added functionality
-    env._CliLibrary = env.CliLibrary
+    if "CliLibraryV2" in env["BUILDERS"]:
+        env._CliLibraryV2 = env.CliLibraryV2
+    if "CliLibraryV4" in env["BUILDERS"]:
+        env._CliLibraryV4 = env.CliLibraryV4
     env.CliLibrary = CliLibraryLinn
-    env._CliProgram = env.CliProgram
+    if "CliProgramV2" in env["BUILDERS"]:
+        env._CliProgramV2 = env.CliProgramV2
+    if "CliProgramV4" in env["BUILDERS"]:
+        env._CliProgramV4 = env.CliProgramV4
     env.CliProgram = CliProgramLinn
     if "MSBuildExeBuilder" in env["BUILDERS"]:
         env._MSBuildExeBuilder = env.MSBuildExeBuilder

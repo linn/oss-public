@@ -1,0 +1,52 @@
+Import('_default_env kBuildInfo')
+
+
+# create the folder for the pref pane bundle
+
+prefFolder = _default_env.Command('LinnSongcast.prefPane', '', [Mkdir('$TARGET')])
+
+
+# build nib file
+
+prefs = []
+prefs += _default_env.IbTool('LinnSongcast.prefPane/Contents/Resources/English.lproj/SongcastPrefPane.nib', 'English.lproj/SongcastPrefPane.xib')
+
+
+# convert info.plist
+
+prefs += _default_env.TagReplace('LinnSongcast.prefPane/Contents/Info.plist', 'Info.plist', TAGS=kBuildInfo)
+
+
+# copy resources into the bundle
+
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/Songcast.icns')
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/IconSmall.png')
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/IconLarge.png')
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/Red.png')
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/Green.png')
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/RotaryControl.png')
+prefs += _default_env.Install('LinnSongcast.prefPane/Contents/Resources/', '../../Resources/RockerControl.png')
+
+
+# compile the objective-c code
+
+if _default_env['variant'] == 'debug':
+    debugFlags = '-O0 -mfix-and-continue'
+else:
+    debugFlags = '-Os'
+
+compileFlags = '-x objective-c -std=gnu99 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -fasm-blocks ' + debugFlags + ' -Wreturn-type -Wunused-variable -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6 -gdwarf-2 -c -fobjc-gc'
+
+compile = 'gcc -arch x86_64 ' + compileFlags + ' $SOURCE -o $TARGET'
+link = 'gcc -arch x86_64 -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk $SOURCES -mmacosx-version-min=10.6 -framework Cocoa -framework PreferencePanes -o $TARGET'
+
+objs = []
+objs += _default_env.Command('Objects/SongcastPrefPane.o', 'SongcastPrefPane.m', compile)
+objs += _default_env.Command('Objects/Preferences.o', 'Preferences.m', compile)
+prefs += _default_env.Command('LinnSongcast.prefPane/Contents/MacOS/Songcast', objs, link)
+
+
+_default_env.Depends(prefFolder, prefs)
+
+Return('prefFolder')
+

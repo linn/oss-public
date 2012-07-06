@@ -2,6 +2,7 @@ import os.path
 import sys
 import os
 import glob
+import BuildInformation
 
 try:
     svn_version = os.popen('svnversion %s' % GetLaunchDir()).read()[:-1]
@@ -17,9 +18,13 @@ opts = Variables('./config.py')
 opts.Add(EnumVariable('variant', '<HELP variant>', 'release', allowed_values = ('debug', 'trace', 'release', '')))
 opts.Add(EnumVariable('hardware', 'hardware target against which to build', 'Windows', allowed_values = possibleTargets))
 opts.Add(BoolVariable('installers', '<HELP installers>', 1))
+opts.Add(BoolVariable('codesign', '<HELP codesign>', 1))
 opts.Add(PathVariable('build_dir', '<HELP build_dir>', '../build', PathVariable.PathIsDirCreate))
 opts.Add(PathVariable('install_dir', '<HELP install_dir>', '../install', PathVariable.PathIsDirCreate))
 opts.Add('svn_rev', '<HELP svn_rev>', svn_version)
+opts.Add(EnumVariable('build_type', '<HELP build_type>', '', allowed_values = ('release', 'beta', 'development', 'developer', 'nightly', '')))
+opts.Add('build_version', '<HELP build_version>', '')
+opts.Add('ios_sdk', '<HELP ios_sdk>', '5.1')
 
 _default_env = Environment(options = opts)
 _tool_env = Environment(options = opts)
@@ -47,6 +52,8 @@ _default_env['build_hardware_dir'] = os.path.realpath(_default_env.subst('$build
 _default_env['build_variant_dir'] = os.path.realpath(_default_env.subst('$build_dir/$hardware'))
 _default_env['build_dir'] = os.path.realpath(_default_env.subst('$build_dir/$hardware/$variant'))
 _default_env['hardware_dir'] = os.path.realpath(_default_env.subst('$install_dir'))
+
+_default_env['build_information'] = BuildInformation.BuildInformation(aType=_default_env.subst('$build_type'), aVersion = _default_env.subst('$build_version'), aRevision = _default_env.subst('$svn_rev'))
 
 if _default_env['install_dir'] == '../install':   
     _default_env['variant_dir'] = os.path.realpath(_default_env.subst('$install_dir/$hardware'))

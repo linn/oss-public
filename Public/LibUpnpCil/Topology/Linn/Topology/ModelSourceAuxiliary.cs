@@ -19,11 +19,6 @@ namespace Linn.Topology
             throw new NotImplementedException();
         }
 
-        public override void Kill()
-        {
-            throw new NotImplementedException();
-        }
-
         public override string Name
         {
             get

@@ -4,10 +4,10 @@ namespace Linn
 {
     public class OptionPageCrashDumper : OptionPage
     {
-        public OptionPageCrashDumper()
-            : base("Crash Reports") {
+        public OptionPageCrashDumper(string aTitle)
+            : base(aTitle) {
 
-            iAutoSend = new OptionBool("autosend", "Send crash reports automatically", "Send crash reports automatically without prompting", false);
+                iAutoSend = new OptionBool("autosendcrashlog", "Auto send crash log", "Send crash reports automatically without prompting", false);
             Add(iAutoSend);
         }
 

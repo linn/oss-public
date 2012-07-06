@@ -1,6 +1,8 @@
 using System;
 using System.Net;
+using System.Net.Configuration;
 using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace Linn
@@ -122,6 +124,16 @@ namespace Linn
 
             UserLog.WriteLine(Product + " v" + Version + " (" + Family + ")");
 
+            // log the mono version if being used
+            Type t = Type.GetType("Mono.Runtime");
+            if (t != null)
+            {
+                MethodInfo displayName = t.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
+                if (displayName != null) {
+                    UserLog.WriteLine("Mono Version: " + displayName.Invoke(null, null));
+                }
+            }
+
             // create option parser
             iOptionParser = new OptionParser(aArgs);
             iOptionParser.Usage = "usage: " + Title;
@@ -135,6 +147,8 @@ namespace Linn
             iOptionParser.AddOption(iOptionNic);
 
             ServicePointManager.DefaultConnectionLimit = 50;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
 
             iOptionPages = new List<IOptionPage>();
             iOptionManager = new OptionManager(Path.Combine(iDataPath.FullName, "Options.xml"));
@@ -215,6 +229,12 @@ namespace Linn
                 UserLog.RemoveListener(iUserLogFile);
                 iUserLogFile.Dispose();
                 iUserLogFile = null;
+            }
+
+            // dispose of network interface option
+            if (iOptionNetworkInterface != null)
+            {
+                iOptionNetworkInterface.Dispose();
             }
         }
 
@@ -378,7 +398,7 @@ namespace Linn
 
         public string Family
         {
-            get { return ProductSupport.Family(Version); }
+            get { return VersionSupport.Family(Version); }
         }
 
         public string Description
@@ -399,6 +419,11 @@ namespace Linn
         public string Company
         {
             get { return iAssemblyAttributes.Company; }
+        }
+
+        public string InformationalVersion
+        {
+            get { return iAssemblyAttributes.InformationalVersion; }
         }
 
         public DirectoryInfo DataPath

@@ -56,10 +56,6 @@ namespace Linn.Topology
             iServiceSender.EventInitial -= EventInitialResponse;
         }
 
-        public void Kill()
-        {
-        }
-
         public EventHandler<EventArgs> EventSenderInitialised;
 
         public EventHandler<EventArgs> EventAudioChanged;

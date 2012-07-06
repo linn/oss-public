@@ -60,19 +60,31 @@ namespace Linn
             	return iDescription;
             }
         }
+
+        private string iInformationalVersion;
+        internal string InformationalVersion
+        {
+            get
+            {
+                return iInformationalVersion;
+            }
+        }
 		
 		public AssemblyInfoModel(string aDescription
 		                                    ,string aVersion
 		                                    ,string aCompany
 		                                    ,string aCopyright
-		                                    ,string aTitle
-		                                    ,string aProduct) {
+                                            , string aTitle
+                                            , string aProduct
+                                            , string aInformationalVersion)
+        {
 			iDescription = aDescription;
 			iVersion = aVersion;
 			iCompany = aCompany;
 			iCopyright = aCopyright;
 			iTitle = aTitle;
 			iProduct = aProduct;
+            iInformationalVersion = aInformationalVersion;
 		}
         public override string ToString()
         {

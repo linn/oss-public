@@ -75,8 +75,8 @@ namespace Linn.Topology
                             }
                         }
                     }
-                    catch (XmlException e) { Console.WriteLine(e); }
-                    catch (FormatException e) { Console.WriteLine(e); }
+                    catch (XmlException e) { }
+                    catch (FormatException e) { }
                 }
     
                 return list;
@@ -102,20 +102,20 @@ namespace Linn.Topology
         internal void IncRef()
         {
             ++iRefCount;
-            Console.WriteLine("ModelPlaylist.IncRef: " + iRefCount);
+            Trace.WriteLine(Trace.kTopology, "ModelPlaylist.IncRef: " + iRefCount);
         }
 
         internal void DecRef()
         {
             --iRefCount;
-            Console.WriteLine("ModelPlaylist.DecRef: " + iRefCount);
+            Trace.WriteLine(Trace.kTopology, "ModelPlaylist.DecRef: " + iRefCount);
         }
 
         internal uint RefCount
         {
             get
             {
-                Console.WriteLine("ModelPlaylist.RefCount: " + iRefCount);
+                Trace.WriteLine(Trace.kTopology, "ModelPlaylist.RefCount: " + iRefCount);
                 return iRefCount;
             }
         }
@@ -194,9 +194,51 @@ namespace Linn.Topology
             return item;
         }
 
+        public void Delete(string aTrackMetadataId)
+        {
+            Lock();
+
+            uint id = 0;
+            uint count = Count;
+            for (uint i = 0; i < count; ++i)
+            {
+                MrItem item = Track(i);
+                if (item.DidlLite[0].Id == aTrackMetadataId)
+                {
+                    id = iIdArray.IdArray[(int)i];
+                    break;
+                }
+            }
+
+            Unlock();
+
+            Delete(id);
+        }
+
         public void Delete(uint aTrackId)
         {
             iActionDeleteId.DeleteIdBegin(iId, aTrackId);
+        }
+
+        public void Insert(string aAfterTrackMetadataId, DidlLite aDidlLite)
+        {
+            Lock();
+
+            uint id = 0;
+            uint count = Count;
+            for (uint i = 0; i < count; ++i)
+            {
+                MrItem item = Track(i);
+                if (item.DidlLite[0].Id == aAfterTrackMetadataId)
+                {
+                    id = iIdArray.IdArray[(int)i];
+                    break;
+                }
+            }
+
+            Unlock();
+
+            Insert(id, aDidlLite);
         }
 
         public void Insert(uint aAfterId, DidlLite aDidlLite)
@@ -317,8 +359,8 @@ namespace Linn.Topology
                             }
                         }
                     }
-                    catch (XmlException e) { Console.WriteLine(e); }
-                    catch (FormatException e) { Console.WriteLine(e); }
+                    catch (XmlException e) { }
+                    catch (FormatException e) { }
                 }
     
                 return list;
@@ -377,10 +419,6 @@ namespace Linn.Topology
             iServicePlaylistManager.EventStateTokenArray -= EventTokenArrayResponse;
             iServicePlaylistManager.EventSubscriptionError -= EventSubscriptionErrorHandler;
             iServicePlaylistManager.EventInitial -= EventInitialResponse;
-        }
-
-        public void Kill()
-        {
         }
 
         public string Udn
@@ -559,7 +597,7 @@ namespace Linn.Topology
             {
                 if(p.RefCount == 0)
                 {
-                    Console.WriteLine("Removed playlist " + p.Id);
+                    Trace.WriteLine(Trace.kTopology, "Removed playlist " + p.Id);
                     p.Close();
                     iModelPlaylistList.Remove(p.Id);
                 }

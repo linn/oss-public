@@ -14,7 +14,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <BaseDirectory>..\..\Songcast\Windows\Preferences</BaseDirectory>
+    <BaseDirectory>..\..\Songcast\Linn\Songcast\Windows\Preferences</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -64,22 +64,22 @@
     <Compile Include="..\..\build\Windows\share\Songcast\Preferences\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Songcast\Windows\Preferences\App.xaml.cs">
+    <Compile Include="..\..\Songcast\Linn\Songcast\Windows\Preferences\App.xaml.cs">
       <Link>App.xaml.cs</Link>
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Songcast\Windows\Preferences\MainWindow.xaml.cs">
+    <Compile Include="..\..\Songcast\Linn\Songcast\Windows\Preferences\MainWindow.xaml.cs">
       <Link>MainWindow.xaml.cs</Link>
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="..\..\Songcast\Windows\Preferences\App.xaml">
+    <ApplicationDefinition Include="..\..\Songcast\Linn\Songcast\Windows\Preferences\App.xaml">
       <Link>App.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="..\..\Songcast\Windows\Preferences\MainWindow.xaml">
+    <Page Include="..\..\Songcast\Linn\Songcast\Windows\Preferences\MainWindow.xaml">
       <Link>MainWindow.xaml</Link>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

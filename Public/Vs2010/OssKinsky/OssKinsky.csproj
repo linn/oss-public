@@ -178,6 +178,9 @@
     </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\Playlist.cs">
     </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\PlaylistDisplayHelper.cs">
+      <Link>PlaylistDisplayHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\PlaylistSupport.cs">
     </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\PluginManager.cs">
@@ -197,7 +200,7 @@
     </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\BookmarkManager.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\IconResolver.cs" />
-    <Compile Include="..\..\Kinsky\Linn\Kinsky\RemotePlaylists.cs" />
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\SharedPlaylists.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\SaveSupport.cs" />
   </ItemGroup>
   <ItemGroup>

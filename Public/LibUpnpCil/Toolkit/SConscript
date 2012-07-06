@@ -1,102 +1,23 @@
 Import('_default_env')
 
-files = Split("""
-    Properties/AssemblyInfo.cs
-    Linn/Toolkit/WinForms/Properties/Resources.Designer.cs
-    Linn/Toolkit/WinForms/ProductImages.cs
-    Linn/Toolkit/WinForms/Invoker.cs
-""")
-
-fullFiles = Split("""
-    Linn/Toolkit/WinForms/Full/OptionPageWinForms.cs
-    Linn/Toolkit/WinForms/Full/OptionWinForms.cs
-    Linn/Toolkit/WinForms/Full/FormCrashLogDumper.cs
-    Linn/Toolkit/WinForms/Full/FormCrashLogDumper.Designer.cs
-    Linn/Toolkit/WinForms/Full/FormAboutBox.cs
-    Linn/Toolkit/WinForms/Full/FormAboutBox.Designer.cs
-    Linn/Toolkit/WinForms/Full/FormOptions.cs
-    Linn/Toolkit/WinForms/Full/FormOptions.Designer.cs
-    Linn/Toolkit/WinForms/Full/FormUserLog.cs
-    Linn/Toolkit/WinForms/Full/FormUserLog.Designer.cs 
-    Linn/Toolkit/WinForms/Full/CrashLogDumperForm.cs
-    Linn/Toolkit/WinForms/Full/StackStatusHandlerWinForms.cs
-""")
-
-compactFiles = Split("""
-    Linn/Toolkit/WinForms/Compact/FormCrashLogDumper.cs
-    Linn/Toolkit/WinForms/Compact/FormCrashLogDumper.Designer.cs
-    Linn/Toolkit/WinForms/Compact/FormAboutBox.cs
-    Linn/Toolkit/WinForms/Compact/FormAboutBox.Designer.cs
-    Linn/Toolkit/WinForms/Compact/FormOptions.cs
-    Linn/Toolkit/WinForms/Compact/FormOptions.Designer.cs  
-    Linn/Toolkit/WinForms/Compact/FormUserLog.cs
-    Linn/Toolkit/WinForms/Compact/FormUserLog.Designer.cs 
-    Linn/Toolkit/WinForms/Compact/ITheme.cs 
-    Linn/Toolkit/WinForms/Compact/OptionPageWinForms.cs 
-    Linn/Toolkit/WinForms/Compact/OptionWinForms.cs 
-    Linn/Toolkit/WinForms/Compact/CrashLogDumperForm.cs
-    Linn/Toolkit/WinForms/Compact/StackStatusHandlerCompact.cs
-""")
-
-res = _default_env.Resgen('Linn.Toolkit.WinForms.Properties.Resources.resources', 'Linn/Toolkit/WinForms/Properties/Resources.resx')
-if _default_env['hardware'] == 'PocketPc':
-    files.append(compactFiles)
-    res += _default_env.Resgen('Linn.Toolkit.FormCrashLogDumper.resources', 'Linn/Toolkit/WinForms/Compact/FormCrashLogDumper.resx')
-    res += _default_env.Resgen('Linn.Toolkit.FormOptions.resources', 'Linn/Toolkit/WinForms/Compact/FormOptions.resx')
-else:
-    files.append(fullFiles)
-    res += _default_env.Resgen('Linn.Toolkit.FormAboutBox.resources', 'Linn/Toolkit/WinForms/Full/FormAboutBox.resx')
-    res += _default_env.Resgen('Linn.Toolkit.FormCrashLogDumper.resources', 'Linn/Toolkit/WinForms/Full/FormCrashLogDumper.resx')
-    res += _default_env.Resgen('Linn.Toolkit.FormOptions.resources', 'Linn/Toolkit/WinForms/Full/FormOptions.resx')
-    res += _default_env.Resgen('Linn.Toolkit.FormUserLog.resources', 'Linn/Toolkit/WinForms/Full/FormUserLog.resx')
-
-if _default_env['hardware'] != 'Droid':
-    lib = _default_env.CliLibrary('OssToolkitWinForms', files, CLILIBS=['mscorlib', 'OssCore', 'System', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
-else:
-    files = Split("""
-        Properties/AssemblyInfo.cs
-        Linn\Toolkit\Droid\CrashDumper.cs
-        Linn\Toolkit\Droid\ENotificationType.cs
-        Linn\Toolkit\Droid\Invoker.cs
-        Linn\Toolkit\Droid\Logging.cs
-        Linn\Toolkit\Droid\WifiListener.cs
-        Linn\Toolkit\Droid\AsyncArrayAdaptor.cs
-        Linn\Toolkit\Droid\ImageCache.cs
-        Linn\Toolkit\Droid\ResourceManager.cs
-        Linn\Toolkit\Droid\Popup.cs
-    """)
-    clilibs = ['System', 'System.Xml', 'System.Core', 'Mono.Android', 'OssCore']
-    msproj = _default_env.MSBuildFileGenerator('OssToolkitDroid', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='OssToolkitDroid')
-    lib = _default_env.MSBuildLibBuilder('OssToolkitDroid', msproj, CLILIBS=clilibs)
-    
-filesOsX = Split("""
-    Properties/AssemblyInfo.cs
-    Linn/Toolkit/Cocoa/CrashLogDumperForm.cs
-    Linn/Toolkit/Cocoa/OptionDialogMonobjc.cs
-    Linn/Toolkit/Cocoa/OptionPageMonobjc.cs
-    Linn/Toolkit/Cocoa/OptionMonobjc.cs
-    Linn/Toolkit/Cocoa/UserLogDialogMonobjc.cs
-""")
-
-if _default_env['hardware'] == 'MacOsX':
-    nib = _default_env.IbTool('UserLog.nib', 'Linn/Toolkit/Cocoa/UserLog.xib')
-    nib = _default_env.Install('$install_dir/bin/', nib)
-    
-    cocoaLib = _default_env.CliLibrary('OssToolkitCocoa', filesOsX, CLILIBS=['mscorlib', 'OssCore', 'Monobjc', 'Monobjc.Cocoa'])
-    Depends(cocoaLib, nib)
-    lib += cocoaLib
-    
-filesIos = Split("""
-    Properties/AssemblyInfo.cs
-    Linn/Toolkit/Ios/CrashLogDumper.cs
-    Linn/Toolkit/Ios/Option.cs
-    Linn/Toolkit/Ios/OptionDialog.cs
-    Linn/Toolkit/Ios/StackStatusHandler.cs
-""")
 
 if _default_env['hardware'] == 'Ios':
-    iosLib = _default_env.CliLibrary('OssToolkitIos', filesIos, CLILIBS=['mscorlib', 'OssCore', 'monotouch'])
-    lib += iosLib
+    SConscript('Linn/Toolkit/Ios/SConscript', exports = ['_default_env'])
+
+elif _default_env['hardware'] == 'Android':
+    SConscript('Linn/Toolkit/Droid/SConscript', exports = ['_default_env'])
+
+elif _default_env['hardware'] == 'Windows':
+    SConscript('Linn/Toolkit/WinForms/SConscript', exports = ['_default_env'])
+    SConscript('Linn/Toolkit/Wpf/SConscript', exports = ['_default_env'])
+
+elif _default_env['hardware'] == 'MacOsX':
+    SConscript('Linn/Toolkit/Cocoa/SConscript', exports = ['_default_env'])
+    SConscript('Linn/Toolkit/MonoMac/SConscript', exports = ['_default_env'])
+    SConscript('Linn/Toolkit/WinForms/SConscript', exports = ['_default_env'])
+
+else:
+    SConscript('Linn/Toolkit/WinForms/SConscript', exports = ['_default_env'])
 
 
 filesRes = Split("""
@@ -112,6 +33,7 @@ filesRes = Split("""
     Resources/KlimaxDsIcon.png
     Resources/KlimaxKontrolIcon.png
     Resources/MajikDsiIcon.png
+    Resources/MajikDsmIcon.png
     Resources/MediaServerIcon.png
     Resources/RenewDsIcon.png
     Resources/RoomIcon.png
@@ -123,14 +45,6 @@ resources = _default_env.Install('$variant_dir/share/Linn/Toolkit', filesRes)
 Alias('Resources', resources)
 
 Alias('Lib', resources)
-Alias('Lib', lib)
 Alias('Test', 'Lib')
-
-docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Toolkit.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Toolkit', DOXYGENNAMESPACE='OssToolkit', DOXYGENEXCLUDE='*.svn* Linn/Toolkit/WinForms/Compact')
-_default_env.Depends(docs, files)
-_default_env.Depends(docs, filesOsX)
-_default_env.Depends(docs, filesIos)
-
-Alias('Docs', docs)
-
 Default(['Test','Docs'])
+

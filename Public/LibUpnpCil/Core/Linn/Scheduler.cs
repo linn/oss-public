@@ -126,6 +126,11 @@ namespace Linn
                 {
                     iRunning = false;
                     iFifo.Stop();
+                    for (int i = 0; i < iThreadCount; i++)
+                    {
+                        iThreads[i].Join();
+                        iThreads[i] = null;
+                    }
                 }
             }
         }

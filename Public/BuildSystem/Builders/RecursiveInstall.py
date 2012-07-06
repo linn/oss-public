@@ -33,7 +33,6 @@ Import('env')
 
 def recursive_install(env, path):
     nodes = env.Glob(os.path.join(path, '*'), strings=False)
-    nodes.extend(env.Glob(os.path.join(path, '*.*'), strings=False))
     
     out = []
     for n in nodes:
@@ -45,19 +44,24 @@ def recursive_install(env, path):
     return out
 
 def RecursiveInstall(env, target, dir):
-    nodes = recursive_install(env, dir)
+    # convert the source and target directories to a string path
+    dirPath = env.Dir(dir).abspath
+    targetPath = env.Dir(target).abspath
 
-    dir = env.Dir(dir).abspath
-    target = env.Dir(target).abspath
+    # get a list of all file nodes in the given dir    
+    nodes = recursive_install(env, dirPath)
 
-    l = len(dir) + 1
-
+    # get a list of the relative paths to all files
+    l = len(dirPath) + 1
     relnodes = [ n.abspath[l:] for n in nodes ]
 
+    retNodes = []
     for n in relnodes:
-        t = os.path.join(target, n)
-        s = os.path.join(dir, n)
-        env.InstallAs(env.File(t), env.File(s))
+        t = os.path.join(targetPath, n)
+        s = os.path.join(dirPath, n)
+        retNodes += env.InstallAs(env.File(t), env.File(s))
+
+    return retNodes
 
 def generate(env):
     env.AddMethod(RecursiveInstall)

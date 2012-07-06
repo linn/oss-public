@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
@@ -119,9 +119,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Boxes.cs">
-      <Link>Linn\Topology\Boxes.cs</Link>
-    </Compile>
     <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\DeviceFinder.cs">
       <Link>Linn\Topology\DeviceFinder.cs</Link>
     </Compile>
@@ -208,9 +205,6 @@
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\SourceList.cs">
       <Link>Linn\Topology\SourceList.cs</Link>
-    </Compile>
-    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Tree.cs">
-      <Link>Linn\Topology\Tree.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Topology\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

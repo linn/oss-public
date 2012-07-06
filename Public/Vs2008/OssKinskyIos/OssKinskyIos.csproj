@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <OutputPath>..\..\install\IosSim\debug\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,7 +28,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <OutputPath>..\..\install\IosSim\release\bin\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchLink>None</MtouchLink>
@@ -83,9 +83,6 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="taglib-sharp">
-      <HintPath>..\..\External\taglib-sharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -111,12 +108,12 @@
     <Compile Include="..\..\Kinsky\Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\FileItc2.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\MultipusSourceList.cs" />
-    <Compile Include="..\..\Kinsky\Linn\Kinsky\Framework\Full\UpnpObjectFactory.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\LocalPlaylists.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\BookmarkManager.cs" />
-    <Compile Include="..\..\Kinsky\Linn\Kinsky\RemotePlaylists.cs" />
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\SharedPlaylists.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\SaveSupport.cs" />
     <Compile Include="..\..\Kinsky\Linn\Kinsky\PlaylistSupport.cs" />
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\ItemInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OssTopologyIos\OssTopologyIos.csproj">

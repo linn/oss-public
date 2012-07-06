@@ -25,13 +25,15 @@ def generate(env):
 
     env['MTOUCH']         = env.Detect('/Developer/MonoTouch/usr/bin/mtouch')
     env['_CLILIBS']       = "${_stripixes('-r:$CLILIBPREFIX', CLILIBS, '$CLILIBSUFFIX', '-r', '', __env__)}"
-    env['MTOUCHFLAGS']    = SCons.Util.CLVar('-v --nomanifest --nosign -linksdkonly -sdk="5.0" -targetver="3.2" -aot "nimt-trampolines=2048"')
+    env['MTOUCHFLAGS']    = SCons.Util.CLVar('-v --nomanifest --nosign -linksdkonly -sdk="$ios_sdk" -targetver="3.2" -aot "nimt-trampolines=2048"')
     env['MTOUCHCOM']      = SCons.Action.Action(mtouchcom)
     # these should be under platform specific file
     env['MTOUCHPREFIX']   = ''
     env['MTOUCHSUFFIX']   = '.app'
     
-    env['OPTIMISE']       = env.Detect('/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/iphoneos-optimize')
+    env['OPTIMISE']       = env.Detect('/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/iphoneos-optimize')
+    if (env['OPTIMISE'] == None):
+       env['OPTIMISE']       = env.Detect('/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/iphoneos-optimize')
     env['OPTIMISECOM']    = SCons.Action.Action(optimisecom)
     
     env['CODESIGN']       = env.Detect('codesign')
@@ -49,5 +51,5 @@ def generate(env):
         env.Append(MTOUCHFLAGS = '-sim')
 
 def exists(env):
-    return env.Detect('/Developer/MonoTouch/usr/bin/mtouch') and env.Detect('/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/iphoneos-optimize') and evn.Detect('codesign')
+    return env.Detect('/Developer/MonoTouch/usr/bin/mtouch') and env.Detect('/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/iphoneos-optimize') and evn.Detect('codesign')
     

@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\debug\bin\Plugins\Shoutcast</OutputPath>
+    <OutputPath>..\..\install\IosSim\debug\bin\Plugins\Shoutcast</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\release\bin\Plugins\Shoutcast</OutputPath>
+    <OutputPath>..\..\install\IosSim\release\bin\Plugins\Shoutcast</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchDebug>False</MtouchDebug>

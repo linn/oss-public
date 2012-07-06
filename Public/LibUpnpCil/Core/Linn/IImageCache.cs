@@ -11,6 +11,9 @@ namespace Linn
     {
         ImageType Image { get; }
         int SizeBytes { get; }
+        int ReferenceCount { get; }
+        void IncrementReferenceCount();
+        void DecrementReferenceCount();
     }
 
     public interface IImageLoader<ImageType>
@@ -30,36 +33,57 @@ namespace Linn
         public IImage<ImageType> Image;
     }
 
+    public class EventArgsImageFailure : EventArgs
+    {
+        public EventArgsImageFailure(string aUri)
+        {
+            Uri = aUri;
+        }
+
+        public string Uri;
+    }
+
     public interface IImageCache<ImageType>
     {
         void Clear();
         event EventHandler<EventArgsImage<ImageType>> EventImageAdded;
-        IImage<ImageType> Image(Uri aUri);
+        event EventHandler<EventArgsImageFailure> EventRequestFailed;
+        event EventHandler<EventArgsImageFailure> EventRequestCancelled;
+        IImage<ImageType> Image(string aUri);
         uint MaxCacheSize { get; }
         void Add(string aUri, IImage<ImageType> aImage);
         void Remove(string aUri);
         bool Contains(string aUri);
+        bool IsRunning { get; set; }
+        void CancelRequest(string aUri);
     }
 
     public interface IImageUriConverter
     {
-        Uri Convert(Uri aUri);
+        string Convert(string aUri);
     }
 
     public class ThreadedImageCache<ImageType> : IImageCache<ImageType>
     {
-        public ThreadedImageCache(int aMaxSize, int aDownscaleImageSize, int aThreadCount, IImage<ImageType> aErrorImage, IImageLoader<ImageType> aImageLoader)
+
+        public ThreadedImageCache(int aMaxSize, int aDownscaleImageSize, int aThreadCount, IImageLoader<ImageType> aImageLoader)
+            : this(aMaxSize, aDownscaleImageSize, aThreadCount, aImageLoader, kNoPendingRequestLimit) { }
+
+        public ThreadedImageCache(int aMaxSize, int aDownscaleImageSize, int aThreadCount, IImageLoader<ImageType> aImageLoader, int aPendingRequestLimit)
         {
+            iPendingRequestLimit = aPendingRequestLimit;
             iLockObject = new object();
-            iErrorImage = aErrorImage;
             iDownscaleImageSize = aDownscaleImageSize;
             iMaxCacheSize = aMaxSize;
             iImageCache = new Dictionary<string, IImage<ImageType>>();
+            iImageCacheFailures = new List<string>();
             iImageCacheUsage = new List<string>();
             iImageLoader = aImageLoader;
 
             iEvent = new ManualResetEvent(false);
             iPendingRequests = new List<ImageRequest>();
+            iExecutingRequests = new List<ImageRequest>();
+            iIsRunning = true;
 
             iThreads = new List<Thread>();
 
@@ -73,32 +97,126 @@ namespace Linn
             }
         }
 
-        public IImage<ImageType> Image(Uri aUri)
+        public int DownscaleImageSize
         {
+            set
+            {
+                lock (iLockObject)
+                {
+                    iDownscaleImageSize = value;
+                    Clear(false);
+                }
+            }
+        }
+
+        public IImageLoader<ImageType> ImageLoader
+        {
+            set
+            {
+                Assert.Check(value != null);
+                lock (iLockObject)
+                {
+                    iImageLoader = value;
+                }
+            }
+        }
+
+        public bool IsRunning
+        {
+            get
+            {
+                lock (iLockObject)
+                {
+                    return iIsRunning;
+                }
+            }
+            set
+            {
+                lock (iLockObject)
+                {
+                    iIsRunning = value;
+                    if (value && iPendingRequests.Count > 0)
+                    {
+                        iEvent.Set();
+                    }
+                }
+            }
+        }
+
+        public IImage<ImageType> Image(string aUri)
+        {
+            List<ImageRequest> cancelledRequests = new List<ImageRequest>();
+            bool inFailedList = false;
+            IImage<ImageType> image = null;
             lock (iLockObject)
             {
-                IImage<ImageType> image;
-                string key = aUri.OriginalString;
-                if (!iImageCache.TryGetValue(key, out image))
+                if (!iImageCache.TryGetValue(aUri, out image))
                 {
-                    ImageRequest request = iPendingRequests.Find((i) => { return (i.Uri == key); });
-                    if (request != null)
+                    if (iExecutingRequests.Find((i) => { return (i.Uri == aUri); }) == null)
                     {
-                        iPendingRequests.Remove(request);
+                        ImageRequest request = iPendingRequests.Find((i) => { return (i.Uri == aUri); });
+                        if (request != null)
+                        {
+                            iPendingRequests.Remove(request);
+                            request.Count += 1;
+                        }
+
+                        iPendingRequests.Insert(0, request != null ? request : new ImageRequest() { Uri = aUri } );
                     }
-                    iPendingRequests.Insert(0, new ImageRequest() { Uri = key });
 
-                    image = null;
+                    while (iPendingRequestLimit != kNoPendingRequestLimit && iPendingRequests.Count > iPendingRequestLimit)
+                    {
+                        ImageRequest cancelled = iPendingRequests[iPendingRequests.Count - 1];
+                        cancelledRequests.Add(cancelled);
+                        iPendingRequests.RemoveAt(iPendingRequests.Count - 1);
+                    }
 
-                    iEvent.Set();
+                    if (IsRunning)
+                    {
+                        iEvent.Set();
+                    }
+                }
+                else if (iImageCacheFailures.Contains(aUri))
+                {
+                    inFailedList = true;
                 }
                 else
                 {
-                    iImageCacheUsage.Remove(key);
-                    iImageCacheUsage.Add(key);
+                    iImageCacheUsage.Remove(aUri);
+                    iImageCacheUsage.Add(aUri);
                 }
 
-                return image;
+            }
+            foreach (ImageRequest cancelled in cancelledRequests)
+            {
+                OnEventRequestCancelled(cancelled.Uri);
+            }
+            if (inFailedList)
+            {
+                OnEventRequestFailed(aUri);
+            }
+            return image;
+        }
+
+        public void CancelRequest(string aUri)
+        {
+            ImageRequest cancelled = null;
+            lock (iLockObject)
+            {
+                ImageRequest request = iPendingRequests.Find((i) => { return (i.Uri == aUri); });
+                if (request != null)
+                {
+                    request.Count -= 1;
+                    if (request.Count == 0)
+                    {
+                        iPendingRequests.Remove(request);
+                        cancelled = request;
+                    }
+                }
+            }
+            if (cancelled != null)
+            {
+                OnEventRequestCancelled(cancelled.Uri);
             }
         }
 
@@ -112,11 +230,25 @@ namespace Linn
 
         public void Clear()
         {
+            Clear(true);
+        }
+
+        public void Clear(bool aClearPending)
+        {
             lock (iLockObject)
             {
-                iPendingRequests.Clear();
+                foreach (IImage<ImageType> image in iImageCache.Values)
+                {
+                    image.DecrementReferenceCount();
+                }
+                if (aClearPending)
+                {
+                    iPendingRequests.Clear();
+                }
                 iImageCache.Clear();
                 iImageCacheUsage.Clear();
+                iImageCacheFailures.Clear();
+                iCurrentCacheSize = 0;
             }
         }
 
@@ -129,6 +261,7 @@ namespace Linn
                     int imageSize = aImage.SizeBytes;
                     iCurrentCacheSize += imageSize;
                     iImageCache.Add(aUri, aImage);
+                    aImage.IncrementReferenceCount();
                     iImageCacheUsage.Add(aUri);
                     RemoveStaleCacheItems();
                 }
@@ -145,6 +278,11 @@ namespace Linn
                     iImageCache.Remove(aUri);
                     iImageCacheUsage.Remove(aUri);
                     iCurrentCacheSize -= image.SizeBytes;
+                    image.DecrementReferenceCount();
+                }
+                else if (iImageCacheFailures.Contains(aUri))
+                {
+                    iImageCacheFailures.Remove(aUri);
                 }
             }
         }
@@ -156,7 +294,10 @@ namespace Linn
                 return (uint)iMaxCacheSize;
             }
         }
+
         public event EventHandler<EventArgsImage<ImageType>> EventImageAdded;
+        public event EventHandler<EventArgsImageFailure> EventRequestFailed;
+        public event EventHandler<EventArgsImageFailure> EventRequestCancelled;
 
         private void ProcessRequests()
         {
@@ -166,32 +307,34 @@ namespace Linn
 
                 Monitor.Enter(iLockObject);
 
-                if (iPendingRequests.Count > 0)
+                if (iPendingRequests.Count > 0 && IsRunning)
                 {
                     ImageRequest request = iPendingRequests[0];
+                    IImageLoader<ImageType> loader = iImageLoader;
                     iPendingRequests.Remove(request);
-
+                    iExecutingRequests.Add(request);
                     Monitor.Exit(iLockObject);
-                    IImage<ImageType> img = iErrorImage;
-                    bool failed = true;
                     try
                     {
-                        img = iImageLoader.LoadImage(new Uri(request.Uri), iDownscaleImageSize);
-                        failed = false;
+                        IImage<ImageType> img = loader.LoadImage(new Uri(request.Uri), iDownscaleImageSize);
+                        img.IncrementReferenceCount();
+                        lock (iLockObject)
+                        {
+                            Add(request.Uri, img);
+                            iExecutingRequests.Remove(request);
+                        }
+                        OnEventImageAdded(request, img);
+                        img.DecrementReferenceCount();
                     }
                     catch (Exception ex)
                     {
                         UserLog.WriteLine("Error downloading image: " + request.Uri + ", " + ex.ToString());
-                    }
-                    if (!failed)
-                    {
-                        Add(request.Uri, img);
-                    }
-
-                    EventHandler<EventArgsImage<ImageType>> handler = EventImageAdded;
-                    if (handler != null)
-                    {
-                        handler(this, new EventArgsImage<ImageType>(request.Uri, img));
+                        lock (iLockObject)
+                        {
+                            iImageCacheFailures.Add(request.Uri);
+                            iExecutingRequests.Remove(request);
+                        }
+                        OnEventRequestFailed(request.Uri);
                     }
                 }
                 else
@@ -199,6 +342,33 @@ namespace Linn
                     iEvent.Reset();
                     Monitor.Exit(iLockObject);
                 }
+            }
+        }
+
+        private void OnEventImageAdded(ImageRequest aRequest, IImage<ImageType> aImage)
+        {
+            EventHandler<EventArgsImage<ImageType>> del = EventImageAdded;
+            if (del != null)
+            {
+                del(this, new EventArgsImage<ImageType>(aRequest.Uri, aImage));
+            }
+        }
+
+        private void OnEventRequestFailed(string aUri)
+        {
+            EventHandler<EventArgsImageFailure> del = EventRequestFailed;
+            if (del != null)
+            {
+                del(this, new EventArgsImageFailure(aUri));
+            }
+        }
+
+        private void OnEventRequestCancelled(string aUri)
+        {
+            EventHandler<EventArgsImageFailure> del = EventRequestCancelled;
+            if (del != null)
+            {
+                del(this, new EventArgsImageFailure(aUri));
             }
         }
 
@@ -219,18 +389,27 @@ namespace Linn
         private object iLockObject;
         private int iMaxCacheSize;
         private Dictionary<string, IImage<ImageType>> iImageCache;
+        private List<string> iImageCacheFailures;
         private List<string> iImageCacheUsage;
         private ManualResetEvent iEvent;
         private List<Thread> iThreads;
         private List<ImageRequest> iPendingRequests;
         private int iCurrentCacheSize;
         private int iDownscaleImageSize;
-        private IImage<ImageType> iErrorImage;
         private IImageLoader<ImageType> iImageLoader;
+        private bool iIsRunning;
+        private const int kNoPendingRequestLimit = ~0;
+        private int iPendingRequestLimit;
+        private List<ImageRequest> iExecutingRequests;
 
         private class ImageRequest
         {
+            public ImageRequest()
+            {
+                Count = 1;
+            }
             public string Uri { get; set; }
+            public int Count { get; set; }
         }
     }
 
@@ -248,7 +427,7 @@ namespace Linn
             {
                 if (iUriConverter != null)
                 {
-                    aUri = iUriConverter.Convert(aUri);
+                    aUri = new Uri(iUriConverter.Convert(aUri.OriginalString));
                 }
                 using (Stream imgData = web.OpenRead(aUri))
                 {
@@ -276,7 +455,7 @@ namespace Linn
     {
         #region IImageUriConverter Members
 
-        public Uri Convert(Uri aUri)
+        public string Convert(string aUri)
         {
             return aUri;
         }
@@ -284,35 +463,74 @@ namespace Linn
         #endregion
     }
 
-    public class ArtworkDownscalingUriConverter : IImageUriConverter
+    public class ScalingUriConverter : IImageUriConverter
     {
-        public ArtworkDownscalingUriConverter(int aDownscaleSize)
+        // aScaleByWidthAndHeight - flag to turn off scaling by width/height as twonky is SLOW in this mode and degrades browser artwork performance
+        // iUpscaleOnly - flag to prevent scaling if scaling will result in a lower resolution image being returned
+        public ScalingUriConverter(int aDesiredSize, bool aScaleByWidthAndHeight, bool aUpscaleOnly)
         {
-            iDownscaleSize = aDownscaleSize;
-            iDownscaleRegex = new Regex(string.Format("(?'before'([?&]{0}=)[0-9][0-9]*)", kSizeQuery), RegexOptions.Compiled);
+            iDesiredSize = aDesiredSize;
+            iUpscaleOnly = aUpscaleOnly;
+            iScaleByWidthAndHeight = aScaleByWidthAndHeight;
+            iSizeRegex = new Regex("(?<prefix>(.*?[?&]size=))(?<size>([0-9]+))(?<suffix>(.*?))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            iWidthHeightRegex = new Regex("(?<prefix>(.*?/W))(?<width>([0-9]+))(?<middle>(/H))(?<height>([0-9]+))(?<suffix>(/.*?))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
-        #region IImageUriConverter Members
-
-        public Uri Convert(Uri aUri)
+        public string Convert(string aUri)
         {
-            string query = aUri.Query;
-            if (iDownscaleRegex.IsMatch(query))
+            try
             {
-                query = iDownscaleRegex.Replace(query, string.Format("?{0}={1}", "Size", iDownscaleSize));
+                if (iSizeRegex.IsMatch(aUri))
+                {
+                    Match m = iSizeRegex.Match(aUri);
+                    double size = double.Parse(m.Groups["size"].Value);
+                    if (!iUpscaleOnly || (size != 0 && size < iDesiredSize))
+                    {
+                        aUri = iSizeRegex.Replace(aUri, string.Format("${{prefix}}{0}${{suffix}}", iDesiredSize));
+                    }
+                }
+                else if (iScaleByWidthAndHeight && iWidthHeightRegex.IsMatch(aUri))
+                {
+                    Match m = iWidthHeightRegex.Match(aUri);
+                    double width = double.Parse(m.Groups["width"].Value);
+                    double height = double.Parse(m.Groups["height"].Value);
+                    if (!iUpscaleOnly || (width < iDesiredSize && height < iDesiredSize))
+                    {
+                        if (width == height)
+                        {
+                            width = iDesiredSize;
+                            height = iDesiredSize;
+                        }
+                        else
+                        {
+                            if (width > height)
+                            {
+                                width = iDesiredSize;
+                                height = (int)(iDesiredSize * (height / width));
+                            }
+                            else
+                            {
+                                width = (int)(iDesiredSize * (width / height));
+                                height = iDesiredSize;
+                            }
+                        }
+                        aUri = iWidthHeightRegex.Replace(aUri, string.Format("${{prefix}}{0}${{middle}}{1}${{suffix}}", width, height));
+                    }
+                }
             }
-            if (!string.IsNullOrEmpty(aUri.Query))
+            catch (Exception ex)
             {
-                return new Uri(aUri.AbsoluteUri.Replace(aUri.Query, query));
+                UserLog.WriteLine("Error caught parsing uri: " + aUri + ", " + ex);
             }
             return aUri;
         }
 
-        #endregion
 
-        private Regex iDownscaleRegex;
-        private int iDownscaleSize;
-        private const string kSizeQuery = "size";
+        private int iDesiredSize;
+        private Regex iWidthHeightRegex;
+        private Regex iSizeRegex;
+        private bool iUpscaleOnly;
+        private bool iScaleByWidthAndHeight;
     }
 
 

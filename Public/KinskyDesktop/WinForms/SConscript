@@ -1,4 +1,4 @@
-Import('_default_env kVersion')
+Import('_default_env kBuildInfo appAssemblyInfo')
 
 files = Split("""
     Installer/Header.bmp
@@ -7,7 +7,6 @@ files = Split("""
 installerResources = _default_env.Install('$variant_dir/share/Linn/Kinsky/WinForms', files)
 
 files = Split("""
-    Properties/AssemblyInfo.cs
     Properties/Settings.Designer.cs
     Forms/FormAboutBox.cs
     Forms/FormAboutBox.Designer.cs
@@ -74,6 +73,8 @@ files = Split("""
     Views.cs
 """)
 
+files += appAssemblyInfo
+
 res  = _default_env.Resgen('KinskyDesktop.Properties.Resources.resources', 'Properties/Resources.resx')
 res += _default_env.Resgen('KinskyDesktop.Widgets.ButtonControl.resources', 'Widgets/ButtonControl.resx')
 res += _default_env.Resgen('KinskyDesktop.Widgets.ButtonControlBiState.resources', 'Widgets/ButtonControlBiState.resx')
@@ -137,7 +138,7 @@ if _default_env['installers'] and _default_env['hardware'] == 'Windows':
                                         'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish.bmp'),
                                         'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
                         PRODUCT      = 'Kinsky',
-                        VERSION      = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
                         CERT         = '',
                         LAUNCHFILE   = 'KinskyWinForms.exe')
 
@@ -152,7 +153,8 @@ if _default_env['installers'] and _default_env['hardware'] == 'Linux':
                         DESCRIPTION  = 'Desktop UPnP control point',
                         CATEGORIES   = 'AudioVideo;Audio;Video;Player;',
                         PRODUCT      = 'Kinsky',
-                        VERSION      = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
+                        TYPE         = kBuildInfo['BUILD_INFO_TYPE'],
                         LAUNCHFILE   = 'KinskyWinForms.exe')
 
 if _default_env['installers'] and _default_env['hardware'] == 'MacOsX':
@@ -163,7 +165,7 @@ if _default_env['installers'] and _default_env['hardware'] == 'MacOsX':
                         ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
                         DESCRIPTION  = 'Desktop UPnP control point',
                         PRODUCT      = 'KinskyWinForms',
-                        VERSION      = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
                         LAUNCHFILE   = 'KinskyWinForms.exe')
 
 Depends(installer, installerResources)

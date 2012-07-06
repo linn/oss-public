@@ -12,12 +12,12 @@
         <sys:String x:Key="SelectRoomText">Select a room</sys:String>
 
         <DataTemplate DataType="{x:Type kd:RoomViewModel}">
-            <Grid x:Name="grid" Margin="10" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" >
+            <Grid x:Name="grid" Margin="6,10,10,10" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" >
                 <DockPanel Margin="0,0,20,0">
-                    <Image Source="{Binding ImageSource}" Width="40" DockPanel.Dock="Left" />
-                    <Grid Margin="0,0,5,0" VerticalAlignment="Center" DockPanel.Dock="Right">
-                        <Button x:Name="btnStandby" Visibility="{Binding Path=IsSelected, Converter={StaticResource BooleanVisibilityValueConverter}}" Style="{DynamicResource StandbyButtonStyle}" Click="btnStandby_Click" />
+                    <Grid Margin="0,0,5,0" VerticalAlignment="Center" >
+                        <Button x:Name="btnStandby" IsEnabled="{Binding Path=WrappedItem.Standby, Converter={StaticResource BooleanNegatingConverter}}" Style="{DynamicResource StandbyButtonStyle}" Click="btnStandby_Click" />
                     </Grid>
+                    <Image x:Name="tick" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceTick}}" Width="20" DockPanel.Dock="Right" Visibility="{Binding Path=IsSelected, Converter={StaticResource BooleanVisibilityValueConverter}}" />
                     <TextBlock x:Name="txtName"
                                     Text="{Binding Path=Name}"    
                                     Foreground="{DynamicResource TextBrush}"
@@ -34,33 +34,29 @@
                 <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                     <Setter Property="Control.Visibility" Value="Collapsed" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
-                    <Setter TargetName="grid" Property="Control.Background" Value="{DynamicResource HighlightBrush}" />
-                </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type kd:SourceViewModel}">
             <Grid x:Name="grid" Margin="10" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" >
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="{Binding ImageSource}" Width="40" />
+                <DockPanel Margin="0,0,20,0">
+                    <Image Source="{Binding ImageSource}" Width="40" DockPanel.Dock="Left" />
+                    <Image x:Name="tick" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceTick}}" Width="20" DockPanel.Dock="Right" Visibility="{Binding Path=IsSelected, Converter={StaticResource BooleanVisibilityValueConverter}}" />
                     <TextBlock x:Name="txtName"
                                     Text="{Binding Path=Name}"    
                                     Foreground="{DynamicResource TextBrush}"
-                                    TextAlignment="Center" 
+                                    TextAlignment="Left" 
                                     VerticalAlignment="Center"
                                     Margin="5"
                                     TextWrapping="Wrap"
                                     Height="30"
+                                    DockPanel.Dock="Left"
                                 />
-                </StackPanel>
+                </DockPanel>
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=IsVisible}" Value="False">
                     <Setter Property="Control.Visibility" Value="Collapsed" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
-                    <Setter TargetName="grid" Property="Control.Background" Value="{DynamicResource HighlightBrush}" />
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
@@ -114,7 +110,12 @@
         <Popup x:Name="popupRoomSelection" Width="400" Height="{Binding Path=ActualHeight, ElementName=pnlPlaylist}" kd:PopupExtensions.DesiredHorizontalPlacement="{x:Static Dock.Right}">
             <HeaderedContentControl Style="{StaticResource PopupFrame}" Margin="0,0,0,10">
                 <HeaderedContentControl.Header>
-                    <TextBlock Text="Room Selection" FontSize="{DynamicResource LargeFontSize}" HorizontalAlignment="Center" Margin="0,10,0,0" />
+                    <DockPanel LastChildFill="True" Margin="0,-8,0,0">
+                        <Button x:Name="btnStandbyAll" Style="{DynamicResource StandbyButtonStyle}" DockPanel.Dock="Left" HorizontalAlignment="Center" ToolTip="Put all rooms into standby" Margin="7,0,10,0" />
+                        <Button x:Name="btnRefreshRooms" Style="{DynamicResource RefreshButtonStyle}" HorizontalAlignment="Center" DockPanel.Dock="Right" Margin="10,0,4,0" Click="btnRefresh_Click" />
+                        <kd:IndeterminateProgressBar x:Name="progressRefreshRooms" Width="30" DockPanel.Dock="Right" Margin="3,0,1,0" Visibility="Collapsed" />
+                        <TextBlock Text="Rooms" FontSize="{DynamicResource LargeFontSize}" HorizontalAlignment="Center" Margin="0,13,0,0" />
+                    </DockPanel>
                 </HeaderedContentControl.Header>
                 <HeaderedContentControl.Content>
                     <ListView x:Name="lstRooms" Grid.Row="1"  Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,5" BorderThickness="0" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
@@ -131,9 +132,11 @@
         <Popup x:Name="popupSourceSelection" Width="400" Height="{Binding Path=ActualHeight, ElementName=pnlPlaylist}">
             <HeaderedContentControl Style="{StaticResource PopupFrame}" Margin="0,0,0,10">
                 <HeaderedContentControl.Header>
-                    <Grid>
-                        <TextBlock x:Name="sourceSelectionHeader" Text="Source Selection" FontSize="{DynamicResource LargeFontSize}" HorizontalAlignment="Center" Margin="0,10,0,0" />
-                    </Grid>
+                    <DockPanel LastChildFill="True" Margin="0,-8,0,0">
+                        <Button x:Name="btnRefreshSources" Style="{DynamicResource RefreshButtonStyle}"  DockPanel.Dock="Right" Margin="10,0,4,0" Click="btnRefresh_Click" />
+                        <kd:IndeterminateProgressBar x:Name="progressRefreshSources" Width="30" DockPanel.Dock="Right" Margin="3,0,1,0" Visibility="Collapsed" />
+                        <TextBlock x:Name="sourceSelectionHeader" Text="Sources" FontSize="{DynamicResource LargeFontSize}" HorizontalAlignment="Center" Margin="0,13,0,0" />
+                    </DockPanel>
                 </HeaderedContentControl.Header>
                 <HeaderedContentControl.Content>
                     <Grid Background="{DynamicResource BackgroundBrush}" Margin="0,0,0,5">
@@ -149,7 +152,7 @@
             </HeaderedContentControl>
         </Popup>
         <!-- ADD BOOKMARK POPUP -->
-        <Popup x:Name="popupAddBookmark" Width="400" Height="150" kd:PopupExtensions.DesiredHorizontalPlacement="{x:Static Dock.Left}" kd:PopupExtensions.DesiredVerticalPlacement="{x:Static Dock.Bottom}">
+        <Popup x:Name="popupAddBookmark" Width="400" Height="150" kd:PopupExtensions.DesiredHorizontalPlacement="{x:Static Dock.Left}" kd:PopupExtensions.DesiredVerticalPlacement="{x:Static Dock.Bottom}" FocusManager.FocusedElement="{Binding ElementName=buttonAddBookmark}">
             <HeaderedContentControl Style="{StaticResource PopupFrame}" Margin="0,0,0,10">
                 <HeaderedContentControl.Header>
                     <TextBlock DockPanel.Dock="Left" Text="Add Bookmark" FontSize="{DynamicResource LargeFontSize}" HorizontalAlignment="Center" Margin="0,10,0,0" />

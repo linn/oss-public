@@ -13,6 +13,12 @@ using Linn.Kinsky;
 namespace KinskyDesktopWpf
 {
 
+    public interface IImageFetch
+    {
+        bool RequiresImageFetch { get; }
+        void FetchImage();
+    }
+
     public abstract class LazyLoadingList<ViewModelType, ContentType>
         : IList<ViewModelType>,
         INotifyCollectionChanged,
@@ -20,7 +26,7 @@ namespace KinskyDesktopWpf
         ICollectionViewFactory,
         ICollectionView,
         IDisposable
-        where ViewModelType : class
+        where ViewModelType : class, IImageFetch
     {
 
         private ViewModelType[] iCachedItems;
@@ -34,44 +40,70 @@ namespace KinskyDesktopWpf
         private IContentCollector<ContentType> iContentCollector;
         private Dispatcher iDispatcher;
         private bool iDisposed;
+        private bool iOpen;
+        private object iLock;
 
         public LazyLoadingList(IContentCollector<ContentType> aContentCollector, Dispatcher aDispatcher)
         {
+            iLock = new object();
+            iPlaceholderItem = CreateViewModel(default(ContentType));
             iCachedItems = new ViewModelType[0];
             iCount = 0;
             iDispatcher = aDispatcher;
             iContentCollector = aContentCollector;
             iContentCollector.EventOpened += iContentCollector_EventOpened;
             iContentCollector.EventItemsLoaded += iContentCollector_EventItemsLoaded;
-            iPlaceholderItem = CreateViewModel(default(ContentType));
         }
 
         public abstract ViewModelType CreateViewModel(ContentType aItem);
 
         void iContentCollector_EventItemsLoaded(object sender, EventArgsItemsLoaded<ContentType> e)
         {
-            iDispatcher.BeginInvoke((Action)(() =>
+            List<ViewModelType> models = new List<ViewModelType>();
+            bool added = false;
+            lock (iLock)
             {
-                if (!iDisposed)
+                if (iOpen && !iDisposed)
                 {
-                    Assert.Check(iCachedItems != null);
+                    Assert.Check(iCachedItems.Length > e.StartIndex + (e.Items.Count - 1));
                     for (int i = 0; i < e.Items.Count; i++)
                     {
-                        int index = e.StartIndex + i;
-                        ViewModelType previous = iCachedItems[index];
-                        if (previous == null || previous == iPlaceholderItem)
+                        if (iCachedItems[e.StartIndex + i] == iPlaceholderItem)
                         {
-                            ViewModelType wrappedItem = CreateViewModel(e.Items[i]);
-                            this[index] = wrappedItem;
+                            added = true;
+                            break;
                         }
                     }
                 }
-            }), DispatcherPriority.SystemIdle);
+            }
+            if (added)
+            {
+                for (int i = 0; i < e.Items.Count; i++)
+                {
+                    models.Add(CreateViewModel(e.Items[i]));
+                }
+                iDispatcher.BeginInvoke((Action)(() =>
+                {
+                    lock (iLock)
+                    {
+                        if (iOpen && !iDisposed)
+                        {
+                            for (int i = 0; i < e.Items.Count; i++)
+                            {
+                                int index = e.StartIndex + i;
+                                iCachedItems[index] = models[i];
+                                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, models[i], iPlaceholderItem, index));
+                            }
+                        }
+                    }
+                }));
+            }
         }
 
         void iContentCollector_EventOpened(object sender, EventArgs e)
         {
-            iDispatcher.BeginInvoke((Action)(() =>
+
+            lock (iLock)
             {
                 if (!iDisposed)
                 {
@@ -81,11 +113,18 @@ namespace KinskyDesktopWpf
                     {
                         iCachedItems[i] = iPlaceholderItem;
                     }
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                    OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-                    OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+                    iOpen = true;
+                    iDispatcher.BeginInvoke((Action)(() =>
+                    {
+                        if (!iDisposed)
+                        {
+                            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                            OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+                            OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+                        }
+                    }));
                 }
-            }));
+            }
         }
 
         #region IList<T> Members
@@ -118,25 +157,38 @@ namespace KinskyDesktopWpf
         {
             get
             {
-                Assert.Check(index < iCachedItems.Length);
-                if (iCachedItems[index] != iPlaceholderItem)
+                lock (iLock)
                 {
-                    return iCachedItems[index];
+                    Assert.Check(index < iCachedItems.Length);
+                    if (iCachedItems[index] != iPlaceholderItem)
+                    {
+                        if (iCachedItems[index].RequiresImageFetch)
+                        {
+                            iCachedItems[index].FetchImage();
+                        }
+                        return iCachedItems[index];
+                    }
+                    ContentType cachedItem = iContentCollector.Item(index, ERequestPriority.Foreground);
+                    if (cachedItem != null)
+                    {
+                        ViewModelType wrappedItem = CreateViewModel(cachedItem);
+                        iCachedItems[index] = wrappedItem;
+                        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, wrappedItem, iPlaceholderItem, index));
+                        return wrappedItem;
+                    }
+                    return iPlaceholderItem;
                 }
-                ContentType cachedItem = iContentCollector.Item(index, ERequestPriority.Foreground);
-                if (cachedItem != null)
-                {
-                    ViewModelType wrappedItem = CreateViewModel(cachedItem);
-                    iCachedItems[index] = wrappedItem;
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, wrappedItem, iPlaceholderItem, index));
-                    return wrappedItem;
-                }
-                return iPlaceholderItem;
             }
             set
             {
-                iCachedItems[index] = value;
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, iPlaceholderItem, index));
+                lock (iLock)
+                {
+                    if (iCachedItems[index] == iPlaceholderItem)
+                    {
+                        iCachedItems[index] = value;
+                        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, iPlaceholderItem, index));
+                    }
+                }
             }
         }
 
@@ -185,9 +237,14 @@ namespace KinskyDesktopWpf
 
         public IEnumerator<ViewModelType> GetEnumerator()
         {
-            for (int i = 0; i < Count; i++)
+            ViewModelType[] viewModels;
+            lock (iLock)
             {
-                yield return iCachedItems[i];
+                viewModels = iCachedItems;
+            }
+            for (int i = 0; i < viewModels.Length; i++)
+            {
+                yield return viewModels[i];
             }
         }
 
@@ -469,10 +526,13 @@ namespace KinskyDesktopWpf
 
         public void Dispose()
         {
-            iDisposed = true;
-            iContentCollector.EventOpened -= iContentCollector_EventOpened;
-            iContentCollector.EventItemsLoaded -= iContentCollector_EventItemsLoaded;
-            iCount = 0;
+            lock (iLock)
+            {
+                iDisposed = true;
+                iContentCollector.EventOpened -= iContentCollector_EventOpened;
+                iContentCollector.EventItemsLoaded -= iContentCollector_EventItemsLoaded;
+                iCount = 0;
+            }
         }
 
         #endregion

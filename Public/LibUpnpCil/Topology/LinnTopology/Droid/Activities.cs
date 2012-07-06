@@ -170,13 +170,13 @@ namespace LinnTopologyDroid
             iSourceList.Adapter = iSourceListAdapter;
         }
 
-        void SourceListItemClick(object sender, ItemEventArgs e)
+        void SourceListItemClick(object sender, Android.Widget.AdapterView.ItemClickEventArgs e)
         {
             ISource source = iSourceListAdapter.GetItem(e.Position);
             source.Select();
         }
 
-        void RoomListItemClick(object sender, ItemEventArgs e)
+        void RoomListItemClick(object sender, Android.Widget.AdapterView.ItemClickEventArgs e)
         {
             e.View.Selected = true;
             iRoomListAdapter.NotifyDataSetChanged();

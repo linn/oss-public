@@ -70,10 +70,6 @@ namespace Linn.Topology
             iServiceSdp.EventInitial -= EventInitialResponse;
         }
 
-        public override void Kill()
-        {
-        }
-
         public override string Name
         {
             get

@@ -111,10 +111,6 @@ namespace Linn.Topology
             iServiceContentDirectory.EventInitial -= EventInitialResponse;
         }
 
-        public void Kill()
-        {
-        }
-
         public string Udn
         {
             get

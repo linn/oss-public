@@ -48,9 +48,22 @@ namespace KinskyDesktop
             xform2.RotateByDegrees(-45.0f * (numIntervals % 8));
             xform2.Concat();
 
-            NSAffineTransform xform3 = new NSAffineTransform();
-            xform3.TranslateXByYBy(-frgd.Size.width * 0.5f, -frgd.Size.height * 0.5f);
-            xform3.Concat();
+            bool scale = Bounds.Width < frgd.Size.width || Bounds.Height < frgd.Size.height;
+            NSAffineTransform xform3 = null;
+            if (scale)
+            {
+                float scaleX = Bounds.Width / frgd.Size.width;
+                float scaleY = Bounds.Height / frgd.Size.height;
+                float ratio = scaleX > scaleY ? scaleX : scaleY;
+                xform3 = new NSAffineTransform();
+                xform3.ScaleBy(ratio);
+                xform3.Concat();
+            }
+
+            NSAffineTransform xform4 = new NSAffineTransform();
+            xform4.TranslateXByYBy(-frgd.Size.width * 0.5f, -frgd.Size.height * 0.5f);
+            xform4.Concat();
+
 
             // draw background and foreground
             bkgd.DrawAtPointFromRectOperationFraction(Bounds.origin, NSRect.NSZeroRect, NSCompositingOperation.NSCompositeSourceOver, 1.0f);
@@ -59,7 +72,11 @@ namespace KinskyDesktop
             // clean up
             xform1.Release();
             xform2.Release();
-            xform3.Release();
+            if (scale)
+            {
+                xform3.Release();
+            }
+            xform4.Release();
             context.RestoreGraphicsState();
 
             // schedule another timer event

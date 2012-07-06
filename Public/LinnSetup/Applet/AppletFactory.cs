@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Linn;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
     public abstract class AppletFactory
     {
-        public abstract Applet Create(Target aTarget, EventServerUpnp aEventServer);
+        public abstract Applet Create(Target aTarget);
 
         public AppletFactory(string aName) {
             iName = aName;

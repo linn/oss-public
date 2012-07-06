@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Linn;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
@@ -14,7 +15,7 @@ namespace LinnSetup
         public AppletFactoryReflash() : base("Reflash") {
         }
 
-        public override Applet Create(Target aTarget, EventServerUpnp aEventServer) {
+        public override Applet Create(Target aTarget) {
             return new AppletReflash(aTarget);
         }
     }
@@ -32,7 +33,7 @@ namespace LinnSetup
 
         public override void Activate() {
             if (iUi == null) {
-                iUi = new Reflash();
+                iUi = new Reflash(base.Target);
                 base.Target.EventBoxChanged += BoxChangedHandler;
             }
         }
@@ -41,6 +42,12 @@ namespace LinnSetup
         }
 
         protected override void BoxChangedHandler(object obj, EventArgsBox e) {
+            if (e.BoxArg.State != Box.EState.eOff && !e.BoxArg.IsProxy) {
+                iUi.Enable();
+            }
+            else {
+                iUi.Disable();
+            }
         }
 
         protected Reflash iUi = null;

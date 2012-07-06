@@ -18,8 +18,9 @@ var accordionOptions =  {
         });
     }
 };
-var isReleaseBuild = kBuildVariant == "release";
+var isReleaseBuild = (kBuildVariant == "release");
 var isSerivceSpecified = false;
+var showTopLevelTabs = true;
                         
 $(document).ready(function () {
     if (!isReleaseBuild){
@@ -49,11 +50,23 @@ $(document).ready(function () {
     }
     $("#tabHeaders").tabs("#tabs > div");
     
+    var width = (isIPad ? '1000px' : '800px')
+    $("#container").css('max-width', width);
+    
     var qs = GetQueryString();
     var service = "Ds";
     if (qs.service){
         service = qs.service;
         isSerivceSpecified = true;
+    }
+    if (qs.device == "Preamp") {
+    	service = "Preamp"; // allow Preamp devices without service having to be explicitly defined
+    }
+    
+    if (isIPad && isSerivceSpecified) {
+    	showTopLevelTabs = false;
+    	$("#header").remove();
+    	$("#tabUpload").remove();
     }
 
     containers[service] = AppendContainer(service, true);
@@ -77,7 +90,9 @@ function ShowUploadMessage(aMessage) {
 function RemoveContainer(aService){
     containers[aService].Stop();
     delete containers[aService];
-    $("#lnkTab" + aService).remove();
+    if (showTopLevelTabs) {
+        $("#lnkTab" + aService).remove();
+    }
     $("#tab" + aService).remove();
 }
 
@@ -129,7 +144,12 @@ function AppendContainer(aService, aIsMainTab){
 }
 
 function CreateContainerHtml(aService) {
-	if ($("lnkTab" + aService).length == 0 && $("#tab" + aService).length == 0) {
+	var lnkTabServiceLength = 0;
+	if (showTopLevelTabs) {
+		lnkTabServiceLength = $("lnkTab" + aService).length;
+	}
+	
+	if (lnkTabServiceLength == 0 && $("#tab" + aService).length == 0) {
 		var tabName = aService;
 	    if (aService == "Cd") {
 	        tabName = "Disc Player";
@@ -138,27 +158,39 @@ function CreateContainerHtml(aService) {
 	    var tab = $("<div id='tab" + aService + "'><ul id='header" + aService + "' class='header'/><div id='body" + aService + "' class='body'/></div>");        
 	
 	    if (isReleaseBuild){
-	        $("#tabHeaders").append(link);
+	    	if (showTopLevelTabs) {
+	           $("#tabHeaders").append(link);
+	    	}
 	        $("#tabs").append(tab);
 	    }else{
-	        $("#lnkTabUpload").before(link);
-	        $("#tabUpload").before(tab);
+	    	if (showTopLevelTabs) {
+	           $("#lnkTabUpload").before(link);
+	           $("#tabUpload").before(tab);
+	    	}
+	    	else {
+	    	   $("#tabs").append(tab);
+	    	}
 	    }
-	    $("#tabHeaders").data("tabs").destroy();
-	    $("#tabHeaders").tabs("#tabs > div");
+	    if (showTopLevelTabs) {
+		    $("#tabHeaders").data("tabs").destroy();
+		    $("#tabHeaders").tabs("#tabs > div");
+	    }
 	}
 }
 
 function RefreshDeviceInfo(aContainer, aService){
 	// load logo image from device (MaufacturerImageUri), create image link to ManufacturerUrl, tooltip set to ManufacturerInfo
-    $("<a><img src='" + aContainer.Services().Product.Variables().ManufacturerImageUri.Value() + "'/></a>")
-        .attr({href: aContainer.Services().Product.Variables().ManufacturerUrl.Value(),
-               title: aContainer.Services().Product.Variables().ManufacturerInfo.Value(),
-               target: '_blank'})
-        .appendTo($("#logo").empty());
-        
-    // top level tabs labeled as ModelName
-    ($("#lnkTabSpan" + aService).empty()).append(aContainer.Services().Product.Variables().ModelName.Value());
+    if (showTopLevelTabs) {
+    	// show logo top right - clickable link
+    	$("<a><img src='" + aContainer.Services().Product.Variables().ManufacturerImageUri.Value() + "'/></a>")
+	        .attr({href: aContainer.Services().Product.Variables().ManufacturerUrl.Value(),
+	               title: aContainer.Services().Product.Variables().ManufacturerInfo.Value(),
+	               target: '_blank'})
+	        .appendTo($("#logo").empty());
+	    
+	    // top level tabs labeled as ModelName
+        ($("#lnkTabSpan" + aService).empty()).append(aContainer.Services().Product.Variables().ModelName.Value());
+    }
     
     // create About Tab
     Refresh(aContainer, true);
@@ -258,25 +290,16 @@ function Refresh(aContainer, aRefreshAbout)
         }
         // ModelName
         title = $("<div id='" + idModelName +"'><span class='AboutDescription'>" + kModelNameDisplay + "</span></div>");
-        if (aContainer.Services().Product.Variables().ProductUrl.Value()) {
+        if (aContainer.Services().Product.Variables().ModelUrl.Value()) {
             value = $("<a class='ElementLink'>" + aContainer.Services().Product.Variables().ModelName.Value() + "</a>").attr({
-        	   href: aContainer.Services().Product.Variables().ProductUrl.Value(),
-               title: "Product Portal"});
+        	   href: aContainer.Services().Product.Variables().ModelUrl.Value(),
+        	   target: "_blank",
+               title: "Product Information"});
         }
         else {
             value = $("<span class='ElementInfo'>" + aContainer.Services().Product.Variables().ModelName.Value() + "</span>");
         }
         title.append(value);
-        if (aContainer.Services().Product.Variables().ModelUrl.Value()) {
-        	var imageRef = $("<a></a>").attr({
-                href: aContainer.Services().Product.Variables().ModelUrl.Value(),
-                target: "_blank",
-                title: "Documentation"}).appendTo(title);    
-            $("<img id='InfoIcon' src='../../../images/Info.png'/>")
-               .error(function(){
-                   this.src= "../../../../images/Info.png";
-                }).appendTo(imageRef);
-        }
         $("#" + bodyIdAbout).append(title);
         // ManufacturerName
         title = $("<div id='" + idManufacturerName +"'><span class='AboutDescription'>" + kManufacturerName + "</span></div>");
@@ -313,19 +336,16 @@ function Refresh(aContainer, aRefreshAbout)
         aContainer.Services().Volkano.SoftwareUpdate(function(result){
             $("#" + idSwUpdate).empty();
             $("#" + idSwUpdate).append("<span class='AboutDescription'>" + kSwUpdateDisplay + "</span>");
-            $("#" + idSwUpdate).append("<span class='ElementInfo'>" + SoftwareVersionPretty(result.aSoftwareVersion) + "</span>");
             if (result.aAvailable == true) {
-            	$("#" + idSwUpdate).append("<span id='" + idSwUpdate + "Span' class='SmallIcon'></span>");	            	
-            	var smallIconRef = $("<a></a>").attr({
-            		href: "http://products.linn.co.uk/VersionInfo/ReleaseVersionInfo.xml",
-			        title: "Release Notes (RSS)",
-			        target: '_blank'}).appendTo($("#" + idSwUpdate + "Span"));
-			    $("<img id='SwUpdateIcon' src='../../../images/Rss.png'/>")
-                    .error(function(){
-                        this.src= "../../../../images/Rss.png";
-                    }).appendTo(smallIconRef);
-            }
-        });
+	            $("<a class='ElementLink'>" + SoftwareVersionPretty(result.aSoftwareVersion) + "</a>").attr({
+	               href: "http://products.linn.co.uk/VersionInfo/ReleaseVersionInfo.xml",
+	               target: "_blank",
+	               title: "Release Notes"}).appendTo($("#" + idSwUpdate));
+	        }
+	        else {
+	            $("#" + idSwUpdate).append("<span class='ElementInfo'>" + SoftwareVersionPretty(result.aSoftwareVersion) + "</span>");
+	        }
+        }); 
         $("#" + bodyIdAbout).append(title);
         // IpAddress
         if (aContainer.Services().Product.Variables().ProductUrl.Value()) {
@@ -446,11 +466,6 @@ function AppendAttributes(aParameter, aContainer, aValidHeaderIds, aValidParamet
         case (Linn.Parameter.kTargetDevice + Linn.Parameter.kNameRoom):
         {
             aParameter.PriorityIndex = 1;
-            break;
-        }
-        case (Linn.Parameter.kTargetDevice + Linn.Parameter.kNameName):
-        {
-            aParameter.PriorityIndex = 2;
             aParameter.TrailingBreak = true;
             break;
         }
@@ -477,9 +492,14 @@ function AppendAttributes(aParameter, aContainer, aValidHeaderIds, aValidParamet
             aParameter.TrailingBreak = true;
             break;
         }
-        case (Linn.Parameter.kTargetHdmi + Linn.Parameter.kNameHdmiMode):
+        case (Linn.Parameter.kTargetHdmi + Linn.Parameter.kNameHdmiOffInSleep):
         {
             aParameter.PriorityIndex = 1;
+            break;
+        }
+        case (Linn.Parameter.kTargetHdmi + Linn.Parameter.kNameHdmiMode):
+        {
+            aParameter.PriorityIndex = 2;
             aParameter.TrailingBreak = true;
             break;
         }
@@ -488,9 +508,14 @@ function AppendAttributes(aParameter, aContainer, aValidHeaderIds, aValidParamet
         	aParameter.PriorityIndex = 1;
             break;
         }
+        case (Linn.Parameter.kCollectionSources + Linn.Parameter.kNameSourceIconName):
+        {
+            aParameter.PriorityIndex = 2;
+            break;
+        }
         case (Linn.Parameter.kCollectionSources + Linn.Parameter.kNameSourceVisible):
         {
-        	aParameter.PriorityIndex = 2;
+        	aParameter.PriorityIndex = 3;
         	aParameter.TrailingBreak = true;
             break;
         }
@@ -786,7 +811,7 @@ function GetHelpText(aParameter, aErrorInfoOnly)
 	
 	var kOptionsString = "Maximum of 20 characters, can not be blank.";
 	var kOptionsUri = "Valid URL (Maximum of 1024 bytes)";
-	var kOptionsVolumeOffset = "-15 to +15 in 0.5" + Linn.Parameter.kUnitsDb + " steps";
+	var kOptionsVolumeOffset = "-15 to 15 in 0.5" + Linn.Parameter.kUnitsDb + " steps";
 	
 	var descriptionValue = "Help Description Missing";
 	var currentValue = "";
@@ -864,6 +889,12 @@ function GetHelpText(aParameter, aErrorInfoOnly)
             defaultValue = aParameter.Target;
             break;
         }
+        case (Linn.Parameter.kCollectionSources + Linn.Parameter.kNameSourceIconName): {
+            descriptionValue = "Select the icon that will appear on the front panel display of the " + kDeviceName + " when the " + aParameter.Target + " source is in use.";
+            defaultValue = aParameter.Target;
+            defaultIndex = -1; // insure AllowedValues(defaultIndex) is ignored
+            break;
+        }
         case (Linn.Parameter.kCollectionSources + Linn.Parameter.kNameSourceVisible): {
             descriptionValue = "If you wish the given source to be visible and selectable from a Linn control point, select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>. Otherwise select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>.";
             defaultIndex = (aParameter.Target == "UpnpAv" ? 1 : 0);
@@ -895,6 +926,10 @@ function GetHelpText(aParameter, aErrorInfoOnly)
             descriptionValue = "If you wish to enable the source input transformer select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>. If you wish to bypass the source input transformer select select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>.";
             break;
         }
+        case (Linn.Parameter.kCollectionSources + Linn.Parameter.kNameNetAuxAutoSwitchEnable): {
+            descriptionValue = "Select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> to have the " + aParameter.Target +  " source selected automatically when a compatible device is connected. Select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span> to force the " + aParameter.Target + " source to be selected manually (Must be <span class='HelpTextOption'>" + Linn.Parameter.kNameSourceVisible + "</span> as well for manual selection).";
+            break;
+        }
         case (Linn.Parameter.kCollectionDelays + Linn.Parameter.kNameDelayPresetName): {
             descriptionValue = "Enter a name for the given delay.";
             defaultValue = aParameter.Target;
@@ -907,7 +942,7 @@ function GetHelpText(aParameter, aErrorInfoOnly)
             break;
         }
         case (Linn.Parameter.kCollectionDelays + Linn.Parameter.kNameDelayPresetVisible): {
-            descriptionValue = "If you wish the given delay to be available when toggling from the IR handset, select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>. Otherwise select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>.";
+            descriptionValue = "If you wish the given delay to be available when browsing presets from the IR handset, select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>. Otherwise select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>.";
             break;
         }
         case (Linn.Parameter.kCollectionDelays + Linn.Parameter.kNameDelayPresetDelay): {
@@ -940,7 +975,7 @@ function GetHelpText(aParameter, aErrorInfoOnly)
         case (Linn.Parameter.kTargetDisplay + Linn.Parameter.kNameDisplayBrightness): {
             descriptionValue = "Enter a number from 0 (Off) to 100 (Full Brightness) for setting the brightness of the " + kDeviceName + " front panel display";
             optionsValue = "0 to 100";
-            defaultValue = "100";
+            defaultValue = (kDeviceName == Linn.ProductSupport.kModelKikoDsm ? "50" : "100");
             break;
         }
         case (Linn.Parameter.kTargetDisplay + Linn.Parameter.kNameDisplaySleep): {
@@ -961,6 +996,9 @@ function GetHelpText(aParameter, aErrorInfoOnly)
         }
         case (Linn.Parameter.kTargetDisplay + Linn.Parameter.kNameDisplayFlipOrientation): {
             descriptionValue = "Select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> to flip the orientation of the " + kDeviceName + " front panel display upside down.";
+            if (kDeviceName == Linn.ProductSupport.kModelKikoDsm) {
+            	descriptionValue = "Select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span> to change the orientation of the " + kDeviceName + " front panel display to the vertical position. Select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> to change the orientation of the " + kDeviceName + " front panel display to the horizontal position. This setting is only required if the display orientation does not change automatically when the device is rotated.";
+            }
             defaultIndex = 1;
             break;
         }
@@ -971,6 +1009,11 @@ function GetHelpText(aParameter, aErrorInfoOnly)
         }
         case (Linn.Parameter.kTargetDisplay + Linn.Parameter.kNameUpdateNotifications): {
             descriptionValue = "If you wish to be notified when a firmware update is available, select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>. Otherwise, select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>.";
+            break;
+        }
+        case (Linn.Parameter.kTargetDisplay + Linn.Parameter.kNameDisplayOrientationLed): {
+            descriptionValue = "If you wish to the Linn Logo LED to be visible on the front panel during normal operation of your " + kDeviceName + ", select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>. Otherwise, select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>.";
+            defaultIndex = 1;
             break;
         }
         case (Linn.Parameter.kTargetJukebox + Linn.Parameter.kNameJukeboxPresetPrefix): {
@@ -1007,7 +1050,7 @@ function GetHelpText(aParameter, aErrorInfoOnly)
         }
         case (Linn.Parameter.kTargetVolume + Linn.Parameter.kNameBalance): {
             descriptionValue = "Set the left/right balance of the " + kDeviceName + ".";
-            optionsValue = "-15 (left) to +15 (right)";
+            optionsValue = "-15 (left) to 15 (right)";
             defaultValue = "0 (middle)";
             break;
         }
@@ -1018,8 +1061,25 @@ function GetHelpText(aParameter, aErrorInfoOnly)
             break;
         }
         case (Linn.Parameter.kTargetVolume + Linn.Parameter.kNameEnableInternalVolumeControl): {
-            descriptionValue = "If you wish to use the " + kDeviceName + " with an external pre/power amplifier, select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>. Otherwise select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> (Selecting <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> will automatically disable any <span class='HelpTextOption'>" + Linn.Parameter.kNameKontrolProductConnected + "</span> connection).";
-            defaultIndex = 1;
+        	var linnPreampNote = "(Selecting <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> will automatically disable any <span class='HelpTextOption'>" + Linn.Parameter.kNameKontrolProductConnected + "</span> connection)";
+        	switch (kDeviceName) {
+                case Linn.ProductSupport.kModelAkurateDsm:
+                case Linn.ProductSupport.kModelKlimaxDsm:
+                case Linn.ProductSupport.kModelMajikDsm:
+                case Linn.ProductSupport.kModelKikoDsm:
+                case Linn.ProductSupport.kModelSekritDsi:
+                case Linn.ProductSupport.kModelMajikDsi:
+                case Linn.ProductSupport.kModelAkurateKontrol: {
+                	linnPreampNote = "";
+                	defaultIndex = 0;
+                	break;
+                }
+                default: {
+                	defaultIndex = 1;
+                	break;
+                }
+            }
+            descriptionValue = "If you wish to use the " + kDeviceName + " with an external pre/power amplifier, select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span>. Otherwise select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span>" + linnPreampNote + ".";
             break;
         }
         case (Linn.Parameter.kTargetVolume + Linn.Parameter.kNameAnalogAttenuation): {
@@ -1059,12 +1119,20 @@ function GetHelpText(aParameter, aErrorInfoOnly)
             	case Linn.ProductSupport.kModelKlimaxDsm: { defaultIndex = 10; break; }
             	case Linn.ProductSupport.kModelSekritDsi: { defaultIndex = 5; break; }
             	case Linn.ProductSupport.kModelMajikDsi: { defaultIndex = 13; break; }
+            	case Linn.ProductSupport.kModelMajikDsm: { defaultIndex = 16; break; }
+            	case Linn.ProductSupport.kModelKikoDsm: { defaultIndex = 9; break; }
             	case Linn.ProductSupport.kModelAkurateKontrol: { defaultIndex = 0; break; }
             	default: { defaultIndex = -1; break; } // insure AllowedValues(defaultIndex) is ignored
             }
             if (defaultIndex >= 0) {
                 defaultIndex += Number(aParameter.Name.match(/\d+/)[0]) - 1;
             }
+            break;
+        }
+        case (Linn.Parameter.kTargetHdmi + Linn.Parameter.kNameHdmiOffInSleep):
+        {
+            descriptionValue = "Select <span class='HelpTextOption'>" + aParameter.AllowedValues[0].Text + "</span> to turn HDMI pass through off in sleep mode for the purpose of power saving. Select <span class='HelpTextOption'>" + aParameter.AllowedValues[1].Text + "</span> to allow HDMI pass through in sleep mode, for the purpose of continued listening to HDMI sources through a downstream device (i.e. your Television)";
+            defaultIndex = 1;
             break;
         }
         case (Linn.Parameter.kTargetHdmi + Linn.Parameter.kNameHdmiMode):
@@ -1096,7 +1164,7 @@ function GetHelpText(aParameter, aErrorInfoOnly)
         {
             descriptionValue = "Enter a value for the native latency of your AV Receiver in " + Linn.Parameter.kUnitsMs + " (sync audio between surround speakers and front speakers).<br/><br/>This setting is only relevant if <span class='HelpTextOption'>" + Linn.Parameter.kNameHdmiMode + "</span> is set to <span class='HelpTextOption'>" + Linn.Parameter.kValueSurroundMode + "</span>.";
             defaultValue = "0";
-            optionsValue = "0 to 100 in 1" + Linn.Parameter.kUnitsMs + " steps";
+            optionsValue = "0 to 500 in 1" + Linn.Parameter.kUnitsMs + " steps";
             break;
         }
         default: { break; }
@@ -1652,7 +1720,7 @@ function ShowSetParameterErrorMessage(aParameter, aMessage) {
 
 function ShowCommsErrorMessage(aModelName) {
     var errorDialog = $('<div></div>')
-        .html($("<span class='HelpTextDescription'>Could not communicate with your " + aModelName + ".<br/><br/>Please insure your " + aModelName + " is still connected to the network and has not changed IP address.<br/><br/></span>"))
+        .html($("<span class='HelpTextDescription'>Could not communicate with your " + aModelName + ".<br/><br/>Please ensure your " + aModelName + " is still connected to the network and has not changed IP address.<br/><br/></span>"))
         .dialog({
             buttons: { "OK": function() { $(this).dialog('close'); }, },
             width: 400,

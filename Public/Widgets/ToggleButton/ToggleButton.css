@@ -1,0 +1,43 @@
+
+div.linn-toggle-button
+{
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+	width: 84px;
+	height: 24px;
+	background-color: White;
+	border: 1px black solid;
+	cursor:pointer;
+}
+
+div.linn-toggle-button-label
+{
+    height: 100%;
+    width: 50%;
+    color: White;
+    background-color: Black;
+    text-align: center;
+}
+
+div.linn-toggle-button-label.on-label
+{
+    float: left;
+    border-right: 1px black solid;
+    display: none;
+}
+
+div.linn-toggle-button-label.off-label
+{
+    float: right;
+    border-left: 1px black solid;
+    display: block;
+}
+
+div.linn-toggle-button.on div.linn-toggle-button-label.on-label
+{
+    display: block;
+}
+
+div.linn-toggle-button.on div.linn-toggle-button-label.off-label
+{
+    display: none;
+}

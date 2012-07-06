@@ -11,7 +11,7 @@
     <RootNamespace>Linn.Topology</RootNamespace>
     <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
     <AssemblyName>OssTopology</AssemblyName>
-    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <BaseDirectory>..\..\LibUpnpCil\Topology</BaseDirectory>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -34,6 +35,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -61,9 +64,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Boxes.cs">
-      <Link>Linn\Topology\Boxes.cs</Link>
-    </Compile>
     <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\DeviceFinder.cs">
       <Link>Linn\Topology\DeviceFinder.cs</Link>
     </Compile>
@@ -144,9 +144,6 @@
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\SourceList.cs">
       <Link>Linn\Topology\SourceList.cs</Link>
-    </Compile>
-    <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\Tree.cs">
-      <Link>Linn\Topology\Tree.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Topology\Linn\Topology\PlaylistManager.cs">
       <Link>Linn\Topology\PlaylistManager.cs</Link>

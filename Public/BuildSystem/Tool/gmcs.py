@@ -7,16 +7,16 @@ import CsProg
 #CsProgramScanner = Linn.BuildSystem.Scanner.CsProg.CsProgramScanner()
 CsProgramScanner = CsProg.CsProgramScanner()
 
-csccom = "$CSC $CSCFLAGS -t:$CSCTARGET -out:${TARGET.abspath} $SOURCES $_CSCLIBPATH $_CSCLIBS $_CSCPKGS $_CSCRESOURCES $_CSCWINICON"
-csclibcom = "$CSC -t:library $CSCLIBFLAGS -out:${TARGET.abspath} $SOURCES $_CSCLIBPATH $_CSCLIBS $_CSCPKGS $_CSCRESOURCES $_CSCWINICON"
+csccom = "$CSC2 $CSCFLAGS -t:$CSCTARGET -out:${TARGET.abspath} $SOURCES $_CSCLIBPATH $_CSCLIBS $_CSCPKGS $_CSCRESOURCES $_CSCWINICON"
+csclibcom = "$CSC2 -t:library $CSCLIBFLAGS -out:${TARGET.abspath} $SOURCES $_CSCLIBPATH $_CSCLIBS $_CSCPKGS $_CSCRESOURCES $_CSCWINICON"
 
-CsBuilder = SCons.Builder.Builder(action = '$CSCCOM',
+CsBuilder = SCons.Builder.Builder(action = '$CSCCOM2',
                                   source_factory = SCons.Node.FS.default_fs.Entry,
                                   prefix = '$CLIPROGPREFIX',
                                   suffix = '$CLIPROGSUFFIX',
                                   target_scanner = CsProgramScanner)
 
-CsLibBuilder = SCons.Builder.Builder(action = '$CSCLIBCOM',
+CsLibBuilder = SCons.Builder.Builder(action = '$CSCLIBCOM2',
                                      source_factory = SCons.Node.FS.default_fs.Entry,
                                      prefix = '$CLILIBPREFIX',
                                      suffix = '$CLILIBSUFFIX',
@@ -41,10 +41,10 @@ def _parsewinicon(prefix, icon):
     return prefix + icon
 
 def generate(env):
-    env['BUILDERS']['CliProgram'] = CsBuilder
-    env['BUILDERS']['CliLibrary'] = CsLibBuilder
+    env['BUILDERS']['CliProgramV2'] = CsBuilder
+    env['BUILDERS']['CliLibraryV2'] = CsLibBuilder
 
-    env['CSC']            = env.Detect('gmcs')
+    env['CSC2']            = env.Detect('gmcs')
     env['_CSCLIBS']       = "${_stripixes('-r:$CLILIBPREFIX', CLILIBS, '$CLILIBSUFFIX', '-r', '', __env__)}"
     env['_CSCPKGS']       = "${_stripixes('-pkg:$CLIPKGPREFIX', CLIPKGS, '$CLIPKGSUFFIX', '-pkg', '', __env__)}"
     env['_CSCRESOURCES']  = "${_parsecscres('-res:', CLIRESOURCES)}"
@@ -52,8 +52,8 @@ def generate(env):
     env['_CSCWINICON']    = "${_parsewinicon('-win32icon:', WINICON)}"
     env['CSCFLAGS']       = SCons.Util.CLVar('')
     env['CSCLIBFLAGS']    = SCons.Util.CLVar('')
-    env['CSCCOM']         = SCons.Action.Action(csccom)
-    env['CSCLIBCOM']      = SCons.Action.Action(csclibcom)
+    env['CSCCOM2']         = SCons.Action.Action(csccom)
+    env['CSCLIBCOM2']      = SCons.Action.Action(csclibcom)
     env['CSCTARGET']      = 'exe'
     # these should be under platform specific file
     env['CLIPROGPREFIX']  = ''

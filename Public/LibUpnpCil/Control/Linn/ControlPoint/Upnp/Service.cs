@@ -127,21 +127,19 @@ namespace Linn.ControlPoint.Upnp
                 request.Timeout = kControlInvokeTimeout;
                 request.ReadWriteTimeout = kControlInvokeTimeout;
 
-                if (aCallback == null)
+                reqStream = request.GetRequestStream();
+                reqStream.Write(message, 0, message.Length);
+                if (aCallback != null)
                 {
-                    reqStream = request.GetRequestStream();
-                    reqStream.Write(message, 0, message.Length);
-                }
-                else
-                {
-                    WebRequestPool.QueueJob(new JobSendRequest(aCallback, request, message));
+                    WebRequestPool.QueueJob(new JobGetResponse(aCallback, request));
                 }
             }
             finally
             {
-                if (aCallback == null && reqStream != null)
+                if (reqStream != null)
                 {
                     reqStream.Close();
+                    reqStream.Dispose();
                 }
 
                 iWriteDocument = null;
@@ -199,8 +197,18 @@ namespace Linn.ControlPoint.Upnp
                         xmlNsMan.AddNamespace("s", "http://schemas.xmlsoap.org/soap/envelope/");
                         xmlNsMan.AddNamespace("c", "urn:schemas-upnp-org:control-1-0");
 
-                        string faultCode = document.SelectSingleNode("/s:Envelope/s:Body/s:Fault/faultcode", xmlNsMan).InnerText;
-                        string faultString = document.SelectSingleNode("/s:Envelope/s:Body/s:Fault/faultstring", xmlNsMan).InnerText;
+                        string faultCode = string.Empty;
+                        XmlNode faultCodeNode = document.SelectSingleNode("/s:Envelope/s:Body/s:Fault/faultcode", xmlNsMan);
+                        if (faultCodeNode != null)
+                        {
+                            faultCode = faultCodeNode.InnerText;
+                        }
+                        string faultString = string.Empty;
+                        XmlNode faultStringNode = document.SelectSingleNode("/s:Envelope/s:Body/s:Fault/faultstring", xmlNsMan);
+                        if (faultStringNode != null)
+                        {
+                            faultString = faultStringNode.InnerText;
+                        }
                         XmlNode detail = document.SelectSingleNode("/s:Envelope/s:Body/s:Fault/detail", xmlNsMan);
                         throw new SoapException(faultString, new XmlQualifiedName(faultCode), "", detail);
                     }
@@ -215,6 +223,7 @@ namespace Linn.ControlPoint.Upnp
                 if (resStream != null)
                 {
                     resStream.Close();
+                    resStream.Dispose();
                 }
                 if (response != null)
                 {
@@ -239,11 +248,13 @@ namespace Linn.ControlPoint.Upnp
         {
             Assert.Check(iResponse[iIndex].Name == aName);
             string value = iResponse[iIndex++].InnerText;
-            if (value == "0") {
-            	return (false);
+            if (value == "0")
+            {
+                return (false);
             }
-            if (value == "1") {
-            	return (true);
+            if (value == "1")
+            {
+                return (true);
             }
             return Convert.ToBoolean(value);
         }
@@ -284,17 +295,17 @@ namespace Linn.ControlPoint.Upnp
         {
         }
 
-	    public void Reset()
+        public void Reset()
         {
             iReceived = false;
         }
 
-	    public bool Recognise(byte[] aHeader)
+        public bool Recognise(byte[] aHeader)
         {
             return (String.Compare(ASCIIEncoding.UTF8.GetString(aHeader, 0, aHeader.Length), Upnp.kUpnpHeaderServer, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
-	    public void Process(byte[] aValue)
+        public void Process(byte[] aValue)
         {
             iReceived = true;
         }
@@ -316,18 +327,18 @@ namespace Linn.ControlPoint.Upnp
         {
         }
 
-	    public void Reset()
+        public void Reset()
         {
             iSid = null;
             iReceived = false;
         }
 
-	    public bool Recognise(byte[] aHeader)
+        public bool Recognise(byte[] aHeader)
         {
             return (String.Compare(ASCIIEncoding.UTF8.GetString(aHeader, 0, aHeader.Length), Upnp.kUpnpHeaderSid, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
-	    public void Process(byte[] aValue)
+        public void Process(byte[] aValue)
         {
             string value = ASCIIEncoding.UTF8.GetString(aValue, 0, aValue.Length);
 
@@ -368,18 +379,18 @@ namespace Linn.ControlPoint.Upnp
         {
         }
 
-	    public void Reset()
+        public void Reset()
         {
             iTimeout = 0;
             iReceived = false;
         }
 
-	    public bool Recognise(byte[] aHeader)
+        public bool Recognise(byte[] aHeader)
         {
             return (String.Compare(ASCIIEncoding.UTF8.GetString(aHeader, 0, aHeader.Length), Upnp.kUpnpHeaderTimeout, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
-	    public void Process(byte[] aValue)
+        public void Process(byte[] aValue)
         {
             string value = ASCIIEncoding.UTF8.GetString(aValue, 0, aValue.Length);
 
@@ -680,7 +691,7 @@ namespace Linn.ControlPoint.Upnp
 
         protected const string kBasePropertyPath = "e:propertyset/e:property/";
         protected const string kNamespaceUpnpService = "urn:schemas-upnp-org:event-1-0";
-        
+
         public event EventHandler<EventArgs> EventSubscriptionError;
 
         protected ServiceUpnp(Device aDevice, ServiceType aType, IProtocol aProtocol)
@@ -704,8 +715,39 @@ namespace Linn.ControlPoint.Upnp
             if (Server != null)
             {
                 iEventUri = new Uri(Location.Find(ServiceLocationUpnp.kKeyUpnpSubscriptionUri));
-                iEventEndpoint = new IPEndPoint(IPAddress.Parse(iEventUri.Host), iEventUri.Port);
-                iSubscriptionTimer = new System.Threading.Timer(SubscriptionTimerElapsed, null, Timeout.Infinite, Timeout.Infinite);
+                IPAddress address;
+                if (IPAddress.TryParse(iEventUri.Host, out address))
+                {
+                    iEventEndpoint = new IPEndPoint(address, iEventUri.Port);
+                }
+                else
+                {
+                    try
+                    {
+                        IPAddress[] addresses = Dns.GetHostEntry(iEventUri.Host).AddressList;
+                        for (int i = 0; i < addresses.Length && address == null; i++)
+                        {
+                            if (addresses[i].AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                            {
+                                address = addresses[i];
+                                break;
+                            }
+                        }
+                        if (address != null)
+                        {
+                            iEventEndpoint = new IPEndPoint(address, iEventUri.Port);
+                        }
+                        else
+                        {
+                            UserLog.WriteLine("Endpoint not found: " + iEventUri.Host + ":" + iEventUri.Port);
+                            throw new NetworkError();
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        throw (new ServiceException(903, "Endpoint lookup failure: " + iEventUri.Host + ":" + iEventUri.Port + ", " + ex));
+                    }
+                }
 
                 iRequest = new TcpClientStream();
                 iWriteBuffer = new Swb(kMaxWriteBufferBytes, iRequest);
@@ -720,7 +762,7 @@ namespace Linn.ControlPoint.Upnp
                 iReader.AddHeader(iHeaderUpnpTimeout);
             }
         }
-        
+
         protected void OnEventSubscriptionError()
         {
             if (EventSubscriptionError != null)
@@ -740,10 +782,7 @@ namespace Linn.ControlPoint.Upnp
 
             iClosing = true;
 
-			if (iSubscriptionTimer != null)
-			{
-				iSubscriptionTimer.Dispose();
-			}
+            DisposeTimer();
 
             if (iSubscriptionId != null)  // are we subscribed?
             {
@@ -768,14 +807,44 @@ namespace Linn.ControlPoint.Upnp
             }
         }
 
+        private void SetTimer()
+        {
+            iMutex.WaitOne();
+            if (iSubscriptionTimer == null)
+            {
+                iSubscriptionTimer = new System.Threading.Timer(SubscriptionTimerElapsed, null, Timeout.Infinite, Timeout.Infinite);
+            }
+            iSubscriptionTimer.Change(iHeaderUpnpTimeout.Timeout * 500, Timeout.Infinite);
+            iMutex.ReleaseMutex();
+        }
+
+        private void DisposeTimer()
+        {
+            iMutex.WaitOne();
+            if (iSubscriptionTimer != null)
+            {
+                iSubscriptionTimer.Dispose();
+                iSubscriptionTimer = null;
+            }
+            iMutex.ReleaseMutex();
+        }
+
+        protected void Resubscribe()
+        {
+            iMutex.WaitOne();
+            if (!iClosing)
+            {
+                Unsubscribe();
+                Subscribe();
+            }
+            iMutex.ReleaseMutex();
+        }
+
         public override void Kill()
         {
             Trace.WriteLine(Trace.kUpnp, "Kill             " + this);
 
-			if (iSubscriptionTimer != null)
-			{
-				iSubscriptionTimer.Dispose();
-			}
+            DisposeTimer();
 
             if (Server != null)
             {
@@ -856,11 +925,14 @@ namespace Linn.ControlPoint.Upnp
             UserLog.WriteLine(message);
             Trace.WriteLine(Trace.kUpnp, message);
             iRequest.Close();
+            iMutex.WaitOne();
             iSubscribing = false;
             iPendingSubscribe = false;
             iUnsubscribing = false;
             iPendingUnsubscribe = false;
             iSubscriptionId = null;
+            iUnsubscribeCompleted.Set();
+            iMutex.ReleaseMutex();
             OnEventSubscriptionError();
         }
 
@@ -872,7 +944,7 @@ namespace Linn.ControlPoint.Upnp
             {
                 iRequest.BeginConnect(iEventEndpoint, SubscribeConnect);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 HandleSubscriptionException("PendingSubscribe", ex);
             }
@@ -919,7 +991,8 @@ namespace Linn.ControlPoint.Upnp
 
                 if (iHeaderUpnpServer.Received && iHeaderUpnpTimeout.Received && iHeaderUpnpSid.Received)
                 {
-                    iSubscriptionTimer.Change(iHeaderUpnpTimeout.Timeout * 500, Timeout.Infinite);
+
+                    SetTimer();
 
                     iMutex.WaitOne();
 
@@ -964,6 +1037,8 @@ namespace Linn.ControlPoint.Upnp
             }
 
             Trace.WriteLine(Trace.kUpnp, "Unsubscribe      " + this);
+
+            DisposeTimer();
 
             iMutex.WaitOne();
 
@@ -1017,7 +1092,7 @@ namespace Linn.ControlPoint.Upnp
 
             Server.RemoveSession(iSubscriptionId);
 
-            iSubscriptionTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            DisposeTimer();
 
             try
             {
@@ -1191,7 +1266,8 @@ namespace Linn.ControlPoint.Upnp
 
                 if (iHeaderUpnpServer.Received && iHeaderUpnpTimeout.Received && iHeaderUpnpSid.Received)
                 {
-                    iSubscriptionTimer.Change(iHeaderUpnpTimeout.Timeout * 500, Timeout.Infinite);
+
+                    SetTimer();
 
                     iMutex.WaitOne();
 

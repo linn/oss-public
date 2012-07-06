@@ -111,7 +111,7 @@ namespace LinnSysTray
                 iModelSourceDiscPlayer.EventPlayStateChanged += EventFromDiscPlayer;
                 iModelSourceDiscPlayer.Open();
             }
-            else if (iSource.Type == "Playlist" || iSource.Type == "MediaRenderer")
+            else if (iSource.Type == "Playlist" || iSource.Type == "UpnpAv")
             {
                 iModelSourceMediaRenderer = ModelSourceMediaRenderer.Create(iSource);
                 iModelSourceMediaRenderer.EventControlInitialised += EventInitialised;

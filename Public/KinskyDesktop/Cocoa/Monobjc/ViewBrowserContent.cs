@@ -564,11 +564,11 @@ namespace KinskyDesktop
         #region NSTableView delegate methods
         private void ItemDoubleClicked(Id sender)
         {
-            Assert.Check(iController != null);
-
             // this is actually an event that the table view has been double clicked, which
             // can happen outside of any items
-            if (ViewTable.ClickedRow > -1)
+            // the iController member can also be null - for example, when the container has been opened
+            // and the hourglass is showing in the view
+            if (ViewTable.ClickedRow > -1 && iController != null)
             {
                 iController.ItemActivated(ViewTable.ClickedRow);
             }
@@ -822,6 +822,7 @@ namespace KinskyDesktop
             // set size for the image browser view
             float cellSize = 70 + (iOptionContainerSizeThumbs.Native * 150);
             ViewImageBrowser.CellSize = new NSSize(cellSize, cellSize);
+            ArtworkCacheInstance.Instance.DownscaleSize = (int)cellSize;
         }
 
         private void OptionContainerSizeListChanged(object sender, EventArgs e)
@@ -833,6 +834,7 @@ namespace KinskyDesktop
             NSTableColumn col = ViewTable.TableColumns[kTableColumnImage].CastAs<NSTableColumn>();
             col.Width = ViewTable.RowHeight;
             ViewTable.SizeLastColumnToFit();
+            ArtworkCacheInstance.Instance.DownscaleSize = (int)ViewTable.RowHeight;
         }
 
         private void ShowList(bool aShow)
@@ -981,11 +983,9 @@ namespace KinskyDesktop
         #region NSTableView delegate methods
         private void ItemDoubleClicked(Id sender)
         {
-            Assert.Check(iController != null);
-
             // this is actually an event that the table view has been double clicked, which
             // can happen outside of any items
-            if (ViewTable.ClickedRow > -1)
+            if (ViewTable.ClickedRow > -1 && iController != null)
             {
                 iController.ItemActivated(ViewTable.ClickedRow);
             }
@@ -1602,6 +1602,14 @@ namespace KinskyDesktop
             WillChangeValueForKey(KeyAlbumTitle);
             WillChangeValueForKey(KeyAlbumArtist);
 
+            // Clear the content reference from the items so that the garbage collector
+            // can free it - there appears to be a leak with the ImageBrowserView where
+            // these items never reach a ref count of 0
+            for (int i=0 ; i<iItems.Count ; i++)
+            {
+                iItems[i].CastTo<BrowserDataItem>().ClearContent();
+            }
+
             iContent = null;
             iItems.Release();
             iItems = new NSMutableArray();
@@ -1625,6 +1633,14 @@ namespace KinskyDesktop
             WillChangeValueForKey(KeyAlbumArtwork);
             WillChangeValueForKey(KeyAlbumTitle);
             WillChangeValueForKey(KeyAlbumArtist);
+
+            // Clear the content reference from the items so that the garbage collector
+            // can free it - there appears to be a leak with the ImageBrowserView where
+            // these items never reach a ref count of 0
+            for (int i=0 ; i<iItems.Count ; i++)
+            {
+                iItems[i].CastTo<BrowserDataItem>().ClearContent();
+            }
 
             iContent = aContent;
             iItems.Release();
@@ -1726,8 +1742,14 @@ namespace KinskyDesktop
         {
             iIndex = aIndex;
             iContent = aContent;
+            iImageUid = iContent.GetHashCode().ToString() + iIndex.ToString();
 
             iVersion = 0;
+        }
+
+        public void ClearContent()
+        {
+            iContent = null;
         }
 
         [ObjectiveCMessage("dealloc", SynchronizeFields = false)]
@@ -1745,7 +1767,7 @@ namespace KinskyDesktop
         {
             get
             {
-                return iContent.Object(iIndex);
+                return (iContent != null) ? iContent.Object(iIndex) : null;
             }
         }
 
@@ -1755,7 +1777,7 @@ namespace KinskyDesktop
             [ObjectiveCMessage("image")]
             get
             {
-                upnpObject o = iContent.Object(iIndex);
+                upnpObject o = (iContent != null) ? iContent.Object(iIndex) : null;
                 return BrowserImages.GetImage(o);
             }
         }
@@ -1774,7 +1796,7 @@ namespace KinskyDesktop
             [ObjectiveCMessage("duration")]
             get
             {
-                upnpObject o = iContent.Object(iIndex);
+                upnpObject o = (iContent != null) ? iContent.Object(iIndex) : null;
                 if (o != null)
                 {
                     return NSString.StringWithUTF8String(DidlLiteAdapter.Duration(o));
@@ -1801,7 +1823,7 @@ namespace KinskyDesktop
         {
             get
             {
-                upnpObject o = iContent.Object(iIndex);
+                upnpObject o = (iContent != null) ? iContent.Object(iIndex) : null;
                 if (o != null)
                 {
                     return DidlLiteAdapter.Title(o);
@@ -1816,7 +1838,7 @@ namespace KinskyDesktop
         {
             get
             {
-                upnpObject o = iContent.Object(iIndex);
+                upnpObject o = (iContent != null) ? iContent.Object(iIndex) : null;
                 string albumArtist = DidlLiteAdapter.AlbumArtist(o);
                 string artist = DidlLiteAdapter.Artist(o);
                 if (!string.IsNullOrEmpty(albumArtist) && albumArtist != artist)
@@ -1852,7 +1874,8 @@ namespace KinskyDesktop
         [ObjectiveCMessage("imageUID")]
         public NSString ImageUID()
         {
-            return NSString.StringWithUTF8String(this.GetHashCode().ToString() + iVersion.ToString());
+            //return NSString.StringWithUTF8String(this.GetHashCode().ToString() + iVersion.ToString());
+            return NSString.StringWithUTF8String(iImageUid + iVersion.ToString());
         }
 
         [ObjectiveCMessage("imageTitle")]
@@ -1885,6 +1908,7 @@ namespace KinskyDesktop
         private uint iVersion;
         private int iIndex;
         private ContainerContent iContent;
+        private string iImageUid;
     }
 }
 

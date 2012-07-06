@@ -1,4 +1,4 @@
-Import('_default_env kVersion')
+Import('_default_env kBuildInfo appAssemblyInfo')
 
 resources = [ (_default_env.subst('$install_dir/share/Kinsky/InstallerKinsky.pkg'), 'InstallerKinsky.pkg') ]
 updater = _default_env.CliLibrary('UpdaterKinsky_osx', 'Updater.cs', CLIRESOURCES=resources)

@@ -447,7 +447,7 @@
     <Compile Include="..\..\KinskyDesktop\Wpf\Controls\WindowChrome.cs">
       <Link>Controls\WindowChrome.cs</Link>
     </Compile>
-    <Compile Include="..\..\KinskyDesktop\Wpf\Properties\AssemblyInfo.cs">
+    <Compile Include="..\..\build\share\Kinsky\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
       <SubType>Code</SubType>
     </Compile>

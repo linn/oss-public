@@ -55,7 +55,11 @@ namespace KinskyDesktopWpf
                 {
                     didl.Add(iParent);
                 }
-                Clipboard.SetText(didl.Xml);
+                try
+                {
+                    Clipboard.SetText(didl.Xml);
+                }
+                catch { }
             }
         }
 

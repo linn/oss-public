@@ -12,48 +12,6 @@ namespace Linn
         bool HasWork();
     }
 
-
-    public class JobSendRequest : IJob
-    {
-        public JobSendRequest(GetResponseStreamCallback aCallback, HttpWebRequest aRequest, byte[] aMessage)
-        {
-            iRequest = aRequest;
-            iMessage = aMessage;
-            iCallback = aCallback;
-        }
-
-        public void Execute()
-        {
-            Stream reqStream = null;
-
-            try
-            {
-                reqStream = iRequest.GetRequestStream();
-                reqStream.Write(iMessage, 0, iMessage.Length);
-            }
-            finally
-            {
-                if (reqStream != null)
-                {
-                    reqStream.Close();
-                }
-            }
-
-            WebRequestPool.QueueJob(new JobGetResponse(iCallback, iRequest));
-        }
-
-        public bool HasWork()
-        {
-            return true;
-        }
-
-        private HttpWebRequest iRequest;
-        private byte[] iMessage;
-        private GetResponseStreamCallback iCallback;
-    }
-
-
-
     public delegate void GetResponseStreamCallback(object aResult);
     public class JobGetResponse : IJob
     {

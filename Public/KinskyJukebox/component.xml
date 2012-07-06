@@ -8,6 +8,8 @@
     <Source build="1" dir="KinskyJukebox" url="${REPOS_OSS}/KinskyJukebox" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="Layouts" url="${REPOS_OSS}/Layouts" rev="XXX" opts="Kinsky ${OPTS_OSS}"/>
     <Source build="1" dir="Kinsky" url="${REPOS_OSS}/Kinsky" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="ProductSupport" url="${REPOS_OSS}/ProductSupport" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Kinsky" url="${REPOS_OSS}/Kinsky" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="LibUpnpCil/Topology" url="${REPOS_OSS}/LibUpnpCil/Topology" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="LibUpnpCil/DidlLite" url="${REPOS_OSS}/LibUpnpCil/DidlLite" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="LibUpnpCil/Services" url="${REPOS_OSS}/LibUpnpCil/Services" rev="XXX" opts="${OPTS_OSS}"/>

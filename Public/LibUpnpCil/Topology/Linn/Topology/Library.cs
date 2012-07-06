@@ -120,6 +120,7 @@ namespace Linn.Topology
             iJobReady = new ManualResetEvent(false);
 
             iCloudServers = new Dictionary<string, Device>();
+            iMediaServers = new Dictionary<Device, MediaServer>();
             //iCloudServers.Add("http://89.238.133.245:26125/DeviceDescription.xml", new DeviceUpnp("http://89.238.133.245:26125/DeviceDescription.xml"));
         }
 
@@ -183,6 +184,12 @@ namespace Linn.Topology
             }
 
             iJobList.Clear();
+            foreach (Device d in iMediaServers.Keys)
+            {
+                d.EventOpened -= Opened;
+                d.EventOpenFailed -= OpenFailed;
+            }
+            iMediaServers.Clear();
         }
 
         public void Rescan()
@@ -250,8 +257,14 @@ namespace Linn.Topology
             Trace.WriteLine(Trace.kTopology, "Library+                " + e.Device);
 
             e.Device.EventOpened += Opened;
+            e.Device.EventOpenFailed += OpenFailed;
 
             e.Device.Open();
+        }
+
+        private void OpenFailed(object obj, EventArgs e)
+        {
+            iDeviceListContentDirectory.Remove(obj as Device);
         }
 
         private void Opened(object obj, EventArgs e)
@@ -261,6 +274,8 @@ namespace Linn.Topology
 
         internal void DoMediaServerAdded(Device aDevice)
         {
+            MediaServer server = new MediaServer(this, aDevice);
+            iMediaServers.Add(aDevice, server);
             if (EventMediaServerAdded != null)
             {
                 EventMediaServerAdded(this, new EventArgsMediaServer(new MediaServer(this, aDevice)));
@@ -274,13 +289,15 @@ namespace Linn.Topology
                 if(!iCloudServers.ContainsKey(aLocation))
                 {
                     Device device = new DeviceUpnp(aLocation);
+                    MediaServer server = new MediaServer(this, device);
+                    iMediaServers.Add(device, server);
                     iCloudServers.Add(aLocation, device);
     
                     Trace.WriteLine(Trace.kTopology, "Cloud+                " + device);
     
                     if (EventMediaServerAdded != null)
                     {
-                        EventMediaServerAdded(this, new EventArgsMediaServer(new MediaServer(this, device)));
+                        EventMediaServerAdded(this, new EventArgsMediaServer(server));
                     }
                 }
             }
@@ -293,14 +310,20 @@ namespace Linn.Topology
 
             e.Device.EventOpened -= Opened;
 
+            e.Device.EventOpenFailed -= OpenFailed;
             ScheduleJob(new JobMediaServerRemoved(e.Device));
         }
 
         internal void DoMediaServerRemoved(Device aDevice)
         {
-            if (EventMediaServerRemoved != null)
+            if (iMediaServers.ContainsKey(aDevice))
             {
-                EventMediaServerRemoved(this, new EventArgsMediaServer(new MediaServer(this, aDevice)));
+                MediaServer server = iMediaServers[aDevice];
+                if (EventMediaServerRemoved != null)
+                {
+                    EventMediaServerRemoved(this, new EventArgsMediaServer(server));
+                }
+                iMediaServers.Remove(aDevice);
             }
         }
 
@@ -309,13 +332,15 @@ namespace Linn.Topology
             Device device;
             if(iCloudServers.TryGetValue(aLocation, out device))
             {
+                MediaServer server = iMediaServers[device];
+                iMediaServers.Remove(device);
                 Trace.WriteLine(Trace.kTopology, "Cloud-                " + device);
 
                 iCloudServers.Remove(aLocation);
     
                 if (EventMediaServerRemoved != null)
                 {
-                    EventMediaServerRemoved(this, new EventArgsMediaServer(new MediaServer(this, device)));
+                    EventMediaServerRemoved(this, new EventArgsMediaServer(server));
                 }
             }
         }
@@ -328,6 +353,7 @@ namespace Linn.Topology
         private DeviceListUpnp iDeviceListContentDirectory;
 
         private Dictionary<string, Device> iCloudServers;
+        private Dictionary<Device, MediaServer> iMediaServers;
     }
 
     public class MediaServer
@@ -371,175 +397,4 @@ namespace Linn.Topology
         private Device iDevice;
     }
 
-/*
-    public class Library
-    {
-        private DeviceListUpnp iDeviceListMediaServer;
-
-        private bool iStopping;
-
-        public Library(ISsdpNotifyProvider aListenerNotify, IEventUpnpProvider aEventServer)
-        {
-            // create house mutex
-
-            iMutex = new Mutex();
-
-            EventServer = aEventServer;
-
-            // create public device lists
-
-            iMediaServerList = new SortedList<string, MediaServer>();
-
-            // create discovery system
-
-            iDeviceListMediaServer = new DeviceListUpnp(ServiceContentDirectory.ServiceType(), aListenerNotify);
-            iDeviceListMediaServer.EventDeviceAdded += MediaServerAdded;
-            iDeviceListMediaServer.EventDeviceRemoved += MediaServerRemoved;
-        }
-
-        public void Start(IPAddress aInterface)
-        {
-            // start the discovery system
-            iStopping = false;
-            iDeviceListMediaServer.Start(aInterface);
-        }
-
-        public void Stop()
-        {
-            Lock();
-
-            // stop the discovery system
-            iStopping = true;
-            iDeviceListMediaServer.Stop();
-
-            iMediaServerList.Clear();
-
-            Unlock();
-        }
-
-        public void Rescan()
-        {
-            // rescan
-
-            iDeviceListMediaServer.Rescan();
-        }
-
-        // Event system for media server list changes
-
-        public class EventArgsMediaServer : EventArgs
-        {
-            internal EventArgsMediaServer(MediaServer aMediaServer)
-            {
-                MediaServer = aMediaServer;
-            }
-
-            public MediaServer MediaServer;
-        }
-
-        public EventHandler<EventArgsMediaServer> EventMediaServerAdded;
-        public EventHandler<EventArgsMediaServer> EventMediaServerRemoved;
-
-        private void MediaServerAdded(object obj, DeviceList.EventArgsDevice e)
-        {
-            Trace.WriteLine(Trace.kTopology, "MediaServer+         " + e.Device);
-
-            try
-            {
-                Device device = e.Device;
-                string name = device.Name;
-
-                if (name != null)
-                {
-                    UserLog.WriteLine(DateTime.Now + ": MediaServer+    " + e.Device.Name);
-
-                    MediaServer mediaServer = new MediaServer(this, name, device);
-
-                    Lock();
-
-                    if (!iStopping)
-                    {
-                        iMediaServerList.Add(e.Device.Udn, mediaServer);
-
-                        Unlock();
-
-                        if (EventMediaServerAdded != null)
-                        {
-                            EventMediaServerAdded(this, new EventArgsMediaServer(mediaServer));
-                        }
-                    }
-                    else
-                    {
-                        Unlock();
-                    }
-                }
-            }
-            catch (DeviceException)
-            {
-            }
-        }
-
-        private void MediaServerRemoved(object obj, DeviceList.EventArgsDevice e)
-        {
-            UserLog.WriteLine(DateTime.Now + ": MediaServer-    " + e.Device.Name);
-            Trace.WriteLine(Trace.kTopology, "MediaServer-            " + e.Device);
-
-            Lock();
-
-            if (!iStopping)
-            {
-                MediaServer mediaServer;
-
-                iMediaServerList.TryGetValue(e.Device.Udn, out mediaServer);
-
-                if (mediaServer == null)
-                {
-                    Unlock();
-
-                    return;
-                }
-
-                iMediaServerList.Remove(e.Device.Udn);
-
-                Unlock();
-
-                if (EventMediaServerRemoved != null)
-                {
-                    EventMediaServerRemoved(this, new EventArgsMediaServer(mediaServer));
-                }
-            }
-            else
-            {
-                Unlock();
-            }
-        }
-
-        // Lock functions
-
-        public void Lock()
-        {
-            iMutex.WaitOne();
-        }
-
-        public void Unlock()
-        {
-            iMutex.ReleaseMutex();
-        }
-
-        // Accessor functions
-
-        public SortedList<string, MediaServer> MediaServerList
-        {
-            get
-            {
-                return (iMediaServerList);
-            }
-        }
-
-        private Mutex iMutex;
-
-        public IEventUpnpProvider EventServer;
-
-        private SortedList<string, MediaServer> iMediaServerList;
-    }
-*/
 }

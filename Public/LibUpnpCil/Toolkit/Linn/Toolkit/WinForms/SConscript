@@ -1,0 +1,65 @@
+Import('_default_env')
+
+
+files = Split("""
+    ../../../Properties/AssemblyInfo.cs
+    Properties/Resources.Designer.cs
+    ProductImages.cs
+    Invoker.cs
+""")
+
+fullFiles = Split("""
+    Full/CrashLogDumperForm.cs
+    Full/FormAboutBox.Designer.cs
+    Full/FormAboutBox.cs
+    Full/FormCrashLogDumper.Designer.cs
+    Full/FormCrashLogDumper.cs
+    Full/FormOptions.Designer.cs
+    Full/FormOptions.cs
+    Full/FormUserLog.Designer.cs 
+    Full/FormUserLog.cs
+    Full/OptionPageWinForms.cs
+    Full/OptionWinForms.cs
+    Full/StackStatusHandlerWinForms.cs
+""")
+
+compactFiles = Split("""
+    Compact/CrashLogDumperForm.cs
+    Compact/FormAboutBox.Designer.cs
+    Compact/FormAboutBox.cs
+    Compact/FormCrashLogDumper.Designer.cs
+    Compact/FormCrashLogDumper.cs
+    Compact/FormOptions.Designer.cs  
+    Compact/FormOptions.cs
+    Compact/FormUserLog.Designer.cs 
+    Compact/FormUserLog.cs
+    Compact/ITheme.cs 
+    Compact/OptionPageWinForms.cs 
+    Compact/OptionWinForms.cs 
+    Compact/StackStatusHandlerCompact.cs
+""")
+
+
+res = _default_env.Resgen('Linn.Toolkit.WinForms.Properties.Resources.resources', 'Properties/Resources.resx')
+if _default_env['hardware'] == 'PocketPc':
+    files.append(compactFiles)
+    res += _default_env.Resgen('Linn.Toolkit.FormAboutBox.resources', 'Compact/FormAboutBox.resx')
+    res += _default_env.Resgen('Linn.Toolkit.FormCrashLogDumper.resources', 'Compact/FormCrashLogDumper.resx')
+    res += _default_env.Resgen('Linn.Toolkit.FormOptions.resources', 'Compact/FormOptions.resx')
+    res += _default_env.Resgen('Linn.Toolkit.FormUserLog.resources', 'Compact/FormUserLog.resx')
+    doxygenexclude = 'Linn/Toolkit/WinForms/Full'
+else:
+    files.append(fullFiles)
+    res += _default_env.Resgen('Linn.Toolkit.FormAboutBox.resources', 'Full/FormAboutBox.resx')
+    res += _default_env.Resgen('Linn.Toolkit.FormCrashLogDumper.resources', 'Full/FormCrashLogDumper.resx')
+    res += _default_env.Resgen('Linn.Toolkit.FormOptions.resources', 'Full/FormOptions.resx')
+    res += _default_env.Resgen('Linn.Toolkit.FormUserLog.resources', 'Full/FormUserLog.resx')
+    doxygenexclude = 'Linn/Toolkit/WinForms/Compact'
+
+lib = _default_env.CliLibrary('OssToolkitWinForms', files, CLILIBS=['mscorlib', 'OssCore', 'System', 'System.Windows.Forms', 'System.Drawing'], CLIRESOURCES=res)
+
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ToolkitWinForms.tar', files, DOXYGENINPUT='Linn/Toolkit/WinForms', DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ToolkitWinForms', DOXYGENNAMESPACE='OssToolkitWinForms', DOXYGENEXCLUDE='*.svn* ' + doxygenexclude)
+Alias('Docs', docs)
+

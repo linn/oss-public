@@ -1,7 +1,6 @@
-Import('_default_env nib kVersion')
+Import('_default_env nib kBuildInfo appAssemblyInfo')
 
 files = Split("""
-    Properties/AssemblyInfo.cs
     ArtworkCache.cs
     ButtonHoverPush.cs
     Controllers.cs
@@ -26,9 +25,12 @@ files = Split("""
     ViewUtils.cs
     WindowPopover.cs
     WindowUpdate.cs
+    WindowSave.cs
 """);
 
-linnLinkCliLibs = Split("""
+files += appAssemblyInfo
+
+nonStdLinkCliLibs = Split("""
     OssCore
     OssToolkitCocoa
     OssSysLib
@@ -37,23 +39,13 @@ linnLinkCliLibs = Split("""
     OssDidlLite
     OssTopology
     OssKinsky
-""")
-
-otherLinkCliLibs = Split("""
     Monobjc
     Monobjc.Cocoa
     Monobjc.ImageKit
 """)
 
-otherNonLinkCliLibs = Split("""
-    ICSharpCode.SharpZipLib
-    taglib-sharp
-    policy.2.0.taglib-sharp
-""")
-
 linkCliLibs = []
-linkCliLibs.extend(linnLinkCliLibs)
-linkCliLibs.extend(otherLinkCliLibs)
+linkCliLibs.extend(nonStdLinkCliLibs)
 linkCliLibs.append('System.Drawing')
 
 target = 'winexe'
@@ -67,9 +59,13 @@ Depends(progAssembly, nib)
 
 
 # build a list of all required assembly files
-reqAssemblies = [File(_default_env.subst('$install_dir/lib/Linn/' + l + '.dll')) for l in linnLinkCliLibs]
-reqAssemblies.extend( [File(_default_env.subst('$install_dir/lib/' + l + '.dll')) for l in otherLinkCliLibs] )
-reqAssemblies.extend( [File(_default_env.subst('$install_dir/lib/' + l + '.dll')) for l in otherNonLinkCliLibs] )
+reqAssemblies = []
+reqAssemblies.extend(nonStdLinkCliLibs)
+reqAssemblies.extend(Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+    policy.2.0.taglib-sharp
+"""))
 
 
 # make list of native libraries
@@ -188,6 +184,8 @@ iconResourceNames = Split("""
     Track.png
     UPNP.png
     Video.png
+    Tick.png
+    RefreshButton.png
 """)
 
 resources['Images'] = [ File( '../../../../../../Layouts/Kinsky/Desktop2/Images/' + name) for name in imageResourceNames]
@@ -211,15 +209,15 @@ pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerKinsky', progAssembl
                     APPNAME = 'Kinsky',
                     APPINSTFOLDER = '$install_dir/bin',
                     PKGINSTFOLDER = '$install_dir/share/Kinsky',
-                    APPCERT = '"3rd Party Mac Developer Application: Linn Products Ltd"',
-                    PKGCERT = '"3rd Party Mac Developer Installer: Linn Products Ltd"',
+                    APPCERT = '"Developer ID Application: Linn Products Ltd"',
+                    PKGCERT = '"Developer ID Installer: Linn Products Ltd"',
                     CLILIBS = reqAssemblies,
                     NATIVELIBS = nativeLibs,
                     NIBS = nibs,
                     RESOURCES = resources,
                     EXERESOURCES = exeResources,
                     ICON = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
-                    VERSION = kVersion)
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
 
 Alias('Lib', pkg)
 

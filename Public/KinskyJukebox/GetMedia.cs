@@ -738,7 +738,7 @@ public class TrackMetadata
             Year = ((Upnp.musicTrack)aMusicTrack).Date;
             if (aMusicTrack.Res.Count > 0) {
                 Duration = aMusicTrack.Res[0].Duration;
-                MimeType = aMusicTrack.Res[0].ProtocolInfo;
+                MimeType = aMusicTrack.Res[0].ProtocolInfo.Replace("http-get:*:", "").Replace(":*", "");
             }
         }
         catch (Exception) {

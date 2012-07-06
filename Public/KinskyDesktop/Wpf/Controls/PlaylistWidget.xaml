@@ -22,11 +22,13 @@
                         <StackPanel Margin="5,0,0,0" VerticalAlignment="Top">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock x:Name="txtPosition" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=Position, Converter={StaticResource PlaylistPositionConverter}}" DockPanel.Dock="Left" VerticalAlignment="Top" Foreground="{DynamicResource TextMutedBrush}"  />
-                                <TextBlock x:Name="txtTitle" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Title}" Margin="5,0,0,0" HorizontalAlignment="Left" />
-                            </StackPanel>
-                            <TextBlock x:Name="txtAlbum" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Album}" Margin="0,0,0,0" HorizontalAlignment="Left" />
-                            <TextBlock x:Name="txtArtist" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Artist}"  Margin="0,0,0,0" HorizontalAlignment="Left"
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock x:Name="txtTitle" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Title}" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                                    <TextBlock x:Name="txtAlbum" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Album}" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                                    <TextBlock x:Name="txtArtist" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Artist}"  Margin="5,0,0,0" HorizontalAlignment="Left"
                                        Visibility="{Binding Path=WrappedItem, Converter={StaticResource ArtistVisibilityConverter}}" />
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
                     </DockPanel>
                 </StackPanel>
@@ -115,10 +117,12 @@
                         <StackPanel Margin="5,0,0,0" VerticalAlignment="Top">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock x:Name="txtPosition" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=Position, Converter={StaticResource PlaylistPositionConverter}}" DockPanel.Dock="Left" VerticalAlignment="Top" Foreground="{DynamicResource TextMutedBrush}"  />
-                                <TextBlock x:Name="txtTitle" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Title}" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock x:Name="txtTitle" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Title}" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                                    <TextBlock x:Name="txtAlbum" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Album}" Margin="5,0,0,0" HorizontalAlignment="Left" />
+                                    <TextBlock x:Name="txtArtist" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Artist}"  Margin="5,0,0,0" HorizontalAlignment="Left" />
+                                </StackPanel>
                             </StackPanel>
-                            <TextBlock x:Name="txtAlbum" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Album}" Margin="0,0,0,0" HorizontalAlignment="Left" />
-                            <TextBlock x:Name="txtArtist" TextElement.FontSize="{DynamicResource SmallFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Artist}"  Margin="0,0,0,0" HorizontalAlignment="Left" />
                         </StackPanel>
                     </DockPanel>
                 </StackPanel>
@@ -151,9 +155,11 @@
             </Grid>
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=IsPlaying}" Value="True">
-                    <Setter TargetName="btnNavigateToSender" Property="Visibility" Value="Visible" />
                     <Setter TargetName="imgArtwork" Property="Visibility" Value="Collapsed"  />
                     <Setter TargetName="imgIsPlaying" Property="Visibility" Value="Visible"  />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=HasRoom}" Value="True">
+                    <Setter TargetName="btnNavigateToSender" Property="Visibility" Value="Visible" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
                     <Setter TargetName="stackPanel" Property="Control.Background" Value="{DynamicResource HighlightBrush}" />

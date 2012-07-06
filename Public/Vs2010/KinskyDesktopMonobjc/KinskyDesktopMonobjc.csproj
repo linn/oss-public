@@ -148,9 +148,10 @@
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewSelectionSource.cs" />
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewUtils.cs" />
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\WindowPopover.cs" />
-    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\share\Kinsky\AssemblyInfo.cs" />
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\FontManager.cs" />
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\WindowUpdate.cs" />
+    <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\WindowSave.cs" />
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewSelectionBookmark.cs" />
     <Compile Include="..\..\KinskyDesktop\Cocoa\Monobjc\ViewAddBookmark.cs" />
   </ItemGroup>
@@ -227,6 +228,9 @@
     </InterfaceDefinition>
     <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\WindowAbout.xib" xmlns="">
       <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">WindowAbout.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\WindowSave.xib" xmlns="">
+      <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">WindowSave.xib</Link>
     </InterfaceDefinition>
     <InterfaceDefinition Include="..\..\KinskyDesktop\Cocoa\WindowUpdate.xib" xmlns="">
       <Link xmlns="http://schemas.microsoft.com/developer/msbuild/2003">WindowUpdate.xib</Link>

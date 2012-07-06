@@ -11,6 +11,7 @@ using Linn;
 using Linn.Control.Ssdp;
 using Linn.ControlPoint;
 using Linn.ControlPoint.Upnp;
+using Linn.ProductSupport;
 
 namespace KinskyJukebox
 {
@@ -406,7 +407,7 @@ namespace KinskyJukebox
             iConfigurationService = new ServiceConfiguration(aDevice);
             iPlaylistService = new ServicePlaylist(aDevice);
             try {
-                string currUri = ProductSupport.GetParameterValue(iConfigurationService.ParameterXmlSync(), Parameter.kTargetJukebox, Parameter.kNameJukeboxPresetPrefix);
+                string currUri = Parameter.GetParameterValue(iConfigurationService.ParameterXmlSync(), Parameter.kTargetJukebox, Parameter.kNameJukeboxPresetPrefix);
                 iCurrentPresetUri = Uri.UnescapeDataString(currUri);
             }
             catch (Exception e) {

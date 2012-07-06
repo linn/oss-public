@@ -1,0 +1,31 @@
+Import('_default_env')
+
+
+files = Split("""
+    ../../../Properties/AssemblyInfo.cs
+    AsyncArrayAdaptor.cs
+    CrashDumper.cs
+    ENotificationType.cs
+    Extensions.cs
+    ImageCache.cs
+    Invoker.cs
+    Logging.cs
+    MasterDetailView.cs
+    MultiViewSwitcher.cs
+    Options.cs
+    Popup.cs
+    ResourceManager.cs
+    WifiListener.cs
+    PowerStateListener.cs
+    ScreenStateListener.cs
+""")
+
+clilibs = ['Mono.Android', 'System', 'System.Xml', 'System.Core', 'OssCore']
+msproj = _default_env.MSBuildFileGenerator('OssToolkitDroid', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='OssToolkitDroid')
+lib = _default_env.MSBuildLibBuilder('OssToolkitDroid', msproj, CLILIBS=clilibs)
+
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ToolkitDroid.tar', files, DOXYGENINPUT='Linn/Toolkit/Droid', DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ToolkitDroid', DOXYGENNAMESPACE='OssToolkitDroid', DOXYGENEXCLUDE='*.svn*')
+Alias('Docs', docs)
+

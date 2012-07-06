@@ -234,7 +234,7 @@ def ReleaseInstallerIos(target, source, **kw):
     except:
         username = os.environ['USERNAME']
         
-    version = kw.get('VERSION', "").replace('development', '0.%s.0' % env.subst('$svn_rev'))
+    version = kw.get('VERSION', "")
     product = kw.get('PRODUCT', 'Unknown') #os.path.splitext(target)[0]
     bundleId = kw.get('BUNDLEID', 'Unknown')
     clilibs = kw.get('CLILIBS', [])
@@ -273,7 +273,7 @@ def ReleaseInstallerIos(target, source, **kw):
     def make_manifest(target, source, env):
         f = open(str(target[0]), 'wt')
         build = 'Releases'
-        if kw.get('VERSION', "") == 'development':
+        if kw.get('TYPE', "") == 'development' or kw.get('TYPE', "") == 'nightly':
             build = 'NightlyBuilds'
             file = os.path.basename(str(source[0]))
         else:

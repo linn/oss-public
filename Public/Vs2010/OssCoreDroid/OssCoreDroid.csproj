@@ -14,7 +14,7 @@
     <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
     <AndroidApplication>True</AndroidApplication>
     <AssemblyName>OssCore</AssemblyName>
-    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <BaseDirectory>..\..\LibUpnpCil\Core</BaseDirectory>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
@@ -29,6 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -37,12 +38,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\AssemblyInfoModel.cs">
@@ -62,6 +65,9 @@
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\AssemblyInfoDroid.cs">
       <Link>Framework\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkChangeWatcher.cs">
+      <Link>Framework\NetworkChangeWatcher.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\IImageCache.cs">
       <Link>IImageCache.cs</Link>
@@ -114,9 +120,6 @@
     <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionParser.cs">
       <Link>OptionParser.cs</Link>
     </Compile>
-    <Compile Include="..\..\LibUpnpCil\Core\Linn\ProductSupport.cs">
-      <Link>ProductSupport.cs</Link>
-    </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Scheduler.cs">
       <Link>Scheduler.cs</Link>
     </Compile>
@@ -140,6 +143,9 @@
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLogFile.cs">
       <Link>UserLogFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\VersionSupport.cs">
+      <Link>VersionSupport.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

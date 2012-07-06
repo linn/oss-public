@@ -56,8 +56,8 @@ def _parsewinicon(prefix, icon):
     return prefix + icon
 
 def generate(env):
-    env['BUILDERS']['CliProgram'] = CsBuilder
-    env['BUILDERS']['CliLibrary'] = CsLibBuilder
+    env['BUILDERS']['CliProgramV2'] = CsBuilder
+    env['BUILDERS']['CliLibraryV2'] = CsLibBuilder
 
     env['CSC']            = 'csc'
     env['_CSCLIBS']       = "${_parsecsclibs('$CLILIBPREFIX', CLILIBS, '$CLILIBSUFFIX', CLILIBPATH, __env__)}"

@@ -1,0 +1,325 @@
+<div id="root" unselectable="on" class="unselectable">
+
+  <script type="text/javascript">
+    var target = null;
+    var rotating = false;
+    var touchedInner = false;
+    var touchedOuter = false;
+    var outsideInner = false;
+    var outsideOuter = false;
+    var angle = 0;
+    var knobAngle = 0;
+    var startAngle = 0;
+    var lastAngle = 0;
+    var centre = { 'X' : 0, 'Y' : 0 };
+    var innerRadius = 0;
+    var outerRadius = 0;
+    var deg2rad = Math.PI * 2 / 360;
+    var value = 0;
+    var maxValue = 100;
+
+    function onInitialise(json)
+    {
+        centre.X = $('#grip').offset().left + ($('#grip').width() / 2);
+        centre.Y = $('#grip').offset().top + ($('#grip').height() / 2);
+        outerRadius = (centre.X - $('#grip').offset().left);
+        innerRadius = outerRadius * 0.3;
+
+        $('#grip').mousedown(function(e) { target = this; mouseDown(e); });
+        $(document).mousemove(function(e) { mouseMove(e); });
+        $(document).mouseup(function(e) { mouseUp(e); });
+
+        $('#standby').click(function(e) { xappSend('Clicked', this.id); });
+        $('#standby').mousedown(function(e) { $('#standbyLeft, #standbyFiller, #standbyRight').removeClass('buttonOverLeft buttonOverFiller buttonOverRight'); $('#standbyLeft').addClass('buttonDownLeft'); $('#standbyFiller').addClass('buttonDownFiller'); $('#standbyRight').addClass('buttonDownRight'); });
+        $('#standby').mouseover(function(e) { $('#standbyLeft, #standbyFiller, #standbyRight').removeClass('buttonLeft buttonFiller buttonRight'); $('#standbyLeft').addClass('buttonOverLeft'); $('#standbyFiller').addClass('buttonOverFiller'); $('#standbyRight').addClass('buttonOverRight'); });
+        $('#standby').mouseout(function(e) { $('#standbyLeft, #standbyFiller, #standbyRight').removeClass('buttonOverLeft buttonOverFiller buttonOverRight'); $('#standbyLeft, #standbyFiller, #standbyRight').removeClass('buttonDownLeft buttonDownFiller buttonDownRight'); $('#standbyLeft').addClass('buttonLeft'); $('#standbyFiller').addClass('buttonFiller'); $('#standbyRight').addClass('buttonRight'); });
+        $('#standby').mouseup(function(e) { $('#standbyLeft, #standbyFiller, #standbyRight').removeClass('buttonOverLeft buttonOverFiller buttonOverRight'); $('#standbyLeft, #standbyFiller, #standbyRight').removeClass('buttonDownLeft buttonDownFiller buttonDownRight'); if ($('#standbyLeft').is(":hover") || $('#standbyFiller').is(":hover") || $('#standbyRight').is(":hover") || $('#standbyWrapper').is(":hover") || $('#standbyImage').is(":hover")) { $('#standbyLeft').addClass('buttonOverLeft'); $('#standbyFiller').addClass('buttonOverFiller'); $('#standbyRight').addClass('buttonOverRight'); } else { $('#standbyLeft').addClass('buttonLeft'); $('#standbyFiller').addClass('buttonFiller'); $('#standbyRight').addClass('buttonRight'); } });
+
+        $('#configuration').click(function(e) { xappSend('Clicked', this.id); });
+        $('#configuration').mousedown(function(e) { $('#configurationLeft, #configurationFiller, #configurationRight').removeClass('buttonOverLeft buttonOverFiller buttonOverRight'); $('#configurationLeft').addClass('buttonDownLeft'); $('#configurationFiller').addClass('buttonDownFiller'); $('#configurationRight').addClass('buttonDownRight'); });
+        $('#configuration').mouseover(function(e) { $('#configurationLeft, #configurationFiller, #configurationRight').removeClass('buttonLeft buttonFiller buttonRight'); $('#configurationLeft').addClass('buttonOverLeft'); $('#configurationFiller').addClass('buttonOverFiller'); $('#configurationRight').addClass('buttonOverRight'); });
+        $('#configuration').mouseout(function(e) { $('#configurationLeft, #configurationFiller, #configurationRight').removeClass('buttonOverLeft buttonOverFiller buttonOverRight'); $('#configurationLeft, #configurationFiller, #configurationRight').removeClass('buttonDownLeft buttonDownFiller buttonDownRight'); $('#configurationLeft').addClass('buttonLeft'); $('#configurationFiller').addClass('buttonFiller'); $('#configurationRight').addClass('buttonRight'); });
+        $('#configuration').mouseup(function(e) { $('#configurationLeft, #configurationFiller, #configurationRight').removeClass('buttonOverLeft buttonOverFiller buttonOverRight'); $('#configurationLeft, #configurationFiller, #configurationRight').removeClass('buttonDownLeft buttonDownFiller buttonDownRight'); if ($('#configurationLeft').is(":hover") || $('#configurationFiller').is(":hover") || $('#configurationRight').is(":hover")) { $('#configurationLeft').addClass('buttonOverLeft'); $('#configurationFiller').addClass('buttonOverFiller'); $('#configurationRight').addClass('buttonOverRight'); } else { $('#configurationLeft').addClass('buttonLeft'); $('#configurationFiller').addClass('buttonFiller'); $('#configurationRight').addClass('buttonRight'); } });
+
+        updateProgress();
+    }
+
+    function onValue(json)
+    {
+        value = json.Value;
+        updateProgress();
+    }
+
+    function onMaxValue(json)
+    {
+        maxValue = json.Value;
+        updateProgress();
+    }
+
+    function mouseDown(e)
+    {
+        if(target != null && target.id == "grip")
+        {
+            var dx = e.pageX - centre.X;
+            var dy = e.pageY - centre.Y;
+            var r2 = dx*dx + dy*dy;
+
+            if (r2 > innerRadius * innerRadius)
+            {
+                if(r2 < outerRadius * outerRadius)
+                {
+                    rotating = true;
+                    touchedOuter = true;
+                    startRotation();
+                }
+            }
+            else
+            {
+                touchedInner = true;
+            }
+
+            startAngle = calculateMouseAngle(e);
+            lastAngle = startAngle;
+        }
+    }
+
+    function mouseMove(e)
+    {
+        if(target != null && target.id == "grip")
+        {
+            var dx = e.pageX - centre.X;
+            var dy = e.pageY - centre.Y;
+            var r2 = dx*dx + dy*dy;
+
+            outsideOuter = (r2 > outerRadius * outerRadius);
+            outsideInner = (r2 > innerRadius * innerRadius);
+
+            if(touchedOuter)
+            {
+                updateAngle(e);
+
+                $('#grip').css({ '-webkit-transform': 'rotate(' + angle + 'deg)' });
+                $('#grip').css({ '-moz-transform': 'rotate(' + angle + 'deg)' });
+                $('#grip').css({ '-o-transform': 'rotate(' + angle + 'deg)' });
+                $('#grip').css({ '-ms-transform': 'rotate(' + angle + 'deg)' });
+                $('#grip').css({ 'transform': 'rotate(' + angle + 'deg)' });
+                /*var rad = angle * deg2rad;
+                var costheta = Math.cos(rad);
+                var sintheta = Math.sin(rad);
+                var dx = -centre.X * costheta + centre.Y * sintheta + centre.X;
+                var dy = -centre.X * sintheta - centre.Y * costheta + centre.Y;
+                $('#grip').css({ 'filter' : 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', Dx=' + dx + ', Dy=' + dy + ')' });*/
+            }
+        }
+    }
+
+    function mouseUp(e)
+    {
+        if(target != null && target.id == "grip")
+        {
+            if (rotating)
+            {
+                if (outsideOuter)
+                {
+                    cancelRotation();
+                }
+                else
+                {
+                    endRotation();
+                }
+            }
+            else if(touchedInner)
+            {
+                if (!outsideInner)
+                {
+                    clicked();
+                }
+            }
+        }
+
+        var mouseAngle = calculateMouseAngle(e);
+
+        knobAngle = knobAngle + mouseAngle - startAngle;
+
+        touchedInner = false;
+        outsideInner = false;
+
+        touchedOuter = false;
+        outsideOuter = false
+        rotating = false;
+    }
+
+    function updateAngle(e)
+    {
+        var mouseAngle = calculateMouseAngle(e);
+
+        angle = knobAngle + mouseAngle - startAngle;
+
+        var angleDiff = mouseAngle - lastAngle;
+        while (angleDiff > 180.0)
+        {
+            angleDiff = angleDiff - 360.0;
+        }
+        while (angleDiff < -180.0)
+        {
+            angleDiff = angleDiff + 360.0;
+        }
+
+        var lastSegment = Math.floor((lastAngle - startAngle) / 30.0);
+        var thisSegment = Math.floor((lastAngle + angleDiff - startAngle) / 30.0);
+
+        if (thisSegment > lastSegment)
+        {
+            clockwiseRotate();
+        }
+        else if (thisSegment < lastSegment)
+        {
+            antiClockwiseRotate();
+        }
+
+        lastAngle = mouseAngle;
+    }
+
+    function calculateMouseAngle(e)
+    {
+        var radians = Math.atan2(e.pageY - centre.Y, e.pageX - centre.X);
+        return (radians * 180 / Math.PI);
+    }
+    
+    function updateProgress()
+    {
+        var c = { 'X' : 78, 'Y' : 78};
+        var ratio = value / maxValue;
+        var v = ratio * 360;
+        if (v >= 0 && v <= 180)
+        {
+            var a = -1 * (180 - v);
+            $('#progressbar').css({ 'clip': 'rect(0px, 78px, 156px, 0px)' });
+            $('#l-bar').css({ '-webkit-transform': 'rotate(' + a + 'deg)' });
+            $('#l-bar').css({ '-moz-transform': 'rotate(' + a + 'deg)' });
+            $('#l-bar').css({ '-o-transform': 'rotate(' + a + 'deg)' });
+            $('#l-bar').css({ '-ms-transform': 'rotate(' + a + 'deg)' });
+            $('#l-bar').css({ 'transform': 'rotate(' + a + 'deg)' });
+            /*var rad = a * deg2rad;
+            var costheta = Math.cos(rad);
+            var sintheta = Math.sin(rad);
+            var dx = -c.X * costheta + c.Y * sintheta + c.X;
+            var dy = -c.X * sintheta - c.Y * costheta + c.Y;
+            $('#l-bar').css({ 'filter' : 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', Dx=' + dx + ', Dy=' + dy + ')' });*/
+            $('#r-bar').css({ 'display': 'none'});
+        }
+        else if(v > 180 && v <= 360)
+        {
+            $('#progressbar').css({ 'clip': 'rect(0px, 156px, 156px, 0px)' });
+            $('#l-bar').css({ '-webkit-transform': 'rotate(0deg)' });
+            $('#l-bar').css({ '-moz-transform': 'rotate(0deg)' });
+            $('#l-bar').css({ '-o-transform': 'rotate(0deg)' });
+            $('#l-bar').css({ '-ms-transform': 'rotate(0deg)' });
+            $('#l-bar').css({ 'transform': 'rotate(0deg)' });
+            //$('#l-bar').css({ 'filter' : 'progid:DXImageTransform.Microsoft.Matrix(M11=1, M12=0, M21=0, M22=1, Dx=0, Dy=0' });
+            $('#r-bar').css({ '-webkit-transform': 'rotate(' + v + 'deg)' });
+            $('#r-bar').css({ '-moz-transform': 'rotate(' + v + 'deg)' });
+            $('#r-bar').css({ '-o-transform': 'rotate(' + v + 'deg)' });
+            $('#r-bar').css({ '-ms-transform': 'rotate(' + v + 'deg)' });
+            $('#r-bar').css({ 'transform': 'rotate(' + v + 'deg)' });
+            /*var rad = v * deg2rad;
+            var costheta = Math.cos(rad);
+            var sintheta = Math.sin(rad);
+            var dx = -78 * costheta + 78 * sintheta + 78;
+            var dy = -78 * sintheta - 78 * costheta + 78;
+            $('#r-bar').css({ 'filter' : 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', Dx=' + dx + ', Dy=' + dy + ')' });*/
+            $('#r-bar').css({ 'display': 'block' });
+        }
+        $('#text').html(value);
+    }
+
+    function startRotation()
+    {
+        xappSend('StartRotation', '');
+    }
+
+    function clockwiseRotate()
+    {
+        xappSend('ClockwiseRotate', '');
+        value = value + 1;
+        if(value > maxValue)
+        {
+            value = maxValue;
+        }
+        updateProgress();
+    }
+
+    function antiClockwiseRotate()
+    {
+        xappSend('AntiClockwiseRotate', '');
+        value = value - 1;
+        if (value < 0)
+        {
+            value = 0;
+        }
+        updateProgress();
+    }
+
+    function endRotation()
+    {
+        xappSend('EndRotation', '');
+    }
+
+    function cancelRotation()
+    {
+        xappSend('CancelRotation', '');
+    }
+
+    function clicked()
+    {
+        xappSend('Clicked', '');
+    }
+  </script>
+
+  <div id="chrome">
+    <div id="topleftedge" />
+    <div id="topfiller" />
+    <div id="toprightedge" />
+    <div id="leftfiller" />
+    <div id="rightfiller" />
+    <div id="bottomleftedge" />
+    <div id="bottomfiller" />
+    <div id="bottomrightedge" />
+  </div>
+  <div id="room" unselectable="on" class="unselectable">Sitting Room</div>
+  <div id="rotary" unselectable="on" class="unselectable">
+    <div id="textwrapper" unselectable="on" class="unselectable">
+      <div id="text" unselectable="on" class="unselectable">0</div>
+    </div>
+    <div id="wheel" unselectable="on" class="unselectable">
+      <div id="grip" unselectable="on" class="unselectable" />
+      <div id="progressbar" unselectable="on" class="unselectable">
+        <div id="l-bar" unselectable="on" class="unselectable" />
+        <div id="r-bar" unselectable="on" class="unselectable" />
+        <div id="progressbarfiller" unselectable="on" class="unselectable" />
+      </div>
+    </div>
+  </div>
+  <div id="bottombar">
+    <div id="bottombarfiller">
+      <div id="standby">
+        <div class="buttonLeft" id="standbyLeft" />
+        <div class="buttonFiller" id="standbyFiller">
+          <div id="standbyWrapper">
+            <div class="buttonStandbyImage" id="standbyImage" />
+          </div>
+        </div>
+        <div class="buttonRight" id="standbyRight" />
+      </div>
+      <div id="logowrapper">
+        <div id="logo" src="LinnLogo.png" />
+      </div>
+      <div id="configuration">
+        <div class="buttonLeft" id="configurationLeft" />
+        <div class="buttonFiller" id="configurationFiller" />
+        <div class="buttonRight" id="configurationRight" />
+      </div>
+    </div>
+  </div>
+
+</div>

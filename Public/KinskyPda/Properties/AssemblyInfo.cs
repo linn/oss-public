@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright 2009-2011")]
 [assembly: ComVisible(false)]
 [assembly: Guid("73515870-0f89-4efe-9288-19af6e299f00")]
-[assembly: AssemblyVersion("4.2.5")]
+[assembly: AssemblyVersion("4.2.6")]
 
 // Below attribute is to suppress FxCop warning "CA2232 : Microsoft.Usage : Add STAThreadAttribute to assembly"
 // as Device app does not support STA thread.

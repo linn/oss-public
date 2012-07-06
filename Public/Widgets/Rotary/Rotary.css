@@ -1,0 +1,112 @@
+
+div.linn-rotary
+{
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    position: relative;
+}
+
+div.linn-rotary div.centre
+{
+    position: absolute;
+    left: 32%;
+    top: 38%;
+    width: 36%;
+    height: 24%;
+    text-align: center;
+    font-size: 100%;
+}
+
+div.linn-rotary div.wheel
+{
+    background-image: url('Wheel.png');
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+div.linn-rotary div.grip
+{
+    background-image: url('Screws.png');
+    background-size: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+div.linn-rotary div.adornment
+{
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-image: url('WheelMute.png');
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+div.linn-rotary div.progressbar
+{
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    z-index: -3;
+    display: block;
+}
+
+div.linn-rotary div.progressbar div.l-bar,
+div.linn-rotary div.progressbar div.r-bar
+{
+    position: absolute;
+    background: #47ACDC;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    z-index: -2;
+}
+
+div.linn-rotary div.progressbar div.l-bar
+{
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    width: 100%;
+    height: 100%;
+}
+
+div.linn-rotary div.progressbar div.r-bar
+{
+    display: none;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+    width: 100%;
+    height: 100%;
+}
+
+div.linn-rotary div.filler1,
+div.linn-rotary div.filler2
+{
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 70%;
+    height: 70%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    display: block;
+    background-color: white;
+    z-index: -1;
+}
+

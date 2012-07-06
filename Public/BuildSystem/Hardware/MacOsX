@@ -1,8 +1,12 @@
 Import('env')
 
 env.Tool('gmcs', toolpath=['../../BuildSystem/Tool'])
+env.Tool('dmcs', toolpath=['../../BuildSystem/Tool'])
 env.Tool('resgen2', toolpath=['../../BuildSystem/Tool'])
 env.Tool('mmp', toolpath=['../../BuildSystem/Tool'])
 env.Tool('productbuild', toolpath=['../../BuildSystem/Tool'])
 env.Tool('pkgbuild', toolpath=['../../BuildSystem/Tool'])
 env.Tool('PackageMaker', toolpath=['../../BuildSystem/Tool'])
+
+env.AppendUnique(CLILIBPATH = ['/Applications/MonoDevelop.app/Contents/MacOS/lib/monodevelop/AddIns/MonoDevelop.MonoMac'])
+

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using Upnp;
 using System.Collections.ObjectModel;
+using Linn.ControlPoint;
 
 namespace Linn.Kinsky
 {
@@ -676,9 +677,6 @@ namespace Linn.Kinsky
             iInvoker = aInvoker;
             iHouse = aHouse;
             iRooms = new List<Room>();
-
-            iHouse.EventRoomAdded += RoomAdded;
-            iHouse.EventRoomRemoved += RoomRemoved;
             iScheduler = new Scheduler("KinskyHouse", 1);
         }
 
@@ -691,38 +689,40 @@ namespace Linn.Kinsky
         {
             lock (iLockObject)
             {
+                iOpen = true;
                 Trace.WriteLine(Trace.kKinsky, "Kinsky.House Start()");
+                iHouse.EventRoomAdded += RoomAdded;
+                iHouse.EventRoomRemoved += RoomRemoved;
                 iHouse.Start(aInterface);
             }
         }
         /// <summary>
         /// Stops Room discovery and clears the existing list of rooms.
         /// </summary>
+        private delegate void DRemoveRoom(Room aRoom);
         public void Stop()
         {
             lock (iLockObject)
             {
                 Trace.WriteLine(Trace.kKinsky, "Kinsky.House Stop()");
-                iHouse.Stop();
-                ClearRooms();
+                iOpen = false;
+                iHouse.EventRoomAdded -= RoomAdded;
+                iHouse.EventRoomRemoved -= RoomRemoved;
+                iHouse.Stop(); 
+                List<Room> rooms = new List<Room>(iRooms);
+                foreach (Room r in rooms)
+                {
+                    iRooms.Remove(r);
+                    iInvoker.BeginInvoke(new DRemoveRoom(delegate(Room aRoom)
+                    {
+                        r.Dispose();
+                        OnEventRoomRemoved(aRoom);
+                    }), r);
+                }
+                Assert.Check(iRooms.Count == 0);
             }
         }
-
-        private delegate void DClearRooms();
-        private void ClearRooms()
-        {
-            Delegate del = new DClearRooms(delegate()
-                {
-                    List<Room> rooms = new List<Room>(iRooms);
-                    foreach (Room r in rooms)
-                    {
-                        RoomRemoved(this, new Topology.EventArgsRoom(r.TopologyRoom));
-                    }
-                });
-            if (iInvoker.TryBeginInvoke(del))
-                return;
-            del.Method.Invoke(del.Target, new object[] { });
-        }
+        
 
         /// <summary>
         /// Ordered collection of IRooms present within the house.
@@ -734,9 +734,12 @@ namespace Linn.Kinsky
             {
                 if (iInvoker.InvokeRequired) { throw new InvocationException(); }
                 List<IRoom> rooms = new List<IRoom>();
-                foreach (Room r in iRooms)
+                lock (iLockObject)
                 {
-                    rooms.Add(r);
+                    foreach (Room r in iRooms)
+                    {
+                        rooms.Add(r);
+                    }
                 }
                 return new ReadOnlyCollection<IRoom>(rooms);
             }
@@ -771,6 +774,11 @@ namespace Linn.Kinsky
 
         #endregion
 
+        public void RemoveDevice(Device aDevice)
+        {
+            iHouse.RemoveDevice(aDevice);
+        }
+
         #region Helper Methods
 
         private delegate void DRoomAdded(object sender, Topology.EventArgsRoom e);
@@ -778,22 +786,39 @@ namespace Linn.Kinsky
         {
             Delegate del = new DRoomAdded(delegate(object s, Topology.EventArgsRoom args)
                    {
-                       Room newRoom = null;
-                       int insertIndex = 0;
-                       Trace.WriteLine(Trace.kKinsky, "Kinsky.House: Room added: " + args.Room);
-
-                       newRoom = new Room(e.Room, iInvoker, iHouse.ModelFactory, iModelSenders, iScheduler);
-                       foreach (Room r in iRooms)
+                       lock (iLockObject)
                        {
-                           if (newRoom.CompareTo(r) < 0)
+                           if (iOpen)
                            {
-                               break;
-                           }
-                           insertIndex += 1;
-                       }
+                               Room newRoom = null;
+                               int insertIndex = 0;
+                               Trace.WriteLine(Trace.kKinsky, "Kinsky.House: Room added: " + args.Room);
 
-                       iRooms.Insert(insertIndex, newRoom);
-                       OnEventRoomInserted(insertIndex, newRoom);
+                               newRoom = new Room(this, e.Room, iInvoker, iHouse.ModelFactory, iModelSenders, iScheduler);
+                               Room existing = null;
+                               foreach (Room r in iRooms)
+                               {
+                                   if (r.Name == args.Room.Name)
+                                   {
+                                       existing = r;
+                                   }
+                                   if (newRoom.CompareTo(r) < 0)
+                                   {
+                                       break;
+                                   }
+                                   insertIndex += 1;
+                               }
+                               if (existing != null)
+                               {
+                                   insertIndex -= 1;
+                                   iRooms.Remove(existing);
+                                   existing.Dispose();
+                                   OnEventRoomRemoved(existing);
+                               }
+                               iRooms.Insert(insertIndex, newRoom);
+                               OnEventRoomInserted(insertIndex, newRoom);
+                           }
+                       }
                    });
             if (iInvoker.TryBeginInvoke(del, sender, e))
                 return;
@@ -805,21 +830,27 @@ namespace Linn.Kinsky
         {
             Delegate del = new DRoomRemoved(delegate(object s, Topology.EventArgsRoom args)
                       {
-                          Room found = null;
-                          Trace.WriteLine(Trace.kKinsky, "Kinsky.House: Room removed: " + e.Room);
-                          foreach (Room r in iRooms)
+                          lock (iLockObject)
                           {
-                              if (r.TopologyRoom == e.Room)
+                              if (iOpen)
                               {
-                                  found = r;
-                                  break;
+                                  Room found = null;
+                                  Trace.WriteLine(Trace.kKinsky, "Kinsky.House: Room removed: " + e.Room);
+                                  foreach (Room r in iRooms)
+                                  {
+                                      if (r.TopologyRoom == e.Room)
+                                      {
+                                          found = r;
+                                          break;
+                                      }
+                                  }
+                                  if (found != null)
+                                  {
+                                      iRooms.Remove(found);
+                                      OnEventRoomRemoved(found);
+                                      found.Dispose();
+                                  }
                               }
-                          }
-                          if (found != null)
-                          {
-                              iRooms.Remove(found);
-                              OnEventRoomRemoved(found);
-                              found.Dispose();
                           }
                       });
             if (iInvoker.TryBeginInvoke(del, sender, e))
@@ -833,7 +864,7 @@ namespace Linn.Kinsky
         private List<Room> iRooms;
         private object iLockObject;
         private IInvoker iInvoker;
-        private Room iCurrent;
+        private bool iOpen;
         private IModelSenders iModelSenders;
         private Scheduler iScheduler;
     }
@@ -885,8 +916,9 @@ namespace Linn.Kinsky
         /// <param name="aInvoker">An instance of <see cref="Linn.Kinsky.IInvoker"/> which ensures a single threaded mode of operation.</param>
         /// <param name="aModelFactory">A factory to create Topology model instances or retrieve existing instances from cache.</param>
         /// <param name="aModelSenders">Provides a list of Openhome Songcast senders.</param>
-        internal Room(Topology.IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, IModelSenders aModelSenders, Scheduler aScheduler)
+        internal Room(House aHouse, Topology.IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, IModelSenders aModelSenders, Scheduler aScheduler)
         {
+            iHouse = aHouse;
             iScheduler = aScheduler;
             iModelFactory = aModelFactory;
             iInvoker = aInvoker;
@@ -908,7 +940,6 @@ namespace Linn.Kinsky
                 iRoom.EventSourceAdded += EventSourceAddedHandler;
                 iRoom.EventSourceRemoved += EventSourceRemovedHandler;
                 iRoom.EventCurrentChanged += EventCurrentChangedHandler;
-                iRoom.EventStandbyChanged += EventStandbyChangedHandler;
                 foreach (Topology.ISource s in iRoom.Sources)
                 {
                     EventSourceAddedHandler(this, new EventArgsSource(s));
@@ -928,8 +959,26 @@ namespace Linn.Kinsky
                 iRoom.EventSourceAdded -= EventSourceAddedHandler;
                 iRoom.EventSourceRemoved -= EventSourceRemovedHandler;
                 iRoom.EventCurrentChanged -= EventCurrentChangedHandler;
-                iRoom.EventStandbyChanged -= EventStandbyChangedHandler;
                 iRoom.EventPreampChanged -= EventPreampChangedHandler;
+                List<Source> sources = new List<Source>();
+                foreach (Source s in iSources)
+                {
+                    sources.Add(s);
+                }
+                foreach (Source source in sources)
+                {
+                    EventSourceRemovedHandler(this, new EventArgsSource(source.TopologySource));
+                    if (iCurrentSource == source)
+                    {
+                        iCurrentSource = null;
+                    }
+                }
+                if (iCurrentSource != null)
+                {
+                    iCurrentSource.Close();
+                    iCurrentSource = null;
+                }
+                Assert.Check(iSources.Count == 0);
                 iOpen = false;
             }
         }
@@ -954,7 +1003,10 @@ namespace Linn.Kinsky
             {
                 Delegate del = new DSetStandby(delegate(bool aStandby)
                 {
-                    iRoom.SetStandby(aStandby);
+                    if (iRoom.Standby != aStandby)
+                    {
+                        iRoom.SetStandby(aStandby);
+                    }
                 });
                 if (iInvoker.TryBeginInvoke(del, value))
                     return;
@@ -969,21 +1021,6 @@ namespace Linn.Kinsky
             {
                 if (iInvoker.InvokeRequired) { throw new InvocationException(); }
                 return iCurrentSource;
-            }
-            set
-            {
-                Delegate del = new DSetCurrent(delegate(ISource aCurrent)
-                {
-                    if (aCurrent != null)
-                    {
-                        aCurrent.Select();
-                    }
-                    iCurrentSource = aCurrent;
-                    OnEventCurrentChanged();
-                });
-                if (iInvoker.TryBeginInvoke(del, value))
-                    return;
-                del.Method.Invoke(del.Target, new object[] { value });
             }
         }
 
@@ -1011,10 +1048,35 @@ namespace Linn.Kinsky
             }
         }
 
-        public event EventHandler<EventArgs> EventStandbyChanged;
+        private EventHandler<EventArgs> DEventStandbyChanged;
+        public event EventHandler<EventArgs> EventStandbyChanged
+        {
+            add
+            {
+                lock(iRoom)
+                {
+                    if (DEventStandbyChanged == null)
+                    {
+                        iRoom.EventStandbyChanged += EventStandbyChangedHandler;
+                    }
+                    DEventStandbyChanged += value;
+                }
+            }
+            remove
+            {
+                lock(iRoom)
+                {
+                    DEventStandbyChanged -= value;
+                    if (DEventStandbyChanged == null)
+                    {
+                        iRoom.EventStandbyChanged -= EventStandbyChangedHandler;
+                    }
+                }
+            }
+        }
         private void OnEventStandbyChanged()
         {
-            EventHandler<EventArgs> eventHandler = EventStandbyChanged;
+            EventHandler<EventArgs> eventHandler = DEventStandbyChanged;
             if (eventHandler != null)
             {
                 eventHandler(this, EventArgs.Empty);
@@ -1081,6 +1143,14 @@ namespace Linn.Kinsky
         }
         #endregion
 
+        internal House House
+        {
+            get
+            {
+                return iHouse;
+            }
+        }
+
         #region IComparable<Room> Members
 
         public int CompareTo(Room other)
@@ -1127,10 +1197,15 @@ namespace Linn.Kinsky
             {
                 bool changed = false;
                 Topology.ISource current = iRoom.Current;
+                IGroup oldGroup = iCurrentSource != null ? iCurrentSource.TopologySource.Group : null;
                 if (current == null)
                 {
                     changed = iCurrentSource != null;
-                    iCurrentSource = null;
+                    if (changed && !iSources.Contains(iCurrentSource))
+                    {
+                        iCurrentSource.Close();
+                        iCurrentSource = null;
+                    }
                     Trace.WriteLine(Trace.kKinsky, "CurrentChanged: " + Name + ", null");
                 }
                 else
@@ -1149,18 +1224,22 @@ namespace Linn.Kinsky
                     if (!found)
                     {
                         changed = true;
-                        iCurrentSource = SourceFactory.CreateSource(current, this, iInvoker, iModelFactory, iModelSenders, iScheduler);
+                        if (current != null)
+                        {
+                            iCurrentSource = SourceFactory.CreateSource(current, this, iInvoker, iModelFactory, iModelSenders, iScheduler);
+                        }
                     }
-                    Trace.WriteLine(Trace.kKinsky, "CurrentChanged: " + found + ", " + Name + ", " + iCurrentSource.Name);
+                    Trace.WriteLine(Trace.kKinsky, "CurrentChanged: " + found + ", " + Name + ", " + iCurrentSource != null ? iCurrentSource.Name : ", null");
                 }
                 if (changed)
                 {
                     OnEventCurrentChanged();
-                    if (iInfoModel != null)
+                    IGroup newGroup = iCurrentSource != null ? iCurrentSource.TopologySource.Group : null;
+                    if (iInfoModel != null && newGroup != oldGroup)
                     {
                         iInfoModel.Refresh();
                     }
-                    if (iTimeModel != null)
+                    if (iTimeModel != null && newGroup != oldGroup)
                     {
                         iTimeModel.Refresh();
                     }
@@ -1307,7 +1386,7 @@ namespace Linn.Kinsky
             return string.Format("Kinsky.Room: {0} ", Name);
         }
 
-        private ISource iCurrentSource;
+        private Source iCurrentSource;
         private List<Source> iSources;
         private Topology.IRoom iRoom;
         private IInvoker iInvoker;
@@ -1318,6 +1397,7 @@ namespace Linn.Kinsky
         private RoomTime iTimeModel;
         private RoomVolume iVolumeModel;
         private bool iOpen;
+        private House iHouse;
 
         #region IDisposable Members
 
@@ -1399,7 +1479,15 @@ namespace Linn.Kinsky
             }
             try
             {
-                iModel = iModelFactory.CreateModelInfo(iRoom.TopologyRoom.Current);
+                Topology.ISource currentSource = iRoom.TopologyRoom.Current;
+                if (currentSource != null && currentSource.Group.HasInfo)
+                {
+                    iModel = iModelFactory.CreateModelInfo(currentSource);
+                }
+                else
+                {
+                    iModel = null;
+                }
             }
             catch (ModelSourceException ex)
             {
@@ -1457,7 +1545,10 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModel != null)
+                {
+                    iRoom.House.RemoveDevice(iModel.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -1774,7 +1865,15 @@ namespace Linn.Kinsky
             }
             try
             {
-                iModel = iModelFactory.CreateModelTime(iRoom.TopologyRoom.Current);
+                Topology.ISource currentSource = iRoom.TopologyRoom.Current;
+                if (currentSource != null && currentSource.Group.HasTime)
+                {
+                    iModel = iModelFactory.CreateModelTime(currentSource);
+                }
+                else
+                {
+                    iModel = null;
+                }
             }
             catch (ModelSourceException ex)
             {
@@ -1830,7 +1929,10 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModel != null)
+                {
+                    iRoom.House.RemoveDevice(iModel.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -2113,7 +2215,7 @@ namespace Linn.Kinsky
             {
                 OpenModel();
             }
-            
+
         }
 
         private void OpenModel()
@@ -2161,7 +2263,10 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModel != null)
+                {
+                    iRoom.House.RemoveDevice(iModel.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -2211,7 +2316,7 @@ namespace Linn.Kinsky
             {
                 if (!iModelInitialised)
                 {
-                    iModelInitialised = true; 
+                    iModelInitialised = true;
                     OnEventOpened();
                 }
             });
@@ -2308,7 +2413,7 @@ namespace Linn.Kinsky
 
     internal static class SourceFactory
     {
-        public static Source CreateSource(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, IModelSenders aModelSenders, Scheduler aScheduler)
+        public static Source CreateSource(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, IModelSenders aModelSenders, Scheduler aScheduler)
         {
             if (aSource.Type == Source.kSourceDs || aSource.Type == Source.kSourceUpnpAv)
             {
@@ -2380,7 +2485,7 @@ namespace Linn.Kinsky
         public const string kSourceToslink = "Toslink";
         public const string kSourceReceiver = "Receiver";
 
-        internal Source(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
+        internal Source(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
         {
             iScheduler = aScheduler;
             iModelFactory = aModelFactory;
@@ -2573,7 +2678,7 @@ namespace Linn.Kinsky
             }
         }
 
-        internal void Close()
+        internal virtual void Close()
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
         }
@@ -2603,7 +2708,10 @@ namespace Linn.Kinsky
             {
                 Delegate del = new DSetStandby(delegate(bool aStandby)
                 {
-                    iSource.Standby = aStandby;
+                    if (iSource.Standby != aStandby)
+                    {
+                        iSource.Standby = aStandby;
+                    }
                 });
                 if (iInvoker.TryBeginInvoke(del, value))
                     return;
@@ -2622,7 +2730,7 @@ namespace Linn.Kinsky
         private Topology.ISource iSource;
         private string iName;
         protected IInvoker iInvoker;
-        private IRoom iRoom;
+        protected Room iRoom;
         protected IModelFactory iModelFactory;
         protected Scheduler iScheduler;
     }
@@ -2631,7 +2739,7 @@ namespace Linn.Kinsky
     public class AuxSource : Source
     {
 
-        public AuxSource(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
+        public AuxSource(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
             : base(aSource, aRoom, aInvoker, aModelFactory, aScheduler)
         { }
 
@@ -2779,13 +2887,20 @@ namespace Linn.Kinsky
     public class DiscSource : Source, IDiscSource
     {
 
-        public DiscSource(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
+        public DiscSource(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
             : base(aSource, aRoom, aInvoker, aModelFactory, aScheduler)
         {
             Open();
         }
 
         #region Source Overrides
+
+        internal override void Close()
+        {
+            base.Close();
+            CloseModel();
+            iModelSource = null;
+        }
 
         public override void Seek(uint aSeconds)
         {
@@ -3136,12 +3251,16 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModelSource != null)
+                {
+                    iRoom.House.RemoveDevice(iModelSource.Source.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
             del.Method.Invoke(del.Target, new object[] { });
         }
+
         private delegate void DEventPlayStateChangedHandler();
         private void EventPlayStateChangedHandler(object sender, EventArgs e)
         {
@@ -3205,7 +3324,7 @@ namespace Linn.Kinsky
     public class PlaylistSource : Source, IPlaylistSource
     {
 
-        public PlaylistSource(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
+        public PlaylistSource(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
             : base(aSource, aRoom, aInvoker, aModelFactory, aScheduler)
         {
             iItems = new List<MrItem>();
@@ -3214,6 +3333,13 @@ namespace Linn.Kinsky
         }
 
         #region Source Overrides
+
+        internal override void Close()
+        {
+            base.Close();
+            CloseModel();
+            iModelSource = null;
+        }
 
         public override void Seek(uint aSeconds)
         {
@@ -3671,7 +3797,10 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModelSource != null)
+                {
+                    iRoom.House.RemoveDevice(iModelSource.Source.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -3683,8 +3812,11 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventTrackChangedHandler(delegate()
             {
-                iCurrent = iModelSource.TrackPlaylistItem;
-                OnEventCurrentChanged();
+                if (iModelSource != null)
+                {
+                    iCurrent = iModelSource.TrackPlaylistItem;
+                    OnEventCurrentChanged();
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -3696,23 +3828,26 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventPlaylistChangedHandler(delegate()
             {
-                List<MrItem> list = new List<MrItem>();
-
-                try
+                if (iModelSource != null)
                 {
-                    iModelSource.Lock();
-                    for (uint i = 0; i < iModelSource.PlaylistTrackCount; ++i)
+                    List<MrItem> list = new List<MrItem>();
+
+                    try
                     {
-                        list.Add(iModelSource.PlaylistItem(i));
+                        iModelSource.Lock();
+                        for (uint i = 0; i < iModelSource.PlaylistTrackCount; ++i)
+                        {
+                            list.Add(iModelSource.PlaylistItem(i));
+                        }
                     }
-                }
-                finally
-                {
-                    iModelSource.Unlock();
-                }
-                iItems = list;
+                    finally
+                    {
+                        iModelSource.Unlock();
+                    }
+                    iItems = list;
 
-                OnEventItemsChanged();
+                    OnEventItemsChanged();
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -3807,7 +3942,7 @@ namespace Linn.Kinsky
     public class RadioSource : Source, IRadioSource
     {
 
-        public RadioSource(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
+        public RadioSource(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, Scheduler aScheduler)
             : base(aSource, aRoom, aInvoker, aModelFactory, aScheduler)
         {
             iItems = new List<MrItem>();
@@ -3815,6 +3950,13 @@ namespace Linn.Kinsky
         }
 
         #region Source Overrides
+        
+        internal override void Close()
+        {
+            base.Close();
+            CloseModel();
+            iModelSource = null;
+        }
 
         public override void Seek(uint aSeconds)
         {
@@ -4168,12 +4310,16 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModelSource != null)
+                {
+                    iRoom.House.RemoveDevice(iModelSource.Source.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
             del.Method.Invoke(del.Target, new object[] { });
         }
+
         private delegate void DEventTransportStateChangedHandler();
         private void EventTransportStateChangedHandler(object sender, EventArgs e)
         {
@@ -4207,16 +4353,19 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventPresetChangedHandler(delegate()
             {
-                if (iModelSource.PresetIndex >= 0)
+                if (iModelSource != null)
                 {
-                    RefreshItemsList();
-                    iCurrent = iModelSource.Preset((uint)iModelSource.PresetIndex);
+                    if (iModelSource.PresetIndex >= 0)
+                    {
+                        RefreshItemsList();
+                        iCurrent = iModelSource.Preset((uint)iModelSource.PresetIndex);
+                    }
+                    else
+                    {
+                        iCurrent = null;
+                    }
+                    OnEventCurrentChanged();
                 }
-                else
-                {
-                    iCurrent = null;
-                }
-                OnEventCurrentChanged();
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -4240,8 +4389,11 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventPresetChangedHandler(delegate()
             {
-                RefreshItemsList();
-                OnEventItemsChanged();
+                if (iModelSource != null)
+                {
+                    RefreshItemsList();
+                    OnEventItemsChanged();
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;
@@ -4281,7 +4433,7 @@ namespace Linn.Kinsky
     public class ReceiverSource : Source, IReceiverSource
     {
 
-        public ReceiverSource(Topology.ISource aSource, IRoom aRoom, IInvoker aInvoker, IModelFactory aModelFactory, IModelSenders aModelSenders, Scheduler aScheduler)
+        public ReceiverSource(Topology.ISource aSource, Room aRoom, IInvoker aInvoker, IModelFactory aModelFactory, IModelSenders aModelSenders, Scheduler aScheduler)
             : base(aSource, aRoom, aInvoker, aModelFactory, aScheduler)
         {
             iModelSenders = aModelSenders;
@@ -4560,6 +4712,16 @@ namespace Linn.Kinsky
             iModelSenders.EventSenderChanged += EventSenderChangedHandler;
         }
 
+        internal override void Close()
+        {
+            base.Close();
+            CloseModel();
+            iModelSource = null;
+            iModelSenders.EventSenderAdded -= EventSenderAddedHandler;
+            iModelSenders.EventSenderRemoved -= EventSenderRemovedHandler;
+            iModelSenders.EventSenderChanged -= EventSenderChangedHandler;
+        }
+
         private void SetSenders()
         {
             IList<IModelSender> senders = iModelSenders.SendersList;
@@ -4665,7 +4827,10 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventSubscriptionErrorHandler(delegate()
             {
-                CreateModel();
+                if (iModelSource != null)
+                {
+                    iRoom.House.RemoveDevice(iModelSource.Source.Device);
+                }
             });
             if (iInvoker.TryBeginInvoke(del))
                 return;

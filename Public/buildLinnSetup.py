@@ -44,6 +44,7 @@ def build(path, args=''):
         exit()
 
 build(['Docs'])
+build(['External'])
 build(['Xml'])
 build(['Kodegen'])
 build(['LibUpnpCil','Core'])
@@ -51,7 +52,9 @@ build(['LibUpnpCil','Toolkit'], 'OssToolkitWinForms')
 build(['LibUpnpCil','SysLib'])
 build(['LibUpnpCil','Control'])
 build(['LibUpnpCil','Services'])
+build(['LibUpnpCil','DidlLite'])
 build(['LibUpnpCil','Topology'])
+build(['Kinsky'])
+build(['ProductSupport'])
 build(['LinnSetup'])
-
 

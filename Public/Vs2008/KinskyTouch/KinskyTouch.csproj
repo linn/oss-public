@@ -9,15 +9,15 @@
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>KinskyTouch</RootNamespace>
-    <BaseDirectory>..\..\KinskyTouch</BaseDirectory>
+    <BaseDirectory>..\..\KinskyDesktop\Ios</BaseDirectory>
     <AssemblyName>Kinsky</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\debug\bin</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <OutputPath>..\..\install\IosSim\debug\bin</OutputPath>
+    <DefineConstants>DEBUG; TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -35,7 +35,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\release\bin</OutputPath>
+    <OutputPath>..\..\install\IosSim\release\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -49,7 +49,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\install\Ios\debug\bin</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG; TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -71,6 +71,7 @@
     <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
+    <IpaPackageName />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -81,6 +82,8 @@
     <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
+    <BuildIpa>true</BuildIpa>
+    <IpaPackageName />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -96,128 +99,134 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="..\..\KinskyTouch\Resources\KinskyLogo.png" />
-    <None Include="..\..\KinskyTouch\Resources\KinskyLogoIphone.png" />
-    <None Include="..\..\KinskyTouch\Resources\KinskyLogoSpotlight.png" />
-    <None Include="..\..\KinskyTouch\Resources\KinskyLogoSpotlightIphone.png" />
-    <None Include="..\..\KinskyTouch\Resources\KinskyLogoSpotlightIphone4.png" />
-    <None Include="..\..\KinskyTouch\Resources\Default-Portrait.png">
-      <DeployService-Deploy>true</DeployService-Deploy>
-    </None>
-    <None Include="..\..\KinskyTouch\Resources\Default-Landscape.png">
-      <DeployService-Deploy>true</DeployService-Deploy>
-    </None>
-    <None Include="..\..\KinskyTouch\Resources\KinskyLogoIphone4.png">
-      <DeployService-Deploy>true</DeployService-Deploy>
-    </None>
-    <None Include="..\..\KinskyTouch\Resources\Default~iphone.png" />
-    <None Include="..\..\KinskyTouch\AppDelegate.cs" />
-    <None Include="..\..\KinskyTouch\Info.plist" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoIpad.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoIpad3.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoIphone.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoIphone4.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoSpotlightIpad.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoSpotlightIpad3.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoSpotlightIphone.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\KinskyLogoSpotlightIphone4.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\Default-Portrait.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\Default-Landscape.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Resources\Default~iphone.png" />
+    <None Include="..\..\KinskyDesktop\Ios\Info.plist" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\KinskyTouch\AppDelegateIpad.cs" />
-    <Compile Include="..\..\KinskyTouch\AppDelegateIphone.cs" />
-    <Compile Include="..\..\KinskyTouch\ArtworkCache.cs" />
-    <Compile Include="..\..\KinskyTouch\CellBrowser.cs" />
-    <Compile Include="..\..\KinskyTouch\CellBrowser.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\AppDelegateIpad.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\AppDelegateIphone.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ArtworkCache.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellLazyLoadDefault.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellLazyLoadDefault.xib.designer.cs">
+      <DependentUpon>CellLazyLoadDefault.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Ios\CellBrowser.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellBrowser.xib.designer.cs">
       <DependentUpon>CellBrowser.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\CellBrowserHeader.cs" />
-    <Compile Include="..\..\KinskyTouch\CellBrowserHeader.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\CellBrowserHeader.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellBrowserHeader.xib.designer.cs">
       <DependentUpon>CellBrowserHeader.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\CellBrowserItem.cs" />
-    <Compile Include="..\..\KinskyTouch\CellBrowserItem.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\CellBrowserItem.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellBrowserItem.xib.designer.cs">
       <DependentUpon>CellBrowserItem.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\CellLazyLoadImage.cs" />
-    <Compile Include="..\..\KinskyTouch\CellPlaylist.cs" />
-    <Compile Include="..\..\KinskyTouch\CellPlaylist.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\CellLazyLoadImage.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellPlaylist.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellPlaylist.xib.designer.cs">
       <DependentUpon>CellPlaylist.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\HelperKinskyTouch.cs" />
-    <Compile Include="..\..\KinskyTouch\Main.cs" />
-    <Compile Include="..\..\KinskyTouch\MainWindowIpad.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\HelperKinskyTouch.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\Main.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\MainWindowIpad.xib.designer.cs">
       <DependentUpon>MainWindowIpad.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\MainWindowIphone.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\MainWindowIphone.xib.designer.cs">
       <DependentUpon>MainWindowIphone.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\MediaProviderSupport.cs" />
-    <Compile Include="..\..\KinskyTouch\UIControlRotary.cs" />
-    <Compile Include="..\..\KinskyTouch\UIViewControllerKinskyTouch.cs" />
-    <Compile Include="..\..\KinskyTouch\Views.cs" />
-    <Compile Include="..\..\KinskyTouch\ViewWidgetBrowser.cs" />
-    <Compile Include="..\..\KinskyTouch\ViewWidgetButtons.cs" />
-    <Compile Include="..\..\KinskyTouch\ViewWidgetPlaylist.cs" />
-    <Compile Include="..\..\KinskyTouch\ViewWidgetSelectors.cs" />
-    <Compile Include="..\..\KinskyTouch\ViewWidgetSenderReceiver.cs" />
-    <Compile Include="..\..\KinskyTouch\SourceToolbar.cs" />
-    <Compile Include="..\..\KinskyTouch\SaveDialog.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\MediaProviderSupport.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\UIControlRotary.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\UIViewControllerKinskyTouch.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\Views.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetBrowser.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetButtons.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetPlaylist.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetSelectors.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetSenderReceiver.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\SourceToolbar.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\SaveDialog.xib.designer.cs">
       <DependentUpon>SaveDialog.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\SaveViewController.cs" />
-    <Compile Include="..\..\KinskyTouch\CellSender.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\SaveViewController.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellSender.xib.designer.cs">
       <DependentUpon>CellSender.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\CellSender.cs" />
-    <Compile Include="..\..\KinskyTouch\BrowserToolbar.cs" />
-    <Compile Include="..\..\KinskyTouch\ConfigController.cs" />
-    <Compile Include="..\..\KinskyTouch\ViewWidgetTrack.cs" />
-    <Compile Include="..\..\KinskyTouch\AppRestartHandler.cs" />
-    <Compile Include="..\..\KinskyTouch\ArtworkTileView.cs" />
-    <Compile Include="..\..\KinskyTouch\ArtworkTileView.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\CellSender.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\BrowserToolbar.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ConfigController.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetTrack.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\AppRestartHandler.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ArtworkTileView.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\ArtworkTileView.xib.designer.cs">
       <DependentUpon>ArtworkTileView.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\Properties\AssemblyInfo.cs" />
-    <Compile Include="..\..\KinskyTouch\Reachability.cs" />
-    <Compile Include="..\..\KinskyTouch\CellDefault.cs" />
-    <Compile Include="..\..\KinskyTouch\CellDefault.xib.designer.cs">
+    <Compile Include="..\..\build\share\Kinsky\AssemblyInfo.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\Reachability.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellDefault.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellDefault.xib.designer.cs">
       <DependentUpon>CellDefault.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\ResourceManager.cs" />
-    <Compile Include="..\..\KinskyTouch\OptionPageGeneral.cs" />
-    <Compile Include="..\..\KinskyTouch\OptionInsertMode.cs" />
-    <Compile Include="..\..\KinskyTouch\UIViewInfo.cs" />
-    <Compile Include="..\..\KinskyTouch\CellPlaylistItem.cs" />
-    <Compile Include="..\..\KinskyTouch\CellPlaylistItem.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\ResourceManager.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\OptionPageGeneral.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\OptionInsertMode.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\UIViewInfo.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellRoom.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellRoom.xib.designer.cs">
+      <DependentUpon>CellRoom.xib</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\KinskyDesktop\Ios\CellPlaylistItem.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\CellPlaylistItem.xib.designer.cs">
       <DependentUpon>CellPlaylistItem.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\VolumeButtons.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\VolumeButtons.xib.designer.cs">
       <DependentUpon>VolumeButtons.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\TimeButtons.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\TimeButtons.xib.designer.cs">
       <DependentUpon>TimeButtons.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\ViewWidgetTime.cs" />
-    <Compile Include="..\..\KinskyTouch\VolumeRotary.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetTime.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\VolumeRotary.xib.designer.cs">
       <DependentUpon>VolumeRotary.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\TimeRotary.xib.designer.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\TimeRotary.xib.designer.cs">
       <DependentUpon>TimeRotary.xib</DependentUpon>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\ViewWidgetVolume.cs">
+    <Compile Include="..\..\KinskyDesktop\Ios\ViewWidgetVolume.cs">
       <DeployService-Deploy>true</DeployService-Deploy>
     </Compile>
-    <Compile Include="..\..\KinskyTouch\TimeController.cs" />
-    <Compile Include="..\..\KinskyTouch\VolumeController.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\TimeController.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\VolumeController.cs" />
+    <Compile Include="..\..\KinskyDesktop\Ios\AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellBrowser.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellBrowserHeader.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellBrowserItem.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellPlaylist.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\MainWindowIpad.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\MainWindowIphone.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\SaveDialog.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellSender.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\ArtworkTileView.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellDefault.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\CellPlaylistItem.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\VolumeButtons.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\TimeButtons.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\VolumeRotary.xib" xmlns="" />
-    <InterfaceDefinition Include="..\..\KinskyTouch\TimeRotary.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellBrowser.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellLazyLoadDefault.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellBrowserHeader.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellBrowserItem.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellPlaylist.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellRoom.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\MainWindowIpad.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\MainWindowIphone.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\SaveDialog.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellSender.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\ArtworkTileView.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellDefault.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\CellPlaylistItem.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\VolumeButtons.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\TimeButtons.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\VolumeRotary.xib" xmlns="" />
+    <InterfaceDefinition Include="..\..\KinskyDesktop\Ios\TimeRotary.xib" xmlns="" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">
@@ -637,7 +646,7 @@
       <Link>Error.png</Link>
       <DeployService-Deploy>true</DeployService-Deploy>
     </Content>
-    <Content Include="..\..\KinskyTouch\KinskyLogoAbout.png">
+    <Content Include="..\..\KinskyDesktop\Ios\KinskyLogoAbout.png">
       <DeployService-Deploy>true</DeployService-Deploy>
     </Content>
     <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\Settings.png">
@@ -647,6 +656,12 @@
     <Content Include="..\..\Layouts\Kinsky\Desktop2\Icons\List.png">
       <Link>List.png</Link>
       <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\UIBarButton.png">
+      <Link>UIBarButton.png</Link>
+    </Content>
+    <Content Include="..\..\Layouts\Kinsky\Desktop2\Images\UIBarButtonIPhone.png">
+      <Link>UIBarButtonIPhone.png</Link>
     </Content>
   </ItemGroup>
 </Project>

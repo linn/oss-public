@@ -747,6 +747,21 @@ namespace Linn.Topology.Layer1
         public event EventHandler<EventArgs> EventCurrentSourceChanged;
         public event EventHandler<EventArgs> EventStandbyChanged;
         public event EventHandler<EventArgsSource> EventSourceChanged;
+
+        #region IGroup Members
+
+
+        public bool HasInfo
+        {
+            get { return true; }
+        }
+
+        public bool HasTime
+        {
+            get { return true; }
+        }
+
+        #endregion
     }
 
     public class TestPreamp : IPreamp
@@ -875,5 +890,15 @@ namespace Linn.Topology.Layer1
                     return (null);
                 }
             }
+
+            #region IStack Members
+
+
+            public void RemoveDevice(Device aDevice)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
     }
 }

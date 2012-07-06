@@ -54,7 +54,7 @@ namespace KinskyDesktopWpf
         {
             if (EventBreadcrumbNavigate != null)
             {
-                EventBreadcrumbNavigate(this, new EventArgsBreadcrumbNavigation(iLocation, aCount));
+                EventBreadcrumbNavigate(this, new EventArgsBreadcrumbNavigation(iLocation.TruncateEnd(aCount)));
             }
         }
 
@@ -128,12 +128,10 @@ namespace KinskyDesktopWpf
 
     public class EventArgsBreadcrumbNavigation : EventArgs
     {
-        public EventArgsBreadcrumbNavigation(BreadcrumbTrail aBreadcrumbTrail, int aNumberOfLevels)
+        public EventArgsBreadcrumbNavigation(BreadcrumbTrail aBreadcrumbTrail)
         {
             BreadcrumbTrail = aBreadcrumbTrail;
-            NumberOfLevels = aNumberOfLevels;
         }
-        public int NumberOfLevels { get; set; }
         public BreadcrumbTrail BreadcrumbTrail { get; set; }
     }
 

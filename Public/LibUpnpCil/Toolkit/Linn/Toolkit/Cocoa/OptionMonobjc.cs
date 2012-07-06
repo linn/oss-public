@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Monobjc;
 using Monobjc.Cocoa;
+using System.Runtime.InteropServices;
 
 namespace Linn.Toolkit.Cocoa
 {
@@ -114,6 +115,102 @@ namespace Linn.Toolkit.Cocoa
         private NSPopUpButton iPopUpButton;
     }
 
+    // Control for OptionNetworkInterfaceMonobjc
+    public class OptionNetworkInterfaceMonobjc : OptionMonobjc<Option>
+    {
+        public OptionNetworkInterfaceMonobjc(NSRect aRect, Option aOption)
+            : base(aOption)
+        {
+            iPopUpButton = new NSPopUpButton();
+            iPopUpButton.SizeToFit();
+            iPopUpButton.Frame = new NSRect(aRect.MinX, aRect.MinY - iPopUpButton.Frame.Height, aRect.Width, iPopUpButton.Frame.Height);
+
+            OptionAllowedChanged(this, EventArgs.Empty);
+
+            iPopUpButton.ActionEvent += ActionEvent;
+        }
+
+        public override NSView View
+        {
+            get { return iPopUpButton; }
+        }
+
+        protected override void OptionAllowedChanged(object sender, EventArgs e)
+        {
+            iPopUpButton.RemoveAllItems();
+            Dictionary<string, string> lookup = GetInterfaceFriendlyNamesMap();
+
+            foreach (string s in iOption.Allowed)
+            {
+                string bsdName = s;
+                string title = bsdName;
+                if (lookup.ContainsKey(bsdName))
+                {
+                    title = lookup[bsdName];
+                }
+                iPopUpButton.AddItemWithTitle(new NSString(title));
+            }
+
+            OptionValueChanged(this, EventArgs.Empty);
+        }
+
+        protected override void OptionValueChanged(object sender, EventArgs e)
+        {
+            Dictionary<string, string> lookup = GetInterfaceFriendlyNamesMap();
+            string bsdName = iOption.Value;
+            string title = bsdName;
+            if (lookup.ContainsKey(bsdName))
+            {
+                title = lookup[bsdName];
+            }
+            iPopUpButton.SelectItemWithTitle(new NSString(title));
+        }
+
+        private void ActionEvent(Id aSender)
+        {
+            NSPopUpButton button = aSender.CastTo<NSPopUpButton>();
+            Dictionary<string, string> lookup = GetInterfaceFriendlyNamesMap();
+            string title = button.SelectedItem.Title.ToString();
+            foreach(string key in lookup.Keys)
+            {
+                if (lookup[key] == title)
+                {
+                    title = key;
+                }
+            }
+            iOption.Set(title);
+        }
+
+        private Dictionary<string, string> GetInterfaceFriendlyNamesMap()
+        {
+            Dictionary<string, string> results = new Dictionary<string, string>();
+            NSArray adapters = new Id(SCNetworkInterfaceCopyAll()).CastAs<NSArray>();
+            foreach(Id adapter in adapters)
+            {
+                Id bsdNameId = new Id(SCNetworkInterfaceGetBSDName(adapter.NativePointer));
+                NSString bsdName = bsdNameId.CastAs<NSString>();
+
+                Id displayNameId = new Id(SCNetworkInterfaceGetLocalizedDisplayName(adapter.NativePointer));
+                NSString displayName = displayNameId.CastAs<NSString>();
+
+                results.Add(bsdName.ToString(), displayName.ToString());
+            }
+            adapters.Release();
+            return results;
+        }
+
+        private NSPopUpButton iPopUpButton;
+
+        
+        [DllImport ("/System/Library/Frameworks/SystemConfiguration.framework/Versions/Current/SystemConfiguration")]
+        private static extern IntPtr SCNetworkInterfaceCopyAll();
+
+        [DllImport ("/System/Library/Frameworks/SystemConfiguration.framework/Versions/Current/SystemConfiguration")]
+        private static extern IntPtr SCNetworkInterfaceGetBSDName(IntPtr aInterface);
+
+        [DllImport ("/System/Library/Frameworks/SystemConfiguration.framework/Versions/Current/SystemConfiguration")]
+        private static extern IntPtr SCNetworkInterfaceGetLocalizedDisplayName(IntPtr aInterface);
+    }
 
     // Abstract control for a path
     public abstract class OptionPathMonobjc : OptionMonobjc<Option>
@@ -457,7 +554,6 @@ namespace Linn.Toolkit.Cocoa
         private List<string> iList;
         private OptionListMonobjcDataSource iDataSource;
 	}
-
 
     // Control for a list of folders option
 	public class OptionListFolderPathMonobjc : OptionListMonobjc

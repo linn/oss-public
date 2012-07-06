@@ -58,7 +58,7 @@ namespace Linn.Kinsky
 
         public HttpClient()
         {
-            iMutex = new Mutex();
+            iStartStopLock = new object();
             iSemaphore = new ManualResetEvent(false);
             iSessions = new List<List<HttpClientSession>>();
             iSessions.Add(new List<HttpClientSession>());
@@ -90,36 +90,40 @@ namespace Linn.Kinsky
 
         private void Add(HttpClientSession aSession, int aPriority)
         {
-            Lock();
-            iSessions[aPriority].Add(aSession);
-            iSemaphore.Set();
-            Unlock();
+            lock (iSessions)
+            {
+                iSessions[aPriority].Add(aSession);
+                iSemaphore.Set();
+            }
         }
 
         public void Start()
         {
-            Assert.Check(iThread == null);
+            lock (iStartStopLock)
+            {
+                Assert.Check(!iRunning);
 
-            iThread = new Thread(new ThreadStart(Run));
-            iThread.Priority = kPriority;
-            iThread.Name = "Http Client";
-            iThread.Start();
+                iThread = new Thread(new ThreadStart(Run));
+                iThread.Priority = kPriority;
+                iThread.Name = "Http Client";
+                iThread.Start();
 
-            Trace.WriteLine(Trace.kKinsky, "HttpClient.Start() successful");
+                Trace.WriteLine(Trace.kKinsky, "HttpClient.Start() successful");
+            }
         }
 
         public void Stop()
         {
-            if (iThread != null)
+            lock (iStartStopLock)
             {
-                iThread.Abort();
-                iThread.Join();
-                iThread = null;
+                iRunning = false;
+                iSemaphore.Set();
+                if (iThread != null)
+                {
+                    iThread.Join();
+                    iThread = null;
+                }
                 Trace.WriteLine(Trace.kKinsky, "HttpClient.Stop() successful");
-            }
-            else
-            {
-                Trace.WriteLine(Trace.kKinsky, "HttpClient.Stop() already stopped - silently do nothing");
             }
         }
 
@@ -140,62 +144,57 @@ namespace Linn.Kinsky
 
         private void Run()
         {
-            try
+            while (iRunning)
             {
-                while (true)
+                HttpClientSession session;
+
+                try
                 {
-                    HttpClientSession session;
+                    Monitor.Enter(iSessions);
 
-                    try
+                    session = GetNextSession();
+
+                    if (session == null)
                     {
-                        iMutex.WaitOne();
-    
-                        session = GetNextSession();
-    
-                        if (session == null)
+                        iSemaphore.Reset();
+
+                        try
                         {
-                            iSemaphore.Reset();
+                            Monitor.Exit(iSessions);
 
-                            try
-                            {
-                                iMutex.ReleaseMutex();
-    
-                                iSemaphore.WaitOne();
-                            }
-                            finally
-                            {
-                                iMutex.WaitOne();
-                            }
-    
-                            session = GetNextSession();
+                            iSemaphore.WaitOne();
                         }
-                    }
-                    finally
-                    {
-                        iMutex.ReleaseMutex();
-                    }
+                        finally
+                        {
+                            Monitor.Enter(iSessions);
+                        }
 
+                        session = GetNextSession();
+                    }
+                }
+                finally
+                {
+                    Monitor.Exit(iSessions);
+                }
+
+                if (iRunning)
+                {
                     session.Run();
                 }
             }
-            catch (ThreadAbortException)
+            lock (iSessions)
             {
+                foreach (List<HttpClientSession> list in iSessions)
+                {
+                    list.Clear();
+                }
             }
         }
 
-        private void Lock()
-        {
-            iMutex.WaitOne();
-        }
-
-        private void Unlock()
-        {
-            iMutex.ReleaseMutex();
-        }
-
-        private Mutex iMutex;
+        private object iStartStopLock;
         private ManualResetEvent iSemaphore;
         private List<List<HttpClientSession>> iSessions;
         private Thread iThread;
+        private bool iRunning;
     }
 } // Linn.Kinsky

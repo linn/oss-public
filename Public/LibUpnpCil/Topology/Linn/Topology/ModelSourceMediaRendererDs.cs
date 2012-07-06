@@ -187,11 +187,6 @@ namespace Linn.Topology
             iServicePlaylist.EventSubscriptionError -= EventSubscriptionErrorHandler;
             iServicePlaylist.EventInitial -= EventInitialResponsePlaylist;
 
-            Kill();
-        }
-
-        public override void Kill()
-        {
             try
             {
                 Lock();

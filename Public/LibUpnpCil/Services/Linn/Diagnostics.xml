@@ -178,6 +178,17 @@
             </argumentList>
         </action>
 
+        <action>
+            <name>SetSongcastPercentageLoss</name>
+            <argumentList>
+                <argument>
+                    <name>aPercentage</name>
+                    <direction>in</direction>
+                    <relatedStateVariable>A_ARG_TYPE_PERCENTAGE</relatedStateVariable>
+                </argument>
+            </argumentList>
+        </action>
+
     </actionList>
 
     <serviceStateTable>
@@ -214,6 +225,16 @@
         <stateVariable sendEvents="no">
             <name>A_ARG_TYPE_TUint</name>
             <dataType>ui4</dataType>
+        </stateVariable>
+        
+        <stateVariable sendEvents="no">
+            <name>A_ARG_TYPE_PERCENTAGE</name>
+            <dataType>ui4</dataType>
+			<allowedValueRange>
+				<minimum>0</minimum>
+				<maximum>100</maximum>
+				<step>1</step>
+			</allowedValueRange>            
         </stateVariable>
 
     </serviceStateTable>

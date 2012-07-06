@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+  <head>
+    <script src="jquery-1.7.1.min.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="Common/Common.css"/>
+    <script src="Common/Common.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="ToggleButton/ToggleButton.css"/>
+    <script src="ToggleButton/ToggleButton.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="Rotary/Rotary.css"/>
+    <script src="Rotary/Rotary.js" type="text/javascript"></script>
+    
+    <link rel="stylesheet" type="text/css" href="Rocker/Rocker.css"/>
+    <script src="Rocker/Rocker.js" type="text/javascript"></script>
+
+    <style type="text/css">
+        div.tbType1
+        {
+            width: 42px;
+            height: 12px;
+        }
+        
+        #tb3
+        {
+            width: 168px;
+            height: 48px;
+        }
+
+        div.linn-rotary
+        {
+            color: #000000;
+        }
+        
+        div.rotType1
+        {
+            width: 100px;
+            height: 100px;
+        }
+        
+        #rot3
+        {
+            width: 200px;
+            height: 200px;
+        }
+        
+        div.linn-rocker
+        {
+            color: #000000;
+        }
+        
+        div.rockType1
+        {
+            width: 100px;
+            height: 100px;
+        }
+        
+        #rock3
+        {
+            width: 200px;
+            height: 200px;
+        }
+    </style>    
+  </head>
+  <body>
+    <script type="text/javascript">
+      var rot1Value = 0;
+      var rot2Value = 20;
+      var rot3Value = 80;
+      
+      var rock1Value = 0;
+      var rock2Value = 20;
+      var rock3Value = 80;
+
+      function rot1StartRotation()
+      {
+        $('#rot1 div.centre').css('color', '#ff0000');
+      }
+      function rot1CancelRotation()
+      {
+        $('#rot1 div.centre').css('color', '#000000');
+      }
+      function rot1EndRotation()
+      {
+        $('#rot1 div.centre').css('color', '#000000');
+      }
+      function rot1Clockwise()
+      {
+        rot1Value = rot1Value + 1;
+        if (rot1Value > 100) {
+            rot1Value = 100;
+        }
+        rotUpdate($('#rot1'), rot1Value);
+      }
+      function rot1Anticlockwise()
+      {
+        rot1Value = rot1Value - 1;
+        if (rot1Value < 0) {
+            rot1Value = 0;
+        }
+        rotUpdate($('#rot1'), rot1Value);
+      }
+      function rot1Clicked()
+      {
+        $('#rot1 div.centre').html('click');
+      }
+
+      function rot2StartRotation()
+      {
+        $('#rot2 div.centre').css('color', '#ff0000');
+      }
+      function rot2CancelRotation()
+      {
+        $('#rot2 div.centre').css('color', '#000000');
+      }
+      function rot2EndRotation()
+      {
+        $('#rot2 div.centre').css('color', '#000000');
+      }
+      function rot2Clockwise()
+      {
+        rot2Value = rot2Value + 1;
+        if (rot2Value > 100) {
+            rot2Value = 100;
+        }
+        rotUpdate($('#rot2'), rot2Value);
+      }
+      function rot2Anticlockwise()
+      {
+        rot2Value = rot2Value - 1;
+        if (rot2Value < 0) {
+            rot2Value = 0;
+        }
+        rotUpdate($('#rot2'), rot2Value);
+      }
+      function rot2Clicked()
+      {
+        $('#rot2 div.centre').html('click');
+      }
+
+      function rot3StartRotation()
+      {
+        $('#rot3 div.centre').css('color', '#ff0000');
+      }
+      function rot3CancelRotation()
+      {
+        $('#rot3 div.centre').css('color', '#000000');
+      }
+      function rot3EndRotation()
+      {
+        $('#rot3 div.centre').css('color', '#000000');
+      }
+      function rot3Clockwise()
+      {
+        rot3Value = rot3Value + 1;
+        if (rot3Value > 100) {
+            rot3Value = 100;
+        }
+        rotUpdate($('#rot3'), rot3Value);
+      }
+      function rot3Anticlockwise()
+      {
+        rot3Value = rot3Value - 1;
+        if (rot3Value < 0) {
+            rot3Value = 0;
+        }
+        rotUpdate($('#rot3'), rot3Value);
+      }
+      function rot3Clicked()
+      {
+        $('#rot3 div.centre').html('click');
+      }
+
+      function rotUpdate(rotary, value)
+      {
+        linnRotarySetProgress(rotary, value, 100);
+        $('#' + rotary.attr('id') + ' div.centre').html(value);
+      }
+      
+      function rock1StartRotation()
+      {
+        $('#rock1 div.centre').css('color', '#ff0000');
+      }
+      function rock1CancelRotation()
+      {
+        $('#rock1 div.centre').css('color', '#000000');
+      }
+      function rock1EndRotation()
+      {
+        $('#rock1 div.centre').css('color', '#000000');
+      }
+      function rock1Clockwise()
+      {
+        rock1Value = rock1Value + 1;
+        if (rock1Value > 100) {
+            rock1Value = 100;
+        }
+        rockUpdate($('#rock1'), rock1Value);
+      }
+      function rock1Anticlockwise()
+      {
+        rock1Value = rock1Value - 1;
+        if (rock1Value < 0) {
+            rock1Value = 0;
+        }
+        rotUpdate($('#rock1'), rock1Value);
+      }
+      function rock1Clicked()
+      {
+        $('#rock1 div.centre').html('click');
+      }
+      
+      function rock2StartRotation()
+      {
+        $('#rock2 div.centre').css('color', '#ff0000');
+      }
+      function rock2CancelRotation()
+      {
+        $('#rock2 div.centre').css('color', '#000000');
+      }
+      function rock2EndRotation()
+      {
+        $('#rock2 div.centre').css('color', '#000000');
+      }
+      function rock2Clockwise()
+      {
+        rock2Value = rock2Value + 1;
+        if (rock2Value > 100) {
+            rock2Value = 100;
+        }
+        rockUpdate($('#rock2'), rock2Value);
+      }
+      function rock2Anticlockwise()
+      {
+        rock2Value = rock2Value - 1;
+        if (rock2Value < 0) {
+            rock2Value = 0;
+        }
+        rotUpdate($('#rock2'), rock2Value);
+      }
+      function rock2Clicked()
+      {
+        $('#rock2 div.centre').html('click');
+      }
+      
+      function rock3StartRotation()
+      {
+        $('#rock3 div.centre').css('color', '#ff0000');
+      }
+      function rock3CancelRotation()
+      {
+        $('#rock3 div.centre').css('color', '#000000');
+      }
+      function rock3EndRotation()
+      {
+        $('#rock3 div.centre').css('color', '#000000');
+      }
+      function rock3Clockwise()
+      {
+        rock3Value = rock3Value + 1;
+        if (rock3Value > 100) {
+            rock3Value = 100;
+        }
+        rockUpdate($('#rock3'), rock3Value);
+      }
+      function rock3Anticlockwise()
+      {
+        rock3Value = rock3Value - 1;
+        if (rock3Value < 0) {
+            rock3Value = 0;
+        }
+        rotUpdate($('#rock3'), rock3Value);
+      }
+      function rock3Clicked()
+      {
+        $('#rock3 div.centre').html('click');
+      }
+      
+      function rockUpdate(rocker, value)
+      {
+        linnRockerSetProgress(rocker, value, 100);
+        $('#' + rocker.attr('id') + ' div.centre').html(value);
+      }
+      
+      $(document).ready(function() {
+          linnToggleButtonInit();
+          linnRotaryInit();
+          linnRockerInit();
+          
+          linnRotarySetStartRotation($('#rot1'), rot1StartRotation);
+          linnRotarySetCancelRotation($('#rot1'), rot1CancelRotation);
+          linnRotarySetEndRotation($('#rot1'), rot1EndRotation);
+          linnRotarySetClockwiseRotate($('#rot1'), rot1Clockwise);
+          linnRotarySetAnticlockwiseRotate($('#rot1'), rot1Anticlockwise);
+          linnRotarySetCentreClicked($('#rot1'), rot1Clicked);
+          rotUpdate($('#rot1'), rot1Value);
+          
+          linnRotarySetStartRotation($('#rot2'), rot2StartRotation);
+          linnRotarySetCancelRotation($('#rot2'), rot2CancelRotation);
+          linnRotarySetEndRotation($('#rot2'), rot2EndRotation);
+          linnRotarySetClockwiseRotate($('#rot2'), rot2Clockwise);
+          linnRotarySetAnticlockwiseRotate($('#rot2'), rot2Anticlockwise);
+          linnRotarySetCentreClicked($('#rot2'), rot2Clicked);
+          rotUpdate($('#rot2'), rot2Value);
+          
+          linnRotarySetStartRotation($('#rot3'), rot3StartRotation);
+          linnRotarySetCancelRotation($('#rot3'), rot3CancelRotation);
+          linnRotarySetEndRotation($('#rot3'), rot3EndRotation);
+          linnRotarySetClockwiseRotate($('#rot3'), rot3Clockwise);
+          linnRotarySetAnticlockwiseRotate($('#rot3'), rot3Anticlockwise);
+          linnRotarySetCentreClicked($('#rot3'), rot3Clicked);
+          rotUpdate($('#rot3'), rot3Value);
+          
+          linnRockerSetStartRotation($('#rock1'), rock1StartRotation);
+          linnRockerSetCancelRotation($('#rock1'), rock1CancelRotation);
+          linnRockerSetEndRotation($('#rock1'), rock1EndRotation);
+          linnRockerSetClockwiseRotate($('#rock1'), rock1Clockwise);
+          linnRockerSetAnticlockwiseRotate($('#rock1'), rock1Anticlockwise);
+          linnRockerSetCentreClicked($('#rock1'), rock1Clicked);
+          rockUpdate($('#rock1'), rock1Value);
+          
+          linnRockerSetStartRotation($('#rock2'), rock2StartRotation);
+          linnRockerSetCancelRotation($('#rock2'), rock2CancelRotation);
+          linnRockerSetEndRotation($('#rock2'), rock2EndRotation);
+          linnRockerSetClockwiseRotate($('#rock2'), rock2Clockwise);
+          linnRockerSetAnticlockwiseRotate($('#rock2'), rock2Anticlockwise);
+          linnRockerSetCentreClicked($('#rock2'), rock2Clicked);
+          rockUpdate($('#rock2'), rock2Value);
+          
+          linnRockerSetStartRotation($('#rock3'), rock3StartRotation);
+          linnRockerSetCancelRotation($('#rock3'), rock3CancelRotation);
+          linnRockerSetEndRotation($('#rock3'), rock3EndRotation);
+          linnRockerSetClockwiseRotate($('#rock3'), rock3Clockwise);
+          linnRockerSetAnticlockwiseRotate($('#rock3'), rock3Anticlockwise);
+          linnRockerSetCentreClicked($('#rock3'), rock3Clicked);
+          rockUpdate($('#rock3'), rock3Value);
+      });
+    </script>
+
+    <script type="text/javascript">
+      function toggleButton1Click() {
+        alert('toggle-button-1: ' + linnToggleButtonValue($('#tb1')));
+      }
+      function toggleButton2Click() {
+        alert('toggle-button-2: ' + linnToggleButtonValue($('#tb2')));
+      }
+      function toggleButton3Click() {
+        alert('toggle-button-3: ' + linnToggleButtonValue($('#tb3')));
+      }
+    </script>
+
+    <h1>Toggle Buttons</h1>
+    <div class="linn-toggle-button" id="tb1" onclick="toggleButton1Click();"></div><br/>
+    <div class="tbType1 linn-toggle-button" id="tb2" onclick="toggleButton2Click();"></div><br/>
+    <div class="linn-toggle-button" id="tb3" onclick="toggleButton3Click();"></div><br/>
+
+    <h1>Rotary Controls</h1>
+    <div class="linn-rotary" id="rot1"></div><br/>
+    <div class="rotType1 linn-rotary" id="rot2"></div><br/>
+    <div class="linn-rotary" id="rot3"></div><br/>
+    
+    <h1>Rocker Controls</h1>
+    <div class="linn-rocker" id="rock1"></div><br/>
+    <div class="rockType1 linn-rocker" id="rock2"></div><br/>
+    <div class="linn-rocker" id="rock3"></div><br/>
+  </body>
+</html>
+

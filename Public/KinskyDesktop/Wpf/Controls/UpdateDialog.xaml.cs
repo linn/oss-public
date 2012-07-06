@@ -33,6 +33,7 @@ namespace KinskyDesktopWpf
         private AutoUpdate.AutoUpdateInfo iInfo;
         private Thread iUpdateThread;
         private Thread iUpdateCheckThread;
+        private bool iClosed;
 
         public UpdateDialog(AutoUpdate aAutoUpdate)
         {
@@ -56,19 +57,22 @@ namespace KinskyDesktopWpf
         {
             Dispatcher.BeginInvoke((Action)delegate()
             {
-                progressBar.IsIndeterminate = false;
-                progressBar.Visibility = Visibility.Collapsed;
-                if (iInfo != null)
+                if (!iClosed)
                 {
-                    txtStatus.Text = string.Format("There is a new version of {0} ({1}) available. Click here for details.", iInfo.Name, iInfo.Version);
-                    btnInstall.Visibility = Visibility.Visible;
-                    btnStatus.Cursor = Cursors.Hand;
+                    progressBar.IsIndeterminate = false;
+                    progressBar.Visibility = Visibility.Collapsed;
+                    if (iInfo != null)
+                    {
+                        txtStatus.Text = string.Format("There is a new version of {0} ({1}) available. Click here for details.", iInfo.Name, iInfo.Version);
+                        btnInstall.Visibility = Visibility.Visible;
+                        btnStatus.Cursor = Cursors.Hand;
+                    }
+                    else
+                    {
+                        txtStatus.Text = string.Format("There are no updates available.");
+                    }
+                    iUpdateCheckThread = null;
                 }
-                else
-                {
-                    txtStatus.Text = string.Format("There are no updates available.");
-                }
-                iUpdateCheckThread = null;
             });
         }
 
@@ -79,24 +83,33 @@ namespace KinskyDesktopWpf
                 iAutoUpdate.DownloadUpdate(iInfo);
                 Dispatcher.Invoke((Action)delegate()
                 {
-                    progressBar.Visibility = Visibility.Visible;
-                    btnClose.IsEnabled = false;
+                    if (!iClosed)
+                    {
+                        progressBar.Visibility = Visibility.Visible;
+                        btnClose.IsEnabled = false;
+                    }
                 });
 
                 if (iAutoUpdate.ApplyUpdate(iInfo))
                 {
                     Dispatcher.Invoke((Action)delegate()
                     {
-                        DialogResult = true;
-                        Close();
+                        if (!iClosed)
+                        {
+                            DialogResult = true;
+                            Close();
+                        }
                     });
                 }
                 else
                 {
                     Dispatcher.Invoke((Action)delegate()
                     {
-                        txtStatus.Text = "Failed to apply update.  Check user log for further info.";
-                        btnClose.IsEnabled = true;
+                        if (!iClosed)
+                        {
+                            txtStatus.Text = "Failed to apply update.  Check user log for further info.";
+                            btnClose.IsEnabled = true;
+                        }
                     });
                 }
                 iUpdateThread = null;
@@ -113,7 +126,10 @@ namespace KinskyDesktopWpf
         {
             this.Dispatcher.Invoke((Action)delegate()
             {
-                progressBar.Value = iAutoUpdate.UpdateProgress;
+                if (!iClosed)
+                {
+                    progressBar.Value = iAutoUpdate.UpdateProgress;
+                }
             });
         }
 
@@ -121,7 +137,10 @@ namespace KinskyDesktopWpf
         {
             this.Dispatcher.Invoke((Action)delegate()
             {
-                txtStatus.Text = "Update failed.";
+                if (!iClosed)
+                {
+                    txtStatus.Text = "Update failed.";
+                }
             });
         }
 
@@ -168,6 +187,7 @@ namespace KinskyDesktopWpf
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            iClosed = true;
             if (iUpdateThread != null)
             {
                 iAutoUpdate.EventUpdateProgress -= UpdateProgress;
@@ -192,7 +212,14 @@ namespace KinskyDesktopWpf
         {
             if (iInfo != null)
             {
-                System.Diagnostics.Process.Start(iInfo.History.ToString());
+                try
+                {
+                    System.Diagnostics.Process.Start(iInfo.History.ToString());
+                }
+                catch (Exception ex)
+                {
+                    UserLog.WriteLine("Could not open status link: " + iInfo.History.ToString() + ", " + ex);
+                }
             }
         }
 

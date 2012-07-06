@@ -708,7 +708,6 @@ namespace Linn.Control.Ssdp
 
                 iTerminate = true;
 
-                iThread.Abort();
                 iThread.Join();
 
                 iStarted.Reset();

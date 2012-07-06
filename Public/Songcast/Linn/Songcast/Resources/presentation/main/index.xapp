@@ -1,0 +1,378 @@
+<div id="root" unselectable="on" class="unselectable">
+
+  <script src="Widgets/Common/Common.js" type="text/javascript"></script>
+  <script src="Widgets/ToggleButton/ToggleButton.js" type="text/javascript"></script>
+  <script src="Widgets/Rotary/Rotary.js" type="text/javascript"></script>
+  <script src="Widgets/Rocker/Rocker.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    linnToggleButtonInit();
+    linnRotaryInit();
+    linnRockerInit();
+  </script>
+
+  <script type="text/javascript">
+
+    var currVolume = 0;
+    var currVolumeLimit = 100;
+    var currMute = false;
+    var currHasVolume = false;
+    var images = new Array();
+
+    function preload()
+    {
+        for (i=0 ; i<preload.arguments.length ; i++)
+        {
+            images[i] = new Image();
+            images[i].src = preload.arguments[i];
+        }
+    }
+
+    function onInitialise(json)
+    {
+        linnRotarySetStartRotation($('#volume-rotary'), function() { xappSend('StartRotation', ''); });
+        linnRotarySetCancelRotation($('#volume-rotary'), function() { xappSend('CancelRotation', ''); });
+        linnRotarySetEndRotation($('#volume-rotary'), function() { xappSend('EndRotation', ''); });
+        linnRotarySetClockwiseRotate($('#volume-rotary'), function() { xappSend('ClockwiseRotate', ''); });
+        linnRotarySetAnticlockwiseRotate($('#volume-rotary'), function() { xappSend('AntiClockwiseRotate', ''); });
+        linnRotarySetCentreClicked($('#volume-rotary'), function() { xappSend('Clicked', ''); });
+
+        linnRockerSetStartRotation($('#volume-rocker'), function() { xappSend('StartRotation', ''); });
+        linnRockerSetCancelRotation($('#volume-rocker'), function() { xappSend('CancelRotation', ''); });
+        linnRockerSetEndRotation($('#volume-rocker'), function() { xappSend('EndRotation', ''); });
+        linnRockerSetClockwiseRotate($('#volume-rocker'), function() { xappSend('ClockwiseRotate', ''); });
+        linnRockerSetAnticlockwiseRotate($('#volume-rocker'), function() { xappSend('AntiClockwiseRotate', ''); });
+        linnRockerSetCentreClicked($('#volume-rocker'), function() { xappSend('Clicked', ''); });
+
+        linnSetUnselectable($('#root'));
+
+        preload(
+            '/main/images/ControlDeviceBackground.png',
+            '/main/images/computer_disabled.png',
+            '/main/images/computer_off.png',
+            '/main/images/computer_rollover.png',
+            '/main/images/ds_disabled.png',
+            '/main/images/ds_off.png',
+            '/main/images/ds_rollover.png',
+            '/main/images/help.png',
+            '/main/images/help_rollover.png',
+            '/main/images/linn_logo.png',
+            '/main/images/movies_disabled.png',
+            '/main/images/movies_on.png',
+            '/main/images/music_disabled.png',
+            '/main/images/music_on.png',
+            '/main/images/play_disabled.png',
+            '/main/images/play_on.png',
+            '/main/images/rocker_disabled.png',
+            '/main/images/rocker_inner_rollover.png',
+            '/main/images/rocker_inner_rollover_fg.png',
+            '/main/images/rocker_left_rollover.png',
+            '/main/images/rocker_left_rollover_fg.png',
+            '/main/images/rocker_off.png',
+            '/main/images/rocker_off_fg.png',
+            '/main/images/rocker_right_rollover.png',
+            '/main/images/rocker_right_rollover_fg.png',
+            '/main/images/rocker_symbols.png',
+            '/main/images/rotary_adornment.png',
+            '/main/images/rotary_disabled.png',
+            '/main/images/rotary_dots.png',
+            '/main/images/rotary_inner_rollover.png',
+            '/main/images/rotary_inner_rollover_fg.png',
+            '/main/images/rotary_off.png',
+            '/main/images/rotary_off_fg.png',
+            '/main/images/rotary_outer_rollover.png',
+            '/main/images/rotary_outer_rollover_fg.png',
+            '/main/images/settings.png',
+            '/main/images/settings_rollover.png',
+            '/main/images/songcast_spinner_animated.gif',
+            '/main/images/stop_disabled.png',
+            '/main/images/stop_on.png',
+            '/main/images/warning.png'
+        );
+    }
+
+    function updateSelector(on, room)
+    {
+        if (on)
+        {
+            $('#selector').removeClass('off');
+            $('#selector').addClass('on');
+        }
+        else
+        {
+            $('#selector').removeClass('on');
+            $('#selector').addClass('off');
+        }
+
+        $('.room').html(room);
+    }
+
+    function showWarningBoxOff()
+    {
+        $('#warning-box').show();
+        $('#warning-box div#warning-icon').hide();
+        $('#warning-box div#warning-text').html('Songcast is switched off.');
+    }
+
+    function showWarningBoxNoDs()
+    {
+        $('#warning-box').show();
+        $('#warning-box div#warning-icon').show();
+        $('#warning-box div#warning-text').html('No DS is selected.');
+    }
+
+    function showWarningBoxUnavailable(room)
+    {
+        $('#warning-box').show();
+        $('#warning-box div#warning-icon').show();
+        $('#warning-box div#warning-text').html(room + ' is currently unavailable.');
+    }
+
+    function hideWarningBox()
+    {
+        $('#warning-box').hide();
+    }
+
+    function updateTransportUi(status)
+    {
+        $('#play-stop').removeClass('stop play');
+
+        switch (status)
+        {
+        case 0:
+            $('#play-stop').addClass('play');
+            $('#connecting').hide();
+            break;
+        case 1:
+            $('#play-stop').addClass('stop');
+            $('#connecting').show();
+            break;
+        case 2:
+            $('#play-stop').addClass('stop');
+            $('#connecting').hide();
+            break;
+        }
+    }
+
+    function updateVolumeUi(hasVolume, volume, volumeLimit, mute)
+    {
+        currVolume = volume;
+        currVolumeLimit = volumeLimit;
+        currMute = mute;
+        currHasVolume = hasVolume;
+
+        linnRotarySetProgress($('#volume-rotary'), volume, volumeLimit);
+        linnRotarySetAdornmentVisible($('#volume-rotary'), mute);
+        linnRotarySetEnabled($('#volume-rotary'), hasVolume);
+
+        linnRockerSetProgress($('#volume-rocker'), volume, volumeLimit);
+        linnRockerSetAdornmentVisible($('#volume-rocker'), mute);
+        linnRockerSetEnabled($('#volume-rocker'), hasVolume);
+
+        if (hasVolume)
+        {
+            $('#volume-rotary div.centre').html(volume);
+            $('#volume-rocker div.centre').html(volume);
+        }
+        else
+        {
+            $('#volume-rotary div.centre').html('');
+            $('#volume-rocker div.centre').html('');
+        }
+    }
+
+    function showControlPanel(status, hasVolume, volume, volumeLimit, mute)
+    {
+        $('#controlpanel').show();
+        updateVolumeUi(hasVolume, volume, volumeLimit, mute);
+        updateTransportUi(status);
+    }
+
+    function hideControlPanel()
+    {
+        $('#controlpanel').hide();
+    }
+
+    function onReceiverOnlineWithVolume(json)
+    {
+        updateSelector(json.SongcastOn, json.Room);
+
+        if (json.SongcastOn) {
+            hideWarningBox();
+            showControlPanel(json.Status, true, json.Volume, json.VolumeLimit, json.Mute);
+        }
+        else {
+            hideControlPanel();
+            showWarningBoxOff();
+        }
+    }
+
+    function onReceiverOnlineNoVolume(json)
+    {
+        updateSelector(json.SongcastOn, json.Room);
+
+        if (json.SongcastOn) {
+            hideWarningBox();
+            showControlPanel(json.Status, false, 0, 100, false);
+        }
+        else {
+            hideControlPanel();
+            showWarningBoxOff();
+        }
+    }
+
+    function onReceiverOffline(json)
+    {
+        updateSelector(json.SongcastOn, json.Room);
+
+        hideControlPanel();
+
+        if (json.SongcastOn) {
+            showWarningBoxUnavailable(json.Room);
+        }
+        else {
+            showWarningBoxOff();
+        }
+    }
+
+    function onReceiverUnselected(json)
+    {
+        updateSelector(json.SongcastOn, 'No DS');
+
+        hideControlPanel();
+
+        if (json.SongcastOn) {
+            showWarningBoxNoDs();
+        }
+        else {
+            showWarningBoxOff();
+        }
+    }
+    
+    function onRotaryVolumeControl(json)
+    {
+        if (json.Value)
+        {
+            $('#volume-rocker').hide();
+            $('#volume-rotary').show();
+        }
+        else
+        {
+            $('#volume-rotary').hide();
+            $('#volume-rocker').show();
+        }
+    
+        updateVolumeUi(currHasVolume, currVolume, currVolumeLimit, currMute);
+    }
+
+    function onUseMusicLatency(json)
+    {
+        var elem = $('#music-video');
+        elem.removeClass('music video');
+
+        if (json.Value)
+        {
+            elem.addClass('music');
+        }
+        else
+        {
+            elem.addClass('video');
+        }
+    }
+
+    function buttonSelectorOffClicked()
+    {
+        var elem = $('#selector');
+
+        if (elem.hasClass('on'))
+        {
+            xappSend('Clicked', 'standby');
+        }
+    }
+
+    function buttonSelectorOnClicked()
+    {
+        var elem = $('#selector');
+
+        if (elem.hasClass('off'))
+        {
+            xappSend('Clicked', 'standby');
+        }
+    }
+
+    function buttonPlayStopClicked()
+    {
+        var elem = $('#play-stop');
+
+        if (elem.hasClass('stop'))
+        {
+            xappSend('Clicked', 'stop');
+        }
+        else if (elem.hasClass('play'))
+        {
+            xappSend('Clicked', 'play');
+        }
+    }
+
+    function buttonMusicClicked()
+    {
+        var elem = $('#music-video');
+
+        if (elem.hasClass('video'))
+        {
+            xappSend('Clicked', 'music');
+        }
+    }
+
+    function buttonVideoClicked()
+    {
+        var elem = $('#music-video');
+
+        if (elem.hasClass('music'))
+        {
+            xappSend('Clicked', 'video');
+        }
+    }
+
+    function onXappError(jqXHR, status, error)
+    {
+        var val = JSON.stringify(jqXHR);
+        xappSend('LongPollError', val);
+    }
+
+  </script>
+
+  <div id="header">
+    <div id="topbar"><div id="title">SONGCAST</div></div>
+    <div id="help" onclick="xappSend('Clicked', 'help');"/>
+    <div id="configuration" onclick="xappSend('Clicked', 'configuration');"/>
+    <div id="logo"/>
+  </div>
+
+  <div id="selector" class="off">
+    <div id="selector-title">LISTEN TO MUSIC ON...</div>
+    <div id="label-cpu">My Computer</div>
+    <div id="label-ds"><div class="room"/></div>
+    <div id="button-cpu" onclick="buttonSelectorOffClicked();"/>
+    <div id="button-ds" onclick="buttonSelectorOnClicked();"/>
+  </div>
+
+  <div id="divider">
+  </div>
+
+  <div id="warning-box">
+    <div id="warning-icon"/>
+    <div id="warning-text"/>
+  </div>
+
+  <div id="controlpanel">
+    <div id="play-stop" onclick="buttonPlayStopClicked();"/>
+    <div id="connecting"/>
+    <div class="linn-rotary" id="volume-rotary"/>
+    <div class="linn-rocker" id="volume-rocker"/>
+    <div id="music-video" class="music">
+        <div id="music" onclick="buttonMusicClicked();"/>
+        <div id="video" onclick="buttonVideoClicked();"/>
+    </div>
+  </div>
+</div>

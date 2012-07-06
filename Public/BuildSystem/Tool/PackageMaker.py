@@ -25,13 +25,13 @@ PackageMakerBuilder = SCons.Builder.Builder(action = '$PACKAGEMAKERCOM',
 def generate(env):
     env['BUILDERS']['PackageMaker'] = PackageMakerBuilder
 
-    env['PACKAGEMAKER']             = env.Detect('/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker')
+    env['PACKAGEMAKER']             = env.Detect('/Applications/Xcode.app/Contents/Applications/PackageMaker.app/Contents/MacOS/PackageMaker')
     env['PACKAGEMAKERCOM']          = SCons.Action.Action(PackageMakerCom)
     env['PACKAGEMAKERPREFIX']       = ''
     env['PACKAGEMAKERSUFFIX']       = '.pkg'
 
 
 def exists(env):
-    return env.Detect('/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker')
+    return env.Detect('/Applications/Xcode.app/Contents/Applications/PackageMaker.app/Contents/MacOS/PackageMaker')
 
 

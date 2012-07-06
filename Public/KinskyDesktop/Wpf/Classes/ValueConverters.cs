@@ -72,9 +72,9 @@ namespace KinskyDesktopWpf
                         {
                             result = string.Empty;
                         }
-                        if (parameter.ToString() == "OriginalTrackNumber")
+                        if (parameter.ToString() == "OriginalTrackNumber" && result != string.Empty)
                         {
-                            result = result + ".";
+                            result = result + ". ";
                         }
                         if (parameter.ToString() == "AlbumArtist" && result == string.Empty)
                         {

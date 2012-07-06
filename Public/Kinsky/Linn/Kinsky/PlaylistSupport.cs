@@ -8,6 +8,7 @@ using Linn.Control.Ssdp;
 using Linn.ControlPoint.Upnp;
 using Linn.Topology;
 using Upnp;
+using System.Collections.ObjectModel;
 
 namespace Linn.Kinsky
 {
@@ -74,7 +75,7 @@ namespace Linn.Kinsky
         public void Close()
         {
             iAborting = true;
-            
+
             iThreadInsert.Abort();
             iThreadInsert.Join();
 
@@ -224,7 +225,7 @@ namespace Linn.Kinsky
                 {
                     iEventInsert.WaitOne();
 
-                    if(iAborting)
+                    if (iAborting)
                     {
                         break;
                     }
@@ -235,7 +236,7 @@ namespace Linn.Kinsky
                     {
                         Trace.WriteLine(Trace.kKinsky, "Insert into playlist started...");
                         UserLog.WriteLine("Insert into playlist started...");
-    
+
                         switch (iPlayParams.PlayType)
                         {
                             case PlayParams.EPlayType.ePlayNow:
@@ -285,7 +286,7 @@ namespace Linn.Kinsky
                     }
                 }
             }
-            catch(ThreadAbortException) { }
+            catch (ThreadAbortException) { }
         }
 
         public event EventHandler<EventArgs> EventIsOpenChanged;

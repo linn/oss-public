@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Linn;
 
 using Monobjc.Cocoa;
+using System.Text.RegularExpressions;
 
 namespace KinskyDesktop
 {
@@ -79,6 +80,24 @@ namespace KinskyDesktop
 			iThread.Name = "ArtworkCache";
 			iThread.Start();
 		}
+
+        public int DownscaleSize
+        {
+            set
+            {
+                lock(iLock)
+                {
+                    // prevent artwork resizing below minimum size of playlist items
+                    int adjustedValue = Math.Max(value, kMinDownscaleSize);
+                    if (iDownscaleSize != adjustedValue)
+                    {
+                        iDownscaleSize = adjustedValue;
+                        iUriConverter = new ScalingUriConverter(adjustedValue, false, false);
+                        iCacheData.Clear();
+                    }
+                }
+            }
+        }
 		
 		public Item Artwork(Uri aUri)
 		{
@@ -109,9 +128,11 @@ namespace KinskyDesktop
                 // get the first request in the queue - leave the request in the queue for now so that if
                 // the main thread requests it again, it will not get re-added and downloaded again
                 string uri;
+                ScalingUriConverter uriConverter;
                 lock (iLock)
                 {
                     uri = iPendingRequests.FirstRequest;
+                    uriConverter = iUriConverter;
                 }
 
                 Trace.WriteLine(Trace.kKinskyDesktop, "ArtworkCache requesting  " + uri);
@@ -123,7 +144,12 @@ namespace KinskyDesktop
                 NSImage image = null;
                 try
                 {
-                    NSString s = NSString.StringWithUTF8String(Uri.UnescapeDataString(uri));
+                    string requestUri = uri;
+                    if (uriConverter != null)
+                    {
+                        requestUri = uriConverter.Convert(requestUri);
+                    }
+                    NSString s = NSString.StringWithUTF8String(Uri.UnescapeDataString(requestUri));
                     NSURL url = NSURL.URLWithString(s.StringByAddingPercentEscapesUsingEncoding(NSStringEncoding.NSUTF8StringEncoding));
 
                     image = new NSImage(url);
@@ -267,11 +293,27 @@ namespace KinskyDesktop
                 return toRemove;
             }
 
+            public void Clear()
+            {
+                foreach (Item item in iCache.Values)
+                {
+                    if (item.Image != null)
+                    {
+                        item.Image.Release();
+                    }
+                }
+                iCache.Clear();
+                iUsage.Clear();
+                iByteCount = 0;
+            }
+
             private Dictionary<string, Item> iCache = new Dictionary<string, Item>();
             private List<string> iUsage = new List<string>();
             private uint iMaxByteCount;
             private uint iByteCount = 0;
         }
+
+
 
         private const uint kMaxCacheSizeSmall = 10 * 1024 * 1024;
         private const uint kMaxCacheSizeMedium = 100 * 1024 * 1024;
@@ -281,5 +323,8 @@ namespace KinskyDesktop
         private RequestList iPendingRequests;
         private CacheData iCacheData;
 		private Thread iThread;
+        private ScalingUriConverter iUriConverter;
+        private int iDownscaleSize;
+        private const int kMinDownscaleSize = 90;
 	}
 }

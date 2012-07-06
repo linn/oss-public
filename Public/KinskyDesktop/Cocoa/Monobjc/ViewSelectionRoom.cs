@@ -12,7 +12,7 @@ namespace KinskyDesktop
 {
     // File's owner of the ViewSelectionRoom.nib file
     [ObjectiveCClass]
-    public class ViewSelectionRoom : NSViewController, IViewPopover, IViewWidgetButton
+    public class ViewSelectionRoom : NSViewController, IViewPopover
     {
         private static readonly Class ThisClass = Class.GetClassFromType(typeof(ViewSelectionRoom));
 
@@ -37,6 +37,16 @@ namespace KinskyDesktop
             ViewTable.RowHeight = 60.0f;
             ViewTable.BackgroundColor = NSColor.ClearColor;
 
+            ButtonStandbyAll.ActionEvent += StandbyAllClick;
+            ButtonStandbyAll.Frame = new NSRect(ButtonStandbyAll.Frame.origin.x, ButtonStandbyAll.Frame.origin.y, 23, 23);
+
+            ButtonRefresh.Image = Properties.Resources.IconRefreshButton;
+            ButtonRefresh.Frame = new NSRect(ButtonRefresh.Frame.origin.x, ButtonRefresh.Frame.origin.y, 21, 21);
+            ButtonRefresh.ActionEvent += RefreshClick;
+
+            Hourglass.Show(false);
+            Hourglass.Frame = new NSRect(ButtonRefresh.Frame.origin.x - 4, ButtonRefresh.Frame.origin.y - 4, 30, 30);
+
             NSTableColumn nameColumn = ViewTable.TableColumns[1].CastAs<NSTableColumn>();
             TextFieldCellCentred nameCell = nameColumn.DataCell.CastAs<TextFieldCellCentred>();
             nameCell.TextColor = NSColor.WhiteColor;
@@ -44,7 +54,6 @@ namespace KinskyDesktop
 
             // setup model eventing
             iModel.EventChanged += ModelChanged;
-            ModelMain.Instance.ViewMaster.ViewWidgetButtonStandby.Add(this);
 
             ModelChanged(this, EventArgs.Empty);
 
@@ -62,7 +71,10 @@ namespace KinskyDesktop
         public void Dealloc()
         {
             iModel.EventChanged -= ModelChanged;
-            ModelMain.Instance.ViewMaster.ViewWidgetButtonStandby.Remove(this);
+
+            ButtonStandbyAll.ActionEvent -= StandbyAllClick;
+            StopRefresh();
+            ButtonRefresh.ActionEvent -= RefreshClick;
 
             View.Release();
             ArrayController.Release();
@@ -70,24 +82,60 @@ namespace KinskyDesktop
             this.SendMessageSuper(ThisClass, "dealloc");
         }
 
+        private void RefreshClick(Id aSender)
+        {
+            StartRefresh();
+        }
+
+        private void StartRefresh()
+        {
+            StopRefresh();
+            iRefreshTimer = new System.Threading.Timer(TimerCallback);
+            ButtonRefresh.IsHidden = true;
+            Hourglass.Show(true);
+            iRefreshTimer.Change(kRefreshTimeout, System.Threading.Timeout.Infinite);
+            ModelMain.Instance.Rescan();
+        }
+
+        private void TimerCallback(object aSender)
+        {
+            ButtonRefresh.BeginInvoke((Action)(()=>{
+                StopRefresh();
+            }));
+        }
+
+        private void StopRefresh()
+        {
+            if (iRefreshTimer != null)
+            {
+                iRefreshTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                iRefreshTimer.Dispose();
+                iRefreshTimer = null;
+                ButtonRefresh.IsHidden = false;
+                Hourglass.Show(false);
+            }
+        }
+
+        private void StandbyAllClick(Id aSender)
+        {
+            foreach(Room r in iModel.Items)
+            {
+                if (!r.Standby)
+                {
+                    r.Standby = true;
+                }
+            }
+            if (EventClose != null)
+            {
+                EventClose(this, EventArgs.Empty);
+            }
+        }
+
 
         #region IViewPopover implementation
         // no need to implement View and Release since the base class already implements them
         public event EventHandler<EventArgs> EventClose;
         #endregion IViewPopover implementation
-
-
-        #region IViewWidgetButton implementation
-        void IViewWidgetButton.Open()
-        {
-        }
-
-        void IViewWidgetButton.Close()
-        {
-        }
-
-        public event EventHandler<EventArgs> EventClick;
-        #endregion IViewWidgetButton implementation
 
 
         #region NSTableView delegate functions
@@ -100,16 +148,24 @@ namespace KinskyDesktop
             {
                 NSButtonCell cell = aCell.CastTo<NSButtonCell>();
 
+                Room r = iModel.Items[aRow];
+                cell.Image = r.Standby ?  Properties.Resources.IconStandby : Properties.Resources.IconStandbyOn;
+                cell.AlternateImage = r.Standby ? Properties.Resources.IconStandby : Properties.Resources.IconStandbyOn;
+                cell.IsEnabled = !r.Standby;
+
+            }
+            if (identifier.Compare(NSString.StringWithUTF8String("selected")) == NSComparisonResult.NSOrderedSame)
+            {
+                NSImageCell cell = aCell.CastTo<NSImageCell>();
+
                 if (aRow == SelectedIndex)
                 {
-                    cell.Image = Properties.Resources.IconStandby;
-                    cell.AlternateImage = Properties.Resources.IconStandbyOn;
+                    cell.Image = Properties.Resources.IconTick;
                     cell.IsEnabled = true;
                 }
                 else
                 {
                     cell.Image = null;
-                    cell.AlternateImage = null;
                     cell.IsEnabled = false;
                 }
             }
@@ -120,28 +176,29 @@ namespace KinskyDesktop
         {
             // extended delegate function that is called on a mouse up - see
             // the TableViewClickable implementation below
+            bool close = true;
             if (aRow == -1)
             {
                 // ignore clicks on the table background
                 return;
             }
-            else if (SelectedIndex == aRow && aCol == 2)
+            else if (aCol == 0)
             {
-                // standby clicked for currently selected room
-                EventHandler<EventArgs> ev = EventClick;
-                if (ev != null)
+                Room r = iModel.Items[aRow];
+                if (!r.Standby)
                 {
-                    ev(this, EventArgs.Empty);
+                    close = false;
+                    r.Standby = true;
                 }
             }
-            else if (SelectedIndex != aRow)
+            if (close && SelectedIndex != aRow)
             {
                 // unselected room clicked
                 iModel.SelectedItem = iModel.Items[aRow];
             }
 
-            // always close the popover
-            if (EventClose != null)
+            // close the popover if not a standby button click
+            if (close && EventClose != null)
             {
                 EventClose(this, EventArgs.Empty);
             }
@@ -161,9 +218,7 @@ namespace KinskyDesktop
             [ObjectiveCMessage("selectionIndices")]
             get
             {
-                NSIndexSet selection = (SelectedIndex != -1)
-                                     ? new NSIndexSet((uint)SelectedIndex)
-                                     : new NSIndexSet();
+                NSIndexSet selection = new NSIndexSet();
                 selection.Autorelease();
                 return selection;
             }
@@ -181,15 +236,24 @@ namespace KinskyDesktop
             iRooms.Release();
             iRooms = new NSMutableArray();
 
+            bool roomsOutOfStandby = false;
+
             // add current list of rooms
             foreach (Linn.Kinsky.Room room in iModel.Items)
             {
+                if (!room.Standby)
+                {
+                    roomsOutOfStandby = true;
+                }
                 RoomData data = new RoomData();
                 data.SetName(room.Name);
 
                 iRooms.AddObject(data);
                 data.Release();
             }
+
+            ButtonStandbyAll.IsEnabled = roomsOutOfStandby;
+            ButtonStandbyAll.Image = roomsOutOfStandby ? Properties.Resources.IconStandbyOn : Properties.Resources.IconStandby;
 
             // notify that there has been a change in the room list **before** the change in selection
             WillChangeValueForKey(NSString.StringWithUTF8String("rooms"));
@@ -217,8 +281,19 @@ namespace KinskyDesktop
         [ObjectiveCField]
         public NSArrayController ArrayController;
 
+        [ObjectiveCField]
+        public NSButton ButtonStandbyAll;
+
+        [ObjectiveCField]
+        public NSButton ButtonRefresh;
+
+        [ObjectiveCField]
+        public ViewHourglass Hourglass;
+
         private IModelSelectionList<Linn.Kinsky.Room> iModel;
         private NSMutableArray iRooms = new NSMutableArray();
+        private System.Threading.Timer iRefreshTimer;
+        private const int kRefreshTimeout = 5000;
     }
 
 
@@ -228,12 +303,6 @@ namespace KinskyDesktop
     {
         public RoomData() : base() {}
         public RoomData(IntPtr aInstance) : base(aInstance) {}
-
-        public NSImage Image
-        {
-            [ObjectiveCMessage("image")]
-            get { return Properties.Resources.IconRoom; }
-        }
 
         public NSString Name
         {

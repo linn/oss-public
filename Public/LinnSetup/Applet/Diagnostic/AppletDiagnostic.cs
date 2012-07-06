@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Linn;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
@@ -14,15 +15,14 @@ namespace LinnSetup
         public AppletFactoryDiagnostics() : base("Diagnostics") {
         }
 
-        public override Applet Create(Target aTarget, EventServerUpnp aEventServer) {
-            return new AppletDiagnostics(aTarget, aEventServer);
+        public override Applet Create(Target aTarget) {
+            return new AppletDiagnostics(aTarget);
         }
     }
 
     public class AppletDiagnostics : Applet
     {
-        public AppletDiagnostics(Target aTarget, EventServerUpnp aEventServer) : base(aTarget) {
-            iEventServer = aEventServer;
+        public AppletDiagnostics(Target aTarget) : base(aTarget) {
         }
 
         public override Control Ui {
@@ -33,7 +33,7 @@ namespace LinnSetup
 
         public override void Activate() {
             if (iUi == null) {
-                iUi = new Diagnostic(base.Target, iEventServer);
+                iUi = new Diagnostic(base.Target);
 
                 //when an applet is active it should be notified when the Target is changed
                 base.Target.EventBoxChanged += BoxChangedHandler;
@@ -53,6 +53,5 @@ namespace LinnSetup
         }
 
         protected Diagnostic iUi = null;
-        private EventServerUpnp iEventServer;
     }
 }

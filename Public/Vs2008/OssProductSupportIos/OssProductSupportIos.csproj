@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6764092D-CCFB-4286-8314-412636D7065B}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OssProductSupport</RootNamespace>
+    <BaseDirectory>..\..\ProductSupport</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\IosSim\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchLink>None</MtouchLink>
+    <AssemblyName>OssProductSupport</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\IosSim\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <AssemblyName>OssProductSupport</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <AssemblyName>OssProductSupport</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <AssemblyName>OssProductSupport</AssemblyName>
+    <MtouchSdkVersion>3.2</MtouchSdkVersion>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\install\Ios\distribution\bin\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>OssProductSupportIos</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Distribution</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>OssProductSupportIos</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="taglib-sharp">
+      <HintPath>..\..\External\taglib-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\BasicSetup.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Boxes.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Target.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Tree.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\UpdateFirmware.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Crc32.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\HelperVolkano.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\SysLog.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Tags.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Generated\TagsKodegen.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\Fallback.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\Flash.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\FuseMap.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\RomDir.cs" />
+    <Compile Include="..\..\ProductSupport\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Playback.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControlIos\OssControlIos.csproj">
+      <Project>{06C84AB5-457C-4731-9FA6-72EA3BB7E9E7}</Project>
+      <Name>OssControlIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServicesIos\OssServicesIos.csproj">
+      <Project>{D4007AEC-E0D6-4FCD-B275-E6247FC5331C}</Project>
+      <Name>OssServicesIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">
+      <Project>{FADD2631-1259-4A92-B87F-69A4364AE7B6}</Project>
+      <Name>OssCoreIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlLayoutIos\XmlLayoutIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065C}</Project>
+      <Name>XmlLayoutIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlRomCollectionIos\XmlRomCollectionIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065D}</Project>
+      <Name>XmlRomCollectionIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlRomIos\XmlRomIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065E}</Project>
+      <Name>XmlRomIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlTagsIos\XmlTagsIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065F}</Project>
+      <Name>XmlTagsIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinskyIos\OssKinskyIos.csproj">
+      <Project>{9FD7E2EC-1192-4912-857B-EFF6E12A06EC}</Project>
+      <Name>OssKinskyIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLiteIos\OssDidlLiteIos.csproj">
+      <Project>{CB19E03F-9014-4654-BAA7-45BB2EA0DDEE}</Project>
+      <Name>OssDidlLiteIos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\ProductSupport\Linn\ProductSupport\Core\Generated\Tags.xml" />
+    <None Include="..\..\ProductSupport\Linn\ProductSupport\SampleAudio\AudioTrack.mp3" />
+    <None Include="..\..\ProductSupport\Linn\ProductSupport\SampleAudio\Folder.jpg" />
+  </ItemGroup>
+</Project>

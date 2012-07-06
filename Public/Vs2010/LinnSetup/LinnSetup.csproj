@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
@@ -17,7 +17,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,6 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -128,6 +129,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\build\share\LinnSetup\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\LinnSetup\Applet\Applet.cs">
       <Link>Applet\Applet.cs</Link>
     </Compile>
@@ -136,6 +140,17 @@
     </Compile>
     <Compile Include="..\..\LinnSetup\Applet\AppletManager.cs">
       <Link>Applet\AppletManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\BasicSetup\AppletBasicSetup.cs">
+      <Link>Applet\BasicSetup\AppletBasicSetup.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\BasicSetup\BasicSetup.cs">
+      <Link>Applet\BasicSetup\BasicSetup.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\BasicSetup\BasicSetup.designer.cs">
+      <Link>Applet\BasicSetup\BasicSetup.designer.cs</Link>
+      <DependentUpon>BasicSetup.cs</DependentUpon>
     </Compile>
     <Compile Include="..\..\LinnSetup\Applet\Config\AppletConfig.cs">
       <Link>Applet\Config\AppletConfig.cs</Link>
@@ -159,6 +174,17 @@
       <Link>Applet\Diagnostic\Diagnostic.designer.cs</Link>
       <DependentUpon>Diagnostic.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\PlaybackTest\AppletPlaybackTest.cs">
+      <Link>Applet\PlaybackTest\AppletPlaybackTest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\PlaybackTest\PlaybackTest.cs">
+      <Link>Applet\PlaybackTest\PlaybackTest.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\PlaybackTest\PlaybackTest.designer.cs">
+      <Link>Applet\PlaybackTest\PlaybackTest.designer.cs</Link>
+      <DependentUpon>PlaybackTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\..\LinnSetup\Applet\Presentation\AppletPresentation.cs">
       <Link>Applet\Presentation\AppletPresentation.cs</Link>
     </Compile>
@@ -180,6 +206,28 @@
     <Compile Include="..\..\LinnSetup\Applet\Reflash\Reflash.designer.cs">
       <Link>Applet\Reflash\Reflash.designer.cs</Link>
       <DependentUpon>Reflash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\SysLog\AppletSysLog.cs">
+      <Link>Applet\SysLog\AppletSysLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\SysLog\SysLog.cs">
+      <Link>Applet\SysLog\SysLog.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\SysLog\SysLog.designer.cs">
+      <Link>Applet\SysLog\SysLog.designer.cs</Link>
+      <DependentUpon>SysLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\Ticketing\AppletTicketing.cs">
+      <Link>Applet\Ticketing\AppletTicketing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\Ticketing\Ticketing.cs">
+      <Link>Applet\Ticketing\Ticketing.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\LinnSetup\Applet\Ticketing\Ticketing.designer.cs">
+      <Link>Applet\Ticketing\Ticketing.designer.cs</Link>
+      <DependentUpon>Ticketing.cs</DependentUpon>
     </Compile>
     <Compile Include="..\..\LinnSetup\ApplicationOptions.cs">
       <Link>ApplicationOptions.cs</Link>
@@ -203,30 +251,41 @@
     <Compile Include="..\..\LinnSetup\Program.cs">
       <Link>Program.cs</Link>
     </Compile>
-    <Compile Include="..\..\LinnSetup\Properties\AssemblyInfo.cs">
-      <Link>Properties\AssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="..\..\LinnSetup\Properties\Resources.Designer.cs">
       <Link>Properties\Resources.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="..\..\LinnSetup\Target.cs">
-      <Link>Target.cs</Link>
-    </Compile>
     <Compile Include="..\..\LinnSetup\TargetMediator.cs">
       <Link>TargetMediator.cs</Link>
     </Compile>
+    <EmbeddedResource Include="..\..\LinnSetup\Applet\BasicSetup\BasicSetup.resx">
+      <Link>Applet\BasicSetup\BasicSetup.resx</Link>
+      <DependentUpon>BasicSetup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\..\LinnSetup\Applet\Diagnostic\Diagnostic.resx">
       <Link>Applet\Diagnostic\Diagnostic.resx</Link>
       <DependentUpon>Diagnostic.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LinnSetup\Applet\PlaybackTest\PlaybackTest.resx">
+      <Link>Applet\PlaybackTest\PlaybackTest.resx</Link>
+      <DependentUpon>PlaybackTest.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="..\..\LinnSetup\Applet\Reflash\Reflash.resx">
       <Link>Applet\Reflash\Reflash.resx</Link>
       <DependentUpon>Reflash.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LinnSetup\Applet\SysLog\SysLog.resx">
+      <Link>Applet\SysLog\SysLog.resx</Link>
+      <DependentUpon>SysLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\..\LinnSetup\Applet\Ticketing\Ticketing.resx">
+      <Link>Applet\Ticketing\Ticketing.resx</Link>
+      <DependentUpon>Ticketing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="..\..\LinnSetup\FormTree.resx">
       <Link>FormTree.resx</Link>
@@ -265,6 +324,14 @@
       <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
       <Name>OssCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssProductSupport\OssProductSupport.csproj">
+      <Project>{A5DF2109-5A06-4A92-ACFF-4CF9A066D461}</Project>
+      <Name>OssProductSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OssServices\OssServices.csproj">
       <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
       <Name>OssServices</Name>
@@ -276,10 +343,6 @@
     <ProjectReference Include="..\OssToolkitWinForms\OssToolkitWinForms.csproj">
       <Project>{31015215-E24D-4990-BBB3-949125162907}</Project>
       <Name>OssToolkitWinForms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OssTopology\OssTopology.csproj">
-      <Project>{DDD50783-4131-4138-85E6-72377C232B1C}</Project>
-      <Name>OssTopology</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +376,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

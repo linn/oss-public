@@ -1,0 +1,22 @@
+
+@font-face
+{
+    font-family: 'MyEffraRegular';
+    src: url('../Fonts/effra-webfont.eot');
+    src: url('../Fonts/effra-webfont.eot?#iefix') format('embedded-opentype'), 
+    url('../Fonts/effra-webfont.woff') format('woff'), 
+    url('../Fonts/effra-webfont.ttf') format('truetype'), 
+    url('../Fonts/effra-webfont.svg#EffraRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[unselectable=on]
+{
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+

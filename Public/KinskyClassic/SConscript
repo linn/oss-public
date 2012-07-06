@@ -1,6 +1,11 @@
 Import('_default_env')
 
-kVersion = 'development'
+import BuildInfo
+
+_default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=BuildInfo.kBuildVersion)
+kBuildInfo = _default_env['build_information'].BuildInformation
+
+appAssemblyInfo = _default_env.TagReplace(_default_env.subst('$build_hardware_dir/share/KinskyClassic/AssemblyInfo.cs'), 'KinskyClassic/Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
 
 files = Split("""
     Installer/Header.bmp
@@ -33,7 +38,7 @@ if _default_env['hardware'] != 'PocketPc':
     target = 'winexe'
     if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
         target = 'exe'
-    app = _default_env.CliProgram("KinskyClassic", ['KinskyClassic/Properties/AssemblyInfo.cs', 'KinskyClassic/Application.cs'], CSCTARGET=target, CLILIBS=['OssCore', 'OssControl', 'OssToolkitWinForms', 'OssKinsky', 'OssKinskyPc', 'System.Drawing', 'System.Windows.Forms'], WINICON='$variant_dir/share/Linn/Kinsky/Kinsky.ico')
+    app = _default_env.CliProgram("KinskyClassic", [appAssemblyInfo, 'KinskyClassic/Application.cs'], CSCTARGET=target, CLILIBS=['OssCore', 'OssControl', 'OssToolkitWinForms', 'OssKinsky', 'OssKinskyPc', 'System.Drawing', 'System.Windows.Forms'], WINICON='$variant_dir/share/Linn/Kinsky/Kinsky.ico')
     
     kinsky = []
     kinsky.append(File(_default_env.subst('$install_dir/lib/Linn/OssCore.dll')))
@@ -68,7 +73,7 @@ if _default_env['hardware'] != 'PocketPc':
                                       'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish.bmp'),
                                       'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
                         PRODUCT    = 'KinskyClassic',
-                        VERSION    = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
                         LAUNCHFILE = 'KinskyClassic.exe')
 
         installer += _default_env.ReleaseInstallerDebian('$install_dir/share/KinskyClassic', 'InstallerKinskyClassic',
@@ -80,7 +85,8 @@ if _default_env['hardware'] != 'PocketPc':
                         DESCRIPTION  = 'UPnP control point designed for use on a touchscreen.',
                         CATEGORIES   = 'AudioVideo;Audio;Video;Player;',
                         PRODUCT      = 'KinskyClassic',
-                        VERSION      = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
+                        TYPE         = kBuildInfo['BUILD_INFO_TYPE'],
                         LAUNCHFILE   = 'KinskyClassic.exe')
         
         installer += _default_env.ReleaseInstallerMacOsX('$install_dir/share/KinskyClassic', 'InstallerKinskyClassic',
@@ -89,7 +95,7 @@ if _default_env['hardware'] != 'PocketPc':
                         ICON         = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
                         DESCRIPTION  = 'UPnP control point designed for use on a touchscreen.',
                         PRODUCT      = 'KinskyClassic',
-                        VERSION      = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
                         LAUNCHFILE   = 'KinskyClassic.exe')
 
 SConscript('Scripts/SConscript', exports = '_default_env')

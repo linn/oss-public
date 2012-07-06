@@ -1,0 +1,8 @@
+﻿<Window x:Class="Linn.Songbox.ConfigurationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Songbox" Height="700" Width="1024" Visibility="Hidden" WindowStartupLocation="CenterScreen" WindowState="Normal" WindowStyle="SingleBorderWindow" IsVisibleChanged="Window_IsVisibleChanged" Foreground="{x:Null}" MinWidth="830">
+    <Grid>
+        <WebBrowser HorizontalAlignment="Stretch" Name="WebBrowser" VerticalAlignment="Stretch"/>
+    </Grid>
+</Window>

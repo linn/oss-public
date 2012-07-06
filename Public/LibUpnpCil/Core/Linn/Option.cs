@@ -227,7 +227,7 @@ namespace Linn
 	            Update(bool.Parse(aValue));
 	            return true;
             }
-            catch (Exception)
+            catch (FormatException)
             {
                 return false;
             }
@@ -330,7 +330,7 @@ namespace Linn
                 Update(int.Parse(aValue));
                 return true;
             }
-            catch (Exception)
+            catch (FormatException)
             {
                 return false;
             }
@@ -360,7 +360,7 @@ namespace Linn
                 Update(uint.Parse(aValue));
                 return true;
             }
-            catch (Exception)
+            catch (FormatException)
             {
                 return false;
             }
@@ -382,7 +382,7 @@ namespace Linn
                 Update(float.Parse(aValue));
                 return true;
             }
-            catch (Exception)
+            catch (FormatException)
             {
                 return false;
             }
@@ -432,7 +432,7 @@ namespace Linn
                     return (true);
                 }
             }
-            catch (Exception)
+            catch (FormatException)
             {
             }
             return (false);
@@ -468,7 +468,7 @@ namespace Linn
                 Update(ListToNative(StringListConverter.StringToList(aValue)));
                 return (true);
             }
-            catch(Exception)
+            catch (FormatException)
             {
                 return false;
             }
@@ -708,7 +708,7 @@ namespace Linn
         private int iValueIndex;
     }
 
-    public class OptionNetworkInterface : Option
+    public class OptionNetworkInterface : Option, IDisposable
     {
         public OptionNetworkInterface(string aId)
             : base(aId, kName, "Please select the network interface (adapter) you wish to use from the list of available network interfaces")
@@ -717,16 +717,11 @@ namespace Linn
 
             NetworkChanged();
 
-            System.Net.NetworkInformation.NetworkChange.NetworkAddressChanged += NetworkAddressChanged;
-            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += NetworkAvailabilityChanged;
+            iNetworkChangeWatcher = new NetworkChangeWatcher();
+            iNetworkChangeWatcher.EventNetworkChanged += NetworkChangedHandler;
         }
 
-        private void NetworkAvailabilityChanged(object sender, EventArgs e)
-        {
-            NetworkChanged();
-        }
-
-        private void NetworkAddressChanged(object sender, EventArgs e)
+        private void NetworkChangedHandler(object sender, EventArgs e)
         {
             NetworkChanged();
         }
@@ -934,7 +929,15 @@ namespace Linn
             }
         }
 
-        private NetworkInterface FindInterface(string aName)
+        #region IDisposable implementation
+        public void Dispose ()
+        {
+            iNetworkChangeWatcher.EventNetworkChanged -= NetworkChangedHandler;
+            iNetworkChangeWatcher.Dispose();
+        }
+        #endregion
+
+        public NetworkInterface FindInterface(string aName)
         {
             foreach (NetworkInterface i in iAllowedInterfaces)
             {
@@ -951,6 +954,7 @@ namespace Linn
         private List<NetworkInterface> iAllowedInterfaces;
         private NetworkInterface iInterface;
         private NetworkInterface iDefault;
+        private NetworkChangeWatcher iNetworkChangeWatcher;
     }
 
     public class StringListConverter

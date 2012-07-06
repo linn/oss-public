@@ -3,7 +3,6 @@ Import('_default_env')
 files = Split("""
     Properties/AssemblyInfo.cs
     Properties/Resources.Designer.cs
-    Linn/Topology/Boxes.cs
     Linn/Topology/DeviceFinder.cs
     Linn/Topology/House0.cs
     Linn/Topology/House1.cs
@@ -32,14 +31,13 @@ files = Split("""
     Linn/Topology/MultipusSenders.cs
     Linn/Topology/PlaylistManager.cs
     Linn/Topology/SourceList.cs
-    Linn/Topology/Tree.cs
     Linn/Topology/ModelFactory.cs
 """)
 
 res = _default_env.Resgen('Linn.Topology.Properties.Resources.resources', 'Properties/Resources.resx')
 
 clilibs = ['mscorlib', 'System', 'System.Xml', 'OssCore', 'OssControl', 'OssServices', 'OssDidlLite']
-if _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Android':
     lib = _default_env.CliLibrary('OssTopology', files, CLILIBS=clilibs, CLIRESOURCES=res)
 else:
     msproj = _default_env.MSBuildFileGenerator('OssTopology', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Topology')
@@ -71,9 +69,9 @@ if _default_env['hardware'] != 'PocketPc':
 else:
     files.extend(pocketPcFiles)
 
-if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     prog += _default_env.CliProgram('LinnTopology', files, CLILIBS=['mscorlib', 'System', 'OssTopology', 'OssServices', 'OssControl', 'OssCore', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
-elif _default_env['hardware'] == 'Droid':
+elif _default_env['hardware'] == 'Android':
 
     files = Split("""
         LinnTopology/Droid/Activities.cs
@@ -105,7 +103,7 @@ elif _default_env['hardware'] == 'Droid':
     links += [x[1] for x in images]
     
     
-    libs = ['System', 'System.Xml', 'System.Core', 'OssControl', 'OssCore', 'OssDidlLite', 'OssServices', 'OssSysLib', 'OssTopology', 'OssToolkitDroid', 'Mono.Android']
+    libs = ['Mono.Android', 'System', 'System.Xml', 'System.Core', 'OssControl', 'OssCore', 'OssDidlLite', 'OssServices', 'OssSysLib', 'OssTopology', ['OssToolkitDroid', _default_env.subst('$install_dir/lib/Linn/OssToolkitDroid.dll')]]
     # hack - need to copy AndroidManifest.xml across from source to build tree as monodroid does not allow its location outwith a subdirectory of the .csproj file's location at present
     manifest = _default_env.InstallAs('$build_dir/LinnTopology/Droid/Properties/Manifest.xml', 'LinnTopology/Droid/Properties/AndroidManifest.xml')
     msproj = _default_env.MSBuildFileGenerator('LinnTopology', 
@@ -135,7 +133,7 @@ else:
     
     prog += _default_env.CliProgram('LinnTopology', files, CLILIBS=['mscorlib', 'System', 'OssTopology', 'OssServices', 'OssControl', 'OssCore', 'monotouch'])
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     prog += _default_env.CliProgram('FindDevice', 'FindDevice/FindDevice.cs', CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssTopology'])
 
     files = Split("""
@@ -146,10 +144,10 @@ if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' 
     prog += _default_env.CliProgram('LinnDiagnostics', files, CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssSysLib', 'OssTopology', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms', 'System.Xml'])
 
 tests = None
-if _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Android':
     tests  = _default_env.CliProgram('Test/TestTopology', 'Linn/Topology/Test/TestTopology.cs', CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssTopology'])
 
-if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     files = Split("""
         Test/TestWebServicesAsync/Form1.cs
         Test/TestWebServicesAsync/Form1.Designer.cs

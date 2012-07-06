@@ -96,6 +96,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -105,6 +106,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -113,6 +115,7 @@
     <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -156,8 +159,17 @@
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemEventsFull.cs">
       <Link>Linn\Framework\SystemEventsFull.cs</Link>
     </Compile>
-    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfo.cs">
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfo.cs" Condition=" '$(Configuration)' == 'Linux Debug' Or '$(Configuration)' == 'Linux Trace' Or '$(Configuration)' == 'Linux Release' Or '$(Configuration)' == 'Windows Debug' Or '$(Configuration)' == 'Windows Trace' Or '$(Configuration)' == 'Windows Release' ">
       <Link>Linn\Framework\SystemInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfoCocoa.cs" Condition=" '$(Configuration)' == 'MacOsX Debug' Or '$(Configuration)' == 'MacOsX Trace' Or '$(Configuration)' == 'MacOsX Release' ">
+      <Link>Linn\Framework\SystemInfoCocoa.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkChangeWatcher.cs" Condition=" '$(Configuration)' == 'Linux Debug' Or '$(Configuration)' == 'Linux Trace' Or '$(Configuration)' == 'Linux Release' Or '$(Configuration)' == 'Windows Debug' Or '$(Configuration)' == 'Windows Trace' Or '$(Configuration)' == 'Windows Release' ">
+      <Link>Linn\Framework\NetworkChangeWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkChangeWatcherCocoa.cs" Condition=" '$(Configuration)' == 'MacOsX Debug' Or '$(Configuration)' == 'MacOsX Trace' Or '$(Configuration)' == 'MacOsX Release' ">
+      <Link>Linn\Framework\NetworkChangeWatcherCocoa.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\Timer.cs">
       <Link>Linn\Framework\Timer.cs</Link>
@@ -189,9 +201,6 @@
     <Compile Include="..\..\LibUpnpCil\Core\Linn\OptionParser.cs">
       <Link>Linn\OptionParser.cs</Link>
     </Compile>
-    <Compile Include="..\..\LibUpnpCil\Core\Linn\ProductSupport.cs">
-      <Link>Linn\ProductSupport.cs</Link>
-    </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Scheduler.cs">
       <Link>Linn\Scheduler.cs</Link>
     </Compile>
@@ -215,6 +224,9 @@
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Linn\UserLogFile.cs">
       <Link>Linn\UserLogFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\VersionSupport.cs">
+      <Link>Linn\VersionSupport.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Core\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

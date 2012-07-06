@@ -71,8 +71,14 @@ namespace LinnSetup
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rebootDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onlineHelpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.releaseNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.betaReleaseNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tuneInRadioWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.turnDeviceOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -135,8 +141,8 @@ namespace LinnSetup
             // 
             // textBox1
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Location = new System.Drawing.Point(56, 57);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(562, 20);
@@ -209,8 +215,8 @@ namespace LinnSetup
             // 
             // label29
             // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.label29.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label29.Location = new System.Drawing.Point(6, 6);
@@ -246,6 +252,8 @@ namespace LinnSetup
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoSize = true;
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.Black;
             this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
@@ -307,6 +315,7 @@ namespace LinnSetup
             // 
             this.listView1.Alignment = System.Windows.Forms.ListViewAlignment.Default;
             this.listView1.AutoArrange = false;
+            this.listView1.BackColor = System.Drawing.SystemColors.Window;
             this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
@@ -410,7 +419,7 @@ namespace LinnSetup
             // tabControl1
             // 
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl1.Name = "tabControl1";
@@ -442,6 +451,7 @@ namespace LinnSetup
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Gray;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
@@ -455,10 +465,12 @@ namespace LinnSetup
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.BackColor = System.Drawing.Color.Gray;
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // exitToolStripMenuItem
@@ -474,29 +486,30 @@ namespace LinnSetup
             this.refreshDeviceListToolStripMenuItem,
             this.deviceDetailsToolStripMenuItem,
             this.treeToolStripMenuItem});
+            this.viewToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // refreshDeviceListToolStripMenuItem
             // 
             this.refreshDeviceListToolStripMenuItem.Name = "refreshDeviceListToolStripMenuItem";
             this.refreshDeviceListToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshDeviceListToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.refreshDeviceListToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.refreshDeviceListToolStripMenuItem.Text = "Refresh Device List";
             this.refreshDeviceListToolStripMenuItem.Click += new System.EventHandler(this.refreshDeviceListToolStripMenuItem_Click);
             // 
             // deviceDetailsToolStripMenuItem
             // 
             this.deviceDetailsToolStripMenuItem.Name = "deviceDetailsToolStripMenuItem";
-            this.deviceDetailsToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.deviceDetailsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.deviceDetailsToolStripMenuItem.Text = "Details";
             this.deviceDetailsToolStripMenuItem.Click += new System.EventHandler(this.deviceDetailsToolStripMenuItem_Click);
             // 
             // treeToolStripMenuItem
             // 
             this.treeToolStripMenuItem.Name = "treeToolStripMenuItem";
-            this.treeToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.treeToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.treeToolStripMenuItem.Text = "Tree";
             this.treeToolStripMenuItem.Click += new System.EventHandler(this.treeToolStripMenuItem_Click);
             // 
@@ -505,63 +518,113 @@ namespace LinnSetup
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem,
             this.checkForUpdatesToolStripMenuItem,
-            this.debugConsoleToolStripMenuItem});
+            this.debugConsoleToolStripMenuItem,
+            this.rebootDeviceToolStripMenuItem,
+            this.turnDeviceOnToolStripMenuItem});
+            this.toolsToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.toolsToolStripMenuItem_DropDownOpening);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.optionsToolStripMenuItem.Text = "Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // checkForUpdatesToolStripMenuItem
             // 
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
             // debugConsoleToolStripMenuItem
             // 
             this.debugConsoleToolStripMenuItem.Name = "debugConsoleToolStripMenuItem";
-            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.debugConsoleToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.debugConsoleToolStripMenuItem.Text = "Debug Console";
             this.debugConsoleToolStripMenuItem.Click += new System.EventHandler(this.debugConsoleToolStripMenuItem_Click);
+            // 
+            // rebootDeviceToolStripMenuItem
+            // 
+            this.rebootDeviceToolStripMenuItem.Name = "rebootDeviceToolStripMenuItem";
+            this.rebootDeviceToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.rebootDeviceToolStripMenuItem.Text = "Reboot Device";
+            this.rebootDeviceToolStripMenuItem.Click += new System.EventHandler(this.rebootDeviceToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.onlineHelpToolStripMenuItem,
+            this.releaseNotesToolStripMenuItem,
+            this.betaReleaseNotesToolStripMenuItem,
+            this.tuneInRadioWebsiteToolStripMenuItem,
             this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.ForeColor = System.Drawing.Color.Black;
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // onlineHelpToolStripMenuItem
+            // 
+            this.onlineHelpToolStripMenuItem.Name = "onlineHelpToolStripMenuItem";
+            this.onlineHelpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.onlineHelpToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.onlineHelpToolStripMenuItem.Text = "Online Help";
+            this.onlineHelpToolStripMenuItem.Click += new System.EventHandler(this.onlineHelpToolStripMenuItem_Click);
+            // 
+            // releaseNotesToolStripMenuItem
+            // 
+            this.releaseNotesToolStripMenuItem.Name = "releaseNotesToolStripMenuItem";
+            this.releaseNotesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.releaseNotesToolStripMenuItem.Text = "Release Notes";
+            this.releaseNotesToolStripMenuItem.Click += new System.EventHandler(this.releaseNotesToolStripMenuItem_Click);
+            // 
+            // betaReleaseNotesToolStripMenuItem
+            // 
+            this.betaReleaseNotesToolStripMenuItem.Name = "betaReleaseNotesToolStripMenuItem";
+            this.betaReleaseNotesToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.betaReleaseNotesToolStripMenuItem.Text = "Beta Release Notes";
+            this.betaReleaseNotesToolStripMenuItem.Click += new System.EventHandler(this.betaReleaseNotesToolStripMenuItem_Click);
+            // 
+            // tuneInRadioWebsiteToolStripMenuItem
+            // 
+            this.tuneInRadioWebsiteToolStripMenuItem.Name = "tuneInRadioWebsiteToolStripMenuItem";
+            this.tuneInRadioWebsiteToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.tuneInRadioWebsiteToolStripMenuItem.Text = "TuneIn Radio Website";
+            this.tuneInRadioWebsiteToolStripMenuItem.Click += new System.EventHandler(this.tuneInRadioWebsiteToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // turnDeviceOnToolStripMenuItem
+            // 
+            this.turnDeviceOnToolStripMenuItem.Name = "turnDeviceOnToolStripMenuItem";
+            this.turnDeviceOnToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.turnDeviceOnToolStripMenuItem.Text = "Turn Device On";
+            this.turnDeviceOnToolStripMenuItem.Click += new System.EventHandler(this.turnDeviceOnToolStripMenuItem_Click);
             // 
             // FormLinnSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(819, 548);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FormLinnSetup";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Setup";
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             this.splitContainer1.ResumeLayout(false);
@@ -624,6 +687,12 @@ namespace LinnSetup
         private PictureBox pictureBox1;
         private ColumnHeader columnHeader13;
         private ToolStripMenuItem checkForUpdatesToolStripMenuItem;
+        private ToolStripMenuItem onlineHelpToolStripMenuItem;
+        private ToolStripMenuItem releaseNotesToolStripMenuItem;
+        private ToolStripMenuItem betaReleaseNotesToolStripMenuItem;
+        private ToolStripMenuItem tuneInRadioWebsiteToolStripMenuItem;
+        private ToolStripMenuItem rebootDeviceToolStripMenuItem;
+        private ToolStripMenuItem turnDeviceOnToolStripMenuItem;
         //private Diagnostics diagnostics1;
         //private Reflash reflash1;
 

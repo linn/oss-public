@@ -80,33 +80,52 @@ namespace Linn.Topology
 
         public override void Open()
         {
-            iServiceAVTransport.EventStateLastChange += EventStateLastChangeResponse;
-            iServiceAVTransport.EventSubscriptionError += EventSubscriptionErrorHandler;
-            iServiceAVTransport.EventInitial += EventInitialResponse;
+            try
+            {
+                Lock();
+                if (!iOpen)
+                {
+                    iServiceAVTransport.EventStateLastChange += EventStateLastChangeResponse;
+                    iServiceAVTransport.EventSubscriptionError += EventSubscriptionErrorHandler;
+                    iServiceAVTransport.EventInitial += EventInitialResponse;
 
-            iMaster = false;
-            iExpectEventStop = false;
-            iExpectedTrack = null;
+                    iMaster = false;
+                    iExpectEventStop = false;
+                    iExpectedTrack = null;
 
-            iTrackBitrate = 0;
-            iTrackLossless = false;
-            iTrackBitDepth = 0;
-            iTrackSampleRate = 0;
-            iTrackCodecName = string.Empty;
+                    iTrackBitrate = 0;
+                    iTrackLossless = false;
+                    iTrackBitDepth = 0;
+                    iTrackSampleRate = 0;
+                    iTrackCodecName = string.Empty;
+                    iOpen = true;
+                }
+            }
+            finally
+            {
+                Unlock();
+            }
         }
 
         public override void Close()
         {
-            iTimer.Stop();
+            try
+            {
+                Lock();
+                if (iOpen)
+                {
+                    iTimer.Stop();
 
-            iServiceAVTransport.EventStateLastChange -= EventStateLastChangeResponse;
-            iServiceAVTransport.EventSubscriptionError -= EventSubscriptionErrorHandler;
-            iServiceAVTransport.EventInitial -= EventInitialResponse;
-        }
-
-        public override void Kill()
-        {
-            iTimer.Start();
+                    iServiceAVTransport.EventStateLastChange -= EventStateLastChangeResponse;
+                    iServiceAVTransport.EventSubscriptionError -= EventSubscriptionErrorHandler;
+                    iServiceAVTransport.EventInitial -= EventInitialResponse;
+                    iOpen = false;
+                }
+            }
+            finally
+            {
+                Unlock();
+            }
         }
 
         public override string Name
@@ -201,6 +220,10 @@ namespace Linn.Topology
         private void EventResponseGetProtocolInfo(object obj, ServiceConnectionManager.AsyncActionGetProtocolInfo.EventArgsResponse e)
         {
             iProtocolInfo = e.Sink;
+            if (Device.Model == "WD TV Live Hub" || Device.Model == "WD TV Live")
+            {
+                iProtocolInfo += ",http-get:*:audio/x-flac:*,http-get:*:audio/mp4:*,http-get:*:audio/wav:*,http-get:*:video/quicktime:*,http-get:*:video/x-matroska:*";
+            }
 
             if (iEventInitialisedTime != null)
             {
@@ -913,7 +936,14 @@ namespace Linn.Topology
                                         trackUri = val.Value;
                                     }
                                 }
-
+                                if (iExpectedTrack != null && trackUri == iExpectedTrack.Uri)
+                                {
+                                    iMaster = true;
+                                }
+                                else if (iTrackPlaylistItem == null || trackUri != iTrackPlaylistItem.Uri)
+                                {
+                                    iMaster = false;
+                                }
                                 state = n.SelectSingleNode("ns:CurrentTrackMetaData", xmlNsMan);
                                 if (state != null)
                                 {
@@ -933,7 +963,21 @@ namespace Linn.Topology
 
                                                     didl.Add(item);
                                                 }
-
+												// hack for sonos devices artwork (which specifies a relative path)
+                                                if (didl[0].AlbumArtUri.Count > 0 && didl[0].AlbumArtUri[0] != string.Empty)
+                                                {
+                                                    string albumArt = didl[0].AlbumArtUri[0];
+                                                    if (albumArt.StartsWith("/getaa?", StringComparison.OrdinalIgnoreCase))
+                                                    {
+                                                        try
+                                                        {
+                                                            Uri uri = new Uri(Device.Location);
+                                                            string newUri = string.Format("{0}://{1}{2}", uri.Scheme, uri.Authority, albumArt);
+                                                            didl[0].AlbumArtUri[0] = newUri;
+                                                        }
+                                                        catch { }
+                                                    }
+                                                }
                                                 trackPlaylistItem = new MrItem(++iTrackId, trackUri, didl);
                                                 Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererUpnpAv.EventStateLastChangeResponse: uri=" + trackPlaylistItem.Uri + ", metadata=" + trackPlaylistItem.DidlLite.Xml);
                                             }
@@ -952,20 +996,18 @@ namespace Linn.Topology
                                             Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererUpnpAv.EventStateLastChangeResponse: uri=" + trackUri + ", metadata=");
                                         }
 
-                                        Console.WriteLine("iMaster=" + iMaster + ", trackUri=" + trackUri + ", iTrackPlaylistItem.Uri=" + ((iTrackPlaylistItem == null) ? "" : iTrackPlaylistItem.Uri) + ", iExpectedUri=" + ((iExpectedTrack == null) ? "" : iExpectedTrack.Uri));
+                                        Trace.WriteLine(Trace.kTopology, "iMaster=" + iMaster + ", trackUri=" + trackUri + ", iTrackPlaylistItem.Uri=" + ((iTrackPlaylistItem == null) ? "" : iTrackPlaylistItem.Uri) + ", iExpectedUri=" + ((iExpectedTrack == null) ? "" : iExpectedTrack.Uri));
 
                                         bool changed = false;
                                         if (iExpectedTrack != null && trackUri == iExpectedTrack.Uri)
                                         {
-                                            iMaster = true;
                                             SetCurrent(iExpectedTrack);
                                             iTrackIndex = iPlaylist.IndexOf(iExpectedTrack);
                                             iExpectedTrack = null;
                                             changed = true;
                                         }
-                                        else if(iTrackPlaylistItem == null || trackUri != iTrackPlaylistItem.Uri)
+                                        else if (iTrackPlaylistItem == null || trackUri != iTrackPlaylistItem.Uri)
                                         {
-                                            iMaster = false;
                                             SetCurrent(trackPlaylistItem);
                                             iTrackIndex = -1;
                                             iExpectedTrack = null;
@@ -1186,5 +1228,6 @@ namespace Linn.Topology
 
         private MrItem iTrackPlaylistItem;
         private Channel iTrack;
+        private bool iOpen;
     }
 } // Linn.Topology

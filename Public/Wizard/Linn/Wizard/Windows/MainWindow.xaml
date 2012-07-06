@@ -1,0 +1,12 @@
+﻿<Window x:Class="Linn.Wizard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    
+ 
+    WindowStyle="SingleBorderWindow"  WindowStartupLocation="CenterScreen" Topmost="False" DataContext="{Binding}" ResizeMode="CanResize" Closed="Window_Closed" WindowState="Maximized" Width="1500" Height="850">
+    <Grid>
+       <!-- without window border, to hide scroll bars use the size defined in Linn.css for MainWindow (above), i.e. Width="1024" Height="768" -->
+        <WebBrowser Name="webBrowser1" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+    </Grid>
+
+</Window>

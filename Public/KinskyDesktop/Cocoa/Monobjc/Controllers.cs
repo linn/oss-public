@@ -40,6 +40,18 @@ namespace KinskyDesktop
         public Point Origin;
         public float Width;
         public float Height;
+
+        public bool ContainsPoint(Point aPoint)
+        {
+            return (aPoint.X >= Origin.X && aPoint.X < Origin.X + Width
+                 && aPoint.Y >= Origin.Y && aPoint.Y < Origin.Y + Height);
+        }
+
+        public bool Intersects(Rect aRect)
+        {
+            return !((aRect.Origin.X > Origin.X + Width)  || (aRect.Origin.X + aRect.Width < Origin.X) ||
+                     (aRect.Origin.Y > Origin.Y + Height) || (aRect.Origin.Y + aRect.Height < Origin.Y));
+        }
     }
 
 
@@ -70,7 +82,9 @@ namespace KinskyDesktop
             catch (ArgumentException)
             {
                 aViewApp.ShowAlertPanel("Network adapter error", "An error has occured whilst trying to detect available network adapters");
-                return;
+                // replace "return" with throw for the nightly build 2012-03-22
+                // return;
+                throw;
             }
 
             Trace.Level = Trace.kKinskyDesktop;
@@ -659,73 +673,80 @@ namespace KinskyDesktop
 
         public void MenuItemPlay()
         {
-            // assert what we expect from the Validate... method
-            Assert.Check(ValidateMenuItemPlay());
-
-            iModel.TrackIndex = iView.ClickedItem;
+            if(ValidateMenuItemPlay())
+            {
+                iModel.TrackIndex = iView.ClickedItem;
+            }
         }
 
         public void MenuItemMoveUp()
         {
             // assert what we expect from the Validate... method
-            Assert.Check(ValidateMenuItemMoveUp());
-
-            List<MrItem> items = new List<MrItem>();
-            items.Add(iModel.Playlist[iView.ClickedItem]);
-
-            // when moving an item up 1, the item is re-inserted **before**
-            // the previous item and **after** the item 2 up in the list. If the
-            // clicked item is second in the list, the item 2 up from it does not
-            // exist, so an afterId of 0 denotes move to the start of the list
-            uint afterId = 0;
-            if (iView.ClickedItem > 1)
+            if(ValidateMenuItemMoveUp())
             {
-                afterId = iModel.Playlist[iView.ClickedItem - 2].Id;
-            }
 
-            iModel.MoveTracks(items, afterId);
+                List<MrItem> items = new List<MrItem>();
+                items.Add(iModel.Playlist[iView.ClickedItem]);
+
+                // when moving an item up 1, the item is re-inserted **before**
+                // the previous item and **after** the item 2 up in the list. If the
+                // clicked item is second in the list, the item 2 up from it does not
+                // exist, so an afterId of 0 denotes move to the start of the list
+                uint afterId = 0;
+                if (iView.ClickedItem > 1)
+                {
+                    afterId = iModel.Playlist[iView.ClickedItem - 2].Id;
+                }
+
+                iModel.MoveTracks(items, afterId);
+            }
         }
 
         public void MenuItemMoveDown()
         {
             // assert what we expect from the Validate... method
-            Assert.Check(ValidateMenuItemMoveDown());
+            if(ValidateMenuItemMoveDown())
+            {
+                List<MrItem> items = new List<MrItem>();
+                items.Add(iModel.Playlist[iView.ClickedItem]);
 
-            List<MrItem> items = new List<MrItem>();
-            items.Add(iModel.Playlist[iView.ClickedItem]);
+                // when moving down, the clicked item always is re-inserted after the
+                // next item in the list - the Validate... method ensures there is
+                // always a next item
+                uint afterId = iModel.Playlist[iView.ClickedItem + 1].Id;
 
-            // when moving down, the clicked item always is re-inserted after the
-            // next item in the list - the Validate... method ensures there is
-            // always a next item
-            uint afterId = iModel.Playlist[iView.ClickedItem + 1].Id;
-
-            iModel.MoveTracks(items, afterId);
+                iModel.MoveTracks(items, afterId);
+            }
         }
 
         public void MenuItemSave()
         {
             // assert what we expect from the Validate... method
-            Assert.Check(ValidateMenuItemSave());
+            if(ValidateMenuItemSave())
+            {
 
-            IList<MrItem> clickedItems = ClickedItems();
+                IList<MrItem> clickedItems = ClickedItems();
 
-            iModel.SaveTracks(clickedItems);
+                iModel.SaveTracks(clickedItems);
+            }
         }
 
         public void MenuItemDelete()
         {
             // assert what we expect from the Validate... method
-            Assert.Check(ValidateMenuItemDelete());
+            if(ValidateMenuItemDelete())
+            {
 
-            IList<MrItem> clickedItems = ClickedItems();
+                IList<MrItem> clickedItems = ClickedItems();
 
-            iModel.DeleteTracks(clickedItems);
+                iModel.DeleteTracks(clickedItems);
+            }
         }
 
         public void MenuItemDetails()
         {
             // assert what we expect from the Validate... method
-            Assert.Check(ValidateMenuItemDetails());
+            //Assert.Check(ValidateMenuItemDetails());
         }
 
 
@@ -1075,67 +1096,75 @@ namespace KinskyDesktop
 
         public void MenuItemOpen()
         {
-            Assert.Check(ValidateMenuItemOpen());
-
-            iBrowser.Down(iContent.Object(iView.ClickedItem) as container);
+            if(ValidateMenuItemOpen())
+            {
+                iBrowser.Down(iContent.Object(iView.ClickedItem) as container);
+            }
         }
 
         public void MenuItemPlayNow()
         {
-            Assert.Check(ValidateMenuItemPlayNow());
-
-            iPlaySupport.PlayNow(new MediaRetriever(iContent.Location.Current, ClickedItems()));
+            if(ValidateMenuItemPlayNow())
+            {
+                iPlaySupport.PlayNow(new MediaRetriever(iContent.Location.Current, ClickedItems()));
+            }
         }
 
         public void MenuItemPlayNext()
         {
-            Assert.Check(ValidateMenuItemPlayNext());
-
-            iPlaySupport.PlayNext(new MediaRetriever(iContent.Location.Current, ClickedItems()));
+            if(ValidateMenuItemPlayNext())
+            {
+                iPlaySupport.PlayNext(new MediaRetriever(iContent.Location.Current, ClickedItems()));
+            }
         }
 
         public void MenuItemPlayLater()
         {
-            Assert.Check(ValidateMenuItemPlayLater());
-
-            iPlaySupport.PlayLater(new MediaRetriever(iContent.Location.Current, ClickedItems()));
+            if(ValidateMenuItemPlayLater())
+            {
+                iPlaySupport.PlayLater(new MediaRetriever(iContent.Location.Current, ClickedItems()));
+            }
         }
 
         public void MenuItemDelete()
         {
-            Assert.Check(ValidateMenuItemDelete());
-
-            IContainer ctr = iContent.Location.Current;
-
-            foreach (upnpObject o in ClickedItems())
+            if(ValidateMenuItemDelete())
             {
-                ctr.Delete(o.Id);
+                IContainer ctr = iContent.Location.Current;
+
+                foreach (upnpObject o in ClickedItems())
+                {
+                    ctr.Delete(o.Id);
+                }
             }
         }
 
         public void MenuItemRename()
         {
-            Assert.Check(ValidateMenuItemRename());
-
-            iView.StartRename();
+            if(ValidateMenuItemRename())
+            {
+                iView.StartRename();
+            }
         }
 
         public void MenuItemBookmark()
         {
-            Assert.Check(ValidateMenuItemBookmark());
-
-            IList<upnpObject> clickedItems = ClickedItems();
-            IContainer c = iContent.Location.Current.ChildContainer(clickedItems[0] as container);
-            if (c != null)
+            if(ValidateMenuItemBookmark())
             {
-                Location l = new Location(iContent.Location, c);
-                iView.ShowAddBookmark(l);
+
+                IList<upnpObject> clickedItems = ClickedItems();
+                IContainer c = iContent.Location.Current.ChildContainer(clickedItems[0] as container);
+                if (c != null)
+                {
+                    Location l = new Location(iContent.Location, c);
+                    iView.ShowAddBookmark(l);
+                }
             }
         }
 
         public void MenuItemDetails()
         {
-            Assert.Check(ValidateMenuItemDetails());
+            //Assert.Check(ValidateMenuItemDetails());
         }
 
 

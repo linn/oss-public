@@ -1,0 +1,94 @@
+Import('_default_env')
+
+# install required resources
+
+resDir  = '$variant_dir/share/Linn/ProductSupport'
+
+files = Split("""
+    Linn/ProductSupport/SampleAudio/AudioTrack.flac
+    Linn/ProductSupport/SampleAudio/Folder.jpg
+""")
+resources = _default_env.Install(resDir, files)
+Alias('Lib', resources)
+
+#### Tags file support
+
+# Generate Tags-related files
+#
+# Whenever a file depends on Tags.xml, the latest version is installed.
+
+tagsAction    = Action('svn update --quiet ${TARGET.srcpath}' , ' update ${TARGET.file}')
+tagsXml       = _default_env.Command('Linn/ProductSupport/Core/Generated/Tags.xml', '', tagsAction)
+tagsXmlTarget = _default_env.Install(resDir, tagsXml)
+
+AlwaysBuild(tagsXml)
+NoCache(tagsXml)
+Alias('Lib', tagsXmlTarget)
+
+# create TagsKodgen.cs from Tags.xml
+
+tagsKodeCs = _default_env.Install('$hardware_dir/share/Kodegen', 'Linn/ProductSupport/Core/Generated/TagsCs.kode')
+tagsCs = _default_env.Kodegen('TagsKodegen.cs', tagsXml, KODE='TagsCs.kode')
+tagsCsInstall = _default_env.Install('$hardware_dir/share/Kodegen/', tagsCs)
+Alias('Lib', tagsCsInstall)
+files = tagsCs
+
+files += Split("""
+    Properties/AssemblyInfo.cs
+    Properties/Resources.Designer.cs
+    Linn/ProductSupport/Core/Crc32.cs
+    Linn/ProductSupport/Core/HelperVolkano.cs
+    Linn/ProductSupport/Core/SysLog.cs
+    Linn/ProductSupport/Core/Tags.cs
+    Linn/ProductSupport/Diagnostics/DhcpMessage.cs
+    Linn/ProductSupport/Diagnostics/Diagnostics.cs
+    Linn/ProductSupport/Diagnostics/Logger.cs
+    Linn/ProductSupport/Diagnostics/TestBase.cs
+    Linn/ProductSupport/Diagnostics/TestDhcp.cs
+    Linn/ProductSupport/Diagnostics/TestInternet.cs
+    Linn/ProductSupport/Diagnostics/TestTransport.cs
+    Linn/ProductSupport/Diagnostics/TestUpnp.cs
+    Linn/ProductSupport/Flash/Fallback.cs
+    Linn/ProductSupport/Flash/Flash.cs
+    Linn/ProductSupport/Flash/FuseMap.cs
+    Linn/ProductSupport/Flash/RomDir.cs
+    Linn/ProductSupport/Ticketing/Ticketing.cs
+    Linn/ProductSupport/Ticketing/TicketRequestResource.cs
+    Linn/ProductSupport/Ticketing/CategoryResource.cs
+    Linn/ProductSupport/Ticketing/InstallerReportResource.cs
+    Linn/ProductSupport/Ticketing/ItemResource.cs
+    Linn/ProductSupport/Ticketing/ListOfCategoryResource.cs
+    Linn/ProductSupport/Ticketing/ListOfTestResource.cs
+    Linn/ProductSupport/Ticketing/TestResource.cs
+    Linn/ProductSupport/Ticketing/TestResourceResult.cs
+    Linn/ProductSupport/BasicSetup.cs
+    Linn/ProductSupport/Boxes.cs
+    Linn/ProductSupport/Playback.cs
+    Linn/ProductSupport/Target.cs
+    Linn/ProductSupport/Tree.cs
+    Linn/ProductSupport/UpdateFirmware.cs
+""")
+
+res = _default_env.Resgen('Linn.ProductSupport.Properties.Resources.resources', 'Properties/Resources.resx')
+
+clilibs = ['mscorlib', 'System', 'System.Xml', 'System.ComponentModel.DataAnnotations', 'OssCore', 'OssControl', 'OssServices', 'OssDidlLite', 'OssKinsky', 'XmlLayout', 'XmlRom', 'XmlRomCollection', 'XmlTags', _default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll'), 'taglib-sharp']
+
+if _default_env['hardware'] != 'Android':
+    lib = _default_env.CliLibrary('OssProductSupport', files, CLILIBS=clilibs, CLIRESOURCES=res, TARGETFRAMEWORKVERSION='4.0')
+else:
+    msproj = _default_env.MSBuildFileGenerator('OssProductSupport', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.ProductSupport', TARGETFRAMEWORKVERSION='4.0')
+    lib = _default_env.MSBuildLibBuilder('OssProductSupport', msproj, CLILIBS=clilibs)
+    
+Alias('Lib', lib)
+
+#prog = _default_env.CliProgram('Test/TestTicketing', 'Linn/ProductSupport/Ticketing/Test/Program.cs', CLILIBS=['mscorlib', 'System', 'OssProductSupport'])
+
+#Alias('Test', prog)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ProductSupport.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ProductSupport', DOXYGENNAMESPACE='OssProductSupport')
+
+Alias('Docs', docs)
+Alias('Test', 'Lib')
+
+Default(['Test','Docs'])
+
