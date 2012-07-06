@@ -198,7 +198,7 @@
     <Compile Include="..\..\KinskyClassic\KinskyClassic\OptionsPageGeneral.cs">
       <Link>OptionsPageGeneral.cs</Link>
     </Compile>
-    <Compile Include="..\..\KinskyClassic\KinskyClassic\Properties\AssemblyInfo.cs">
+    <Compile Include="..\..\build\share\KinskyClassic\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\..\KinskyClassic\KinskyClassic\Properties\Resources.Designer.cs">

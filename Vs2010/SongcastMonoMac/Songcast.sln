@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Songcast", "Songcast.csproj", "{3679665C-2332-48AA-9FBC-478B476FBF98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssToolkitMonoMac", "..\OssToolkitMonoMac\OssToolkitMonoMac.csproj", "{22C47B98-D0D0-4B8E-A98D-F4371733E14A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OssCore", "..\OssCore\OssCore.csproj", "{ED80C071-32F7-4B26-B271-52A163AFB43D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Windows Debug|Any CPU = Windows Debug|Any CPU
+		Windows Trace|Any CPU = Windows Trace|Any CPU
+		Windows Release|Any CPU = Windows Release|Any CPU
+		Linux Debug|Any CPU = Linux Debug|Any CPU
+		Linux Trace|Any CPU = Linux Trace|Any CPU
+		Linux Release|Any CPU = Linux Release|Any CPU
+		MacOsX Debug|Any CPU = MacOsX Debug|Any CPU
+		MacOsX Trace|Any CPU = MacOsX Trace|Any CPU
+		MacOsX Release|Any CPU = MacOsX Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Debug|x86.ActiveCfg = MacOsX Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Debug|x86.Build.0 = MacOsX Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Linux Debug|Any CPU.ActiveCfg = Linux Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Linux Debug|Any CPU.Build.0 = Linux Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Linux Release|Any CPU.ActiveCfg = Linux Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Linux Release|Any CPU.Build.0 = Linux Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Linux Trace|Any CPU.ActiveCfg = Linux Trace|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Linux Trace|Any CPU.Build.0 = Linux Trace|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.MacOsX Debug|Any CPU.ActiveCfg = MacOsX Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.MacOsX Debug|Any CPU.Build.0 = MacOsX Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.MacOsX Release|Any CPU.ActiveCfg = MacOsX Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.MacOsX Release|Any CPU.Build.0 = MacOsX Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.MacOsX Trace|Any CPU.ActiveCfg = MacOsX Trace|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.MacOsX Trace|Any CPU.Build.0 = MacOsX Trace|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Release|x86.ActiveCfg = MacOsX Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Release|x86.Build.0 = MacOsX Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Windows Debug|Any CPU.ActiveCfg = Windows Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Windows Debug|Any CPU.Build.0 = Windows Debug|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Windows Release|Any CPU.ActiveCfg = Windows Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Windows Release|Any CPU.Build.0 = Windows Release|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Windows Trace|Any CPU.ActiveCfg = Windows Trace|Any CPU
+		{22C47B98-D0D0-4B8E-A98D-F4371733E14A}.Windows Trace|Any CPU.Build.0 = Windows Trace|Any CPU
+		{3679665C-2332-48AA-9FBC-478B476FBF98}.Debug|x86.ActiveCfg = Debug|x86
+		{3679665C-2332-48AA-9FBC-478B476FBF98}.Debug|x86.Build.0 = Debug|x86
+		{3679665C-2332-48AA-9FBC-478B476FBF98}.Release|x86.ActiveCfg = Release|x86
+		{3679665C-2332-48AA-9FBC-478B476FBF98}.Release|x86.Build.0 = Release|x86
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Debug|x86.ActiveCfg = MacOsX Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Debug|x86.Build.0 = MacOsX Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Linux Debug|Any CPU.ActiveCfg = Linux Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Linux Debug|Any CPU.Build.0 = Linux Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Linux Release|Any CPU.ActiveCfg = Linux Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Linux Release|Any CPU.Build.0 = Linux Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Linux Trace|Any CPU.ActiveCfg = Linux Trace|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Linux Trace|Any CPU.Build.0 = Linux Trace|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.MacOsX Debug|Any CPU.ActiveCfg = MacOsX Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.MacOsX Debug|Any CPU.Build.0 = MacOsX Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.MacOsX Release|Any CPU.ActiveCfg = MacOsX Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.MacOsX Release|Any CPU.Build.0 = MacOsX Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.MacOsX Trace|Any CPU.ActiveCfg = MacOsX Trace|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.MacOsX Trace|Any CPU.Build.0 = MacOsX Trace|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Release|x86.ActiveCfg = MacOsX Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Release|x86.Build.0 = MacOsX Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Windows Debug|Any CPU.ActiveCfg = Windows Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Windows Debug|Any CPU.Build.0 = Windows Debug|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Windows Release|Any CPU.ActiveCfg = Windows Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Windows Release|Any CPU.Build.0 = Windows Release|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Windows Trace|Any CPU.ActiveCfg = Windows Trace|Any CPU
+		{ED80C071-32F7-4B26-B271-52A163AFB43D}.Windows Trace|Any CPU.Build.0 = Windows Trace|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Songcast.csproj
+	EndGlobalSection
+EndGlobal

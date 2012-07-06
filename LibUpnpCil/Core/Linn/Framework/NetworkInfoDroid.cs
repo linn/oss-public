@@ -44,6 +44,8 @@ namespace Linn
                 null,
                 new List<System.Net.IPAddress>()
                 );
+                networkInfo.Dispose();
+                wifi.Dispose();
                 UserLog.WriteLine("RefreshWifiInfo(): " + newModel.Name + ", " + newModel.IPAddress + ", " + newModel.OperationalStatus);
             }
             else

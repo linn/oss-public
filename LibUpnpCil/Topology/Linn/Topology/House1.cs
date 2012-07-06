@@ -21,6 +21,7 @@ namespace Linn.Topology.Layer1
         void Stop();
         event EventHandler<EventArgsGroup> EventGroupAdded;
         event EventHandler<EventArgsGroup> EventGroupRemoved;
+        void RemoveDevice(Device aDevice);
     }
 
     public class EventArgsGroup : EventArgs
@@ -55,6 +56,8 @@ namespace Linn.Topology.Layer1
         event EventHandler<EventArgs> EventCurrentSourceChanged;
         event EventHandler<EventArgs> EventStandbyChanged;
         event EventHandler<EventArgsSource> EventSourceChanged;
+        bool HasInfo { get; }
+        bool HasTime { get; }
     }
 
     public class EventArgsSource : EventArgs
@@ -111,7 +114,17 @@ namespace Linn.Topology.Layer1
             {
                 get
                 {
-                    return iStandby;
+                    bool result;
+                    try
+                    {
+                        Lock();
+                        result = iStandby;
+                    }
+                    finally
+                    {
+                        Unlock();
+                    }
+                    return result;
                 }
             }
 
@@ -143,7 +156,17 @@ namespace Linn.Topology.Layer1
             {
                 get
                 {
-                    return (iCurrentSource);
+                    uint result;
+                    try
+                    {
+                        Lock();
+                        result = iCurrentSource;
+                    }
+                    finally
+                    {
+                        Unlock();
+                    }
+                    return result;
                 }
             }
 
@@ -229,6 +252,8 @@ namespace Linn.Topology.Layer1
             uint SourceCount { get; }
             uint CurrentSource { get; }
             ISource Source(uint aIndex);
+            bool HasInfo { get; }
+            bool HasTime { get; }
         }
 
         public class GroupProduct : Group, IGroup
@@ -254,6 +279,22 @@ namespace Linn.Topology.Layer1
                 get
                 {
                     return (iProduct.SourceCount);
+                }
+            }
+
+            public bool HasInfo
+            {
+                get
+                {
+                    return iProduct.HasInfo;
+                }
+            }
+
+            public bool HasTime
+            {
+                get
+                {
+                    return iProduct.HasTime;
                 }
             }
 
@@ -300,6 +341,22 @@ namespace Linn.Topology.Layer1
                 Assert.Check(aIndex == 0);
                 Assert.Check(iSource != null);
                 return (iSource);
+            }
+
+            public bool HasInfo
+            {
+                get
+                {
+                    return true;
+                }
+            }
+
+            public bool HasTime
+            {
+                get
+                {
+                    return true;
+                }
             }
 
             ISource iSource;
@@ -546,8 +603,10 @@ namespace Linn.Topology.Layer1
                             list.Add(CreateSource(name, type, visible));
                         }
                     }
-                    catch (XmlException)
+                    catch (XmlException ex)
                     {
+                        // logging for ticket #1001
+                        UserLog.WriteLine("Ticket #1001: XmlException caught in ParseSourceXml()" + ex + ", " + aXml);
                     }
                 }
 
@@ -615,7 +674,7 @@ namespace Linn.Topology.Layer1
 
             public void OnKilled()
             {
-                if (iGroup != null)
+                if (iGroup != null && iStack.EventGroupRemoved != null)
                 {
                     iStack.EventGroupRemoved(iStack, new EventArgsGroup(iGroup));
                 }
@@ -791,6 +850,21 @@ namespace Linn.Topology.Layer1
 
                     uint index = 0;
 
+                    // logging for ticket #1001
+                    if (list.Count > iSourceList.Count)
+                    {
+                        UserLog.WriteLine("Logging for ticket #1001." + iServiceProduct.SourceXml);
+                        foreach (ISource source in iSourceList)
+                        {
+                            UserLog.WriteLine("Existing source: " + source);
+                        }
+                        foreach (ISource source in list)
+                        {
+                            UserLog.WriteLine("New source: " + source);
+                        }
+                        Assert.Check(false);
+                    }
+
                     foreach (ISource source in list)
                     {
                         ISource old = iSourceList[(int)index];
@@ -820,6 +894,22 @@ namespace Linn.Topology.Layer1
                 }
 
                 Unlock();
+            }
+
+            public bool HasInfo
+            {
+                get
+                {
+                    return iServiceProduct.Attributes.Contains("Info");
+                }
+            }
+
+            public bool HasTime
+            {
+                get
+                {
+                    return iServiceProduct.Attributes.Contains("Time");
+                }
             }
 
             private Stack iStack;
@@ -857,6 +947,7 @@ namespace Linn.Topology.Layer1
                 iMutex = new Mutex();
 
                 iKilled = false;
+                iClosed = false;
             }
 
             public override string ToString()
@@ -869,19 +960,25 @@ namespace Linn.Topology.Layer1
                 Trace.WriteLine(Trace.kTopology, "Layer1 Upnp Open+       " + this);
 
                 Lock();
-
+                iClosed = false;
                 iDevice.EventOpened += Opened;
+                iDevice.EventOpenFailed += OpenFailed;
 
                 Unlock();
 
                 iDevice.Open();
             }
 
+            private void OpenFailed(object obj, EventArgs e)
+            {
+                OnEventSubscriptionError();
+            }
+
             private void Opened(object obj, EventArgs e)
             {
                 Lock();
 
-                if (!iKilled)
+                if (!iKilled && !iClosed)
                 {
                     iStack.ScheduleJob(new JobUpnpOpened(this));
                 }
@@ -978,11 +1075,17 @@ namespace Linn.Topology.Layer1
 
                 Lock();
 
+                iDevice.EventOpened -= Opened;
+                iDevice.EventOpenFailed -= OpenFailed;
+
                 if (iServiceDeviceProperties != null)
                 {
                     iServiceDeviceProperties.EventSubscriptionError -= EventSubscriptionErrorHandler;
                     iServiceDeviceProperties.EventInitial -= SonosInitial;
+                    iServiceDeviceProperties.EventStateZoneName -= SonosRoomChanged;
                 }
+
+                iClosed = true;
 
                 Unlock();
             }
@@ -1103,13 +1206,19 @@ namespace Linn.Topology.Layer1
 
             public void OnKilled()
             {
-                if (iGroup != null)
+                if (iGroup != null && iStack.EventGroupRemoved != null)
                 {
                     iStack.EventGroupRemoved(iStack, new EventArgsGroup(iGroup));
                 }
 
+                iDevice.EventOpened -= Opened;
+
+                iDevice.EventOpenFailed -= OpenFailed; 
                 if (iServiceDeviceProperties != null)
                 {
+                    iServiceDeviceProperties.EventSubscriptionError -= EventSubscriptionErrorHandler;
+                    iServiceDeviceProperties.EventInitial -= SonosInitial;
+                    iServiceDeviceProperties.EventStateZoneName -= SonosRoomChanged;
                     iServiceDeviceProperties.Kill();
                 }
             }
@@ -1211,6 +1320,7 @@ namespace Linn.Topology.Layer1
             private ISource iSource;
 
             private ServiceDeviceProperties iServiceDeviceProperties;
+            private bool iClosed;
         }
 
         internal interface IJob
@@ -1617,23 +1727,18 @@ namespace Linn.Topology.Layer1
             string message = String.Format("{0}: Removing disconnected device: {1}", DateTime.Now, e.Device.Udn);
             UserLog.WriteLine(message);
             Trace.WriteLine(Trace.kTopology, message);
-            if (e.Device.IsLinn)
+            RemoveDevice(e.Device);
+        }
+
+        public void RemoveDevice(Device aDevice)
+        {
+            if (aDevice.IsLinn)
             {
-                iLayer0.RemoveProduct(e.Device);
+                iLayer0.RemoveProduct(aDevice);
             }
             else
             {
-                iLayer0.RemoveUpnp(e.Device);
-            }
-            try
-            {
-                iLayer0.Rescan();
-            }
-            catch (Exception ex)
-            {
-                string errorMessage = String.Format("{0}: Exception caught on device disconnect rescan {1}", DateTime.Now, ex);
-                UserLog.WriteLine(errorMessage);
-                Trace.WriteLine(Trace.kTopology, errorMessage);
+                iLayer0.RemoveUpnp(aDevice);
             }
         }
 

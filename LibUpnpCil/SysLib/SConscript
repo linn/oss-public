@@ -7,7 +7,7 @@ files = Split("""
 """)
 
 clilibs = ['mscorlib', 'System', 'OssCore']
-if _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Android':
     lib = _default_env.CliLibrary('OssSysLib', files, CLILIBS=clilibs)
 else:
     msproj = _default_env.MSBuildFileGenerator('OssSysLib', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.SysLib')

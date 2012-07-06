@@ -15,13 +15,15 @@
                     </Grid>
                     <StackPanel DockPanel.Dock="Left" Margin="70,0,0,0">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="txtTrackNumber" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource DidlLiteConverter}, ConverterParameter=OriginalTrackNumber}" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,5,0" />
-                            <TextBlock x:Name="txtDisplay1" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=DisplayField1}" />
-                            <ContentControl x:Name="placeholderTitleEditor" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" Focusable="False" />
-                        </StackPanel>
-                        <TextBlock x:Name="txtDisplay2" 
+                            <TextBlock x:Name="txtTrackNumber" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=WrappedItem, Converter={StaticResource DidlLiteConverter}, ConverterParameter=OriginalTrackNumber}" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,0" />
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="txtDisplay1" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" Text="{Binding Path=DisplayField1}" />
+                                <TextBlock x:Name="txtDisplay2" 
                                    TextElement.FontSize="{DynamicResource SmallFontSize}" 
                                    Text="{Binding Path=DisplayField2}" />
+                            </StackPanel>
+                            <ContentControl x:Name="placeholderTitleEditor" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" Focusable="False" />
+                        </StackPanel>
                     </StackPanel>
                 </DockPanel>
             </StackPanel>
@@ -45,9 +47,9 @@
                     <Grid Height="{DynamicResource BrowserImageHeight}" DockPanel.Dock="Left" VerticalAlignment="Top">
                         <Image x:Name="image" Source="{Binding Path=ImageSource}" 
                            MaxWidth="{DynamicResource BrowserImageHeight}"
-                           MaxHeight="{DynamicResource BrowserImageHeight}"  />
+                           MaxHeight="{DynamicResource BrowserImageHeight}" VerticalAlignment="Top" />
                     </Grid>
-                    <kd:ClippingPanel Margin="5,0,0,0" DockPanel.Dock="Left" VerticalAlignment="Top" MaxHeight="{Binding ElementName=image, Path=ActualHeight}">
+                    <kd:ClippingPanel Margin="5,0,0,0" DockPanel.Dock="Left" VerticalAlignment="Top" MaxHeight="{DynamicResource BrowserImageHeight}">
                         <TextBlock x:Name="txtDisplay1" 
                                FontSize="{DynamicResource MediumFontSize}"
                                Text="{Binding Path=DisplayField1}"

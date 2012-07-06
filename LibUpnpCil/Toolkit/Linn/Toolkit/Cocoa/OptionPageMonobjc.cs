@@ -10,16 +10,17 @@ namespace Linn.Toolkit.Cocoa
 {
     public class OptionPageMonobjc : IDisposable
     {
-        public OptionPageMonobjc(IOptionPage aOptionsPage)
+        public OptionPageMonobjc(IOptionPage aOptionsPage, NSRect aFrameRect)
         {
-            iTabViewItem = new NSTabViewItem();
-            iTabViewItem.Label = aOptionsPage.Name;
-            iTabViewItem.View.Frame = new NSRect(10, 291, 554, 258);
+
+            iName = aOptionsPage.Name;
+
+            iView = new NSView(aFrameRect);
 
             iControls = new List<IOptionMonobjc>();
 
-            float y = 240;
-            float mid = iTabViewItem.View.Frame.Width * 0.5f;
+            float y = iView.Frame.Height - 10;
+            float mid = iView.Frame.Width * 0.5f;
             foreach (Option option in aOptionsPage.Options)
             {
                 NSTextField label = new NSTextField();
@@ -28,17 +29,17 @@ namespace Linn.Toolkit.Cocoa
                 label.IsEditable = false;
                 label.IsBordered = false;
                 label.DrawsBackground = false;
-                label.Alignment = NSTextAlignment.NSRightTextAlignment;
+                label.Alignment = NSTextAlignment.NSLeftTextAlignment;
                 label.SizeToFit();
                 label.Frame = new NSRect(10, y - label.Frame.Height, mid - 20, label.Frame.Height);
 
-                iTabViewItem.View.AddSubview(label);
+                iView.AddSubview(label);
 
                 IOptionMonobjc o = null;
 
                 if (option is OptionEnum || option is OptionNetworkInterface)
                 {
-                    o = new OptionEnumeratedMonobjc(new NSRect(mid, y, mid - 10, 20), option);
+                    o = new OptionNetworkInterfaceMonobjc(new NSRect(mid, y, mid - 10, 20), option);
                 }
                 else if (option is OptionFilePath)
 				{
@@ -59,16 +60,16 @@ namespace Linn.Toolkit.Cocoa
 
                 if (o != null)
                 {
-                    iTabViewItem.View.AddSubview(o.View);
+                    iView.AddSubview(o.View);
                     y -= o.Height;
                     iControls.Add(o);
                 }
             }
         }
 
-        public NSTabViewItem TabViewItem
+        public NSView View
         {
-            get { return iTabViewItem; }
+            get { return iView; }
         }
 
         public void Dispose()
@@ -79,7 +80,16 @@ namespace Linn.Toolkit.Cocoa
             }
         }
 
-        private NSTabViewItem iTabViewItem;
+        public string Name
+        {
+            get
+            {
+                return iName;
+            }
+        }
+
+        private NSView iView;
         private List<IOptionMonobjc> iControls;
+        private string iName;
     }
 }

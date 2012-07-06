@@ -267,10 +267,12 @@ namespace Linn
                 if (reader != null)
                 {
                     reader.Close();
+                    reader.Dispose();
                 }
                 if (dataStream != null)
                 {
                     dataStream.Close();
+                    dataStream.Dispose();
                 }
                 if (response != null)
                 {

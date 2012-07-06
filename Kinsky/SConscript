@@ -25,11 +25,13 @@ files = Split("""
     Linn/Kinsky/PluginManager.cs
     Linn/Kinsky/SaveSupport.cs
     Linn/Kinsky/Support.cs
-    Linn/Kinsky/RemotePlaylists.cs
+    Linn/Kinsky/SharedPlaylists.cs
     Linn/Kinsky/ViewMasters.cs
     Linn/Kinsky/Views.cs
     Linn/Kinsky/IconResolver.cs
     Linn/Kinsky/ItemInfo.cs
+    Linn/Kinsky/RotaryControlTracker.cs
+    Linn/Kinsky/PlaylistDisplayHelper.cs
 """)
 
 pocketPcFiles = Split("""
@@ -78,13 +80,13 @@ pcLibs = Split("""
 if _default_env['hardware'] == 'PocketPc':
     files.extend(pocketPcFiles)
     clilibs.extend(pocketPcLibs)
-elif _default_env['hardware'] == 'Ios' or _default_env['hardware'] == 'Droid':
+elif _default_env['hardware'] == 'Ios' or _default_env['hardware'] == 'Android':
     res = []
 else:
     files.extend(pcFiles)
     clilibs.extend(pcLibs)
 
-if _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Android':
     lib = _default_env.CliLibrary('OssKinsky', files, CLILIBS=clilibs, CLIRESOURCES=res)
 else:
     msproj = _default_env.MSBuildFileGenerator('OssKinsky', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Kinsky')
@@ -104,7 +106,7 @@ testlibs = Split("""
 """)
 
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     prog  = _default_env.CliProgram('Test/TestKeyBindings', 'Linn/Kinsky/Test/TestKeyBindings.cs', CLILIBS=['OssTestFramework', 'OssCore', 'OssKinsky', 'System.Windows.Forms'])
     prog += _default_env.CliProgram('Test/TestKinsky', testfiles, CLILIBS=testlibs)
 #if _default_env['hardware'] == 'PocketPc':

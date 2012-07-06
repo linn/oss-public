@@ -1,0 +1,19 @@
+Import('_default_env')
+
+
+files = Split("""
+    ../../../Properties/AssemblyInfo.cs
+    CrashLogDumper.cs
+    Invoker.cs
+    Option.cs
+    OptionDialog.cs
+    StackStatusHandler.cs
+""")
+
+lib = _default_env.CliLibrary('OssToolkitIos', files, CLILIBS=['mscorlib', 'OssCore', 'monotouch'])
+
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ToolkitIos.tar', files, DOXYGENINPUT='Linn/Toolkit/Ios', DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ToolkitIos', DOXYGENNAMESPACE='OssToolkitIos', DOXYGENEXCLUDE='*.svn*')
+Alias('Docs', docs)
+

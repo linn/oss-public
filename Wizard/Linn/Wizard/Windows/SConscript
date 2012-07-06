@@ -1,0 +1,144 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+# install installer resources
+
+files = Split("""
+    ../Resources/Icon.ico
+    Installer/finish.bmp
+    Installer/header.bmp
+    Installer/NsiTemplate.txt
+""")
+installerResources = _default_env.Install('$variant_dir/share/Linn/Wizard', files)
+
+# build the main app
+
+# define files for libraries and source
+
+files = Split("""
+    ../BasePage.cs
+    ../Component.cs
+    ../CustomisePage.cs
+    ../DiscoveryPage.cs
+    ../HelpPage.cs
+    ../MainPage.cs
+    ../Network.cs
+    ../PageControl.cs
+    ../ReprogramPage.cs
+    ../StandardPage.cs
+    ../StreamPage.cs
+    ../UsePage.cs
+    Properties/Resources.resx
+    Properties/Resources.Designer.cs
+    
+    App.xaml
+    App.xaml.cs
+    MainWindow.xaml
+    MainWindow.xaml.cs
+""")
+
+sysCliLibs = Split("""
+    PresentationCore
+    PresentationFramework
+    System
+    System.Core
+    System.Data
+    System.Drawing
+    System.Windows.Forms
+    System.Xaml
+    System.Xml
+    WindowsBase
+""")
+
+ohCliLibs = Split("""
+    ohXen
+    ohXapp
+    ohXappViewer
+""")
+
+linnCliLibs = Split("""
+    OssCore
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssKinsky
+    OssTopology
+    OssProductSupport
+    OssToolkitWpf
+    XmlLayout
+    XmlRom
+    XmlRomCollection
+    XmlTags
+""")
+
+# install OpenHome and Linn libs into install tree
+
+instOhLibs = ['../../../OpenHome/Windows/' + f + '.dll' for f in ohCliLibs]
+instOhLibs = _default_env.Install('$install_dir/bin/Wizard', instOhLibs)
+
+instLinnLibs = [File(_default_env.subst('$install_dir/lib/Linn/' + f + '.dll')) for f in linnCliLibs]
+instLinnLibs = _default_env.Install('$install_dir/bin/Wizard', instLinnLibs)
+
+# install resources
+
+instRes2 = _default_env.RecursiveInstall('$install_dir/bin/Wizard/PageHtml', _default_env.Dir('../PageHtml').srcnode())
+instRes = [ _default_env.Dir('$install_dir/bin/Wizard/PageHtml') ]
+instRes.append(File(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Tags.xml')))
+instRes.append(File(_default_env.subst('$variant_dir/share/Linn/ProductSupport/AudioTrack.flac')))
+instRes.append(File(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Folder.jpg')))
+instRes.append(File(_default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll')))
+instRes.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+
+# build the assembly
+    
+_default_env['OutputType'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OutputType'] = 'Exe'
+
+_default_env.PrependUnique(CLILIBPATH = ['$install_dir/bin/Wizard'])
+
+msproj = _default_env.MSBuildFileGenerator('Wizard', files + appAssemblyInfo,
+                                           CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs,
+                                           CLIPLATFORMTARGET='x86',
+                                           LINKS=files + appAssemblyInfo,
+                                           ICON=_default_env.subst('$variant_dir/share/Linn/Wizard/Icon.ico'),
+                                           APPLICATIONDEFINITION='App',
+                                           ROOTNAMESPACE='Linn.Wizard',
+                                           TOOLSVERSION='4.0',
+                                           TARGETFRAMEWORKVERSION='4.0')
+
+# ensure that the referenced assemblies get installed before the assembly is built
+Depends(msproj, instOhLibs+instLinnLibs+instRes+instRes2)
+
+appTemp = _default_env.MSBuildExeBuilder('Wizard', msproj, CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs)
+appTemp = _default_env.Install('$install_dir/bin/Wizard', appTemp)
+
+app = appTemp + instOhLibs + instLinnLibs + instRes
+	
+_default_env['OutputType'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OutputType'] = 'Exe'
+
+# build the installer
+
+if _default_env['installers'] and _default_env['hardware'] == 'Windows':
+    installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Wizard', 'InstallerWizard',
+                                                    FILES        = {''         : app},
+                                                    TEMPLATE     = _default_env.subst('$variant_dir/share/Linn/Wizard/NsiTemplate.txt'),
+                                                    RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Wizard/Icon.ico'),
+                                                                    'header'  : _default_env.subst('$variant_dir/share/Linn/Wizard/header.bmp'),
+                                                                    'finish'  : _default_env.subst('$variant_dir/share/Linn/Wizard/finish.bmp'),
+                                                                    'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                                                    PRODUCT      = 'Wizard',
+                                                    VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
+                                                    CERT         = '',
+                                                    LAUNCHFILE   = 'Wizard.exe')
+                                                
+Alias('Lib', installerResources)
+Alias('Lib', installer)
+
+if _default_env['hardware'] == 'Windows':
+    resources = [ (_default_env.subst('$install_dir/share/Wizard/InstallerWizard.exe'), 'InstallerWizard.exe') ]
+    updater = _default_env.CliLibrary('UpdaterWizard_win', 'Installer/Updater.cs', CLIRESOURCES=resources)
+    installed = _default_env.Install('$install_dir/share/Wizard', updater)
+    Alias('Lib', installed)

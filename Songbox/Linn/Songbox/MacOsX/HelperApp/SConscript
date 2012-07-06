@@ -1,0 +1,13 @@
+Import('_default_env kBuildInfo')
+
+
+infoplist = _default_env.TagReplace(_default_env.subst('$build_variant_dir/share/Songbox/MacOsX/HelperApp/Info.plist'), 'Info.plist', TAGS=kBuildInfo)
+
+files = _default_env.Install('SongboxHelper.app/Contents', infoplist)
+files += _default_env.Command('SongboxHelper.app/Contents/MacOS/SongboxHelper', 'Helper.sh', [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0755)])
+app = _default_env.Dir('SongboxHelper.app')
+
+Alias('Lib', files)
+
+Return('app')
+

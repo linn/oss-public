@@ -339,7 +339,7 @@ namespace Linn.Topology
                 }
                 catch (ArgumentException e)
                 {
-                    Console.WriteLine(e.Message + ": entry.Id=" + item.Id);
+                    Trace.WriteLine(Trace.kTopology, e.Message + ": entry.Id=" + item.Id); 
                 }
 
                 RemoveStaleCacheItems();

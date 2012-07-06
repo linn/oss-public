@@ -11,10 +11,11 @@ namespace Linn.Toolkit.Ios
 {
     public class OptionPageAbout : UIViewController
     {
-        public OptionPageAbout(IHelper aHelper, UIImage aImage)
+        public OptionPageAbout(IHelper aHelper, UIImage aImage, UIColor aFontColour)
         {
             iHelper = aHelper;
             iImage = aImage;
+            iFontColour = aFontColour;
         }
 
         public OptionPageAbout(IntPtr aInstance)
@@ -42,7 +43,7 @@ namespace Linn.Toolkit.Ios
             label.TextAlignment = UITextAlignment.Center;
             label.Text = iHelper.Product;
             label.BackgroundColor = UIColor.Clear;
-            label.TextColor = UIColor.White;
+            label.TextColor = iFontColour;
 
             View.AddSubview(label);
 
@@ -50,7 +51,7 @@ namespace Linn.Toolkit.Ios
             label.TextAlignment = UITextAlignment.Center;
             label.Text = string.Format("Version {0} ({1})", iHelper.Version, iHelper.Family);
             label.BackgroundColor = UIColor.Clear;
-            label.TextColor = UIColor.White;
+            label.TextColor = iFontColour;
 
             View.AddSubview(label);
 
@@ -58,7 +59,7 @@ namespace Linn.Toolkit.Ios
             label.TextAlignment = UITextAlignment.Center;
             label.Text = string.Format("{0} {1}", iHelper.Copyright, iHelper.Company);
             label.BackgroundColor = UIColor.Clear;
-            label.TextColor = UIColor.White;
+            label.TextColor = iFontColour;
 
             View.AddSubview(label);
 
@@ -67,6 +68,33 @@ namespace Linn.Toolkit.Ios
 
         private IHelper iHelper;
         private UIImage iImage;
+        private UIColor iFontColour;
+    }
+
+    public class OptionPageAboutIpad : OptionPageAbout
+    {
+        public OptionPageAboutIpad(IHelper aHelper, UIImage aImage)
+            : base(aHelper, aImage, UIColor.White)
+        {
+        }
+
+        public OptionPageAboutIpad(IntPtr aInstance)
+            : base(aInstance)
+        {
+        }
+    }
+
+    public class OptionPageAboutIphone : OptionPageAbout
+    {
+        public OptionPageAboutIphone(IHelper aHelper, UIImage aImage)
+            : base(aHelper, aImage, UIColor.Black)
+        {
+        }
+
+        public OptionPageAboutIphone(IntPtr aInstance)
+            : base(aInstance)
+        {
+        }
     }
 
     public class OptionPageEnum : UITableViewController

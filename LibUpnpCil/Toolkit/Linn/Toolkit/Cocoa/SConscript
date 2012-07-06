@@ -1,0 +1,22 @@
+Import('_default_env')
+
+
+files = Split("""
+    ../../../Properties/AssemblyInfo.cs
+    CrashLogDumperForm.cs
+    OptionDialogMonobjc.cs
+    OptionMonobjc.cs
+    OptionPageMonobjc.cs
+    UserLogDialogMonobjc.cs
+""")
+
+nib = _default_env.IbTool('UserLog.nib', 'UserLog.xib')
+nib = _default_env.Install('$install_dir/bin/', nib)
+lib = _default_env.CliLibrary('OssToolkitCocoa', files, CLILIBS=['mscorlib', 'OssCore', 'Monobjc', 'Monobjc.Cocoa'])
+
+Depends(lib, nib)
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ToolkitCocoa.tar', files, DOXYGENINPUT='Linn/Toolkit/Cocoa', DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ToolkitCocoa', DOXYGENNAMESPACE='OssToolkitCocoa', DOXYGENEXCLUDE='*.svn*')
+Alias('Docs', docs)
+

@@ -77,10 +77,6 @@ namespace Linn.Topology
             iServiceReceiver.EventInitial -= EventInitialResponseReceiver;
         }
 
-        public override void Kill()
-        {
-        }
-
         public override string Name
         {
             get

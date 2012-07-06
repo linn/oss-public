@@ -1,0 +1,1161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D0A77B80-0305-40F3-8C45-EF149B3C5703}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn.Wizard</RootNamespace>
+    <AssemblyName>Wizard</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\fredb\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\Wizard\Linn\Wizard\Resources\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ohXapp">
+      <HintPath>..\..\Wizard\OpenHome\Windows\ohXapp.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXappViewer">
+      <HintPath>..\..\Wizard\OpenHome\Windows\ohXappViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXen">
+      <HintPath>..\..\Wizard\OpenHome\Windows\ohXen.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\build\share\Wizard\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\BasePage.cs">
+      <Link>BasePage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Component.cs">
+      <Link>Component.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\CustomisePage.cs">
+      <Link>CustomisePage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\DiscoveryPage.cs">
+      <Link>DiscoveryPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\HelpPage.cs">
+      <Link>HelpPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\MainPage.cs">
+      <Link>MainPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Network.cs">
+      <Link>Network.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageControl.cs">
+      <Link>PageControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\ReprogramPage.cs">
+      <Link>ReprogramPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\StandardPage.cs">
+      <Link>StandardPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\StreamPage.cs">
+      <Link>StreamPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\UsePage.cs">
+      <Link>UsePage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Windows\App.xaml.cs">
+      <Link>App.xaml.cs</Link>
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Windows\MainWindow.xaml.cs">
+      <Link>MainWindow.xaml.cs</Link>
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Windows\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Customise\customise.js">
+      <Link>PageHtml\Customise\customise.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Customise\jquery-1.7.2.min.js">
+      <Link>PageHtml\Customise\jquery-1.7.2.min.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Discovery\discovery.js">
+      <Link>PageHtml\Discovery\discovery.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Help\ticket.js">
+      <Link>PageHtml\Help\ticket.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Linn.css">
+      <Link>PageHtml\Linn.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Linn.js">
+      <Link>PageHtml\Linn.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\PageDefinitions.xml">
+      <Link>PageHtml\PageDefinitions.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Reprogram\reprogram.js">
+      <Link>PageHtml\Reprogram\reprogram.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Main\index.xapp">
+      <Link>PageHtml\Main\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Reprogram\index.xapp">
+      <Link>PageHtml\Reprogram\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpEthernetLights.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpEthernetLights.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpNoEthernetCable.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpNoEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpRemoteBatteries.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpRemoteBatteries.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpRemoteLit.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpRemoteLit.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpStandbyButton.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpStandbyButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpVolumeButtons.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpVolumeButtons.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\StreamAlbumArt.png">
+      <Link>PageHtml\Resources\Images\Accessories\StreamAlbumArt.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\UnpackFitRemoteBatteries.png">
+      <Link>PageHtml\Resources\Images\Accessories\UnpackFitRemoteBatteries.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-aux.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-aux.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-customise.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue1.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue2.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue3.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-customise.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi1.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi2.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi3.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi4.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi4.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif1.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif2.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif3.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink1.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink2.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink3.jpg">
+      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpSpeakersPhono.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpSpeakersPhono.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToSpeaker.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToSpeaker.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-aux.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-aux.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-customise.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-analogue.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-analogue.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-customise.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi1.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi2.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi3.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-spdif.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-spdif.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-toslink.jpg">
+      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-toslink.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\UnpackFitFeet.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\UnpackFitFeet.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-front-customise.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-front-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-analogue1.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-analogue1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-customise.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi1.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi2.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi3.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif1.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif2.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink1.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink2.jpg">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpInputAdapters.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpInputAdapters.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpSpeakersPhono.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpSpeakersPhono.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-aux.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-aux.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-customise.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue1.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue2.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue3.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue4.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue4.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-customise.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-customise.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi1.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi2.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi3.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi4.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi4.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif1.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif2.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif3.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink1.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink1.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink2.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink2.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink3.jpg">
+      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink3.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots1of2.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots1of2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots1of3.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots1of3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots1of4.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots1of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots2of2.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots2of2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots2of3.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots2of3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots2of4.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots2of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots3of3.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots3of3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots3of4.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots3of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots4of4.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Dots4of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HelpMenuArrow.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\HelpMenuArrow.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HorizontalSeparator.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\HorizontalSeparator.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\JustListen.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\JustListen.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Logo.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Logo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\MainBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\MainBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\MainBackgroundModal.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\MainBackgroundModal.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\MainExitButtonRed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\MainExitButtonRed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\NavigationBarBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\NavigationBarBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\NewIcon.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\NewIcon.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\PlayButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\PlayButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\PlayButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\PlayButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProductSelectButtonHover.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProductSelectButtonHover.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Progress.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Progress.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressBlack.gif">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressBlack.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressGray.gif">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressGray.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressHighlight.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressHighlight.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressHighlightEnd.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressHighlightEnd.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Refreshing.gif">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Refreshing.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\right-dark.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\right-dark.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\right-light.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\right-light.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SelectSystemBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SelectSystemBackgroundModal.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemBackgroundModal.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SelectSystemExitButtonPurple.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemExitButtonPurple.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\StopButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\StopButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\StopButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\StopButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\TopNavBar.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\TopNavBar.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\TopNavBarSeparator.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\TopNavBarSeparator.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\UseBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\UseBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\UseExitButtonBlue.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\UseExitButtonBlue.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumeMinusButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumeMinusButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumeMinusButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumeMinusButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumePlusButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumePlusButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumePlusButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumePlusButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\ANLG.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\ANLG.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\HDMI1.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\HDMI1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icon-panel.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icon-panel.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcable.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconcable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcable_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconcable_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcomputer.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconcomputer.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcomputer_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconcomputer_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcontroller.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconcontroller.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcontroller_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconcontroller_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icondisc.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icondisc.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icondisc_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icondisc_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipad.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconipad.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipad_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconipad_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconiphone.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconiphone.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconiphone_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconiphone_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipod.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconipod.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipod_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconipod_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviescamera.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviescamera.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviescamera_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviescamera_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesfilm.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesfilm.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesfilm_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesfilm_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmp3.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmp3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmp3_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconmp3_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconplaystation.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconplaystation.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconplaystation_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconplaystation_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconsatellite.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconsatellite.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconsatellite_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconsatellite_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontablet.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icontablet.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontablet_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icontablet_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconturntable.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconturntable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconturntable_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconturntable_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontv.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icontv.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontv_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\icontv_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconwii.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconwii.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconwii_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconwii_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconxbox.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconxbox.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconxbox_on.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\iconxbox_on.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\SPDIF.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\SPDIF.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\TOS.png">
+      <Link>PageHtml\Resources\Images\SourceIcons\TOS.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Standard\index.xapp">
+      <Link>PageHtml\Standard\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Stream\stream.js">
+      <Link>PageHtml\Stream\stream.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssProductSupport\OssProductSupport.csproj">
+      <Project>{A5DF2109-5A06-4A92-ACFF-4CF9A066D461}</Project>
+      <Name>OssProductSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitWpf\OssToolkitWpf.csproj">
+      <Project>{B7939F7A-0433-4685-9799-B7AB45FBA1E0}</Project>
+      <Name>OssToolkitWpf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="..\..\Wizard\Linn\Wizard\Windows\App.xaml">
+      <Link>App.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="..\..\Wizard\Linn\Wizard\Windows\MainWindow.xaml">
+      <Link>MainWindow.xaml</Link>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Customise\index.xapp">
+      <Link>PageHtml\Customise\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Discovery\index.xapp">
+      <Link>PageHtml\Discovery\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Help\index.xapp">
+      <Link>PageHtml\Help\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.eot">
+      <Link>PageHtml\Resources\Fonts\effra-webfont.eot</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.ttf">
+      <Link>PageHtml\Resources\Fonts\effra-webfont.ttf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.woff">
+      <Link>PageHtml\Resources\Fonts\effra-webfont.woff</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Use\index.xapp">
+      <Link>PageHtml\Use\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Stream\index.xapp">
+      <Link>PageHtml\Stream\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Wizard\Linn\Wizard\Windows\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

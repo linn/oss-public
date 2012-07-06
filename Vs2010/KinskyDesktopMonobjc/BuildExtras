@@ -4,14 +4,13 @@
 #> Plugins
 
 TARGET_DIR=$1/Kinsky.app/Contents/Resources
-
-FILES='../../../External/libmonobjc.2.dylib ../../../Kinsky/Resources/Kinsky2.icns'
+TARGET_DIR2=$1/Kinsky.app/Contents/MacOs
 
 echo "Copying files..."
-for f in ${FILES}
-do
-    cp -vf ${f} ${TARGET_DIR}
-done
+cp -vf ../../../External/libmonobjc.2.dylib ${TARGET_DIR}
+cp -vf ../../../External/libmonobjc.2.dylib ${TARGET_DIR2}
+cp -vf ../../../Kinsky/Resources/Kinsky2.icns ${TARGET_DIR}
+cp -vf $1/UserLog.nib ${TARGET_DIR}
 echo "Done copying files"
 
 echo "Copying resources..."

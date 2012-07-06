@@ -404,6 +404,17 @@ instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Im
 instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/ButtonPressed.9.png')
 instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/TopBarFiller.png')
 instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/RefreshButton.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/MoveDown.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/MoveDownDisabled.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/MoveUp.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/MoveUpDisabled.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/RequestDelete.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/RequestDeleteConfirm.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/BrowserDown.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/VolumeUp.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/VolumeDown.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/ArrayCropped.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/Tick.png')
 
 
 Alias('Kinsky', instImages)

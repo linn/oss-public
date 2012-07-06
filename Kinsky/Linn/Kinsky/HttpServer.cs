@@ -18,6 +18,10 @@ namespace Linn.Kinsky
         void Close();
     }
 
+    public class HttpServerException : Exception
+    {
+        public HttpServerException(string aMessage) : base(aMessage){ }
+    }
 
     public class HttpServer : IVirtualFileSystem
     {
@@ -467,7 +471,10 @@ namespace Linn.Kinsky
 
         public string Uri(string aUnescapedFilename)
         {
-            Assert.Check(iBaseUri != string.Empty);
+            if(iBaseUri == string.Empty)
+            {
+                throw new HttpServerException("Web server is not running");
+            }
 
             string uri = new Uri(iBaseUri + kUriQuery + System.Uri.EscapeDataString(aUnescapedFilename)).AbsoluteUri;
 
@@ -561,6 +568,7 @@ namespace Linn.Kinsky
         public const int kPortKinskyWeb = 50012;
         public const int kPortKinskyTouch = 50013;
         public const int kPortKinskyDroid = 50014;
+        public const int kPortInstallWizard = 50015;
 
         public const string kUriPrefix = "/Kinsky";
         public const string kUriQuery = "?file=";

@@ -99,9 +99,9 @@ namespace KinskyDesktop
             get { return iLocalPlaylists; }
         }
 
-        public RemotePlaylists RemotePlaylists
+        public SharedPlaylists SharedPlaylists
         {
-            get { return iRemotePlaylists; }
+            get { return iSharedPlaylists; }
         }
 
         public IDropConverter DropConverterExpand
@@ -189,7 +189,7 @@ namespace KinskyDesktop
             iHttpClient = new HttpClient();
 
             iLocalPlaylists = new LocalPlaylists(iHelper, true);
-            iRemotePlaylists = new RemotePlaylists(iHelper);
+            iSharedPlaylists = new SharedPlaylists(iHelper);
             iLibrary = new MediaProviderLibrary(iHelper);
             iSupport = new MediaProviderSupport(iHttpServer);
 
@@ -208,12 +208,12 @@ namespace KinskyDesktop
             PluginManager pluginManager = new PluginManager(iHelper, iHttpClient, iSupport);
             iLocator = new ContentDirectoryLocator(pluginManager, aRestartHandler);
             OptionBool optionLocalPlaylists = iLocator.Add(LocalPlaylists.kRootId, iLocalPlaylists);
-            OptionBool optionRemotePlaylists = iLocator.Add(RemotePlaylists.kRootId, iRemotePlaylists);
+            OptionBool optionSharedPlaylists = iLocator.Add(SharedPlaylists.kRootId, iSharedPlaylists);
             iLocator.Add(MediaProviderLibrary.kLibraryId, iLibrary);
             iHelper.AddOptionPage(iLocator.OptionPage);
 
             iPlaySupport = new PlaySupport();
-            iSaveSupport = new SaveSupport(iHelper, iRemotePlaylists, optionRemotePlaylists, iLocalPlaylists, optionLocalPlaylists);
+            iSaveSupport = new SaveSupport(iHelper, iSharedPlaylists, optionSharedPlaylists, iLocalPlaylists, optionLocalPlaylists);
             iViewSaveSupport = new ViewSaveSupport(SavePlaylistHandler, iSaveSupport);
 
             iMediatorViews = new ViewMaster();
@@ -281,7 +281,7 @@ namespace KinskyDesktop
         {
             iMediator.Open();
             iLibrary.Start(aIpAddress);
-            iRemotePlaylists.Start(aIpAddress);
+            iSharedPlaylists.Start(aIpAddress);
             iHttpClient.Start();
             iHttpServer.Start(aIpAddress);
             iLocator.Start();
@@ -294,7 +294,7 @@ namespace KinskyDesktop
             iLocator.Stop();
             iHttpServer.Stop();
             iHttpClient.Stop();
-            iRemotePlaylists.Stop();
+            iSharedPlaylists.Stop();
             iLibrary.Stop();
             iMediator.Close();
         }
@@ -360,7 +360,7 @@ namespace KinskyDesktop
         private SaveSupport iSaveSupport;
         private ViewSaveSupport iViewSaveSupport;
         private LocalPlaylists iLocalPlaylists;
-        private RemotePlaylists iRemotePlaylists;
+        private SharedPlaylists iSharedPlaylists;
         private MediaProviderLibrary iLibrary;
         private MediaProviderSupport iSupport;
         private ContentDirectoryLocator iLocator;
@@ -663,6 +663,8 @@ namespace KinskyDesktop
             if (iCollector != null)
             {
                 iCollector.Dispose();
+                iCollector = null;
+                iObjects = new upnpObject[] { };
             }
         }
 
@@ -678,6 +680,9 @@ namespace KinskyDesktop
 
         public upnpObject Object(int aIndex)
         {
+            if (iCollector == null)
+                return null;
+
             if (iObjects[aIndex] == null)
             {
                 if (aIndex < iCollectorStartIndex || aIndex >= iCollectorStartIndex + iCollectorCount)
@@ -737,6 +742,9 @@ namespace KinskyDesktop
             if (iInvoker.TryBeginInvoke((DOpen)Open, aCollector, aCount))
                 return;
 
+            if (iCollector == null)
+                return;
+
             // it should not be possible for events to come from a different collector
             Assert.Check(aCollector == iCollector);
 
@@ -756,6 +764,9 @@ namespace KinskyDesktop
         {
             // run in the main thread
             if (iInvoker.TryBeginInvoke((DItems)Items, aCollector, aStartIndex, aObjects))
+                return;
+
+            if (iCollector == null)
                 return;
 
             // it should not be possible for events to come from a different collector
@@ -779,6 +790,9 @@ namespace KinskyDesktop
         {
             // run in the main thread
             if (iInvoker.TryBeginInvoke((DContentError)ContentError, aCollector, aMessage))
+                return;
+
+            if (iCollector == null)
                 return;
 
             // it should not be possible for events to come from a different collector
@@ -1055,6 +1069,7 @@ namespace KinskyDesktop
     {
         IList<ModelSender> Senders { get; }
         int CurrentSenderIndex { get; set; }
+        Channel Channel {get;}
 
         // events will be triggered in the main thread
         event EventHandler<EventArgs> EventOpen;
@@ -1079,6 +1094,14 @@ namespace KinskyDesktop
         public IList<ModelSender> Senders
         {
             get { return iSenders.AsReadOnly(); }
+        }
+
+        public Channel Channel
+        {
+            get
+            {
+                return iChannel;
+            }
         }
 
         public int CurrentSenderIndex

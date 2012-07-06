@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\debug\bin</OutputPath>
+    <OutputPath>..\..\install\IosSim\debug\bin</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,7 +28,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\release\bin</OutputPath>
+    <OutputPath>..\..\install\IosSim\release\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -90,6 +90,7 @@
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Ios\OptionDialog.cs" />
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Ios\Option.cs" />
     <Compile Include="..\..\LibUpnpCil\Toolkit\Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Ios\Invoker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">

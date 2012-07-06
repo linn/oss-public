@@ -1,4 +1,4 @@
-Import('_default_env kVersion')
+Import('_default_env kBuildInfo appAssemblyInfo')
 
 files = Split("""
     Installer/Header.bmp
@@ -108,18 +108,19 @@ files = Split("""
     Classes\ViewModels.cs
     Classes\CrashLogDumperForm.cs
     Classes\ImageLoader.cs
-    Properties\AssemblyInfo.cs
     Properties\Resources.Designer.cs
     Properties\Resources.resx
     Properties\Settings.settings
     Properties\Settings.Designer.cs
 """)
 
+files += appAssemblyInfo
+
 _default_env['OUTPUTTYPE'] = 'WinExe'
 if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
     _default_env['OUTPUTTYPE'] = 'Exe'
 	
-msproj = _default_env.MSBuildFileGenerator('Kinsky', files, LINKS=files, CLILIBS=clilibs, ICON=_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico'), ROOTNAMESPACE='KinskyDesktopWpf')
+msproj = _default_env.MSBuildFileGenerator('Kinsky', files, LINKS=files, CLILIBS=clilibs, ICON=_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico'), ROOTNAMESPACE='KinskyDesktopWpf', TOOLSVERSION='4.0', TARGETFRAMEWORKVERSION='3.5')
 app = _default_env.MSBuildExeBuilder('Kinsky', msproj, CLILIBS=clilibs)
 
 app.append(File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky2.ico')))
@@ -156,7 +157,7 @@ if _default_env['installers'] and _default_env['hardware'] == 'Windows':
                                         'finish'  : _default_env.subst('$variant_dir/share/Linn/Kinsky/finish2.bmp'),
                                         'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
                         PRODUCT      = 'Kinsky',
-                        VERSION      = kVersion,
+                        VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
                         CERT         = '',
                         LAUNCHFILE   = 'Kinsky.exe')
 

@@ -45,17 +45,17 @@ namespace Linn.Topology
             iServiceRenderingControl.EventInitial -= EventInitialResponse;
         }
 
-        public override void Kill()
-        {
-            iVolumeLimiter.Stop();
-        }
-
         public override string Name
         {
             get
             {
                 return iPreamp.Type;
             }
+        }
+
+        public override Device Device
+        {
+            get { return iPreamp.Device; }
         }
 
         private void EventInitialResponse(object sender, EventArgs e)

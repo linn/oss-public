@@ -63,7 +63,7 @@ namespace KinskyDesktop
 
         private MediaProviderLibrary iLibrary;
         private LocalPlaylists iLocalPlaylists;
-        private RemotePlaylists iRemotePlaylists;
+        private SharedPlaylists iSharedPlaylists;
 
         private FormUserLog iFormUserLog;
 
@@ -152,7 +152,7 @@ namespace KinskyDesktop
 
             iLibrary = new MediaProviderLibrary(iHelper);
             iLocalPlaylists = new LocalPlaylists(iHelper, true);
-            iRemotePlaylists = new RemotePlaylists(iHelper);
+            iSharedPlaylists = new SharedPlaylists(iHelper);
 
             MediaProviderSupport mediaProviderSupport = new MediaProviderSupport(iHttpServer);
 
@@ -178,9 +178,9 @@ namespace KinskyDesktop
             iLocator = new ContentDirectoryLocator(pluginManager, new AppRestartHandler());
             iLocator.Add(MediaProviderLibrary.kLibraryId, iLibrary);
             OptionBool optionLocalPlaylists = iLocator.Add(LocalPlaylists.kRootId, iLocalPlaylists);
-            OptionBool optionRemotePlaylists = iLocator.Add(RemotePlaylists.kRootId, iRemotePlaylists);
+            OptionBool optionSharedPlaylists = iLocator.Add(SharedPlaylists.kRootId, iSharedPlaylists);
 
-            iSaveSupport = new SaveSupport(iHelper, iRemotePlaylists, optionRemotePlaylists, iLocalPlaylists, optionLocalPlaylists);
+            iSaveSupport = new SaveSupport(iHelper, iSharedPlaylists, optionSharedPlaylists, iLocalPlaylists, optionLocalPlaylists);
             iViewSaveSupport = new ViewSaveSupport(RequestLocalPlaylistFilename, iSaveSupport);
 
             iPlaySupport = new PlaySupport();
@@ -377,7 +377,7 @@ namespace KinskyDesktop
             iMediator.Open();
             iSourceList.Start();
             iLibrary.Start(aIpAddress);
-            iRemotePlaylists.Start(aIpAddress);
+            iSharedPlaylists.Start(aIpAddress);
             iHttpClient.Start();
             iHttpServer.Start(aIpAddress);
             iLocator.Start();
@@ -388,7 +388,7 @@ namespace KinskyDesktop
             iLocator.Stop();
             iHttpServer.Stop();
             iHttpClient.Stop();
-            iRemotePlaylists.Stop();
+            iSharedPlaylists.Stop();
             iLibrary.Stop();
             iSourceList.Stop();
             iMediator.Close();

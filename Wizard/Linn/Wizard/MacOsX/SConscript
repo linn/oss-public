@@ -1,0 +1,128 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+# install installer resources
+
+files = Split("""
+    ../Resources/Icon.icns
+""")
+installerRes = _default_env.Install('$variant_dir/share/Linn/Wizard', files)
+
+
+# build the main app
+
+files = Split("""
+    ../BasePage.cs
+    ../Component.cs
+    ../CustomisePage.cs
+    ../DiscoveryPage.cs
+    ../HelpPage.cs
+    ../MainPage.cs
+    ../Network.cs
+    ../PageControl.cs
+    ../ReprogramPage.cs
+    ../StandardPage.cs
+    ../StreamPage.cs
+    ../UsePage.cs
+    AppDelegate.cs
+    AppDelegate.designer.cs
+    Main.cs
+    MainWindow.cs
+    MainWindow.designer.cs
+    MainWindowController.cs
+""")
+
+linkCliLibs = Split("""
+    MonoMac
+    System.Drawing
+    OpenHome/MacOsX/ohXapp
+    OpenHome/MacOsX/ohXappViewer
+    OpenHome/MacOsX/ohXen
+    OssCore
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssToolkitMonoMac
+    OssProductSupport
+    OssKinsky
+    XmlLayout
+    XmlRom
+    XmlRomCollection
+    XmlTags
+""")
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+
+progAssembly = _default_env.CliProgram('Wizard', files + appAssemblyInfo, CSCTARGET=target, CLILIBS=linkCliLibs, TARGETFRAMEWORKVERSION='4.0')
+_default_env.Depends(progAssembly, installerRes)
+
+
+# build the nib files
+
+nibs  = _default_env.IbTool('MainMenu.nib', 'MainMenu.xib')
+nibs += _default_env.IbTool('MainWindow.nib', 'MainWindow.xib')
+nibs.append(File(_default_env.subst('$install_dir/bin/CrashLogDumperWindow.nib')))
+nibs.append(File(_default_env.subst('$install_dir/bin/UpdateWindow.nib')))
+_default_env.Depends(progAssembly, nibs)
+
+
+# build a list of all required assembly files
+
+reqAssemblies = []
+reqAssemblies.extend(linkCliLibs)
+reqAssemblies.extend(Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+"""))
+
+
+# build everything that needs to go in the "Resource" folder
+
+rootResources = Split("""
+    ../Resources/Icon106x106.png
+    ../Resources/Icon.icns
+    ../PageHtml
+""")
+rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Tags.xml'))
+rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/AudioTrack.flac'))
+rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Folder.jpg'))
+rootResources = [File(f) for f in rootResources];
+
+resources = { '' : rootResources }
+
+
+# create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
+
+infoPlist = {
+    'NSMainNibFile' : 'MainMenu',
+    'NSPrincipalClass' : 'NSApplication'
+}
+
+
+# build the Mac OSX .app bundle and .pkg installer and install them
+
+pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerWizard', progAssembly,
+                    APPNAME = 'Wizard',
+                    APPINSTFOLDER = '$install_dir/bin',
+                    PKGINSTFOLDER = '$install_dir/share/Wizard',
+                    APPCERT = '"Developer ID Application: Linn Products Ltd"',
+                    PKGCERT = '"Developer ID Installer: Linn Products Ltd"',
+                    CLILIBS = reqAssemblies,
+                    NIBS = nibs,
+                    RESOURCES = resources,
+                    ICON = '$variant_dir/share/Linn/Wizard/Icon.icns',
+                    INFOPLIST = infoPlist,
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+
+resources = [ (_default_env.subst('$install_dir/share/Wizard/InstallerWizard.pkg'), 'InstallerWizard.pkg') ]
+updater = _default_env.CliLibrary('UpdaterWizard_osx', 'Updater.cs', CLIRESOURCES=resources)
+pkg += _default_env.Install('$install_dir/share/Wizard', updater)
+
+Alias('Lib', pkg)
+
+
+
+

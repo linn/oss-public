@@ -43,5 +43,8 @@ def build(path, args=''):
         exit()
 
 build(['Docs'])
+build(['External'])
+build(['Widgets'])
 build(['LibUpnpCil','Core'])
+build(['LibUpnpCil','Toolkit'])
 build(['Songcast'])

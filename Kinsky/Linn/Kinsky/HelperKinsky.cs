@@ -28,10 +28,10 @@ namespace Linn.Kinsky
             optionPage.Add(iOptionStartupRoom);
             AddOptionPage(optionPage);
 
-            optionPage = new OptionPage("Cloud Servers");
+            //optionPage = new OptionPage("Cloud Servers");
             iOptionCloudServers = new OptionListUri("cloudservers", "Server locations", "List of locations for cloud media servers", new List<Uri>());
-            optionPage.Add(iOptionCloudServers);
-            AddOptionPage(optionPage);
+            //optionPage.Add(iOptionCloudServers);
+            //AddOptionPage(optionPage);
 
             iOptionLastSelectedRoom = new OptionString("lastroom", "Last Selected Room", "The last room selected", string.Empty);
             AddOption(iOptionLastSelectedRoom);

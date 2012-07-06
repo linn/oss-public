@@ -36,21 +36,22 @@ namespace KinskyDesktopWpf
     public partial class ViewWidgetBrowser : UserControl
     {
 
-        public ViewWidgetBrowser(IBrowser aBrowser,
-                                 IPlaylistSupport aSupport,
+        public ViewWidgetBrowser(IPlaylistSupport aSupport,
                                  DropConverter aDropConverter,
                                  ToggleButton aSizeButton,
                                  ToggleButton aViewButton,
                                  UiOptions aUIOptions,
                                  Slider aSlider,
+                                 NavigationController aNavigationController,
                                  ViewWidgetBookmarks aViewWidgetBookmarks)
             : base()
         {
             InitializeComponent();
             iOpen = false;
-            iBrowser = aBrowser;
-            iBrowser.EventLocationChanged += LocationChanged;
+            iNavigationController = aNavigationController;
             iViewWidgetBookmarks = aViewWidgetBookmarks;
+            iNavigationController.EventNavigationStateChanged += EventNavigationStateChangedHandler;
+            iNavigationController.EventLocationChanged += EventLocationChangedHandler;
             iSupport = aSupport;
             iDropConverter = aDropConverter;
             iUIOptions = aUIOptions;
@@ -61,11 +62,10 @@ namespace KinskyDesktopWpf
             this.iViewButton = aViewButton;
             iSlider = aSlider;
             iSlider.PreviewMouseDown += new MouseButtonEventHandler(iSlider_PreviewMouseDown);
-            iSlider.ValueChanged += new RoutedPropertyChangedEventHandler<double>(aSlider_ValueChanged);
+            iSlider.ValueChanged += aSlider_ValueChanged;
 
             iErrorMessage = string.Empty;
             SetSize();
-            iViewChanged = true;
             SetView();
 
             iDragHelper = new DragHelper(lstBrowser);
@@ -76,10 +76,8 @@ namespace KinskyDesktopWpf
             lstBrowser.SelectionMode = SelectionMode.Extended;
             iScrollIndexCache = new Dictionary<string, int>();
             lstBrowser.AllowDrop = true;
-            aViewWidgetBookmarks.EventLocationChanging += new EventHandler<EventArgs>(aViewWidgetBookmarks_EventLocationChanging);
-            aViewWidgetBookmarks.EventLocationFailed += new EventHandler<EventArgs>(aViewWidgetBookmarks_EventLocationFailed);
-            aViewWidgetBookmarks.EventLocationChanged += new EventHandler<EventArgs>(aViewWidgetBookmarks_EventLocationChanged);
             lstBrowser.MouseLeftButtonUp += new MouseButtonEventHandler(lstBrowser_MouseLeftButtonUp);
+            UpdateCacheSize();
         }
 
         void lstBrowser_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -119,7 +117,7 @@ namespace KinskyDesktopWpf
                 me.pnlContainerInfo.AnimateTextColourOut(from, to);
             }));
 
-        private void LocationChanged(object sender, EventArgs e)
+        private void EventLocationChangedHandler(object sender, EventArgs e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
@@ -133,37 +131,42 @@ namespace KinskyDesktopWpf
             {
                 iErrorMessage = string.Empty;
             }
-            iViewChanged = true;
             StopSearch();
             iSearchText = string.Empty;
-            iContainer = iBrowser.Location.Current;
-
-            if (iOpen)
+            Location location = iNavigationController.Location;
+            if (location != null)
             {
-                if (iData != null)
+                iContainer = location.Current;
+
+                if (iOpen)
                 {
-                    iContentCollector.EventOpened -= iContentCollector_EventOpened;
-                    iContentCollector.EventItemsFailed -= iContentCollector_EventItemsFailed;
-                    iContentCollector.EventItemsLoaded -= iContentCollector_EventItemsLoaded;
-                    iContentCollector.Dispose();
-                    iData.Dispose();
-                    iData = null;
+                    if (iData != null)
+                    {
+                        iContentCollector.EventOpened -= iContentCollector_EventOpened;
+                        iContentCollector.EventItemsFailed -= iContentCollector_EventItemsFailed;
+                        iContentCollector.EventItemsLoaded -= iContentCollector_EventItemsLoaded;
+                        iContentCollector.Dispose();
+                        iData.Dispose();
+                        iData = null;
+                    }
+                    iNavigationState = ENavigationState.Navigating;
+                    SetPanelState();
+                    iContentCollector = ContentCollectorMaster.Create(iContainer, new ArrayBackedContentCache<upnpObject>(), kRangeSize, kThreadCount, 0);
+                    iData = new BrowserList(iContentCollector, Dispatcher, iContainer);
+                    lstBrowser.ItemsSource = iData;
+                    iContentCollector.EventOpened += iContentCollector_EventOpened;
+                    iContentCollector.EventItemsFailed += iContentCollector_EventItemsFailed;
+                    iContentCollector.EventItemsLoaded += iContentCollector_EventItemsLoaded;
                 }
-                iContentCollector = ContentCollectorMaster.Create(iContainer, new ArrayBackedContentCache<upnpObject>(), kRangeSize, kThreadCount, 0);
-                iData = new BrowserList(iContentCollector, Dispatcher, iContainer);
-                lstBrowser.ItemsSource = iData;
-                iContentCollector.EventOpened += iContentCollector_EventOpened;
-                iContentCollector.EventItemsFailed += iContentCollector_EventItemsFailed;
-                iContentCollector.EventItemsLoaded += iContentCollector_EventItemsLoaded;
-            }
 
-            string currentLocation = iBrowser.Location.ToString();
-            List<string> keys = iScrollIndexCache.Keys.ToList<string>();
-            foreach (string key in keys)
-            {
-                if (!currentLocation.StartsWith(key))
+                string currentLocation = location.ToString();
+                List<string> keys = iScrollIndexCache.Keys.ToList<string>();
+                foreach (string key in keys)
                 {
-                    iScrollIndexCache.Remove(key);
+                    if (!currentLocation.StartsWith(key))
+                    {
+                        iScrollIndexCache.Remove(key);
+                    }
                 }
             }
         }
@@ -191,6 +194,8 @@ namespace KinskyDesktopWpf
             {
                 if (sender == iContentCollector)
                 {
+                    iNavigationState = ENavigationState.Failed;
+                    UserLog.WriteLine("Content collector failed: " + e.Exception);
                     iIsAlbum = false;
                     iErrorMessage = e.Exception.Message;
                     SetView();
@@ -204,20 +209,24 @@ namespace KinskyDesktopWpf
             {
                 if (sender == iContentCollector)
                 {
+                    iNavigationState = ENavigationState.Navigated;
                     bool isAlbum = iIsAlbum;
                     iIsAlbum = iContainer.Metadata is musicAlbum;
-                    if (isAlbum != iIsAlbum)
-                    {
-                        iViewChanged = true;
-                    }
                     pnlContainerInfo.Content = new BrowserItem(iContainer.Metadata, null);
                     ContainerInfoSelected = false;
                     if (iCurrentRenamingItem != null)
                     {
                         iCurrentRenamingItem = null;
                     }
-                    SetView();
-                    string key = iBrowser.Location.ToString();
+                    if (isAlbum != iIsAlbum)
+                    {
+                        SetView();
+                    }
+                    else
+                    {
+                        SetPanelState();
+                    }
+                    string key = iNavigationController.Location.ToString();
                     if (iScrollIndexCache.ContainsKey(key))
                     {
                         iLastSelectedIndex = iScrollIndexCache[key];
@@ -236,38 +245,18 @@ namespace KinskyDesktopWpf
             }));
         }
 
-        void aViewWidgetBookmarks_EventLocationChanged(object sender, EventArgs e)
+
+
+        private void EventNavigationStateChangedHandler(object sender, EventArgs e)
         {
             Dispatcher.BeginInvoke((Action)(() =>
             {
-                pnlBrowser.Visibility = Visibility.Visible;
-                lstBrowser.Visibility = Visibility.Collapsed;
-                pnlError.Visibility = Visibility.Collapsed;
-                pnlLoading.Visibility = Visibility.Collapsed;
-                pnlProgress.IsAnimating = false;
-            }));
-        }
-
-        void aViewWidgetBookmarks_EventLocationFailed(object sender, EventArgs e)
-        {
-            Dispatcher.BeginInvoke((Action)(() =>
-               {
-                   pnlBrowser.Visibility = Visibility.Visible;
-                   pnlError.Visibility = Visibility.Visible;
-                   lstBrowser.Visibility = Visibility.Collapsed;
-                   pnlContainerInfo.Visibility = Visibility.Collapsed;
-                   pnlLoading.Visibility = Visibility.Collapsed;
-                   pnlProgress.IsAnimating = false;
-               }));
-        }
-
-        void aViewWidgetBookmarks_EventLocationChanging(object sender, EventArgs e)
-        {
-            Dispatcher.BeginInvoke((Action)(() =>
-            {
-                pnlBrowser.Visibility = Visibility.Collapsed;
-                pnlLoading.Visibility = Visibility.Visible;
-                pnlProgress.IsAnimating = true;
+                iNavigationState = iNavigationController.NavigationState;
+                if (iNavigationState == ENavigationState.Navigated && iNavigationController.Location != null)
+                {
+                    OnLocationChanged();
+                }
+                SetPanelState();
             }));
         }
 
@@ -284,8 +273,8 @@ namespace KinskyDesktopWpf
                     iUIOptions.ContainerViewSizeListView = e.NewValue;
                 }
             }
-            iViewChanged = true;
-            SetSize();
+            SetView();
+            UpdateCacheSize();
         }
 
         void ContainerInfo_PreviewMouseDown(object sender, MouseEventArgs e)
@@ -350,7 +339,7 @@ namespace KinskyDesktopWpf
             {
                 if (obj is container)
                 {
-                    string key = iBrowser.Location.ToString();
+                    string key = iNavigationController.Location.ToString();
                     if (iScrollIndexCache.ContainsKey(key))
                     {
                         iScrollIndexCache[key] = aIndex;
@@ -365,7 +354,7 @@ namespace KinskyDesktopWpf
                         sv.ScrollToTop();
                     }
                     lstBrowser.ItemsSource = null;
-                    iBrowser.Down(obj as container);
+                    iNavigationController.Down(obj as container);
                     return;
                 }
             }
@@ -612,7 +601,7 @@ namespace KinskyDesktopWpf
             {
                 Assert.Check(!iOpen);
                 iOpen = true;
-                OnLocationChanged();
+                //OnLocationChanged();
                 iSizeButton.ClearValue(Control.IsEnabledProperty);
                 iViewButton.ClearValue(Control.IsEnabledProperty);
             });
@@ -634,7 +623,6 @@ namespace KinskyDesktopWpf
         {
             double size = iViewIndex == kThumbsView ? iUIOptions.ContainerViewSizeThumbsView : iUIOptions.ContainerViewSizeListView;
 
-
             ItemSize = size;
             Resources["BrowserImageHeight"] = size * (2d / 3d);
             Resources["BrowserTileSize"] = size;
@@ -652,84 +640,121 @@ namespace KinskyDesktopWpf
             }
         }
 
+        private void UpdateCacheSize()
+        {
+            // prevent image size being smaller than the browser image size
+            (Application.Current as App).ImageCache.DownscaleImageSize = Math.Max((int)ItemSize, kMinimumImageSize);
+        }
+
         public void OnViewClick()
         {
             iViewIndex = (uint)((iViewIndex + 1) % iViews.Length);
             iUIOptions.ContainerView = iViewIndex;
-            iViewChanged = true;
             iSliderStartIndex = -1;
             SetView();
+            UpdateCacheSize();
         }
 
         public void SetView()
         {
             double sliderValue = iViewIndex == kThumbsView ? iUIOptions.ContainerViewSizeThumbsView : iUIOptions.ContainerViewSizeListView;
+            iSlider.ValueChanged -= aSlider_ValueChanged;
             iSlider.Minimum = iViewIndex == kThumbsView ? kMinItemWidthThumbsView : kMinItemWidthListView;
             iSlider.Maximum = iViewIndex == kThumbsView ? kMaxItemWidthThumbsView : kMaxItemWidthListView;
             iSlider.Value = sliderValue;
-            if (iViewChanged || iErrorMessage != string.Empty)
+            iSlider.ValueChanged += aSlider_ValueChanged;
+            SetSize();
+            iViewIndex = iUIOptions.ContainerView;
+            iViewButton.IsChecked = iViewIndex != kThumbsView;
+
+            if (iIsAlbum)
             {
-                iViewIndex = iUIOptions.ContainerView;
-                iViewButton.IsChecked = iViewIndex != kThumbsView;
-                if (iErrorMessage != string.Empty)
-                {
-                    pnlError.Visibility = Visibility.Visible;
-                    pnlContainerInfo.Visibility = Visibility.Collapsed;
-                    lstBrowser.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    pnlError.Visibility = Visibility.Collapsed;
-                    lstBrowser.Visibility = Visibility.Visible;
+                lstBrowser.Style = null;
+                lstBrowser.ItemContainerStyle = FindResource("BrowserListItemContainerStyle") as Style;
+                lstBrowser.View = null;
+                lstBrowser.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
+                lstBrowser.ItemTemplate = FindResource("AlbumViewItem") as DataTemplate;
+            }
+            else if (iViewIndex % iViews.Length == kListView)
+            {
+                lstBrowser.Style = null;
+                lstBrowser.ItemContainerStyle = FindResource("BrowserListItemContainerStyle") as Style;
+                lstBrowser.View = null;
+                lstBrowser.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
+                lstBrowser.ClearValue(ListView.ItemTemplateProperty);
+            }
+            else
+            {
+                lstBrowser.Style = Application.Current.FindResource(typeof(TileView)) as Style;
+                lstBrowser.ItemContainerStyle = null;
+                lstBrowser.View = FindResource("BrowserTileView") as ViewBase;
 
-                    if (iIsAlbum)
+                // msbuild throws a wobbly if we try to instantiate this via xaml style...
+                FrameworkElementFactory childFactory = new FrameworkElementFactory(typeof(VirtualizingTilePanel));
+                Binding b = new Binding();
+                b.RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(ViewWidgetBrowser), 1);
+                b.Path = new PropertyPath("ItemSize");
+                childFactory.SetBinding(VirtualizingTilePanel.ItemSizeProperty, b);
+
+                lstBrowser.ItemsPanel = new ItemsPanelTemplate(childFactory);
+                lstBrowser.ClearValue(ListView.ItemTemplateProperty);
+
+            }
+            SetPanelState();
+        }
+
+        private void SetPanelState()
+        {
+            switch (iNavigationState)
+            {
+                case ENavigationState.Failed:
                     {
-                        pnlContainerInfo.Visibility = Visibility.Visible;
-                        iSizeButton.IsEnabled = false;
-                        iViewButton.IsEnabled = false;
-                    }
-                    else
-                    {
+                        pnlBrowser.Visibility = Visibility.Visible;
+                        pnlError.Visibility = Visibility.Visible;
+                        lstBrowser.Visibility = Visibility.Collapsed;
                         pnlContainerInfo.Visibility = Visibility.Collapsed;
-                        iSizeButton.IsEnabled = true;
-                        iViewButton.IsEnabled = true;
+                        pnlLoading.Visibility = Visibility.Collapsed;
+                        pnlProgress.IsAnimating = false;
+                        break;
                     }
-
-                    if (iIsAlbum)
+                case ENavigationState.Navigating:
                     {
-                        lstBrowser.Style = null;
-                        lstBrowser.ItemContainerStyle = FindResource("BrowserListItemContainerStyle") as Style;
-                        lstBrowser.View = null;
-                        lstBrowser.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
-                        lstBrowser.ItemTemplate = FindResource("AlbumViewItem") as DataTemplate;
+                        pnlBrowser.Visibility = Visibility.Collapsed;
+                        pnlLoading.Visibility = Visibility.Visible;
+                        pnlContainerInfo.Visibility = Visibility.Collapsed;
+                        pnlProgress.IsAnimating = true;
+                        break;
                     }
-                    else if (iViewIndex % iViews.Length == kListView)
+                case ENavigationState.Navigated:
                     {
-                        lstBrowser.Style = null;
-                        lstBrowser.ItemContainerStyle = FindResource("BrowserListItemContainerStyle") as Style;
-                        lstBrowser.View = null;
-                        lstBrowser.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(VirtualizingStackPanel)));
-                        lstBrowser.ClearValue(ListView.ItemTemplateProperty);
+                        pnlBrowser.Visibility = Visibility.Visible;
+                        lstBrowser.Visibility = Visibility.Visible;
+                        pnlError.Visibility = Visibility.Collapsed;
+                        pnlLoading.Visibility = Visibility.Collapsed;
+                        pnlProgress.IsAnimating = false;
+
+
+                        if (iIsAlbum)
+                        {
+                            pnlContainerInfo.Visibility = Visibility.Visible;
+                            iSizeButton.IsEnabled = false;
+                            iViewButton.IsEnabled = false;
+                        }
+                        else
+                        {
+                            pnlContainerInfo.Visibility = Visibility.Collapsed;
+                            iSizeButton.IsEnabled = true;
+                            iViewButton.IsEnabled = true;
+                        }
+
+
+                        break;
                     }
-                    else
+                default:
                     {
-                        lstBrowser.Style = Application.Current.FindResource(typeof(TileView)) as Style;
-                        lstBrowser.ItemContainerStyle = null;
-                        lstBrowser.View = FindResource("BrowserTileView") as ViewBase;
-
-                        // msbuild throws a wobbly if we try to instantiate this via xaml style...
-                        FrameworkElementFactory childFactory = new FrameworkElementFactory(typeof(VirtualizingTilePanel));
-                        Binding b = new Binding();
-                        b.RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(ViewWidgetBrowser), 1);
-                        b.Path = new PropertyPath("ItemSize");
-                        childFactory.SetBinding(VirtualizingTilePanel.ItemSizeProperty, b);
-
-                        lstBrowser.ItemsPanel = new ItemsPanelTemplate(childFactory);
-                        lstBrowser.ClearValue(ListView.ItemTemplateProperty);
+                        Assert.Check(false);
+                        break;
                     }
-
-                }
-                iViewChanged = false;
             }
         }
 
@@ -875,7 +900,7 @@ namespace KinskyDesktopWpf
                 Linn.Kinsky.IContainer container = iContainer.ChildContainer(iRightMouseSelectedItem as container);
                 if (container != null)
                 {
-                    Location newLocation = new Location(iBrowser.Location, container);
+                    Location newLocation = new Location(iNavigationController.Location, container);
                     iViewWidgetBookmarks.ShowAddBookmark(new Bookmark(newLocation));
                 }
             }
@@ -959,7 +984,6 @@ namespace KinskyDesktopWpf
 
         private void Search(string aSearchText)
         {
-            Console.WriteLine("Search: " + aSearchText);
             StopSearch();
             if (aSearchText.Length == 0)
             {
@@ -982,8 +1006,7 @@ namespace KinskyDesktopWpf
                 else
                 {
                     Assert.Check(iContainer != null);
-                    iSearchContentCollector = ContentCollectorMaster.Create(iContainer, new DictionaryBackedContentCache<upnpObject>(10), 1, 1, 0);
-                    iSearcher = new Searcher(aSearchText, iSearchContentCollector, lstBrowser, iData);
+                    iSearcher = new Searcher(aSearchText, iContentCollector, lstBrowser, iData);
                 }
             }
 
@@ -993,7 +1016,6 @@ namespace KinskyDesktopWpf
         {
             if (iSearcher != null)
             {
-                iSearchContentCollector.Dispose();
                 iSearcher.Dispose();
                 iSearcher = null;
             }
@@ -1093,7 +1115,6 @@ namespace KinskyDesktopWpf
                                         BrowserItem item = iData[(int)aIndex];
                                         if (item is PlaceholderBrowserItem)
                                         {
-                                            item = new BrowserItem(aObject, null);
                                             iData[(int)aIndex] = iData.CreateViewModel(aObject);
                                         }
                                         iListView.EnsureSelected((int)aIndex);
@@ -1185,7 +1206,7 @@ namespace KinskyDesktopWpf
         {
             if (e.XButton1 == MouseButtonState.Pressed)
             {
-                iBrowser.Up(1);
+                iNavigationController.Up(1);
                 e.Handled = true;
                 return;
             }
@@ -1264,7 +1285,7 @@ namespace KinskyDesktopWpf
             }
             if (e.Key == Key.Back && iCurrentRenamingItem == null)
             {
-                iBrowser.Up(1);
+                iNavigationController.Up(1);
             }
         }
 
@@ -1287,20 +1308,26 @@ namespace KinskyDesktopWpf
 
         private void btnRetry_Click(object sender, RoutedEventArgs e)
         {
-            iViewWidgetBookmarks.Navigate(iViewWidgetBookmarks.CurrentLocation, 3);
+            if (iNavigationController.NavigationState == ENavigationState.Failed || iNavigationController.Location == null)
+            {
+                iNavigationController.Retry();
+            }
+            else
+            {
+                OnLocationChanged();
+            }
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            iViewWidgetBookmarks.Navigate(BreadcrumbTrail.Default);
+            iNavigationController.Navigate(iNavigationController.Home);
         }
 
+        private ENavigationState iNavigationState;
         private BrowserList iData;
         private Linn.Kinsky.IContainer iContainer;
-        private IBrowser iBrowser;
         private bool iOpen;
         private IContentCollector<upnpObject> iContentCollector;
-        private IContentCollector<upnpObject> iSearchContentCollector;
         private const int kRangeSize = 50;
         private const int kThreadCount = 4;
 
@@ -1333,15 +1360,16 @@ namespace KinskyDesktopWpf
         private DragAdorner iDragFeedbackAdorner;
         private UiOptions iUIOptions;
         private DateTime iLastContainerPress;
-        private bool iViewChanged;
         private Searcher iSearcher;
         private BrowserItem iCurrentRenamingItem;
         private string iSearchText = string.Empty;
         private DateTime iLastKeyDown = DateTime.MinValue;
         private int iLastSelectedIndex;
         private Slider iSlider;
-        private ViewWidgetBookmarks iViewWidgetBookmarks;
+        private NavigationController iNavigationController;
         private int iSliderStartIndex = -1;
+        private ViewWidgetBookmarks iViewWidgetBookmarks;
+        private const int kMinimumImageSize = 60;
     }
 
 

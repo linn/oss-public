@@ -49,9 +49,9 @@ namespace Linn.Topology
             iServiceVolume.EventInitial -= EventInitialResponse;
         }
 
-        public override void Kill()
+        public override Device Device
         {
-            iVolumeLimiter.Stop();
+            get { return iPreamp.Device; }
         }
 
         public override string Name
@@ -175,5 +175,6 @@ namespace Linn.Topology
         private ServiceVolume.AsyncActionSetVolume iActionSetVolume;
         private ServiceVolume.AsyncActionVolumeInc iActionVolumeInc;
         private ServiceVolume.AsyncActionVolumeDec iActionVolumeDec;
+
     }
 } // Linn.Topology

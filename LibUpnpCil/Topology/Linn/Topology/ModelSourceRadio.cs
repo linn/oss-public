@@ -223,10 +223,6 @@ namespace Linn.Topology
             iServiceRadio.EventStateMetadata -= EventStateMetadataResponse;
         }
 
-        public override void Kill()
-        {
-        }
-
         public override string Name
         {
             get

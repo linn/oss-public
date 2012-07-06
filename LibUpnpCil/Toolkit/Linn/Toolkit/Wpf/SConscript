@@ -1,0 +1,27 @@
+Import('_default_env')
+
+
+files = Split("""
+    ../../../Properties/AssemblyInfo.cs
+    ../AutoUpdateController.cs
+    ../HelperAutoUpdate.cs
+    Properties/Resources.Designer.cs
+    Properties/Resources.resx
+    CrashLogDumperWindow.xaml
+    CrashLogDumperWindow.xaml.cs
+    HelperAutoUpdate.cs
+    Invoker.cs
+    UpdateWindow.xaml
+    UpdateWindow.xaml.cs
+""")
+
+
+clilibs = ['System', 'System.Drawing', 'System.Windows.Forms', 'System.Xaml', 'OssCore', 'PresentationCore', 'PresentationFramework', 'WindowsBase']
+msproj = _default_env.MSBuildFileGenerator('OssToolkitWpf', files, LINKS=files, OUTPUTTYPE='Library', CLILIBS=clilibs, ROOTNAMESPACE='Linn.Toolkit.Wpf', TOOLSVERSION='4.0', TARGETFRAMEWORKVERSION='4.0')
+lib = _default_env.MSBuildLibBuilder('OssToolkitWpf', msproj, CLILIBS=clilibs)
+
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ToolkitWpf.tar', files, DOXYGENINPUT='Linn/Toolkit/Wpf', DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ToolkitWpf', DOXYGENNAMESPACE='OssToolkitWpf', DOXYGENEXCLUDE='*.svn*')
+Alias('Docs', docs)
+

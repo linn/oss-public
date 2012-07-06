@@ -50,20 +50,20 @@ namespace Linn.ControlPoint.Upnp
             Add(kKeyUpnpIpAddress, location.Host);
 
             string xml = DeviceXml;
-            if(!string.IsNullOrEmpty(xml))
+            if (!string.IsNullOrEmpty(xml))
             {
                 StringReader reader = new StringReader(xml);
                 XmlDocument document = new XmlDocument();
 
                 document.Load(reader);
-    
+
                 XmlNamespaceManager nsmanager = new XmlNamespaceManager(document.NameTable);
                 nsmanager.AddNamespace("u", "urn:schemas-upnp-org:device-1-0");
 
                 // get UDN from the root device
 
                 XmlNode udn = document.SelectSingleNode("/u:root/u:device/u:UDN", nsmanager);
-    
+
                 if (udn != null && udn.FirstChild != null)
                 {
                     Add(kKeyUdn, udn.FirstChild.Value.Substring(5));
@@ -107,7 +107,7 @@ namespace Linn.ControlPoint.Upnp
 
                     HttpWebResponse response = null;
                     StreamReader reader = null;
-
+                    Stream responseStream = null;
                     try
                     {
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Find(kKeyUpnpLocation));
@@ -121,7 +121,8 @@ namespace Linn.ControlPoint.Upnp
                         request.ReadWriteTimeout = kDeviceXmlTimeout;
 
                         response = (HttpWebResponse)request.GetResponse();
-                        reader = new StreamReader(response.GetResponseStream());
+                        responseStream = response.GetResponseStream();
+                        reader = new StreamReader(responseStream);
 
                         xml = reader.ReadToEnd();
 
@@ -142,9 +143,17 @@ namespace Linn.ControlPoint.Upnp
                     }
                     finally
                     {
+
+                        if (responseStream != null)
+                        {
+                            responseStream.Close();
+                            responseStream.Dispose();
+                        }
+
                         if (reader != null)
                         {
                             reader.Close();
+                            reader.Dispose();
                         }
 
                         if (response != null)
@@ -184,25 +193,21 @@ namespace Linn.ControlPoint.Upnp
             request.Timeout = kDeviceXmlTimeout;
             request.ReadWriteTimeout = kDeviceXmlTimeout;
 
-            try
-            {
-                WebRequestPool.QueueJob(new JobGetResponse(OpenResponse, request));
-            }
-            catch (WebException)
-            {
-            }
+            WebRequestPool.QueueJob(new JobGetResponse(OpenResponse, request));
+
         }
 
         private void OpenResponse(object aResult)
         {
             HttpWebResponse response = null;
             StreamReader reader = null;
-
+            Stream responseStream = null;
             try
             {
                 HttpWebRequest request = aResult as HttpWebRequest;
                 response = (HttpWebResponse)request.GetResponse();
-                reader = new StreamReader(response.GetResponseStream());
+                responseStream = response.GetResponseStream();
+                reader = new StreamReader(responseStream);
 
                 string xml = reader.ReadToEnd();
 
@@ -213,6 +218,7 @@ namespace Linn.ControlPoint.Upnp
             {
                 UserLog.WriteLine(DateTime.Now + ": DeviceUpnp.OpenResponse: " + Location + ": " + e.Message + (e.InnerException != null ? (", " + e.InnerException.Message) : ""));
                 Console.WriteLine(DateTime.Now + ": DeviceUpnp.OpenResponse: " + Location + ": " + e.Message + (e.InnerException != null ? (", " + e.InnerException.Message) : ""));
+                OpenFailed();
             }
             catch (ArgumentException)
             {
@@ -222,9 +228,17 @@ namespace Linn.ControlPoint.Upnp
             }
             finally
             {
+
+                if (responseStream != null)
+                {
+                    responseStream.Close();
+                    responseStream.Dispose();
+                }
+
                 if (reader != null)
                 {
                     reader.Close();
+                    reader.Dispose();
                 }
 
                 if (response != null)
@@ -279,7 +293,7 @@ namespace Linn.ControlPoint.Upnp
 
                         XmlNode node = device.SelectSingleNode("u:modelName", nsmanager);
 
-                        if (node != null)
+                        if (node != null && node.FirstChild != null)
                         {
                             model = node.FirstChild.Value;
                             Add(kKeyUpnpModel, model);
@@ -414,7 +428,7 @@ namespace Linn.ControlPoint.Upnp
                     {
                         XmlNode type = n.SelectSingleNode("u:serviceType", nsmanager);
 
-                        if (type != null)
+                        if (type != null && type.FirstChild != null)
                         {
                             ServiceType found = new ServiceType(type.FirstChild.Value);
                             ServiceType mine = new ServiceType(servicetype);
@@ -569,37 +583,37 @@ namespace Linn.ControlPoint.Upnp
 
         public void NotifyRootAlive(byte[] aUuid, byte[] aLocation, uint aMaxAge)
         {
-        	string uuid = ASCIIEncoding.UTF8.GetString(aUuid,0,aUuid.Length);
+            string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
 
             Trace.WriteLine(Trace.kUpnp, "Alive Root       Uuid{" + uuid + "}");
         }
 
         public void NotifyUuidAlive(byte[] aUuid, byte[] aLocation, uint aMaxAge)
         {
-           string uuid = ASCIIEncoding.UTF8.GetString(aUuid,0,aUuid.Length);
+            string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
 
             Trace.WriteLine(Trace.kUpnp, "Alive Uuid       Uuid{" + uuid + "}");
         }
 
         public void NotifyDeviceTypeAlive(byte[] aUuid, byte[] aDomain, byte[] aType, uint aVersion, byte[] aLocation, uint aMaxAge)
         {
-            string uuid = ASCIIEncoding.UTF8.GetString(aUuid,0,aUuid.Length);
+            string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
 
             Trace.WriteLine(Trace.kUpnp, "Alive Device     Uuid{" + uuid + "}");
         }
 
         public void NotifyServiceTypeAlive(byte[] aUuid, byte[] aDomain, byte[] aType, uint aVersion, byte[] aLocation, uint aMaxAge)
         {
-        	
-            string domain = ASCIIEncoding.UTF8.GetString(aDomain,0,aDomain.Length).Replace('-', '.');
-            string type = ASCIIEncoding.UTF8.GetString(aType,0,aType.Length);
+
+            string domain = ASCIIEncoding.UTF8.GetString(aDomain, 0, aDomain.Length).Replace('-', '.');
+            string type = ASCIIEncoding.UTF8.GetString(aType, 0, aType.Length);
 
             if (domain == kDomainSchemasUpnpOrg)
             {
                 domain = kDomainUpnpOrg;
             }
 
-            string uuid = ASCIIEncoding.UTF8.GetString(aUuid,0,aUuid.Length);
+            string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
 
             ServiceType st = new ServiceType(domain, type, aVersion);
 
@@ -608,10 +622,12 @@ namespace Linn.ControlPoint.Upnp
             if (iType.IsSupportedBy(st))
             {
                 string location = ASCIIEncoding.UTF8.GetString(aLocation, 0, aLocation.Length);
-                try {
+                try
+                {
                     Add(new DeviceUpnp(uuid, location));
                 }
-                catch (UriFormatException e) {
+                catch (UriFormatException e)
+                {
                     UserLog.WriteLine(DateTime.Now + ": Uuid{" + uuid + "}Location{" + location + "}: " + e.Message);
                 }
             }
@@ -619,7 +635,7 @@ namespace Linn.ControlPoint.Upnp
 
         public void NotifyRootByeBye(byte[] aUuid)
         {
-			string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
+            string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
 
             Trace.WriteLine(Trace.kUpnp, "ByeBye Root      Uuid{" + uuid + "}");
 
@@ -646,7 +662,7 @@ namespace Linn.ControlPoint.Upnp
 
         public void NotifyServiceTypeByeBye(byte[] aUuid, byte[] aDomain, byte[] aType, uint aVersion)
         {
-           string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
+            string uuid = ASCIIEncoding.UTF8.GetString(aUuid, 0, aUuid.Length);
 
             Trace.WriteLine(Trace.kUpnp, "ByeBye Service   Uuid{" + uuid + "}");
 

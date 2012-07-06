@@ -1,0 +1,100 @@
+<div id="all">
+<!-- Reprogram -->
+<!-- >>>>>>> THIS SECTION IS UNIFORM FOR ALL PAGES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+  <script src="../Linn.js" type="text/javascript"></script>
+  <script src="reprogram.js" type="text/javascript"></script>
+
+  <div id="Background" class="background" style="background-image: url(../Resources/Images/Miscellaneous/MainBackground.png)"></div>
+  <div id="navigation_background"></div>
+
+  <div id="pagesection">
+    <div id="header" class="section">
+      <div id="navigation_bar">
+        <ul>
+          <li class="navigation_tab_initial" id="NavTab1" type="button" onclick="gotoPage('Main');"></li>
+          <li class="navigation_tab" id="NavTab2" type="button" style="visibility:hidden"></li>
+        </ul>
+      </div>
+      <div>
+        <a target="_blank" href="http://www.linn.co.uk/">
+          <img id="LinnWebLink" src="../Resources/Images/Miscellaneous/Logo.png"/>
+        </a>
+        <img id="just_listen" src="../Resources/Images/Miscellaneous/JustListen.png"/>
+      </div>
+    </div>
+
+    <!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+
+
+
+    <!-- >>>>>>> THIS SECTION IS UNIFORM FOR MOST PAGES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+    <div id="main" class="section">
+      <div id="ProgressHeader">
+        <div id="progress_bar">
+          <ul>
+            <li class="progress_step" id="ProgressBar1"></li>
+            <div class="progress_separator" id="ProgressSeparator1"></div>
+            <li class="progress_step" id="ProgressBar2"></li>
+            <div class="progress_separator" id="ProgressSeparator2"></div>
+            <li class="progress_step" id="ProgressBar3"></li>
+            <div class="progress_separator" id="ProgressSeparator3"></div>
+            <li class="progress_step" id="ProgressBar4"></li>
+            <div class="progress_separator" id="ProgressSeparator4"></div>
+            <li class="progress_step" id="ProgressBar5"></li>
+            <div class="progress_separator" id="ProgressSeparator5"></div>
+            <li class="progress_step" id="ProgressBar6"></li>
+            <div class="progress_separator" id="ProgressSeparator6"></div>
+            <li class="progress_step" id="ProgressBar7"></li>
+            <div class="progress_separator" id="ProgressSeparator7"></div>
+            <li class="progress_step" id="ProgressBar8"></li>
+            <div class="progress_separator" id="ProgressSeparator8"></div>
+          </ul>
+        </div>
+        <button class="dark_button" id="TroubleshootButton" style="visibility:hidden" onclick="genericClick(this);" ></button>
+      </div>
+      <div class="horiz_separator"></div>
+
+ 
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+
+
+      <div id ="Main">
+        <div id ="MainContent">
+          <img class="mainimage" id="MainImage" style="visibility:hidden"></img>
+          <div id="title_bar">
+            <h3 class="title" id="Title"></h3>
+          </div>
+          <p class="maintext" id="MainText"></p>
+          
+          <div id="UpdateBox" >
+            <p id="UpdateBoxTitle"></p>
+            <p class="maintext" id="UpdateBoxText"></p>
+            <p id="UpdateBoxFooter" style="visibility:hidden"></p>
+            <button class="dark_button" id="UpdateButton" style="visibility:hidden" onclick="genericClick(this);" ></button>
+            <div id="UpdateProgressBar" style="visibility:hidden">
+              <div id="UpdateProgressBarFilled" style="visibility:hidden; width:0%"/>
+            </div>
+            <p class="maintext" id="UpdateProgressText" style="visibility:hidden"></p>
+          </div>
+          
+        </div>
+      </div>
+
+
+<!-- >>>>>>> THIS SECTION IS UNIFORM FOR ALL PAGES EXCEPT MAIN >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+      <div class="horiz_separator"></div>
+      </div>
+
+      <div id="footer" class="section">
+        <button class="light_button" id="PreviousButton" style="visibility:hidden" onclick="action('PreviousPage');" ></button>
+        <button class="dark_button" id="NextButton" style="visibility:hidden" onclick="action('NextPage');" ></button>
+        <img id="Rotator" style="visibility:hidden"/>
+      </div>
+    </div>
+
+<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  -->
+
+</div>

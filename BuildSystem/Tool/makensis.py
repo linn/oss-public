@@ -25,7 +25,7 @@ def generate(env):
     
     env['SIGNTOOL']           = env.Detect('signtool')
     env['SIGNTOOLFLAGS']      = SCons.Util.CLVar('sign /sm /v /a /t http://timestamp.verisign.com/scripts/timestamp.dll')
-    if os.sys.platform == 'win32':
+    if os.sys.platform == 'win32' and env['codesign']:
         env['SIGNTOOLCOM1']       = SCons.Action.Action(signtoolcom1)
         env['SIGNTOOLCOM2']       = SCons.Action.Action(signtoolcom2)
 

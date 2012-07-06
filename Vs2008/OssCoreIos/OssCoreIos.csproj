@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <OutputPath>..\..\install\IosSim\debug\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,7 +28,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <OutputPath>..\..\install\IosSim\release\bin\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <MtouchLink>None</MtouchLink>
@@ -101,7 +101,6 @@
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\Network.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Network\WebRequest.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\DebugReport.cs" />
-    <Compile Include="..\..\LibUpnpCil\Core\Linn\ProductSupport.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\AssemblyInfo.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkInfo.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\ServiceInfo.cs" />
@@ -114,5 +113,8 @@
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Scheduler.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\SystemInfoIos.cs" />
     <Compile Include="..\..\LibUpnpCil\Core\Linn\IInvoker.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\VersionSupport.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\IImageCache.cs" />
+    <Compile Include="..\..\LibUpnpCil\Core\Linn\Framework\NetworkChangeWatcher.cs" />
   </ItemGroup>
 </Project>

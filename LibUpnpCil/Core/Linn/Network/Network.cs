@@ -344,6 +344,7 @@ namespace Linn.Network
                     iSocket.Bind(new IPEndPoint(aInterface, port));
                     iSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, false);
                     iSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, aTtl);
+                    
                     Trace.WriteLine(Trace.kUpnp, "Success");
                     return;
                 }
@@ -401,39 +402,21 @@ namespace Linn.Network
 
         public int Read(byte[] aBuffer, int aOffset, int aMaxBytes)
         {
-            // The reasom why I am using an asynchronous methodology
-            // and turning it back into a syncronous function is 
-            // because it is more responsive to thread abort requests
-
             if (iReadOpen)
             {
                 iReadOpen = false;
 
                 int count = 0;
 
-                ManualResetEvent semaphore = new ManualResetEvent(false);
-
                 while (count == 0)
                 {
                     try
                     {
-                        iSocket.BeginReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender, delegate(IAsyncResult aResult)
-                        {
-                            try
-                            {
-                                count = iSocket.EndReceiveFrom(aResult, ref iSender);
-                            }
-                            catch (SocketException) { }
-                            catch (ObjectDisposedException) { }
-
-                            semaphore.Set();
-
-                        }, null);
-
-                        semaphore.WaitOne();
+                        count = iSocket.ReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender);
                     }
-                    catch (SocketException) { }
-                    catch (ObjectDisposedException) { }
+                    catch (SocketException) { break; }
+                    catch (ObjectDisposedException) { break; }
+
                 }
 
                 return (count);
@@ -451,6 +434,7 @@ namespace Linn.Network
         {
             try
             {
+                iSocket.Blocking = false;
                 iSocket.Shutdown(SocketShutdown.Both);
             }
             catch (SocketException) { }
@@ -503,6 +487,7 @@ namespace Linn.Network
                         break;
                 }
 
+
                 // Join the multicast group
                 MulticastOption option = new MulticastOption(aMulticast, aInterface);
                 iSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, option);
@@ -530,10 +515,6 @@ namespace Linn.Network
 
         public int Read(byte[] aBuffer, int aOffset, int aMaxBytes)
         {
-            // The reasom why I am using an asynchronous methodology
-            // and turning it back into a syncronous function is 
-            // because it is more responsive to thread abort requests
-
             if (iReadOpen)
             {
                 iReadOpen = false;
@@ -546,23 +527,10 @@ namespace Linn.Network
                 {
                     try
                     {
-                        iSocket.BeginReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender, delegate(IAsyncResult aResult)
-                        {
-                            try
-                            {
-                                count = iSocket.EndReceiveFrom(aResult, ref iSender);
-                            }
-                            catch (SocketException) { }
-                            catch (ObjectDisposedException) { }
-
-                            semaphore.Set();
-
-                        }, null);
-
-                        semaphore.WaitOne();
+                        count = iSocket.ReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender);   
                     }
-                    catch (SocketException) { }
-                    catch (ObjectDisposedException) { }
+                    catch (SocketException) { break; }
+                    catch (ObjectDisposedException) { break; }
                 }
 
                 return (count);
@@ -580,6 +548,7 @@ namespace Linn.Network
         {
             try
             {
+                iSocket.Blocking = false;
                 iSocket.Shutdown(SocketShutdown.Both);
             }
             catch (SocketException) { }

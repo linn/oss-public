@@ -71,17 +71,31 @@ namespace KinskyDesktopWpf
     }
 
 
-    public class WpfImageCache 
+    public class WpfImageCache
     {
 
-        public WpfImageCache(int aCacheSize, int aDownscaleImageSize, int aThreadCount) 
+        public WpfImageCache(int aCacheSize, int aDownscaleImageSize, int aThreadCount)
         {
             iRegisteredCallbacks = new Dictionary<string, List<Action<BitmapImage>>>();
-            iImageCache = new ThreadedImageCache<BitmapImage>(aCacheSize, aDownscaleImageSize, aThreadCount, new WpfImageWrapper(StaticImages.ImageSourceIconLoading), new WpfImageLoader(new ArtworkDownscalingUriConverter(aDownscaleImageSize)));
+            iErrorImage = new WpfImageWrapper(StaticImages.ImageSourceIconLoading);
+            iImageCache = new ThreadedImageCache<BitmapImage>(aCacheSize, aDownscaleImageSize, aThreadCount, new WpfImageLoader(new ScalingUriConverter(aDownscaleImageSize, false, false)));
             iImageCache.EventImageAdded += OnImageCacheUpdated;
+            iImageCache.EventRequestFailed += OnImageRequestFailed;
         }
 
+        public int DownscaleImageSize
+        {
+            set
+            {
+                iImageCache.ImageLoader = new WpfImageLoader(new ScalingUriConverter(value, false, false));
+                iImageCache.DownscaleImageSize = value;
+            }
+        }
 
+        private void OnImageRequestFailed(object sender, EventArgsImageFailure args)
+        {
+            OnImageCacheUpdated(sender, new EventArgsImage<BitmapImage>(args.Uri, iErrorImage));
+        }
 
         private void OnImageCacheUpdated(object sender, EventArgsImage<BitmapImage> args)
         {
@@ -143,14 +157,15 @@ namespace KinskyDesktopWpf
                     callbacksList.Add(aCallback);
                 }
             }
-            artwork = iImageCache.Image(aUri);
+            artwork = iImageCache.Image(key);
             if (artwork != null)
             {
                 OnImageCacheUpdated(this, new EventArgsImage<BitmapImage>(key, artwork));
             }
         }
-        private IImageCache<BitmapImage> iImageCache;
+        private ThreadedImageCache<BitmapImage> iImageCache;
         private Dictionary<string, List<Action<BitmapImage>>> iRegisteredCallbacks;
+        private WpfImageWrapper iErrorImage;
     }
 
     public class WpfImageWrapper : IImage<BitmapImage>
@@ -160,6 +175,8 @@ namespace KinskyDesktopWpf
             Assert.Check(aImage != null);
             iImage = aImage;
         }
+
+        #region IImage<BitmapImage> Members
 
         public BitmapImage Image
         {
@@ -174,7 +191,38 @@ namespace KinskyDesktopWpf
             }
         }
 
+        public int ReferenceCount
+        {
+            get
+            {
+                lock (iImage)
+                {
+                    return iReferenceCount;
+                }
+            }
+        }
+
+        public void IncrementReferenceCount()
+        {
+            lock (iImage)
+            {
+                iReferenceCount++;
+            }
+        }
+
+        public void DecrementReferenceCount()
+        {
+            lock (iImage)
+            {
+                iReferenceCount--;
+            }
+        }
+
+
+        #endregion
+        private int iReferenceCount;
         private BitmapImage iImage;
+
     }
 
     public class IconResolver : AbstractIconResolver<BitmapImage>
@@ -511,6 +559,9 @@ namespace KinskyDesktopWpf
         public static readonly BitmapImage ImageSourceRemoveTab = RemoveTab.ToBitmapImage();
         public static readonly BitmapImage ImageSourceRemoveTabDown = RemoveTabDown.ToBitmapImage();
         public static readonly BitmapImage ImageSourceRemoveTabOver = RemoveTabOver.ToBitmapImage();
+
+        public static readonly BitmapImage ImageSourceTick = Tick.ToBitmapImage();
+        public static readonly BitmapImage ImageSourceRefreshButton = RefreshButton.ToBitmapImage();
 
     }
 

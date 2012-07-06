@@ -21,6 +21,8 @@ namespace Linn.Kinsky
         uint Open();
         void Close();
 
+        string Id { get; }
+
         void Refresh();
 
         IContainer ChildContainer(container aContainer);
@@ -41,9 +43,12 @@ namespace Linn.Kinsky
         DidlLite Items(uint aStartIndex, uint aCount);
         DidlLite Search(string aSearchCriterea, uint aStartIndex, uint aCount);
 
+        bool HasTreeChangeAffectedLeaf { get; }
+
         event EventHandler<EventArgs> EventContentUpdated;
         event EventHandler<EventArgs> EventContentAdded;
         event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        event EventHandler<EventArgs> EventTreeChanged;
     }
 
 

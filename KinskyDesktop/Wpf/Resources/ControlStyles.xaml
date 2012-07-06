@@ -702,13 +702,39 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="StandbyButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="ToolTipService.ToolTip" Value="Put room into standby" />
-        <Setter Property="kd:FrameworkElementExtensions.BackgroundOpacity" Value="0.5" />
+    <Style x:Key="RefreshButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="ToolTipService.ToolTip" Value="Refresh" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter Name="content"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceStandby}}" Margin="6.5,0,6.5,0" Width="22" />
+                    <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceRefreshButton}}" Width="21" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StandbyButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="ToolTipService.ToolTip" Value="Put room into standby" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter Name="content"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceStandby}}" Width="22" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -720,7 +746,7 @@
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceStandbyActive}}" Margin="6.5,0,6.5,0" Width="22" />
+                            <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceStandbyActive}}" Width="22" />
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>
@@ -733,7 +759,7 @@
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
                         <DataTemplate>
-                            <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceStandbyDown}}" Margin="6.5,0,6.5,0" Width="22" />
+                            <Image x:Name="buttonImage" Source="{Binding Source={x:Static kd:StaticImages.ImageSourceStandbyActiveDown}}" Width="22" />
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>

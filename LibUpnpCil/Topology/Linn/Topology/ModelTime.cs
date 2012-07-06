@@ -9,7 +9,6 @@ namespace Linn.Topology
     {
         void Open();
         void Close();
-        void Kill();
 
         Device Device { get; }
         
@@ -59,10 +58,6 @@ namespace Linn.Topology
             iServiceTime.EventStateDuration -= EventStateDurationResponse;
             iServiceTime.EventSubscriptionError -= EventSubscriptionErrorHandler;
             iServiceTime.EventInitial -= EventInitialResponse;
-        }
-
-        public void Kill()
-        {
         }
 
         public Device Device

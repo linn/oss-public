@@ -92,6 +92,7 @@ namespace Linn.Topology
             iLock = new object();
             iJobList = new List<IJob>();
             iJobReady = new ManualResetEvent(false);
+            iPlaylistManagers = new Dictionary<Device, PlaylistManager>();
         }
 
         public void Start(IPAddress aInterface)
@@ -114,8 +115,12 @@ namespace Linn.Topology
 
             ScheduleJob(new JobAbort());
             iDeviceListPlaylistManager.Stop();
-            iThread.Join();
-            iThread = null;
+            // iThread can be null if Stop() is called after a stack start previously failed
+            if (iThread != null)
+            {
+                iThread.Join();
+                iThread = null;
+            }
 
             iJobList.Clear();
         }
@@ -125,6 +130,11 @@ namespace Linn.Topology
             // rescan
 
             iDeviceListPlaylistManager.Rescan();
+        }
+
+        public void RemoveDevice(Device aDevice)
+        {
+            iDeviceListPlaylistManager.Remove(aDevice);
         }
 
         internal void ScheduleJob(IJob aJob)
@@ -173,8 +183,15 @@ namespace Linn.Topology
             Trace.WriteLine(Trace.kTopology, "PlaylistManager+                " + e.Device);
 
             e.Device.EventOpened += Opened;
+            e.Device.EventOpenFailed += OpenFailed;
 
             e.Device.Open();
+        }
+
+
+        private void OpenFailed(object obj, EventArgs e)
+        {
+            iDeviceListPlaylistManager.Remove(obj as Device);
         }
 
         private void Opened(object obj, EventArgs e)
@@ -184,9 +201,11 @@ namespace Linn.Topology
 
         internal void DoPlaylistManagerAdded(Device aDevice)
         {
+            PlaylistManager manager = new PlaylistManager(this, aDevice);
+            iPlaylistManagers.Add(aDevice, manager);
             if (EventPlaylistManagerAdded != null)
             {
-                EventPlaylistManagerAdded(this, new EventArgsPlaylistManager(new PlaylistManager(this, aDevice)));
+                EventPlaylistManagerAdded(this, new EventArgsPlaylistManager(manager));
             }
         }
 
@@ -195,15 +214,21 @@ namespace Linn.Topology
             Trace.WriteLine(Trace.kTopology, "PlaylistManagers-                " + e.Device);
 
             e.Device.EventOpened -= Opened;
+            e.Device.EventOpenFailed -= OpenFailed;
 
             ScheduleJob(new JobPlaylistManagerRemoved(e.Device));
         }
 
         internal void DoPlaylistManagerRemoved(Device aDevice)
         {
-            if (EventPlaylistManagerRemoved != null)
+            if(iPlaylistManagers.ContainsKey(aDevice))
             {
-                EventPlaylistManagerRemoved(this, new EventArgsPlaylistManager(new PlaylistManager(this, aDevice)));
+                PlaylistManager manager = iPlaylistManagers[aDevice];
+                iPlaylistManagers.Remove(aDevice);
+                if (EventPlaylistManagerRemoved != null)
+                {
+                    EventPlaylistManagerRemoved(this, new EventArgsPlaylistManager(manager));
+                }
             }
         }
 
@@ -214,6 +239,7 @@ namespace Linn.Topology
         private Thread iThread;
 
         private DeviceListUpnp iDeviceListPlaylistManager;
+        private Dictionary<Device, PlaylistManager> iPlaylistManagers;
     }
 
     public class PlaylistManager

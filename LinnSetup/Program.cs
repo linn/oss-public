@@ -9,8 +9,9 @@ using System.Threading;
 
 using Linn;
 using Linn.Toolkit.WinForms;
-
+using Linn.ProductSupport.Diagnostics;
 using LinnSetup.Properties;
+
 
 namespace LinnSetup
 {
@@ -26,6 +27,8 @@ namespace LinnSetup
             iHelper.AddCrashLogDumper(new CrashLogDumperForm(iHelper.Title, iHelper.Product, iHelper.Version, iHelper.Icon));
             iHelper.ProcessOptionsFileAndCommandLine();
 
+            iDiagnoctics = new Diagnostics();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             // ensure that all unhandled exceptions in this thread bypass the
@@ -38,7 +41,7 @@ namespace LinnSetup
                 Application.ThreadException += UnhandledExceptionNonWindows;
             }
 
-            Application.Run(new FormLinnSetup(iHelper, new AppletManager()));
+            Application.Run(new FormLinnSetup(iHelper, iDiagnoctics, new AppletManager(iHelper, iDiagnoctics)));
             iHelper.Dispose();
         }
 
@@ -48,6 +51,7 @@ namespace LinnSetup
         }
 
         static private HelperLinnSetup iHelper;
+        static private Diagnostics iDiagnoctics = null;
     }
 
 

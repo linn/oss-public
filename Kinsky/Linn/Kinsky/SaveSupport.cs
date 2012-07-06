@@ -73,20 +73,22 @@ namespace Linn.Kinsky
 
     public class SaveSupport : ISaveSupport
     {
-        public SaveSupport(IHelper aHelper, RemotePlaylists aRemotePlaylists, OptionBool aOptionRemotePlaylists, LocalPlaylists aLocalPlaylists, OptionBool aOptionLocalPlaylists)
+        public SaveSupport(HelperKinsky aHelper, SharedPlaylists aSharedPlaylists, OptionBool aOptionSharedPlaylists, LocalPlaylists aLocalPlaylists, OptionBool aOptionLocalPlaylists)
         {
+            iInvoker = aHelper.Invoker;
+
             iOptionSaveLocation = new OptionString("savelocation", "Save Location", "Location to save playlists to", "Local Playlists");
             aHelper.AddOption(iOptionSaveLocation);
 
             iOptionSaveLocation.EventValueChanged += SaveLocationChanged;
 
-            iRemotePlaylists = aRemotePlaylists;
-            iRemotePlaylists.EventContentAdded += PlaylistsChanged;
-            iRemotePlaylists.EventContentRemoved += PlaylistsChanged;
-            iRemotePlaylists.EventContentUpdated += PlaylistsChanged;
+            iSharedPlaylists = aSharedPlaylists;
+            iSharedPlaylists.EventContentAdded += PlaylistsChanged;
+            iSharedPlaylists.EventContentRemoved += PlaylistsChanged;
+            iSharedPlaylists.EventContentUpdated += PlaylistsChanged;
 
-            iOptionRemotePlaylists = aOptionRemotePlaylists;
-            iOptionRemotePlaylists.EventValueChanged += PlaylistsChanged;
+            iOptionSharedPlaylists = aOptionSharedPlaylists;
+            iOptionSharedPlaylists.EventValueChanged += PlaylistsChanged;
 
             iLocalPlaylists = aLocalPlaylists;
             iOptionLocalPlaylists = aOptionLocalPlaylists;
@@ -114,7 +116,7 @@ namespace Linn.Kinsky
             }
             else
             {
-                ModelPlaylistManager pm = iRemotePlaylists.Find(iOptionSaveLocation.Native);
+                ModelPlaylistManager pm = iSharedPlaylists.Find(iOptionSaveLocation.Native);
                 if(pm == null)
                 {
                     throw new PlaylistManagerNotFoundException();
@@ -184,49 +186,62 @@ namespace Linn.Kinsky
 
         private void SetImageList(string aSaveLocation)
         {
+            if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             if(iModelPlaylistManager != null)
             {
                 iModelPlaylistManager.EventImagesListChanged -= EventImageListChanged;
             }
 
-            iModelPlaylistManager = iRemotePlaylists.Find(aSaveLocation);
+            iModelPlaylistManager = iSharedPlaylists.Find(aSaveLocation);
 
             if(iModelPlaylistManager != null)
             {
                 iModelPlaylistManager.EventImagesListChanged += EventImageListChanged;
             }
+
+            if(EventImageListChanged != null)
+            {
+                EventImageListChanged(this, EventArgs.Empty);
+            }
         }
 
+        private delegate void DPlaylistsChanged(object sender, EventArgs e);
         private void PlaylistsChanged(object sender, EventArgs e)
         {
-            List<string> list = new List<string>();
-
-            if(iOptionLocalPlaylists.Native)
+            Delegate del = new DPlaylistsChanged(delegate(object s, EventArgs a)
             {
-                list.Add(iLocalPlaylists.Metadata.Title);
-            }
-
-            if(iOptionRemotePlaylists.Native)
-            {
-                uint count = iRemotePlaylists.Open();
-                DidlLite didl = iRemotePlaylists.Items(0, count);
-                foreach(upnpObject o in didl)
+                List<string> list = new List<string>();
+    
+                if(iOptionLocalPlaylists.Native)
                 {
-                    list.Add(o.Title);
+                    list.Add(iLocalPlaylists.Metadata.Title);
                 }
-
-                SetImageList(iOptionSaveLocation.Native);
-            }
-
-            lock(this)
-            {
-                iSaveLocationsList = list;
-            }
-
-            if(EventSaveLocationsChanged != null)
-            {
-                EventSaveLocationsChanged(this, EventArgs.Empty);
-            }
+    
+                if(iOptionSharedPlaylists.Native)
+                {
+                    uint count = iSharedPlaylists.Open();
+                    DidlLite didl = iSharedPlaylists.Items(0, count);
+                    foreach(upnpObject o in didl)
+                    {
+                        list.Add(o.Title);
+                    }
+    
+                    SetImageList(iOptionSaveLocation.Native);
+                }
+    
+                lock(this)
+                {
+                    iSaveLocationsList = list;
+                }
+    
+                if(EventSaveLocationsChanged != null)
+                {
+                    EventSaveLocationsChanged(this, EventArgs.Empty);
+                }
+            });
+            if (iInvoker.TryBeginInvoke(del, new object[] { sender, e }))
+                return;
+            del.Method.Invoke(del.Target, new object[] { sender, e });
         }
 
         private void SaveLocationChanged(object sender, EventArgs e)
@@ -237,18 +252,27 @@ namespace Linn.Kinsky
             }
         }
 
+        private delegate void DImageListChanged(object sender, EventArgs e);
         private void ImageListChanged(object sender, EventArgs e)
         {
-            if(EventImageListChanged != null)
+            Delegate del = new DImageListChanged(delegate(object s, EventArgs a)
             {
-                EventImageListChanged(this, EventArgs.Empty);
-            }
+                if(EventImageListChanged != null)
+                {
+                    EventImageListChanged(this, EventArgs.Empty);
+                }
+            });
+            if (iInvoker.TryBeginInvoke(del, new object[] { sender, e }))
+                return;
+            del.Method.Invoke(del.Target, new object[] { sender, e });
         }
+
+        private IInvoker iInvoker;
 
         private OptionString iOptionSaveLocation;
 
-        private RemotePlaylists iRemotePlaylists;
-        private OptionBool iOptionRemotePlaylists;
+        private SharedPlaylists iSharedPlaylists;
+        private OptionBool iOptionSharedPlaylists;
         private LocalPlaylists iLocalPlaylists;
         private OptionBool iOptionLocalPlaylists;
 

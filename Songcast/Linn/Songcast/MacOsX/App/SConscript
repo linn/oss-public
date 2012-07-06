@@ -1,0 +1,105 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+
+# build the assembly
+
+files = Split("""
+    ../../Model.cs
+    ../../NetworkMonitor.cs
+    ../../Preferences.cs
+    ../../XappController.cs
+    AppDelegate.cs
+    AppDelegate.designer.cs
+    Main.cs
+    MainWindow.cs
+    MainWindow.designer.cs
+    MainWindowController.cs
+    ViewPreferences.cs
+""")
+
+linkCliLibs = Split("""
+    System.Drawing
+    MonoMac
+    OssCore
+    OssToolkitMonoMac
+    OpenHome/MacOsX/ohSongcast.net
+    OpenHome/MacOsX/ohXapp
+    OpenHome/MacOsX/ohXappViewer
+    OpenHome/MacOsX/ohXen
+""")
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+
+progAssembly = _default_env.CliProgram('Songcast', files + appAssemblyInfo, CSCTARGET=target, CLILIBS=linkCliLibs, TARGETFRAMEWORKVERSION='4.0')
+
+
+# build the nib files
+
+nibs = _default_env.IbTool('MainMenu.nib', 'MainMenu.xib')
+nibs += _default_env.IbTool('MainWindow.nib', 'MainWindow.xib')
+nibs.append(File(_default_env.subst('$install_dir/bin/CrashLogDumperWindow.nib')))
+nibs.append(File(_default_env.subst('$install_dir/bin/UpdateWindow.nib')))
+_default_env.Depends(progAssembly, nibs)
+
+
+# build a list of all required assembly files
+reqAssemblies = []
+reqAssemblies.extend(linkCliLibs)
+
+
+# create list of native libraries
+nativeLibs = [ File('../../../../OpenHome/MacOsX/libohSongcast.so') ]
+
+
+# build everything that needs to go in the "Resource" folder
+rootResources = Split("""
+    ../../Resources/IconLarge.png
+    ../../Resources/SysTrayIconOn.png
+    ../../Resources/SysTrayIconOff.png
+    ../../Resources/presentation
+""")
+rootResources = [File(f) for f in rootResources];
+
+widgetResources = Split("""
+    $hardware_dir/share/Linn/Resources/Widgets/Common
+    $hardware_dir/share/Linn/Resources/Widgets/Fonts
+    $hardware_dir/share/Linn/Resources/Widgets/ToggleButton
+    $hardware_dir/share/Linn/Resources/Widgets/Rotary
+    $hardware_dir/share/Linn/Resources/Widgets/Rocker
+""")
+widgetResources = [_default_env.Dir(d) for d in widgetResources]
+
+resources = { '' : rootResources,
+              'presentation/main/Widgets' : widgetResources }
+
+
+# create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
+infoPlist = {
+    'LSUIElement' : '1',
+    'NSMainNibFile' : 'MainMenu',
+    'NSPrincipalClass' : 'NSApplication',
+    'SongcastDomain' : 'linn.co.uk',
+    'SongcastManufacturerName' : 'Linn',
+    'SongcastManufacturerUrl' : 'http://www.linn.co.uk',
+    'SongcastModelUrl' : 'http://www.linn.co.uk',
+    'SongcastPreferencePane' : '/Library/PreferencePanes/LinnSongcast.prefPane'
+}
+
+
+# build the .app bundled with mono
+app = _default_env.Mmp('Songcast', progAssembly,
+                    APPCERT = '"Developer ID Application: Linn Products Ltd"',
+                    CLILIBS = reqAssemblies,
+                    NATIVELIBS = nativeLibs,
+                    NIBS = nibs,
+                    RESOURCES = resources,
+                    EXERESOURCES = {},
+                    ICON = 'Linn/Songcast/Resources/Songcast.icns',
+                    INFOPLIST = infoPlist,
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+                    
+Return('app')
+
+

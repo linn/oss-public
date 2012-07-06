@@ -235,15 +235,15 @@ namespace Linn
                             {
                                 string version = versionNode.Attributes["version"].Value;
 
-                                if (ProductSupport.CompareVersions(version, latestVersion) > 0
-                                    || (ProductSupport.CompareVersions(version, latestVersion) == 0 && versionType.Key > iApplicationBuildType))
+                                if (VersionSupport.CompareVersions(version, latestVersion) > 0
+                                    || (VersionSupport.CompareVersions(version, latestVersion) == 0 && versionType.Key > iApplicationBuildType))
                                 {
                                     XmlNode uriNode = versionNode.SelectSingleNode(String.Format("ns:url[@target='{0}']", iApplicationTarget), xmlNsMan);
                                     if (uriNode != null)
                                     {
                                         UserLog.WriteLine(String.Format("{0} update available: {1}", versionType.Value, version));
                                         Uri uri = new Uri(uriNode.InnerText);
-                                        result = new AutoUpdateInfo(iApplicationName, version, historyUri, uri, versionType.Key, ProductSupport.Family(iHelper.Version) != ProductSupport.Family(version));
+                                        result = new AutoUpdateInfo(iApplicationName, version, historyUri, uri, versionType.Key, VersionSupport.Family(iHelper.Version) != VersionSupport.Family(version));
                                         latestVersion = version;
                                     }
                                 }

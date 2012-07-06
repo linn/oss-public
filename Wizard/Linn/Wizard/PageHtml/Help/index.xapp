@@ -1,0 +1,80 @@
+<div id="all">
+<!-- Help -->
+<!-- >>>>>>> THIS SECTION IS UNIFORM FOR ALL PAGES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+
+  <script src="../Linn.js" type="text/javascript"></script>
+  <script src="ticket.js" type="text/javascript"></script>
+
+
+  <div id="Background" class="background"></div>
+
+  <div id="pagesection">
+
+
+    <div id="Help" class="section">
+
+      <div id ="HelpMenu">
+
+        <h2 class="title" id="HelpMenuTitle"></h2>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem1" onclick="genericClick(this);"></button>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem2" onclick="genericClick(this);"></button>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem3" onclick="genericClick(this);"></button>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem4" onclick="genericClick(this);"></button>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem5" onclick="genericClick(this);"></button>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem6" onclick="genericClick(this);"></button>
+        <button class="modal_menu_item" style="visibility:hidden" id="HelpMenuItem7" onclick="genericClick(this);"></button>
+        
+      </div>
+        
+        
+        
+      <div id ="HelpContent">
+
+        <button class="dark_button" id="FormCloseButton" style="visibility:hidden" onclick="action('PreviousPage');" ></button>
+
+        <h2 class="title" id="HelpTitle"></h2>
+        <p class="text" id="HelpText"></p>
+
+        <div id="TicketForm">
+          <div class="text_entry">
+            <p class="text_title" id="TicketFirstNameTitle" style="visibility:hidden"></p>
+            <textarea class="text_edit" id="TicketFirstName" rows="1" cols="52" style="visibility:hidden" onkeypress="return TextEntryKey(this, event)"  onkeyup="TextKeyup(this, event)"></textarea>
+          </div>
+
+          <div class="text_entry">
+            <p class="text_title" id="TicketLastNameTitle" style="visibility:hidden"></p>
+            <textarea class="text_edit" id="TicketLastName" rows="1" cols="52" style="visibility:hidden" onkeypress="return TextEntryKey(this, event)"  onkeyup="TextKeyup(this, event)"></textarea>
+          </div>
+
+          <div class="text_entry">
+            <p class="text_title" id="TicketPhoneNumberTitle" style="visibility:hidden"></p>
+            <textarea class="text_edit" id="TicketPhoneNumber" rows="1" cols="52" style="visibility:hidden" onkeypress="return TextEntryKey(this, event)"  onkeyup="TextKeyup(this, event)"></textarea>
+          </div>
+
+          <div class="text_entry">
+            <p class="text_title" id="TicketEmailTitle" style="visibility:hidden"></p>
+            <textarea class="text_edit" id="TicketEmail" rows="1" cols="52" style="visibility:hidden" onkeypress="return TextEntryKey(this, event)"  onkeyup="TextKeyup(this, event)"></textarea>
+          </div>
+
+          <div class="text_entry">
+            <p class="text_title" id="TicketFaultDescriptionTitle" style="visibility:hidden"></p>
+            <textarea class="text_edit" id="TicketFaultDescription" rows="8" cols="52" style="visibility:hidden"  onkeypress="return TextEntryKey(this, event)"  onkeyup="TextKeyup(this, event)"></textarea>
+          </div>
+
+          <div class="text_entry">
+            <p class="text_title text_valid" id="TicketContactNotesTitle" style="visibility:hidden"></p>
+            <textarea class="text_edit" id="TicketContactNotes" rows="3" cols="52" style="visibility:hidden" onkeypress="return TextEntryKey(this, event)"  onkeyup="TextKeyup(this, event)"></textarea>
+          </div>
+        </div>      <!-- end TicketForm -->
+
+
+      </div>
+      <div id="HelpSeparator" class="horiz_separator"></div>      
+      <div id="HelpFooter">
+        <button class="dark_button" id="FormSubmitButton" style="visibility:hidden"  onclick="onSubmitButtonClick();" ></button>
+        <button class="light_button" id="FormClearButton" style="visibility:hidden"  onclick="onClearButtonClick(this);" ></button>
+        <img id="SubmitWaitSpinner" style="visibility:hidden"/>
+      </div>
+    </div>
+  </div>
+</div>

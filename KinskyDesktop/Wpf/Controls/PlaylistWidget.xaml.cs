@@ -297,6 +297,10 @@ namespace KinskyDesktopWpf
                                 }
                                 iNowPlayingItem = items[i];
                                 items[i].IsPlaying = true;
+                                if (items[i] is SenderListItem && aSelectedItem is SenderListItem)
+                                {
+                                    (items[i] as SenderListItem).HasRoom = (aSelectedItem as SenderListItem).HasRoom;
+                                }
                             }
                             else
                             {

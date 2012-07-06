@@ -13,8 +13,9 @@ using System.Net;
 using Linn;
 using Linn.Control.Ssdp;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 using Linn.Toolkit.WinForms;
+using Linn.ProductSupport.Diagnostics;
 
 using LinnSetup.Properties;
 
@@ -22,9 +23,10 @@ namespace LinnSetup
 {
     public partial class FormLinnSetup : Form, IStack
     {
-        public FormLinnSetup(HelperLinnSetup aHelper, AppletManager aManager) {
+        public FormLinnSetup(HelperLinnSetup aHelper, Diagnostics aDiagnostics, AppletManager aManager) {
             iManager = aManager;
             iHelper = aHelper;
+            iDiagnostics = aDiagnostics;
 
             iFormUserLog = new FormUserLog(iHelper.Icon);
             iFormUserLog.SetBackColour(Color.Black);
@@ -35,6 +37,9 @@ namespace LinnSetup
             this.WindowState = FormWindowState.Maximized;
             this.Text = iHelper.Product;
             this.Icon = iHelper.Icon;
+
+            releaseNotesToolStripMenuItem.Image = Linn.Toolkit.WinForms.Properties.Resources.Rss;
+            betaReleaseNotesToolStripMenuItem.Image = Linn.Toolkit.WinForms.Properties.Resources.Rss;
 
             // select view
             if (aHelper.ApplicationOptions.ViewDetails) {
@@ -70,13 +75,16 @@ namespace LinnSetup
         }
 
         private void EventFormClosedHandler(object sender, EventArgs e) {
+            if (iDiagnostics != null) {
+                iDiagnostics.Shutdown();
+            }
             iHelper.Stack.Stop();
         }
 
         void IStack.Start(System.Net.IPAddress aIpAddress) {
             iEventServer = new EventServerUpnp();
             iListenerNotify = new SsdpListenerMulticast();
-            iBoxes = new Boxes(iEventServer, iListenerNotify);
+            iBoxes = new Boxes(iHelper, iEventServer, iListenerNotify);
             iBoxes.EventRoomAdded += RoomAddedHandler;
             iBoxes.EventRoomRemoved += RoomRemovedHandler;
 
@@ -167,7 +175,7 @@ namespace LinnSetup
 
         private void AddItem(EventArgsBox e) {
             Target target = new Target(e.BoxArg);
-            TargetMediator targetMediator = new TargetMediator(target, iManager, iEventServer);
+            TargetMediator targetMediator = new TargetMediator(target, iManager);
 
             ListViewItem item = new ListViewItem(new string[] { "", "", "", "", "", "", "", "", "", "", "", "", "" });
             SetListViewItem(targetMediator, item);
@@ -188,7 +196,18 @@ namespace LinnSetup
             aItem.SubItems[1].Text = aTargetMediator.Target.Box.Name;
             aItem.SubItems[2].Text = aTargetMediator.Target.Box.Model;
             aItem.SubItems[3].Text = aTargetMediator.Target.Box.SoftwareVersion;
-            aItem.SubItems[4].Text = aTargetMediator.Target.Box.SoftwareUpdateString(true);
+            if (iBoxes.UpdateCheckInProgress) {
+                aItem.SubItems[4].Text = "Update Check In Progress";
+            }
+            else if (iBoxes.UpdateCheckFailed) {
+                aItem.SubItems[4].Text = "Update Check Failed";
+            }
+            else if (aTargetMediator.Target.Box.SoftwareUpdateVersion == null) {
+                aItem.SubItems[4].Text = "Device not found";
+            }
+            else {
+                aItem.SubItems[4].Text = aTargetMediator.Target.Box.SoftwareUpdateString(true);
+            }
             aItem.SubItems[5].Text = aTargetMediator.Target.Box.IpAddress;
             aItem.SubItems[6].Text = aTargetMediator.Target.Box.MacAddress;
             aItem.SubItems[7].Text = aTargetMediator.Target.Box.StatusText;
@@ -359,11 +378,62 @@ namespace LinnSetup
             }
         }
 
+        private void onlineHelpToolStripMenuItem_Click(object sender, EventArgs e) {
+            string url = "http://docs.linn.co.uk/wiki/index.php/Konfig_Manual";
+            try {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch (Exception) {
+                MessageBox.Show("Could not load: " + url, "Load URL Failed", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+        }
+
+        private void releaseNotesToolStripMenuItem_Click(object sender, EventArgs e) {
+            string url = "http://products.linn.co.uk/VersionInfo/ReleaseVersionInfo.xml";
+            try {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch (Exception) {
+                MessageBox.Show("Could not load: " + url, "Load URL Failed", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+        }
+
+        private void betaReleaseNotesToolStripMenuItem_Click(object sender, EventArgs e) {
+            string url = "http://products.linn.co.uk/VersionInfo/BetaVersionInfo.xml";
+            try {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch (Exception) {
+                MessageBox.Show("Could not load: " + url, "Load URL Failed", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+        }
+
+        private void tuneInRadioWebsiteToolStripMenuItem_Click(object sender, EventArgs e) {
+            string url = "http://tunein.com/";
+            try {
+                System.Diagnostics.Process.Start(url);
+            }
+            catch (Exception) {
+                MessageBox.Show("Could not load: " + url, "Load URL Failed", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+        }
+
+        private void rebootDeviceToolStripMenuItem_Click(object sender, EventArgs e) {
+            TargetMediator targetMediator = (TargetMediator)listView1.SelectedItems[0].Tag;
+            targetMediator.Target.Box.Reboot();
+        }
+
+        private void turnDeviceOnToolStripMenuItem_Click(object sender, EventArgs e) {
+            TargetMediator targetMediator = (TargetMediator)listView1.SelectedItems[0].Tag;
+            targetMediator.Target.Box.SetStandby(false);
+        }
+
         private EventServerUpnp iEventServer;
         private SsdpListenerMulticast iListenerNotify;
-        private Boxes iBoxes;
+        private Boxes iBoxes = null;
         private AppletManager iManager;
         private HelperLinnSetup iHelper;
+        private Diagnostics iDiagnostics;
         private FormUserLog iFormUserLog = null;
         private FormTree iFormTree = null;
     }

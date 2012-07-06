@@ -16,36 +16,63 @@ namespace Linn
         public static ApplicationDroid Instance { get { return iInstance; } }
         public static Assembly EntryAssembly { get { return iEntryAssembly; } }
 
+        public event EventHandler<EventArgs> EventLowMemory;
+
         public override void OnCreate()
         {
-            base.OnCreate();
             iEntryAssembly = GetEntryAssembly();
             iInstance = this;
             iRunningActivities = new List<Activity>();
+            base.OnCreate();
         }
         public bool IsRunning
         {
             get
             {
-                return iRunningActivities.Count > 0;
+                lock (iRunningActivities)
+                {
+                    return iRunningActivities.Count > 0;
+                }
             }
         }
         public void ActivityStarted(Activity aActivity)
         {
-            Assert.Check(!iRunningActivities.Contains(aActivity));
-            if (!IsRunning)
+            lock (iRunningActivities)
             {
-                OnStart();
+                Assert.Check(!iRunningActivities.Contains(aActivity));
+                if (!IsRunning)
+                {
+                    OnStart();
+                }
+                iRunningActivities.Add(aActivity);
             }
-            iRunningActivities.Add(aActivity);
         }
         public void ActivityStopped(Activity aActivity)
         {
-            Assert.Check(iRunningActivities.Contains(aActivity));
-            iRunningActivities.Remove(aActivity);
-            if (!IsRunning)
+            lock (iRunningActivities)
             {
-                OnStop();
+                Assert.Check(iRunningActivities.Contains(aActivity));
+                iRunningActivities.Remove(aActivity);
+                if (!IsRunning)
+                {
+                    OnStop();
+                }
+            }
+        }
+
+        public override void OnLowMemory()
+        {
+            UserLog.WriteLine("Low Memory Detected.");
+            OnEventLowMemory();
+            System.GC.Collect();
+            base.OnLowMemory();
+        }
+
+        protected void OnEventLowMemory()
+        {
+            if (EventLowMemory != null)
+            {
+                EventLowMemory(this, EventArgs.Empty);
             }
         }
 
@@ -60,7 +87,7 @@ namespace Linn
     }
 
     public class ObservableActivity : Activity
-    {        
+    {
         protected override void OnStart()
         {
             base.OnStart();

@@ -11,7 +11,6 @@ namespace Linn.Topology
     {
         void Open();
         void Close();
-        void Kill();
 
         Device Device { get; }
 
@@ -69,10 +68,6 @@ namespace Linn.Topology
             iServiceInfo.EventStateDetailsCount -= EventStateDetailsCountChanged;
             iServiceInfo.EventSubscriptionError -= EventSubscriptionErrorHandler;
             iServiceInfo.EventInitial -= EventInitialResponse;
-        }
-
-        public void Kill()
-        {
         }
 
         public Device Device

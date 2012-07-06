@@ -17,7 +17,7 @@ def MSBuildFileGeneratorFn(target, source, env):
     filename = os.path.splitext(filename)[0]
     
     if 'OUTPUTTYPE' not in env:
-        outputType = 'Library' if env['hardware'] == 'Droid' else 'WinExe'
+        outputType = 'Library' if env['hardware'] == 'Android' else 'WinExe'
     else:
         outputType = env['OUTPUTTYPE']
         if SCons.Util.is_List(outputType):
@@ -26,7 +26,7 @@ def MSBuildFileGeneratorFn(target, source, env):
         raise Exception("OutputType must be one of 'Library', 'WinExe' or 'Exe'")	
 
     # ensure key info is provided for android release mode signing
-    if env['hardware'] == "Droid" and env['variant'] == 'release':
+    if env['hardware'] == "Android" and env['variant'] == 'release':
         for key in ['ANDROIDKEYSTORE', 'ANDROIDKEYSTOREPASS', 'ANDROIDKEYALIAS', 'ANDROIDKEYPASS']:
             if key not in env: raise Exception("Missing %s in environment." % key)
 
@@ -100,26 +100,25 @@ def MSBuildFileGeneratorFn(target, source, env):
         <AndroidSigningKeyPass>%(ANDROIDKEYPASS)s</AndroidSigningKeyPass>  
       </PropertyGroup>
       %(IMPORTS)s
-    
       <Target Name="BeforeResolveReferences">  
         <CreateProperty Value="%(CLILIBPATH)s$(AssemblySearchPaths)">  
         <Output TaskParameter="Value" PropertyName="AssemblySearchPaths" />  
         </CreateProperty>  
-      </Target>  
+      </Target>
     </Project>
     """ % {
               'TOOLSVERSION' : "4.0" if 'TOOLSVERSION' not in env else env['TOOLSVERSION'],
               'PRODUCTVERSION' : "10.0.0" if 'PRODUCTVERSION' not in env else env['PRODUCTVERSION'],
               'SCHEMAVERSION' : "2.0" if 'SCHEMAVERSION' not in env else env['SCHEMAVERSION'],
-              'TARGETFRAMEWORKVERSION' : "1.6" if 'TARGETFRAMEWORKVERSION' not in env and env['hardware'] == "Droid" else "3.5" if 'TARGETFRAMEWORKVERSION' not in env else env['TARGETFRAMEWORKVERSION'],
+              'TARGETFRAMEWORKVERSION' : "2.2" if 'TARGETFRAMEWORKVERSION' not in env and env['hardware'] == "Android" else "4.0" if 'TARGETFRAMEWORKVERSION' not in env else env['TARGETFRAMEWORKVERSION'],
               'CLIPLATFORMTARGET' : env['CLIPLATFORMTARGET'],
-              'PROJECTTYPEGUIDS' : "{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" if env['hardware'] == 'Droid' else "{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
+              'PROJECTTYPEGUIDS' : "{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}" if env['hardware'] == 'Android' else "{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}",
               'ROOTNAMESPACE' : filename if 'ROOTNAMESPACE' not in env else env['ROOTNAMESPACE'],
               'ASSEMBLYNAME' : filename,
               'OUTPUTTYPE' : outputType,
               'APPLICATIONICON' : "" if 'ICON' not in env else "<ApplicationIcon>%(ICON)s</ApplicationIcon>" % { 'ICON' : env['ICON'] },
               'OUTPUTPATH' : builddir if 'OUTPUTPATH' not in env else env['OUTPUTPATH'],
-              'IMPORTS' : '<Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />' if env['hardware'] == 'Droid' else '<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />',
+              'IMPORTS' : '<Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />' if env['hardware'] == 'Android' else '<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />',
               'ANDROIDRESGENFILE' : "" if 'ANDROIDRESGENFILE' not in env else env['ANDROIDRESGENFILE'],
               'ANDROIDMANIFEST' : "" if 'ANDROIDMANIFEST' not in env else env['ANDROIDMANIFEST'],
               'CLILIBPATH' : "" if 'CLILIBPATH' not in env else expandCliLibs(env),
@@ -207,7 +206,8 @@ def getElementName(ext):
         "cs":"Compile",
         "xaml":"Page",
         "settings":"None",
-        "resx":"EmbeddedResource"
+        "resx":"EmbeddedResource",
+        "jar":"AndroidJavaLibrary"
     }
     try:
         return names[ext.lower()]

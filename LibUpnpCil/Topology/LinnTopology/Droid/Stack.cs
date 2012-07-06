@@ -73,7 +73,7 @@ namespace LinnTopologyDroid
             }
 
             iHelper = new Helper(new string[0] { });
-            OptionPageCrashDumper optionCrashDumper = new OptionPageCrashDumper();
+            OptionPageCrashDumper optionCrashDumper = new OptionPageCrashDumper("Crash Logs");
             iHelper.AddOptionPage(optionCrashDumper);
             iWifiListener = new WifiListener(iHelper);
             RegisterReceiver(iWifiListener, new IntentFilter(Android.Net.Wifi.WifiManager.NetworkStateChangedAction));

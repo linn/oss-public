@@ -34,6 +34,13 @@ namespace KinskyDesktop
             ViewTable.RowHeight = 60.0f;
             ViewTable.BackgroundColor = NSColor.ClearColor;
 
+            ButtonRefresh.Image = Properties.Resources.IconRefreshButton;
+            ButtonRefresh.Frame = new NSRect(ButtonRefresh.Frame.origin.x, ButtonRefresh.Frame.origin.y, 21, 21);
+            ButtonRefresh.ActionEvent += RefreshClick;
+
+            Hourglass.Show(false);
+            Hourglass.Frame = new NSRect(ButtonRefresh.Frame.origin.x - 4, ButtonRefresh.Frame.origin.y - 4, 30, 30);
+
             // setup model eventing
             iModel.EventChanged += ModelChanged;
 
@@ -54,10 +61,47 @@ namespace KinskyDesktop
         {
             iModel.EventChanged -= ModelChanged;
 
+            StopRefresh();
+            ButtonRefresh.ActionEvent -= RefreshClick;
+
             View.Release();
             ArrayController.Release();
 
             this.SendMessageSuper(ThisClass, "dealloc");
+        }
+
+        private void RefreshClick(Id aSender)
+        {
+            StartRefresh();
+        }
+
+        private void StartRefresh()
+        {
+            StopRefresh();
+            iRefreshTimer = new System.Threading.Timer(TimerCallback);
+            ButtonRefresh.IsHidden = true;
+            Hourglass.Show(true);
+            iRefreshTimer.Change(kRefreshTimeout, System.Threading.Timeout.Infinite);
+            ModelMain.Instance.Rescan();
+        }
+
+        private void TimerCallback(object aSender)
+        {
+            ButtonRefresh.BeginInvoke((Action)(()=>{
+                StopRefresh();
+            }));
+        }
+
+        private void StopRefresh()
+        {
+            if (iRefreshTimer != null)
+            {
+                iRefreshTimer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite);
+                iRefreshTimer.Dispose();
+                iRefreshTimer = null;
+                ButtonRefresh.IsHidden = false;
+                Hourglass.Show(false);
+            }
         }
 
 
@@ -71,7 +115,26 @@ namespace KinskyDesktop
         [ObjectiveCMessage("tableView:willDisplayCell:forTableColumn:row:")]
         public void TableViewWillDisplayCell(NSTableView aView, NSCell aCell, NSTableColumn aTableColumn, int aRow)
         {
-            aCell.RepresentedObject = iSources.ObjectAtIndex((uint)aRow);
+            NSString identifier = aTableColumn.Identifier.CastTo<NSString>();
+
+            if (identifier.Compare(NSString.StringWithUTF8String("selected")) == NSComparisonResult.NSOrderedSame)
+            {
+                NSImageCell cell = aCell.CastTo<NSImageCell>();
+                if (aRow == SelectedIndex)
+                {
+                    cell.Image = Properties.Resources.IconTick;
+                    cell.IsEnabled = true;
+                }
+                else
+                {
+                    cell.Image = null;
+                    cell.IsEnabled = false;
+                }
+            }
+            else
+            {
+                aCell.RepresentedObject = iSources.ObjectAtIndex((uint)aRow);
+            }
         }
 
         [ObjectiveCMessage("tableView:didClickCellAtColumn:row:")]
@@ -114,9 +177,7 @@ namespace KinskyDesktop
             [ObjectiveCMessage("selectionIndices")]
             get
             {
-                NSIndexSet selection = (SelectedIndex != -1)
-                                     ? new NSIndexSet((uint)SelectedIndex)
-                                     : new NSIndexSet();
+                NSIndexSet selection = new NSIndexSet();
                 selection.Autorelease();
                 return selection;
             }
@@ -179,8 +240,16 @@ namespace KinskyDesktop
         [ObjectiveCField]
         public NSTableView ViewTable;
 
+        [ObjectiveCField]
+        public NSButton ButtonRefresh;
+
+        [ObjectiveCField]
+        public ViewHourglass Hourglass;
+
         private IModelSelectionList<Linn.Kinsky.Source> iModel;
         private NSMutableArray iSources = new NSMutableArray();
+        private System.Threading.Timer iRefreshTimer;
+        private const int kRefreshTimeout = 5000;
     }
 
 

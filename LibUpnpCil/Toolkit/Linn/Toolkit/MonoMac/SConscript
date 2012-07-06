@@ -1,0 +1,29 @@
+Import('_default_env')
+
+
+files = Split("""
+    ../../../Properties/AssemblyInfo.cs
+    ../AutoUpdateController.cs
+    ../HelperAutoUpdate.cs
+    CrashLogDumperWindow.cs
+    CrashLogDumperWindow.designer.cs
+    CrashLogDumperWindowController.cs
+    HelperAutoUpdate.cs
+    Invoker.cs
+    UpdateWindow.cs
+    UpdateWindow.designer.cs
+    UpdateWindowController.cs
+""")
+
+nib = _default_env.IbTool('CrashLogDumperWindow.nib', 'CrashLogDumperWindow.xib')
+nib += _default_env.IbTool('UpdateWindow.nib', 'UpdateWindow.xib')
+nib = _default_env.Install('$install_dir/bin/', nib)
+
+lib = _default_env.CliLibrary('OssToolkitMonoMac', files, CLILIBS=['mscorlib', 'System.Drawing', 'OssCore', 'MonoMac'])
+
+Depends(lib, nib)
+Alias('Lib', lib)
+
+docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ToolkitMonoMac.tar', files, DOXYGENINPUT='Linn/Toolkit/MonoMac', DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ToolkitMonoMac', DOXYGENNAMESPACE='OssToolkitMonoMac', DOXYGENEXCLUDE='*.svn*')
+Alias('Docs', docs)
+

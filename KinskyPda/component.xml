@@ -1,19 +1,24 @@
-<Release rel="KinskyPda" relNum="3.1.5" compat="Cara.1">
+<Release rel="KinskyPda" relNum="4.1.1" compat="Davaar.1">
     <Macros
         REPOS_OSS="http://oss.linn.co.uk/repos/Main"
-        OPTS_OSS="variant=release dflVarDirs"
+        OPTS_OSS="hardware=PocketPc variant=release dflVarDirs"
     />
     <!-- all source code required to build this component;
          ordered from top-level to most fundamental low-level dependency -->
-    <Source build="1" dir="KinskyPda" url="${REPOS_OSS}/KinskyPda" rev="933" opts="hardware=PocketPc ${OPTS_OSS}"/>
-    <Source build="1" dir="Kinsky" url="${REPOS_OSS}/Kinsky" rev="895" opts="hardware=PocketPc KinskyOss ${OPTS_OSS}"/>
-    <Source build="1" dir="LibUpnpCil/Topology" url="${REPOS_OSS}/LibUpnpCil/Topology" rev="924" opts="hardware=PocketPc ${OPTS_OSS}"/>
-    <Source build="1" dir="LibUpnpCil/DidlLite" url="${REPOS_OSS}/LibUpnpCil/DidlLite" rev="XXX" opts="hardware=Pc ${OPTS_OSS}"/>
-    <Source build="1" dir="LibUpnpCil/Services" url="${REPOS_OSS}/LibUpnpCil/Services" rev="601" opts="hardware=PocketPc ${OPTS_OSS}"/>
-    <Source build="1" dir="LibUpnpCil/Control" url="${REPOS_OSS}/LibUpnpCil/Control" rev="935" opts="hardware=PocketPc ${OPTS_OSS}"/>
-    <Source build="1" dir="LibUpnpCil/Core" url="${REPOS_OSS}/LibUpnpCil/Core" rev="925" opts="hardware=PocketPc ${OPTS_OSS}"/>
-    <Source build="1" dir="Kodegen" url="${REPOS_OSS}/Kodegen" rev="XXX" opts="hardware=Windows ${OPTS_OSS}"/>
-    <Source build="1" dir="Xml" url="${REPOS_OSS}/Xml" rev="XXX" opts="hardware=Windows ${OPTS_OSS}"/>  
-    <Source build="1" dir="Docs" url="${REPOS_OSS}/Docs" rev="XXX" opts="hardware=Windows ${OPTS_OSS}"/>  
-    <Source build="0" dir="BuildSystem" url="${REPOS_OSS}/BuildSystem" rev="746"/>
+    <Source build="1" dir="KinskyPda" url="${REPOS_OSS}/KinskyPda" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Layouts" url="${REPOS_OSS}/Layouts" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="0" dir="MediaProviderPlugins" url="${REPOS_OSS}/MediaProviderPlugins" rev="XXX" opts="Bbc Shoutcast Wfmu MovieTrailers ${OPTS_OSS}"/>
+    <Source build="1" dir="Kinsky" url="${REPOS_OSS}/Kinsky" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Topology" url="${REPOS_OSS}/LibUpnpCil/Topology" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/DidlLite" url="${REPOS_OSS}/LibUpnpCil/DidlLite" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Services" url="${REPOS_OSS}/LibUpnpCil/Services" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Control" url="${REPOS_OSS}/LibUpnpCil/Control" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/SysLib" url="${REPOS_OSS}/LibUpnpCil/SysLib" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Toolkit" url="${REPOS_OSS}/LibUpnpCil/Toolkit" rev="XXX" opts="OssToolkitWinForms ${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Core" url="${REPOS_OSS}/LibUpnpCil/Core" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Kodegen" url="${REPOS_OSS}/Kodegen" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="External" url="${REPOS_OSS}/External" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Xml" url="${REPOS_OSS}/Xml" rev="XXX" opts="${OPTS_OSS}"/>  
+    <Source build="1" dir="Docs" url="${REPOS_OSS}/Docs" rev="XXX" opts="${OPTS_OSS}"/>  
+    <Source build="0" dir="BuildSystem" url="${REPOS_OSS}/BuildSystem" rev="XXX"/>
 </Release> 

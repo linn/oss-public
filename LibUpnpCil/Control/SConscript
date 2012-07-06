@@ -22,7 +22,7 @@ if _default_env['hardware'] != 'PocketPc':
 
 res=[] 
 clilibs = ['OssSysLib', 'OssCore', 'mscorlib', 'System', 'System.Xml', 'System.Web.Services']
-if _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Android':
     lib = _default_env.CliLibrary('OssControl', files, CLILIBS=clilibs, CLIRESOURCES=res)
 else:
     msproj = _default_env.MSBuildFileGenerator('OssControl', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn.Control')
@@ -40,7 +40,7 @@ upnpspy = Split("""
 """)
 
 utils = []
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     utils = _default_env.CliProgram('UpnpSpy', upnpspy, CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
     utils += _default_env.CliProgram('NctClient', ['Linn/Control/Nct/Program.cs'], CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl'])
 Alias('Lib', utils)
@@ -53,7 +53,7 @@ utils.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
 utils.append(File(_default_env.subst('$variant_dir/share/Linn/Core/linn.ico')))
 
 installer = []
-if _default_env['installers'] and _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Droid':
+if _default_env['installers'] and _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Control', 'UpnpDiagnostics',
                         FILES      = {''             : utils },
                         TEMPLATE   = 'UpnpDiagnosticsNsiTemplate.txt',
@@ -78,7 +78,7 @@ service = _default_env.Kodegen('UpnpControlPointTest.cs', xml, KODE="UpnpControl
 #prog += _default_env.CliProgram('Test/TestUpnpControl', ['Linn/Control/Upnp/Test/TestUpnpControl.cs'] + service, CLILIBS=['OssTestFramework', 'OssControl', 'OssSysLib', 'OssCore', 'System.Web.Services'])
 #Alias('Test', prog)
 
-if _default_env['hardware'] != 'Ios':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     files = Split("""
         Test/TestWebRequestSync/Properties/AssemblyInfo.cs
         Test/TestWebRequestSync/Form1.cs

@@ -21,7 +21,7 @@ files = Split("""
     Linn/OptionPage.cs
     Linn/OptionPageUpdates.cs
     Linn/OptionParser.cs
-    Linn/ProductSupport.cs
+    Linn/VersionSupport.cs
     Linn/Scheduler.cs
     Linn/Stack.cs
     Linn/Standard.cs
@@ -34,15 +34,18 @@ files = Split("""
 """)
 
 iosFiles = Split("""
+    Linn/Framework/NetworkChangeWatcher.cs
     Linn/Framework/AssemblyInfo.cs
     Linn/Framework/NetworkInfo.cs
     Linn/Framework/ServiceInfo.cs
     Linn/Framework/SystemEvents.cs
     Linn/Framework/SystemInfoIos.cs
     Linn/Framework/Timer.cs
+    Linn/IImageCache.cs
 """)
 
 pocketPcFiles = Split("""
+    Linn/Framework/NetworkChangeWatcher.cs
     Linn/Framework/AssemblyInfoCompact.cs
     Linn/Framework/NetworkInfoCompact.cs
     Linn/Framework/SemaphoreCompact.cs
@@ -53,6 +56,7 @@ pocketPcFiles = Split("""
 """)
 
 windowsFiles = Split("""
+    Linn/Framework/NetworkChangeWatcher.cs
     Linn/Framework/AssemblyInfo.cs
     Linn/Framework/NetworkInfo.cs
     Linn/Framework/ServiceInfoWindows.cs
@@ -64,6 +68,7 @@ windowsFiles = Split("""
 """)
 
 macOsXFiles = Split("""
+    Linn/Framework/NetworkChangeWatcherCocoa.cs
     Linn/Framework/AssemblyInfo.cs
     Linn/Framework/NetworkInfo.cs
     Linn/Framework/ServiceInfo.cs
@@ -71,9 +76,11 @@ macOsXFiles = Split("""
     Linn/Framework/SystemInfoCocoa.cs
     Linn/Framework/Timer.cs
     Linn/AutoUpdate.cs
+    Linn/IImageCache.cs
 """)
 
 linuxFiles = Split("""
+    Linn/Framework/NetworkChangeWatcher.cs
     Linn/Framework/AssemblyInfo.cs
     Linn/Framework/NetworkInfo.cs
     Linn/Framework/ServiceInfo.cs
@@ -84,6 +91,7 @@ linuxFiles = Split("""
 """)
 
 droidFiles = Split("""
+    Linn/Framework/NetworkChangeWatcher.cs
     Linn/Framework/ApplicationDroid.cs
     Linn/Framework/AssemblyInfoDroid.cs
     Linn/Framework/NetworkInfoDroid.cs
@@ -106,7 +114,7 @@ elif _default_env['hardware'] == 'MacOsX':
     files.append(macOsXFiles)
 elif _default_env['hardware'] == 'Linux':
     files.append(linuxFiles)
-elif _default_env['hardware'] == 'Droid':
+elif _default_env['hardware'] == 'Android':
     files.extend(droidFiles)
 else:
     print '** Must define OssCore compile time select files for hardware: ' + _default_env['hardware']
@@ -114,18 +122,26 @@ else:
 
 
 lib = None
+
 if _default_env['hardware'] == 'PocketPc':
     lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml'])
+
 elif _default_env['hardware'] == 'Ios':
     lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml'])
-elif _default_env['hardware'] == 'Droid':
+
+elif _default_env['hardware'] == 'Android':
     clilibs = ['System', 'System.Xml', 'System.Core', 'Mono.Android']
     msproj = _default_env.MSBuildFileGenerator('OssCore', files, LINKS=files, CLILIBS=clilibs, ROOTNAMESPACE='Linn')
     lib = _default_env.MSBuildLibBuilder('OssCore', msproj, CLILIBS=clilibs)
+
+elif _default_env['hardware'] == 'MacOsX':
+    csclibflags = _default_env['CSCLIBFLAGS'] + ' -unsafe'
+    lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'System.ServiceProcess'], CSCLIBFLAGS=csclibflags)
+
 else:
     lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'System.ServiceProcess'])
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Android':
     lib += _default_env.CliLibrary('OssTestFramework', ['Linn/TestFramework/Properties/AssemblyInfo.cs', 'Linn/TestFramework/TestFramework.cs'], CLILIBS=['mscorlib', 'OssCore'])
 
 Alias('Lib', lib)
@@ -134,7 +150,7 @@ docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Core.tar', files, DOXY
 
 Alias('Docs', docs)
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Android':
     prog  = _default_env.CliProgram('Test/TestCs', 'Linn/Test/TestCs.cs', CLILIBS=['mscorlib', 'System.Xml', 'OssTestFramework', 'OssCore'] )
     prog += _default_env.CliProgram('Test/TestDebug', 'Linn/Test/TestDebug.cs', CLILIBS=['mscorlib', 'System', 'OssTestFramework', 'OssCore'] )
     prog += _default_env.CliProgram('Test/TestOptionParser', 'Linn/Test/TestOptionParser.cs', CLILIBS=['mscorlib', 'OssTestFramework', 'OssCore'] )

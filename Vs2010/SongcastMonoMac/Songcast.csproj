@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3679665C-2332-48AA-9FBC-478B476FBF98}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Linn.Songcast</RootNamespace>
+    <AssemblyName>Songcast</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/../../Songcast/Linn/Songcast/Resources/presentation ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/UpdateWindow.nib ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/../../Songcast/Linn/Songcast/Resources/presentation ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/UpdateWindow.nib ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="MonoMac" />
+    <Reference Include="ohSongcast.net">
+      <HintPath>..\..\Songcast\OpenHome\MacOsX\ohSongcast.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXapp">
+      <HintPath>..\..\Songcast\OpenHome\MacOsX\ohXapp.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXappViewer">
+      <HintPath>..\..\Songcast\OpenHome\MacOsX\ohXappViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXen">
+      <HintPath>..\..\Songcast\OpenHome\MacOsX\ohXen.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\Main.cs">
+      <Link>Linn\Songcast\MacOsX\Main.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\AppDelegate.cs">
+      <Link>Linn\Songcast\MacOsX\AppDelegate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\AppDelegate.designer.cs">
+      <Link>Linn\Songcast\MacOsX\AppDelegate.designer.cs</Link>
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\ViewPreferences.cs">
+      <Link>Linn\Songcast\MacOsX\ViewPreferences.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Songcast\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\MainWindowController.cs">
+      <Link>Linn\Songcast\MacOsX\MainWindowController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\MainWindow.cs">
+      <Link>Linn\Songcast\MacOsX\MainWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\MacOsX\App\MainWindow.designer.cs">
+      <Link>Linn\Songcast\MacOsX\MainWindow.designer.cs</Link>
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\Model.cs">
+      <Link>Linn\Songcast\Model.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\Preferences.cs">
+      <Link>Linn\Songcast\Preferences.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\XappController.cs">
+      <Link>Linn\Songcast\XappController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Songcast\Linn\Songcast\NetworkMonitor.cs">
+      <Link>Linn\Songcast\NetworkMonitor.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\Songcast\Linn\Songcast\MacOsX\App\MainMenu.xib">
+      <Link>Linn\Songcast\MacOsX\MainMenu.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\Songcast\Linn\Songcast\MacOsX\App\MainWindow.xib">
+      <Link>Linn\Songcast\MacOsX\MainWindow.xib</Link>
+    </InterfaceDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BottomFiller.png">
+      <Link>Resources\presentation\main\BottomFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BottomLeftEdge.png">
+      <Link>Resources\presentation\main\BottomLeftEdge.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BottomRightEdge.png">
+      <Link>Resources\presentation\main\BottomRightEdge.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxDownFiller.png">
+      <Link>Resources\presentation\main\BoxDownFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxDownLeft.png">
+      <Link>Resources\presentation\main\BoxDownLeft.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxDownRight.png">
+      <Link>Resources\presentation\main\BoxDownRight.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxFiller.png">
+      <Link>Resources\presentation\main\BoxFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxLeft.png">
+      <Link>Resources\presentation\main\BoxLeft.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxOverFiller.png">
+      <Link>Resources\presentation\main\BoxOverFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxOverLeft.png">
+      <Link>Resources\presentation\main\BoxOverLeft.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxOverRight.png">
+      <Link>Resources\presentation\main\BoxOverRight.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\BoxRight.png">
+      <Link>Resources\presentation\main\BoxRight.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\LeftFiller.png">
+      <Link>Resources\presentation\main\LeftFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\LinnLogo.png">
+      <Link>Resources\presentation\main\LinnLogo.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\RightFiller.png">
+      <Link>Resources\presentation\main\RightFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\ScrewsLarge.png">
+      <Link>Resources\presentation\main\ScrewsLarge.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\Standby.png">
+      <Link>Resources\presentation\main\Standby.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\StandbyOn.png">
+      <Link>Resources\presentation\main\StandbyOn.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\TopBarFiller.png">
+      <Link>Resources\presentation\main\TopBarFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\TopFiller.png">
+      <Link>Resources\presentation\main\TopFiller.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\TopLeftEdge.png">
+      <Link>Resources\presentation\main\TopLeftEdge.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\TopRightEdge.png">
+      <Link>Resources\presentation\main\TopRightEdge.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\WheelLarge.png">
+      <Link>Resources\presentation\main\WheelLarge.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\WheelLargeOver.png">
+      <Link>Resources\presentation\main\WheelLargeOver.png</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\index.css">
+      <Link>Resources\presentation\main\index.css</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\index.xapp">
+      <Link>Resources\presentation\main\index.xapp</Link>
+    </None>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\jquery.rotate.1-1.js">
+      <Link>Resources\presentation\main\jquery.rotate.1-1.js</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <Content Include="..\..\Songcast\Linn\Songcast\Resources\SysTrayIconOff.png">
+      <Link>Resources\SysTrayIconOff.png</Link>
+    </Content>
+    <Content Include="..\..\Songcast\Linn\Songcast\Resources\SysTrayIconOn.png">
+      <Link>Resources\SysTrayIconOn.png</Link>
+    </Content>
+    <Content Include="..\..\Songcast\OpenHome\MacOsX\libohSongcast.so">
+      <Link>Resources\libohSongcast.so</Link>
+    </Content>
+    <Content Include="..\..\Songcast\Linn\Songcast\Resources\IconLarge.png">
+      <Link>Resources\IconLarge.png</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitMonoMac\OssToolkitMonoMac.csproj">
+      <Project>{22C47B98-D0D0-4B8E-A98D-F4371733E14A}</Project>
+      <Name>OssToolkitMonoMac</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+    <Folder Include="Linn\" />
+    <Folder Include="Linn\Songcast\" />
+    <Folder Include="Linn\Songcast\MacOsX\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+</Project>

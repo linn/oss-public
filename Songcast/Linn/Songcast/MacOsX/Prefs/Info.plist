@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Songcast</string>
+	<key>CFBundleIconFile</key>
+	<string>Songcast.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>uk.co.linn.songcast</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Linn Songcast</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$BUILD_INFO_VERSION</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$BUILD_INFO_SVN_REVISION</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2011-12 Linn</string>
+	<key>NSMainNibFile</key>
+	<string>SongcastPrefPane</string>
+	<key>NSPrefPaneIconFile</key>
+	<string>IconSmall.png</string>
+	<key>NSPrefPaneIconLabel</key>
+	<string>Songcast</string>
+	<key>NSPrincipalClass</key>
+	<string>SongcastPrefPane</string>
+	<key>SongcastManualUrl</key>
+	<string>http://oss.linn.co.uk/trac/wiki/Songcast_4_2_DavaarManual</string>
+	<key>SongcastAboutText</key>
+	<string>%@$BUILD_INFO_FORMATTED_TYPE
+Version %@ $BUILD_INFO_FAMILY
+%@</string>
+</dict>
+</plist>

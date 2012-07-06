@@ -69,7 +69,9 @@ def ReleaseInstallerDebian(target, source, **kw):
     desktop = env.Command(product.lower() + ".desktop", launchfile, make_desktop)
     
     architecture = kw.get('ARCHITECTURE', 'all')
-    version = kw.get('VERSION', {}).replace('development', '0.%s.0' % env.subst('$svn_rev'))
+    version = kw.get('VERSION', {})
+    if (kw.get('TYPE', {}) == 'development' or kw.get('TYPE', {}) == 'nightly') and env.subst('$svn_rev') != "0":
+        version = '0.%s.0' % env.subst('$svn_rev')
         
     control = env.DpkgControl('DebianPackage/DEBIAN/control', sourceAll + script,
                               MAINTAINER   = kw.get('MAINTAINER', {}),

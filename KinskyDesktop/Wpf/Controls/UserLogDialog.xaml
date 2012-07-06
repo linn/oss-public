@@ -76,11 +76,18 @@
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ScrollViewer.CanContentScroll="True"/>
             </Border>
-            <Button Command="ApplicationCommands.Close" Grid.Row="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" HorizontalAlignment="Right" Margin="0,5,5,5">
+            <StackPanel HorizontalAlignment="Right" Grid.Row="1" Orientation="Horizontal">
+            <Button Click="Button_CopyClick" Grid.Row="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" HorizontalAlignment="Right" Margin="0,5,5,5">
+                <Label Margin="1" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
+                    <TextBlock Margin="10,0,10,0" Text="Copy to clipboard" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Label>
+            </Button>
+            <Button Command="ApplicationCommands.Close" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" HorizontalAlignment="Right" Margin="0,5,5,5">
                 <Label Margin="1" Padding="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" >
                     <TextBlock Margin="10,0,10,0" Text="Close" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Label>
             </Button>
+            </StackPanel>
         </Grid>
     </kd:WindowChrome>
 </Window>

@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 using Linn;
 
@@ -79,12 +80,94 @@ namespace Linn.Kinsky
                 DisplayHeight = Linn.BigEndianConverter.BigEndianToInt32(header, 72);
 
                 // set the stream information
-                iStream = aStream;
-                iStreamOffset = iStream.Position;
-                StreamBytes = aSection.Bytes - Section.HeaderBytes - Item.HeaderBytes;
+                if (Format.ToLower() == "argb")
+                {
+                    // The itc file contains raw image data - need to read out the data and convert it into
+                    // a format that is ready for streaming
 
-                // move the stream position to the end of the header
-                iStream.Position += StreamBytes;
+                    // read in the image data
+                    byte[] imageData = new byte[aSection.Bytes - Section.HeaderBytes - Item.HeaderBytes];
+                    bytesRead = aStream.Read(imageData, 0, imageData.Length);
+
+                    if (bytesRead != imageData.Length)
+                    {
+                        throw new FileItc2Exception();
+                    }
+
+                    // a basic bitmap header consists of (all ints are little endian):
+                    //
+                    // Bitmap file header:
+                    // bytes 0-1      : 'BM' identifier
+                    // bytes 2-5      : size of the file in bytes
+                    // bytes 6-9      : reserved
+                    // bytes 10-13    : offset relative to start of file of the pixel data
+                    //
+                    // BITMAPINFOHEADER:
+                    // bytes 14-17    : size of this BITMAPINFOHEADER (40 bytes)
+                    // bytes 18-21    : image width in pixels
+                    // bytes 22-25    : image height in pixels
+                    // bytes 26-27    : number of colour planes (must be 1)
+                    // bytes 28-29    : bits per pixel
+                    // bytes 30-33    : compression method (0 for none)
+                    // bytes 34-37    : pixel data size
+                    // bytes 38-41    : horizontal pixels per metre
+                    // bytes 42-45    : vertical pixels per metre
+                    // bytes 46-49    : number of colours in the palette (0 for no palette)
+                    // bytes 50-53    : number of important colours used (0 if all important)
+                    //
+                    // The pixel data follows. Rows of pixel data must be padded to contain multiple of 4 bytes
+                    //
+
+                    iStream = new MemoryStream();
+
+                    // write all headers
+                    BitWriter writer = new BitWriter(iStream, false);
+                    iStream.WriteByte(0x42);
+                    iStream.WriteByte(0x4D);
+                    writer.WriteInt32(imageData.Length + 54);
+                    writer.WriteInt32(0);
+                    writer.WriteInt32(54);
+                    writer.WriteInt32(40);
+                    writer.WriteInt32(ImageWidth);
+                    writer.WriteInt32(ImageHeight);
+                    writer.WriteInt16(1);
+                    writer.WriteInt16(32);
+                    writer.WriteInt32(0);
+                    writer.WriteInt32(imageData.Length);
+                    writer.WriteInt32(2835);
+                    writer.WriteInt32(2835);
+                    writer.WriteInt32(0);
+                    writer.WriteInt32(0);
+
+                    for (int i =0 ; i<ImageHeight ; i++)
+                    {
+                        int rowOffset = (ImageHeight - 1 - i) * ImageWidth * 4;
+
+                        for (int j=0 ; j<ImageWidth ; j++)
+                        {
+                            int pixelOffset = rowOffset + j*4;
+
+                            iStream.WriteByte(imageData[pixelOffset + 3]);
+                            iStream.WriteByte(imageData[pixelOffset + 2]);
+                            iStream.WriteByte(imageData[pixelOffset + 1]);
+                            iStream.WriteByte(imageData[pixelOffset]);
+                        }
+                    }
+
+                    iStreamOffset = 0;
+                    StreamBytes = (int)iStream.Length;
+                }
+                else
+                {
+                    // The itc file contains an image that is ready to stream e.g. a png so this item
+                    // can just reference the original stream
+                    iStream = aStream;
+                    iStreamOffset = iStream.Position;
+                    StreamBytes = aSection.Bytes - Section.HeaderBytes - Item.HeaderBytes;
+
+                    // move the stream position to the end of the item
+                    iStream.Position += StreamBytes;
+                }
             }
 
             public readonly string LibraryId;

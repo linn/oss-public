@@ -90,6 +90,9 @@ lib += _default_env.Install("$install_dir/lib", "msvcr100.dll")
 lib += _default_env.Install("$install_dir/lib", "Moq.dll")
 lib += _default_env.Install("$install_dir/bin/Test", "Moq.dll")
 
+#Android compatibility package
+lib += _default_env.Install("$install_dir/lib", "android-support-v4.jar")
+
 Alias('Lib', lib)
 Alias('Docs')
 Alias('Test', 'Lib')

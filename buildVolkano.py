@@ -41,25 +41,27 @@ def build(path, args=''):
         os.chdir('..')
 
     if not retcode == 0:
-        exit()
+        sys.exit(retcode)
 
-build(['Docs'])
-build(['External'])
-build(['Xml'])
-build(['Kodegen'])
-build(['LibUpnpCil','Core'])
+build(['Docs'], 'Lib')
+build(['External'], 'Lib')
+build(['Xml'], 'Lib')
+build(['Kodegen'], 'Lib')
+build(['LibUpnpCil','Core'], 'Lib')
 build(['LibUpnpCil','Toolkit'], 'OssToolkitWinForms')
-build(['LibUpnpCil','SysLib'])
-build(['LibUpnpCil','Control'])
-build(['LibUpnpCil','Services'])
-build(['LibUpnpCil','DidlLite'])
-build(['LibUpnpCil','Topology'])
+build(['LibUpnpCil','SysLib'], 'Lib')
+build(['LibUpnpCil','Control'], 'Lib')
+build(['LibUpnpCil','Services'], 'Lib')
+build(['LibUpnpCil','DidlLite'], 'Lib')
+build(['LibUpnpCil','Topology'], 'Lib')
+build(['Kinsky'], 'Lib')
+build(['ProductSupport'], 'Lib')
 
 if (sys.platform == 'win32') or (sys.platform == 'darwin'):
      print 'Warning: Web app not built; this is only possible under linux.'
 else:
-     build(['Web']) 
+     build(['Web'], 'Lib') 
     
-build(['Gui'])
-build(['Layouts'])
-build(['Kinsky'])
+build(['Gui'], 'Lib')
+build(['Layouts'], 'Lib')
+build(['Kinsky'], 'Lib')

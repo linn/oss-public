@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
@@ -17,7 +17,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,6 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -144,6 +145,10 @@
       <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
       <Name>OssKinsky</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OssProductSupport\OssProductSupport.csproj">
+      <Project>{A5DF2109-5A06-4A92-ACFF-4CF9A066D461}</Project>
+      <Name>OssProductSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OssServices\OssServices.csproj">
       <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
       <Name>OssServices</Name>
@@ -254,7 +259,7 @@
     <Compile Include="..\..\KinskyJukebox\Program.cs">
       <Link>Program.cs</Link>
     </Compile>
-    <Compile Include="..\..\KinskyJukebox\Properties\AssemblyInfo.cs">
+    <Compile Include="..\..\build\share\KinskyJukebox\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="..\..\KinskyJukebox\Properties\Resources.Designer.cs">
@@ -302,6 +307,9 @@
       <SubType>Designer</SubType>
       <LogicalName>KinskyJukebox.Properties.Resources.resources</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

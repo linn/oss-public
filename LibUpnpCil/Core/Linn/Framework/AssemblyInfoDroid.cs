@@ -17,6 +17,7 @@ namespace Linn
             string copyright = "";
             string title = "";
             string product = "";
+            string informationalVersion = "";
 
             System.Reflection.Assembly entryAssembly = ApplicationDroid.EntryAssembly;
             Assert.Check(entryAssembly != null);
@@ -57,16 +58,22 @@ namespace Linn
 
             version = entryAssembly.GetName().Version.ToString().Replace(".0", "");
 
+            attributes = entryAssembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false);
+            if (attributes.Length != 0)
+            {
+                informationalVersion = ((AssemblyInformationalVersionAttribute)attributes[0]).InformationalVersion;
+            }
+            
             AssemblyInfoModel properties = new AssemblyInfoModel(description
                                                                                          , version
                                                                                          , company
                                                                                          , copyright
                                                                                          , title
-                                                                                         , product);
-            UserLog.WriteLine("GetAssemblyInfo: " + properties);
-            return properties;
-
-        }
-
-    }
+                                                                                         , product
+                                                                                         , informationalVersion);
+            
+            return properties;			
+		}
+		
+	}
 }

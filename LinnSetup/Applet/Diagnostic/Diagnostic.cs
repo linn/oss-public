@@ -13,34 +13,33 @@ using Linn.Control;
 using Linn.Control.Ssdp;
 using Linn.ControlPoint;
 using Linn.ControlPoint.Upnp;
-using Linn.Topology;
 
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
     public partial class Diagnostic : UserControl
     {
-        public Diagnostic(Target aTarget, EventServerUpnp aEventServer) {
+        public Diagnostic(Target aTarget) {
             iTarget = aTarget;
-            iEventServer = aEventServer;
             iMutex = new Mutex();
             InitializeComponent();
             buttonRefresh.Image = Linn.Toolkit.WinForms.Properties.Resources.Refresh;
         }
 
-        private void Diagnostic_Load(object sender, EventArgs e) {
+        protected override void OnLoad(EventArgs e) {
             if (iTarget.Box.State == Box.EState.eOn) {
                 Enable();
             }
             else {
                 Disable();
             }
+            base.OnLoad(e);
         }
 
         public void Enable() {
             if (!iEnabled) {
-                iServiceDiagnostics = new ServiceDiagnostics(iTarget.Box.Device, iEventServer);
+                iServiceDiagnostics = iTarget.Box.ServiceDiagnostics;
                 iServiceDiagnostics.EventStateLastTerminalInputName += EventStateLastTerminalInputNameHandler;
                 iServiceDiagnostics.EventInitial += EventInitialHandler;
                 RunDiagnosticHelp();
@@ -58,8 +57,11 @@ namespace LinnSetup
 
         public void Disable() {
             iEnabled = false;
-            iServiceDiagnostics.EventStateLastTerminalInputName -= EventStateLastTerminalInputNameHandler;
-            iServiceDiagnostics.EventInitial -= EventInitialHandler;
+            try {
+                iServiceDiagnostics.EventStateLastTerminalInputName -= EventStateLastTerminalInputNameHandler;
+                iServiceDiagnostics.EventInitial -= EventInitialHandler;
+            }
+            catch { } // should handle this better
             this.BeginInvoke(
               (MethodInvoker)delegate() {
                 textBoxDiagnosticResult.Text = "";
@@ -217,6 +219,5 @@ namespace LinnSetup
         private Mutex iMutex;
         private Target iTarget;
         private bool iEnabled = false;
-        private EventServerUpnp iEventServer;
     }
 }

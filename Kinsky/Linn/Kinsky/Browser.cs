@@ -38,12 +38,13 @@ namespace Linn.Kinsky
             iSelectedId = string.Empty;
             iLocation = aLocation;
 
-            for (int i=0 ; i<iLocation.Containers.Count ; i++)
+            for (int i = 0; i < iLocation.Containers.Count; i++)
             {
                 IContainer container = iLocation.Containers[i];
                 container.EventContentAdded += ContentAdded;
                 container.EventContentRemoved += ContentRemoved;
                 container.EventContentUpdated += ContentUpdated;
+                container.EventTreeChanged += TreeChanged;
             }
         }
 
@@ -70,6 +71,7 @@ namespace Linn.Kinsky
                 container.EventContentAdded -= ContentAdded;
                 container.EventContentRemoved -= ContentRemoved;
                 container.EventContentUpdated -= ContentUpdated;
+                container.EventTreeChanged -= TreeChanged;
 
                 iSelectedId = container.Metadata.Id;
                 iLocation = iLocation.PreviousLocation();
@@ -102,6 +104,7 @@ namespace Linn.Kinsky
                 container.EventContentAdded += ContentAdded;
                 container.EventContentRemoved += ContentRemoved;
                 container.EventContentUpdated += ContentUpdated;
+                container.EventTreeChanged += TreeChanged;
             }
 
             Unlock();
@@ -165,35 +168,62 @@ namespace Linn.Kinsky
         private void ContentAdded(object sender, EventArgs e)
         {
             Lock();
-
-            if (sender == iLocation.Current)
+            IContainer current = iLocation.Current;
+            Unlock();
+            if (sender == current)
             {
-                Unlock();
-
                 if (EventLocationChanged != null)
                 {
                     EventLocationChanged(this, EventArgs.Empty);
                 }
             }
-            else
-            {
-                Unlock();
-            }
         }
 
         private void ContentRemoved(object sender, EventArgsContentRemoved e)
         {
-            if (EventLocationChanged != null)
+            Lock();
+            bool changed = false;
+            int index = iLocation.Containers.IndexOf(sender as IContainer);
+            if (index != -1 && (index == iLocation.Containers.Count - 1 || iLocation.Containers[index + 1].Id == e.Id))
             {
-                EventLocationChanged(this, EventArgs.Empty);
+                changed = true;
+            }
+            Unlock();
+
+            if (changed)
+            {
+                if (EventLocationChanged != null)
+                {
+                    EventLocationChanged(this, EventArgs.Empty);
+                }
             }
         }
 
         private void ContentUpdated(object sender, EventArgs e)
         {
-            if (EventLocationChanged != null)
+            Lock();
+            IContainer current = iLocation.Current;
+            Unlock();
+            if (sender == current)
             {
-                EventLocationChanged(this, EventArgs.Empty);
+                if (EventLocationChanged != null)
+                {
+                    EventLocationChanged(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        private void TreeChanged(object sender, EventArgs e)
+        {
+            Lock();
+            IContainer current = iLocation.Current;
+            Unlock();
+            if (current.HasTreeChangeAffectedLeaf)
+            {
+                if (EventLocationChanged != null)
+                {
+                    EventLocationChanged(this, EventArgs.Empty);
+                }
             }
         }
 

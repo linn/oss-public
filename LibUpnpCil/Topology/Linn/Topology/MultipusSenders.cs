@@ -93,6 +93,9 @@ namespace Linn.Topology
             iMutex = new Mutex();
             iJobList = new List<IJob>();
             iJobReady = new ManualResetEvent(false);
+            iDevices = new Dictionary<string, Device>();
+            iLock = new object();
+            iOpen = false;
         }
 
         public void Start(IPAddress aInterface)
@@ -109,11 +112,12 @@ namespace Linn.Topology
             iDeviceListSender.Start(aInterface);
 
             Trace.WriteLine(Trace.kTopology, "Senders.Start() successful");
+            iOpen = true;
         }
 
         public void Stop()
         {
-            if (iThread != null)
+            if (iOpen)
             {
                 // stop the discovery system
 
@@ -123,12 +127,18 @@ namespace Linn.Topology
                 iThread = null;
 
                 iJobList.Clear();
+                lock (iLock)
+                {
+                    foreach (string key in iDevices.Keys)
+                    {
+                        iDevices[key].EventOpened -= Opened;
+                        iDevices[key].EventOpenFailed -= OpenFailed;
+                    }
+                    iDevices.Clear();
+                }
 
                 Trace.WriteLine(Trace.kTopology, "Senders.Stop() successful");
-            }
-            else
-            {
-                Trace.WriteLine(Trace.kTopology, "Senders.Stop() already stopped - silently do nothing");
+                iOpen = false;
             }
         }
 
@@ -137,6 +147,11 @@ namespace Linn.Topology
             // rescan
 
             iDeviceListSender.Rescan();
+        }
+
+        public void RemoveDevice(Device aDevice)
+        {
+            iDeviceListSender.Remove(aDevice);
         }
 
         internal void ScheduleJob(IJob aJob)
@@ -184,14 +199,38 @@ namespace Linn.Topology
         {
             Trace.WriteLine(Trace.kTopology, "Senders+                " + e.Device);
 
+            lock (iLock)
+            {
+                if (iDevices.ContainsKey(e.Device.Udn))
+                {
+                    iDevices[e.Device.Udn].EventOpened -= Opened;
+                    iDevices[e.Device.Udn].EventOpenFailed -= OpenFailed;
+                    iDevices.Remove(e.Device.Udn);
+                }
+                iDevices.Add(e.Device.Udn, e.Device);
+            }
+
             e.Device.EventOpened += Opened;
+            e.Device.EventOpenFailed += OpenFailed;
 
             e.Device.Open();
         }
 
+        private void OpenFailed(object obj, EventArgs e)
+        {
+            iDeviceListSender.Remove(obj as Device);
+        }
+
         private void Opened(object obj, EventArgs e)
         {
-            ScheduleJob(new JobSenderAdded(obj as Device));
+            lock (iLock)
+            {
+                Device d = obj as Device;
+                if (iOpen && iDevices.ContainsKey(d.Udn) && iDevices[d.Udn] == d)
+                {
+                    ScheduleJob(new JobSenderAdded(obj as Device));
+                }
+            }
         }
 
         internal void DoSenderAdded(Device aDevice)
@@ -207,12 +246,17 @@ namespace Linn.Topology
             Trace.WriteLine(Trace.kTopology, "Senders-                " + e.Device);
 
             e.Device.EventOpened -= Opened;
+            e.Device.EventOpenFailed -= OpenFailed;
 
             ScheduleJob(new JobSenderRemoved(e.Device));
         }
 
         internal void DoSenderRemoved(Device aDevice)
         {
+            lock (iLock)
+            {
+                iDevices.Remove(aDevice.Udn);
+            }
             if (EventSenderRemoved != null)
             {
                 EventSenderRemoved(this, new EventArgsSender(new Sender(this, aDevice)));
@@ -225,6 +269,9 @@ namespace Linn.Topology
         private Thread iThread;
 
         private DeviceListUpnp iDeviceListSender;
+        private Dictionary<string, Device> iDevices;
+        private object iLock;
+        private bool iOpen;
     }
 
     public class Sender

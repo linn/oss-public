@@ -228,6 +228,30 @@ namespace OssKinskyMppFolder
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded { add { } remove { } }
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved { add { } remove { } }
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private void FoldersChanged(object sender, EventArgs e)
         {
@@ -407,6 +431,30 @@ namespace OssKinskyMppFolder
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded { add { } remove { } }
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved { add { } remove { } }
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private void Changed(object sender, FileSystemEventArgs e)
         {

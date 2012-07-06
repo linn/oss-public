@@ -148,11 +148,11 @@ namespace Linn.Kinsky
                             track.Title = aInfo.Name;
                         }
 
-                        resource.Bitrate = f.Properties.AudioBitrate;
+                        resource.Bitrate = (int)((f.Properties.AudioBitrate * 1000.0f) / 8.0f);
                         resource.Duration = new Time((int)f.Properties.Duration.TotalSeconds).ToString();
                         resource.NrAudioChannels = f.Properties.AudioChannels;
                         resource.SampleFrequency = f.Properties.AudioSampleRate;
-                        resource.Size = f.Length;
+                        resource.Size = aInfo.Length;
                         resource.Uri = aResourceUri;
 
                         resource.ProtocolInfo = string.Format("http-get:*:{0}:*", f.MimeType.Replace("taglib", "audio"));
@@ -208,11 +208,11 @@ namespace Linn.Kinsky
                             video.Title = aInfo.Name;
                         }
 
-                        resource.Bitrate = f.Properties.AudioBitrate;
+                        resource.Bitrate = (int)((f.Properties.AudioBitrate * 1000.0f) / 8.0f);
                         resource.Duration = new Time((int)f.Properties.Duration.TotalSeconds).ToString();
                         resource.NrAudioChannels = f.Properties.AudioChannels;
                         resource.SampleFrequency = f.Properties.AudioSampleRate;
-                        resource.Size = f.Length;
+                        resource.Size = aInfo.Length;
                         resource.Uri = aResourceUri;
 
                         resource.ProtocolInfo = string.Format("http-get:*:{0}:*", f.MimeType.Replace("taglib", "video"));

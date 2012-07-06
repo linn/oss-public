@@ -13,6 +13,8 @@ Linn.ProductSupport =
     kModelSneakyMusicDs:"Sneaky Music DS",
     kModelSekritDsi:"Sekrit DS-I",
     kModelMajikDsi:"Majik DS-I",
+    kModelMajikDsm:"Majik DSM",
+    kModelKikoDsm:"Kiko DSM",
     kModelConceptDs:"Concept DS",
     kModelConceptDsm:"Concept DS-M",
     kModelProxyNone:"None",
@@ -36,7 +38,7 @@ Linn.ProductSupport =
     kSourceNameRadio:"Radio",
     kSourceNameSongcast:"Songcast",
     kSourceNameUpnpAv:"UpnpAv",
-    kSourceNameAirplay:"Pairplay"
+    kSourceNameAirplay:"Net Aux"
 }
 
 Linn.Parameter = 
@@ -79,11 +81,13 @@ Linn.Parameter =
     // Parameter Names (target=<Source System Name>, collection=Sources)
     kNameSourceName:"Name",
     kNameSourceVisible:"Visible",
+    kNameSourceIconName:"Icon", 
     kNameSourceDelayMode:"Delay Mode",
     kNameSourceVolumeOffset:"Volume Offset",
     kNameSourceUnityGain:"Unity Gain",
     kNameSourceAdcInputLevel:"Input Level",
     kNameSourceTransformerEnabled:"Transformer",
+    kNameNetAuxAutoSwitchEnable:"Auto Select",
     // Parameter Names (target=TuneIn Radio)
     kNameTuneInUsername:"Username",
     kNameTuneInPassword:"Password",
@@ -121,12 +125,14 @@ Linn.Parameter =
     kNameDisplayAutoBrightness:"Auto Brightness",
     kNameDisplayBrightness:"Brightness",
     kNameDisplaySleep:"Sleep Mode",
+    kNameDisplayOrientationLed:"Linn Logo LED",
     kNameUpdateNotifications:"Update Notifications",
     // Parameter Names (target=Slimline Handset)
     kNameDirectSource1:"Input 1 Button",
     kNameDirectSource2:"Input 2 Button",
     kNameDirectSource3:"Input 3 Button",
     // Parameter Names (target=HDMI)
+    kNameHdmiOffInSleep:"Turn Off in Sleep",
 	kNameHdmiMode:"Audio Mode",
 	kNameHdmiMixCentreChannel:"Downmix Centre To Fronts",
 	kNameHdmiMixLfeChannel:"Downmix LFE To Fronts",

@@ -106,12 +106,20 @@ namespace Linn.ControlPoint
         public abstract void Open();
 
         public event EventHandler<EventArgs> EventOpened;
+        public event EventHandler<EventArgs> EventOpenFailed;
 
         protected void Opened()
         {
             if (EventOpened != null)
             {
                 EventOpened(this, EventArgs.Empty);
+            }
+        }
+        protected void OpenFailed()
+        {
+            if (EventOpenFailed != null)
+            {
+                EventOpenFailed(this, EventArgs.Empty);
             }
         }
 

@@ -1,0 +1,47 @@
+<* reference *>
+XmlTags.dll
+<* reference *>
+
+<* import *>
+using Linn.Xml;
+<* import *>
+
+<* function *>
+<* function *>
+
+<* body *>
+<%
+    if (args.Length < 1)
+    {
+        throw (new TemplateException("Xml file not specified"));
+    }
+    
+    Tags tags = Tags.Load(args[0]);
+%>
+
+namespace Linn
+{
+
+public partial class Tags
+{
+
+<%  foreach (Tags.ITagEntry t in tags.TagEntryList) {
+    
+        if ( t.Count > 1 ) { %>
+        
+    public static readonly uint <%=t.Tag%>0     = <%=t.Key%>; // <%=t.Description%>
+    public static readonly uint <%=t.Tag%>Count = <%=t.Key%>; //    Count for <%=t.Tag%>
+
+        <% } %>
+        <%else {%>
+        
+    public static readonly uint <%=t.Tag%> = <%=t.Key%>; // <%=t.Description%>
+    
+        <% } %>
+    <% } %>
+
+}
+
+}    // namespace Linn
+
+<* body *>

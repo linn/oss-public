@@ -63,7 +63,7 @@ namespace Linn.Topology
             {
                 m.EventContentDirectoryInitialised -= EventContentDirectoryInitialisedResponse;
                 m.EventContainerUpdated -= EventContainerUpdatedResponse;
-                m.Kill();
+                m.Close();
             }
 
             iMediaServerByUdn.Clear();
@@ -291,7 +291,7 @@ namespace Linn.Topology
                     throw ex;
                 }
 
-                server.Kill();
+                server.Close();
 
                 server.EventContentDirectoryInitialised -= EventContentDirectoryInitialisedResponse;
                 server.EventContainerUpdated -= EventContainerUpdatedResponse;

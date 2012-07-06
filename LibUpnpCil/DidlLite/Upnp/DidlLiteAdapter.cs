@@ -733,7 +733,10 @@ namespace Upnp
             if (aObject is musicTrack)
             {
                 musicTrack track = aObject as musicTrack;
-                result = track.OriginalTrackNumber.ToString();
+                if(track.OriginalTrackNumber > 0)
+                {
+                    result = track.OriginalTrackNumber.ToString();
+                }
             }
 
             // always return a non-null string

@@ -179,6 +179,30 @@ namespace OssKinskyMppWfmu
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public string Name
         {
@@ -349,6 +373,30 @@ namespace OssKinskyMppWfmu
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -654,6 +702,30 @@ namespace OssKinskyMppWfmu
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -951,6 +1023,30 @@ namespace OssKinskyMppWfmu
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -1134,6 +1230,30 @@ namespace OssKinskyMppWfmu
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {

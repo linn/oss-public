@@ -6,6 +6,7 @@ using Linn.Control.Ssdp;
 using Linn.ControlPoint.Upnp;
 
 using Upnp;
+using Linn.ControlPoint;
 
 namespace Linn.Topology
 {
@@ -47,50 +48,43 @@ namespace Linn.Topology
             iSenderList = new Dictionary<string, ModelSender>();
             iSenders = new Senders(aListenerNotify);
 
-            iSenders.EventSenderAdded += SenderAdded;
-            iSenders.EventSenderRemoved += SenderRemoved;
-            iStartStopLock = new object();
+            iLock = new object();
         }
 
         public void Start(IPAddress aIpAddress)
         {
-            lock (iStartStopLock)
-            {
-                iSenders.Start(aIpAddress);
-            }
-
-            lock(this)
+            iSenders.EventSenderAdded += SenderAdded;
+            iSenders.EventSenderRemoved += SenderRemoved;
+            lock (iLock)
             {
                 iOpen = true;
             }
+            iSenders.Start(aIpAddress);
         }
 
         public void Stop()
         {
-            List<ModelSender> removedSenders;
-            lock (iStartStopLock)
-            {
-                iSenders.Stop();
-            }
-
-            lock(this)
-            {
+            iSenders.EventSenderAdded -= SenderAdded;
+            iSenders.EventSenderRemoved -= SenderRemoved;
+            lock (iLock)
+            {            
                 foreach (ModelSender m in iPendingSenderList.Values)
                 {
                     m.EventSenderInitialised -= SenderInitialised;
                     m.EventAudioChanged -= SenderChanged;
                     m.EventMetadataChanged -= SenderChanged;
                     m.EventStatusChanged -= SenderChanged;
+                    m.EventSubscriptionError -= SubscriptionError;
 
                     m.Close();
                 }
-                removedSenders = new List<ModelSender>(iSenderList.Values);
                 foreach (ModelSender m in iSenderList.Values)
                 {
                     m.EventSenderInitialised -= SenderInitialised;
                     m.EventAudioChanged -= SenderChanged;
                     m.EventMetadataChanged -= SenderChanged;
                     m.EventStatusChanged -= SenderChanged;
+                    m.EventSubscriptionError -= SubscriptionError;
 
                     m.Close();
                 }
@@ -103,16 +97,7 @@ namespace Linn.Topology
 
                 UserLog.WriteLine(DateTime.Now + ": ModelSenders stopped");
             }
-
-            //todo: this is required for KD wpf to clear the list of senders on a stack restart, 
-            //however does this really belong in the close method or should this be moved elsewhere?
-            if (EventSenderRemoved != null)
-            {
-                foreach (ModelSender s in removedSenders)
-                {
-                    EventSenderRemoved(this, new EventArgsSender(s));
-                }
-            }
+            iSenders.Stop();
         }
 
         public void Rescan()
@@ -120,23 +105,20 @@ namespace Linn.Topology
             iSenders.Rescan();
         }
 
-        public void Lock()
-        {
-        }
-
-        public void Unlock()
-        {
-        }
-
         public IList<IModelSender> SendersList
         {
             get
             {
-                lock (this)
+                lock (iLock)
                 {
                     return new List<IModelSender>(iEnabledSenderList).AsReadOnly();
                 }
             }
+        }
+
+        private void SubscriptionError(object sender, EventArgs args)
+        {
+            iSenders.RemoveDevice((sender as ModelSender).Sender.Device);
         }
 
         public event EventHandler<EventArgsSender> EventSenderAdded;
@@ -145,19 +127,28 @@ namespace Linn.Topology
 
         private void SenderAdded(object sender, Senders.EventArgsSender e)
         {
-            lock(this)
+            lock(iLock)
             {
                 if(iOpen)
                 {
-                    ModelSender model = new ModelSender(e.Sender, iEventServer);
-                    model.EventAudioChanged += SenderChanged;
-                    model.EventMetadataChanged += SenderChanged;
-                    model.EventStatusChanged += SenderChanged;
-                    model.EventSenderInitialised += SenderInitialised;
-    
-                    iPendingSenderList.Add(e.Sender.Device.Udn, model);
-    
-                    model.Open();
+                    try
+                    {
+                        ModelSender model = new ModelSender(e.Sender, iEventServer);
+                        model.EventAudioChanged += SenderChanged;
+                        model.EventMetadataChanged += SenderChanged;
+                        model.EventStatusChanged += SenderChanged;
+                        model.EventSenderInitialised += SenderInitialised;
+                        model.EventSubscriptionError += SubscriptionError;
+
+                        iPendingSenderList.Add(e.Sender.Device.Udn, model);
+
+                        model.Open();
+                    }
+                    catch (ServiceException ex)
+                    {
+                        UserLog.WriteLine("Failed to create ModelSender: " + ex);
+                        iSenders.RemoveDevice(e.Sender.Device);
+                    }
                 }
             }
         }
@@ -167,7 +158,7 @@ namespace Linn.Topology
             ModelSender model;
             bool changed = false;
 
-            lock (this)
+            lock (iLock)
             {
                 if (iPendingSenderList.TryGetValue(e.Sender.Device.Udn, out model))
                 {
@@ -192,6 +183,7 @@ namespace Linn.Topology
                     model.EventAudioChanged -= SenderChanged;
                     model.EventMetadataChanged -= SenderChanged;
                     model.EventStatusChanged -= SenderChanged;
+                    model.EventSubscriptionError -= SubscriptionError;
 
                     model.Close();
 
@@ -210,7 +202,7 @@ namespace Linn.Topology
             ModelSender modelSender = sender as ModelSender;
             bool changed = false;
 
-            lock (this)
+            lock (iLock)
             {
                 if (iPendingSenderList.Remove(modelSender.Udn))
                 {
@@ -253,7 +245,7 @@ namespace Linn.Topology
             bool removed = false;
             bool added = false;
 
-            lock (this)
+            lock (iLock)
             {
                 if (iSenderList.ContainsKey(multipus.Udn))
                 {
@@ -301,6 +293,6 @@ namespace Linn.Topology
         private Dictionary<string, ModelSender> iPendingSenderList;
         private List<IModelSender> iEnabledSenderList;
         private Dictionary<string, ModelSender> iSenderList;
-        private object iStartStopLock;
+        private object iLock;
     }
 }

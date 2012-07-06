@@ -41,7 +41,7 @@ namespace KinskyDesktopWpf
         private ToggleButton iButtonSelectRoom;
         private ToggleButton iButtonSelectSource;
 
-        private bool iForceSelect = true;
+        private bool iForceSelect = false;
         private Linn.Kinsky.Room iLastUserRoomSelect = null;
         private Linn.Kinsky.Source iLastUserSourceSelect = null;
 
@@ -58,9 +58,11 @@ namespace KinskyDesktopWpf
                             ToggleButton aButtonSelectRoom,
                             ToggleButton aButtonSelectSource,
                             Popup aPopupRoomSelection,
-                            Popup aPopupSourceSelection)
+                            Popup aPopupSourceSelection,
+                            Button aStandbyAllButton)
         {
             iLockObject = new object();
+            aStandbyAllButton.Click += StandbyAllButton_Click;
             iPopupRoomSelection = aPopupRoomSelection;
             iPopupSourceSelection = aPopupSourceSelection;
             iViewWidgetSelectorRoom = aViewWidgetSelectorRoom;
@@ -85,6 +87,11 @@ namespace KinskyDesktopWpf
             iCurrentHouseState = EHouseState.ViewingPlaylist;
             iPopupRoomSelection.KeyDown += new KeyEventHandler(iPopupRoomSelection_KeyDown);
             iPopupSourceSelection.KeyDown += new KeyEventHandler(iPopupSourceSelection_KeyDown);
+        }
+
+        private void StandbyAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetState(EHouseState.ViewingPlaylist);
         }
 
         void iPopupRoomSelection_KeyDown(object sender, KeyEventArgs e)
@@ -166,9 +173,9 @@ namespace KinskyDesktopWpf
         void iViewWidgetSelectorSource_EventUserSelectedItem(object sender, EventArgsSelection<Linn.Kinsky.Source> e)
         {
             iLastUserSourceSelect = e.Tag;
-            iForceSelect = false;
             if (e.Tag != null)
             {
+                iForceSelect = true;
                 SetBusyCursor();
             }
         }
@@ -176,9 +183,9 @@ namespace KinskyDesktopWpf
         void iViewWidgetSelectorRoom_EventUserSelectedItem(object sender, EventArgsSelection<Linn.Kinsky.Room> e)
         {
             iLastUserRoomSelect = e.Tag;
-            iForceSelect = false;
             if (e.Tag != null)
             {
+                iForceSelect = true;
                 SetBusyCursor();
             }
         }
@@ -187,12 +194,11 @@ namespace KinskyDesktopWpf
         {
             lock (iLockObject)
             {
-                bool force = iForceSelect || e.Tag == iLastUserSourceSelect;
-
-                if (force && iViewWidgetSelectorSource.SelectedItem != null && iCurrentHouseState != EHouseState.ViewingPlaylist)
+                if (iForceSelect && iCurrentHouseState != EHouseState.ViewingPlaylist)
                 {
                     SetState(EHouseState.ViewingPlaylist);
                 }
+                iForceSelect = false;
                 ClearBusyCursor();
             }
         }
@@ -202,12 +208,11 @@ namespace KinskyDesktopWpf
             lock (iLockObject)
             {
 
-                bool force = iForceSelect || e.Tag == iLastUserRoomSelect;
-
-                if (force && iViewWidgetSelectorRoom.SelectedItem != null && iCurrentHouseState != EHouseState.ViewingPlaylist)
+                if (iForceSelect && iCurrentHouseState != EHouseState.ViewingPlaylist)
                 {
                     SetState(EHouseState.ViewingPlaylist);
                 }
+                iForceSelect = false;
                 ClearBusyCursor();
             }
         }
@@ -278,7 +283,6 @@ namespace KinskyDesktopWpf
                                    BookmarkManager aBookmarkManager,
                                    ListView aBookmarkList,
                                    IBrowser aBrowser,
-                                   Linn.Kinsky.IContainer aRootContainer,
                                    Popup aBookmarksListPopup,
                                    Popup aAddBookmarkPopup,
                                    ToggleButton aShowBookmarksListButton,
@@ -288,10 +292,10 @@ namespace KinskyDesktopWpf
                                    TextBox aTitleEditor,
                                    TextBlock aBreadcrumbDisplay,
                                    Panel aAddBookmarkPanel,
-                                   ViewWidgetBreadcrumb aViewWidgetBreadcrumb)
+                                   NavigationController aNavigationController)
         {
-            iLockObject = new object();
-            iViewWidgetBreadcrumb = aViewWidgetBreadcrumb;
+            iLock = new object();
+            iNavigationController = aNavigationController;
             iOpen = false;
             iHelperKinsky = aHelperKinsky;
             iTitleEditor = aTitleEditor;
@@ -303,8 +307,6 @@ namespace KinskyDesktopWpf
             iCancelAddBookmarkButton = aCancelAddBookmarkButton;
             iBookmarksListPopup = aBookmarksListPopup;
             iAddBookmarkPopup = aAddBookmarkPopup;
-            iRootContainer = aRootContainer;
-            iBrowser = aBrowser;
             iBookmarkList = aBookmarkList;
             iBookmarkCollection = new ObservableCollection<BookmarkViewModel>();
             iBookmarkList.ItemsSource = iBookmarkCollection;
@@ -328,7 +330,7 @@ namespace KinskyDesktopWpf
 
             iBookmarkManager = aBookmarkManager;
 
-            lock (iLockObject)
+            lock (iBookmarkCollection)
             {
                 iBookmarkManager.EventBookmarkAdded += iBookmarkManager_EventBookmarkAdded;
                 iBookmarkManager.EventBookmarkRemoved += iBookmarkManager_EventBookmarkRemoved;
@@ -351,7 +353,8 @@ namespace KinskyDesktopWpf
                     BookmarkViewModel model = iBookmarkList.ItemContainerGenerator.ItemFromContainer(container) as BookmarkViewModel;
                     iBookmarkManager.Remove(model.WrappedItem);
                 }
-            }))); iBookmarkList.CommandBindings.Add(new CommandBinding(Commands.RenameCommand, new ExecutedRoutedEventHandler((d, e) =>
+            })));
+            iBookmarkList.CommandBindings.Add(new CommandBinding(Commands.RenameCommand, new ExecutedRoutedEventHandler((d, e) =>
             {
                 ListViewItem container = e.OriginalSource as ListViewItem;
                 if (container != null)
@@ -367,44 +370,40 @@ namespace KinskyDesktopWpf
             iBookmarksListPopup.Closed += iBookmarksListPopup_Closed;
             iBookmarksListPopup.KeyDown += new KeyEventHandler(iBookmarksListPopup_KeyDown);
             iAddBookmarkPopup.KeyDown += new KeyEventHandler(iAddBookmarkPopup_KeyDown);
-            iViewWidgetBreadcrumb.EventBreadcrumbNavigate += new EventHandler<EventArgsBreadcrumbNavigation>(iViewWidgetBreadcrumb_EventBreadcrumbNavigate);
-            iCurrentLocation = iBrowser.Location;
-            iBrowser.EventLocationChanged += new EventHandler<EventArgs>(iBrowser_EventLocationChanged);
-            iScheduler = new Scheduler("NavigationScheduler", 1);
+
+
+            iNavigationController.EventLocationChanged += EventLocationChangedHandler;
             iCurrentBookmark = new Bookmark(iHelperKinsky.LastLocation.BreadcrumbTrail);
-            Navigate(iHelperKinsky.LastLocation.BreadcrumbTrail, 5);
         }
 
         void iBookmarkList_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            lock (iLockObject)
+
+            iCurrentSelectedModel = null;
+            BookmarkViewModel item = iBookmarkList.GetEventSourceItem<BookmarkViewModel, ListBoxItem>(e);
+            if (iCurrentEditingModel == null)
             {
-                iCurrentSelectedModel = null;
-                BookmarkViewModel item = iBookmarkList.GetEventSourceItem<BookmarkViewModel, ListBoxItem>(e);
-                if (iCurrentEditingModel == null)
+                // only want to stop propagation of routed event if the original source was not in a button
+                // otherwise button click event will not happen on a button that is contained within a selected list item
+                Button b = (e.OriginalSource as DependencyObject).FindVisualAncestor<Button>();
+                if (b == null)
                 {
-                    // only want to stop propagation of routed event if the original source was not in a button
-                    // otherwise button click event will not happen on a button that is contained within a selected list item
-                    Button b = (e.OriginalSource as DependencyObject).FindVisualAncestor<Button>();
-                    if (b == null)
-                    {
-                        iCurrentSelectedModel = item;
-                    }
+                    iCurrentSelectedModel = item;
                 }
             }
+
         }
 
         void iBookmarkList_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            lock (iLockObject)
+
+            if (iCurrentSelectedModel != null)
             {
-                if (iCurrentSelectedModel != null)
-                {
-                    iBookmarksListPopup.IsOpen = false;
-                    Navigate(iCurrentSelectedModel.WrappedItem.BreadcrumbTrail);
-                    e.Handled = true;
-                }
+                iBookmarksListPopup.IsOpen = false;
+                iNavigationController.Navigate(iCurrentSelectedModel.WrappedItem.BreadcrumbTrail);
+                e.Handled = true;
             }
+
         }
 
         public void CloseEditor()
@@ -419,6 +418,7 @@ namespace KinskyDesktopWpf
                  }
              }));
         }
+
         void Scroller_ItemsDropped(object sender, DragScroller.EventArgsItemsDropped e)
         {
             Assert.Check(e.DragEventArgs.Data.GetDataPresent("bookmarks"));
@@ -502,14 +502,9 @@ namespace KinskyDesktopWpf
             return null;
         }
 
-        void iViewWidgetBreadcrumb_EventBreadcrumbNavigate(object sender, EventArgsBreadcrumbNavigation e)
-        {
-            iBrowser.Up((uint)e.NumberOfLevels);
-        }
-
         public void Open()
         {
-            lock (iLockObject)
+            lock (iLock)
             {
                 iOpen = true;
             }
@@ -517,25 +512,19 @@ namespace KinskyDesktopWpf
 
         public void Close()
         {
-            lock (iLockObject)
+            lock (iLock)
             {
                 iOpen = false;
             }
         }
 
-        void iBrowser_EventLocationChanged(object sender, EventArgs e)
+        void EventLocationChangedHandler(object sender, EventArgs e)
         {
-            lock (iLockObject)
+            lock (iLock)
             {
-                if (iOpen && iCurrentLocation != iBrowser.Location)
+                if (iOpen)
                 {
-                    Bookmark currentLocation = new Bookmark(iBrowser.Location);
-                    iHelperKinsky.LastLocation.BreadcrumbTrail = currentLocation.BreadcrumbTrail;
-                    if (!iNavigating)
-                    {
-                        iCurrentBookmark = currentLocation;
-                        iViewWidgetBreadcrumb.SetLocation(currentLocation.BreadcrumbTrail);
-                    }
+                    iCurrentBookmark = new Bookmark(iNavigationController.Location);
                 }
             }
         }
@@ -545,6 +534,10 @@ namespace KinskyDesktopWpf
             if (e.Key == Key.Escape)
             {
                 iAddBookmarkPopup.IsOpen = false;
+            }
+            else if (e.Key == Key.Enter)
+            {
+                AddBookmark();
             }
         }
 
@@ -580,7 +573,7 @@ namespace KinskyDesktopWpf
                     if (item != null)
                     {
                         iBookmarksListPopup.IsOpen = false;
-                        Navigate(item.WrappedItem.BreadcrumbTrail);
+                        iNavigationController.Navigate(item.WrappedItem.BreadcrumbTrail);
                         e.Handled = true;
                     }
                 }
@@ -611,7 +604,7 @@ namespace KinskyDesktopWpf
             {
                 if (iCurrentBookmark != null)
                 {
-                    ShowAddBookmark(iCurrentBookmark);
+                    ShowAddBookmark(new Bookmark(iCurrentBookmark.BreadcrumbTrail));
                 }
             }
             else
@@ -656,6 +649,11 @@ namespace KinskyDesktopWpf
         }
         void iAddBookmarkButton_Click(object sender, RoutedEventArgs e)
         {
+            AddBookmark();
+        }
+
+        private void AddBookmark()
+        {
             iNewBookmark.Title = iTitleEditor.Text;
             iBookmarkManager.Insert(0, iNewBookmark);
             iAddBookmarkPopup.IsOpen = false;
@@ -663,7 +661,7 @@ namespace KinskyDesktopWpf
 
         void iBookmarkManager_EventBookmarkAdded(object sender, EventArgsBookmark e)
         {
-            lock (iLockObject)
+            lock (iBookmarkCollection)
             {
                 BookmarkViewModel item = (from s in iBookmarkCollection where s.WrappedItem == e.Bookmark select s).SingleOrDefault();
                 if (item == null)
@@ -676,7 +674,7 @@ namespace KinskyDesktopWpf
 
         void iBookmarkManager_EventBookmarksChanged(object sender, EventArgs e)
         {
-            lock (iLockObject)
+            lock (iBookmarkCollection)
             {
                 iBookmarkCollection.Clear();
                 foreach (Bookmark b in iBookmarkManager.Bookmarks)
@@ -688,7 +686,7 @@ namespace KinskyDesktopWpf
 
         void iBookmarkManager_EventBookmarkRemoved(object sender, EventArgsBookmark e)
         {
-            lock (iLockObject)
+            lock (iBookmarkCollection)
             {
                 BookmarkViewModel item = (from s in iBookmarkCollection where s.WrappedItem == e.Bookmark select s).SingleOrDefault();
                 if (item != null)
@@ -698,90 +696,26 @@ namespace KinskyDesktopWpf
             }
         }
 
-        public BreadcrumbTrail CurrentLocation
-        {
-            get
-            {
-                if (iCurrentBookmark != null)
-                {
-                    return iCurrentBookmark.BreadcrumbTrail;
-                }
-                else
-                {
-                    return BreadcrumbTrail.Default;
-                }
-            }
-        }
+        //public BreadcrumbTrail CurrentLocation
+        //{
+        //    get
+        //    {
+        //        if (iCurrentBookmark != null)
+        //        {
+        //            return iCurrentBookmark.BreadcrumbTrail;
+        //        }
+        //        else
+        //        {
+        //            return BreadcrumbTrail.Default;
+        //        }
+        //    }
+        //}
 
-        public void Navigate(BreadcrumbTrail aBreadcrumbTrail)
-        {
-            Navigate(aBreadcrumbTrail, 0);
-        }
-
-        public void Navigate(BreadcrumbTrail aBreadcrumbTrail, int aRetryCount)
-        {
-            if (aBreadcrumbTrail.Count > 0)
-            {
-                iNavigating = true;
-                iScheduler.Schedule(() =>
-                                {
-                                    if (EventLocationChanging != null)
-                                    {
-                                        EventLocationChanging(this, EventArgs.Empty);
-                                    }
-                                    iViewWidgetBreadcrumb.SetLocation(aBreadcrumbTrail);
-
-                                    iLocatorAsync = new LocatorAsync(iRootContainer, aBreadcrumbTrail);
-                                    iLocatorAsync.Locate((sender, location) =>
-                                    {
-                                        lock (iLockObject)
-                                        {
-                                            if (sender == iLocatorAsync)
-                                            {
-                                                if (location != null)
-                                                {
-                                                    if (EventLocationChanged != null)
-                                                    {
-                                                        EventLocationChanged(this, EventArgs.Empty);
-                                                    }
-                                                    iNavigating = false;
-                                                    iBrowser.Browse(location);
-                                                }
-                                                else if (aRetryCount > 0)
-                                                {
-                                                    Thread.Sleep(3000);
-                                                    Navigate(aBreadcrumbTrail, aRetryCount - 1);
-                                                }
-                                                else
-                                                {
-                                                    iNavigating = false;
-                                                    iCurrentBookmark = new Bookmark(aBreadcrumbTrail);
-                                                    if (EventLocationFailed != null)
-                                                    {
-                                                        EventLocationFailed(this, EventArgs.Empty);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    });
-                                });
-            }
-        }
-
-        private bool iNavigating;
-        private Scheduler iScheduler;
-        private LocatorAsync iLocatorAsync;
-        private ViewWidgetBreadcrumb iViewWidgetBreadcrumb;
-        public event EventHandler<EventArgs> EventLocationChanging;
-        public event EventHandler<EventArgs> EventLocationChanged;
-        public event EventHandler<EventArgs> EventLocationFailed;
-
+        private NavigationController iNavigationController;
         private ObservableCollection<BookmarkViewModel> iBookmarkCollection;
         private ListView iBookmarkList;
         private BookmarkManager iBookmarkManager;
-        private object iLockObject;
-        private IBrowser iBrowser;
-        private Linn.Kinsky.IContainer iRootContainer;
+        private object iLock;
         private Popup iBookmarksListPopup;
         private Popup iAddBookmarkPopup;
         private ToggleButton iShowBookmarksListButton;
@@ -794,13 +728,345 @@ namespace KinskyDesktopWpf
         private Panel iAddBookmarkPanel;
         private HelperKinsky iHelperKinsky;
         private bool iOpen;
-        private Location iCurrentLocation;
         private Bookmark iCurrentBookmark;
         private DragHelper iDragHelper;
         private bool iDropTargetSelf;
         private string iPreviousBookmarkTitle;
         private BookmarkViewModel iCurrentEditingModel;
         private BookmarkViewModel iCurrentSelectedModel;
+    }
+
+    public enum ENavigationState
+    {
+        Navigating,
+        Navigated,
+        Failed
+    }
+
+    public class NavigationController
+    {
+        public event EventHandler<EventArgs> EventNavigationStateChanged;
+        public event EventHandler<EventArgs> EventLocationChanged;
+
+        public NavigationController(IBrowser aBrowser, Linn.Kinsky.IContainer aRootContainer, ViewWidgetBreadcrumb aViewWidgetBreadcrumb, HelperKinsky aHelperKinsky)
+        {
+            iLock = new object();
+            iRootContainer = aRootContainer;
+            iBrowser = aBrowser;
+            iViewWidgetBreadcrumb = aViewWidgetBreadcrumb;
+            iScheduler = new Scheduler("NavigationScheduler", 1);
+            iNavigationState = ENavigationState.Navigating;
+            iViewWidgetBreadcrumb.EventBreadcrumbNavigate += EventBreadcrumbNavigateHandler;
+            iBrowser.EventLocationChanged += EventLocationChangedHandler;
+            iHelperKinsky = aHelperKinsky;
+        }
+
+        public void Open()
+        {
+            Navigate(iHelperKinsky.LastLocation.BreadcrumbTrail, 5);
+        }
+
+        public void Close() { }
+
+        public BreadcrumbTrail Home
+        {
+            get
+            {
+                return BreadcrumbTrail.Default;
+            }
+        }
+
+        public void Retry()
+        {
+            Navigate(iLastNavigation);
+        }
+
+        private void EventLocationChangedHandler(object sender, EventArgs e)
+        {
+            lock (iLock)
+            {
+                if (iNavigationState == ENavigationState.Navigated && iCurrentLocation != iBrowser.Location)
+                {
+                    iCurrentLocation = iBrowser.Location;
+                    iViewWidgetBreadcrumb.SetLocation(iCurrentLocation.BreadcrumbTrail);
+                    iHelperKinsky.LastLocation.BreadcrumbTrail = iCurrentLocation.BreadcrumbTrail;
+                }
+            }
+            if (iCurrentLocation != null && iCurrentLocation == iBrowser.Location && EventLocationChanged != null)
+            {
+                EventLocationChanged(this, EventArgs.Empty);
+            }
+        }
+
+        public Location Location
+        {
+            get
+            {
+                lock (iLock)
+                {
+                    return iCurrentLocation;
+                }
+            }
+        }
+
+        void EventBreadcrumbNavigateHandler(object sender, EventArgsBreadcrumbNavigation e)
+        {
+            Navigate(e.BreadcrumbTrail);
+        }
+
+        public ENavigationState NavigationState
+        {
+            get
+            {
+                lock (iLock)
+                {
+                    return iNavigationState;
+                }
+            }
+        }
+
+        public void Up(int aLevels)
+        {
+            lock (iLock)
+            {
+                if (iCurrentLocation != null)
+                {
+                    int levels = aLevels;
+                    if (levels >= iCurrentLocation.BreadcrumbTrail.Count)
+                    {
+                        levels = iCurrentLocation.BreadcrumbTrail.Count - 1;
+                    }
+                    Navigate(iCurrentLocation.BreadcrumbTrail.TruncateEnd(levels));
+                }
+            }
+        }
+
+        public void Down(container aContainer)
+        {
+            lock (iLock)
+            {
+                KillNavigator();
+                iBrowser.Down(aContainer);
+            }
+        }
+
+        public void Navigate(BreadcrumbTrail aBreadcrumbTrail)
+        {
+            Navigate(aBreadcrumbTrail, 3);
+        }
+
+        public void Navigate(BreadcrumbTrail aBreadcrumbTrail, int aRetryCount)
+        {
+            iNavigationState = ENavigationState.Navigating;
+            OnEventNavigationStateChanged();
+            iViewWidgetBreadcrumb.SetLocation(aBreadcrumbTrail);
+            lock (iLock)
+            {
+                iLastNavigation = aBreadcrumbTrail;
+                iViewWidgetBreadcrumb.SetLocation(aBreadcrumbTrail);
+                KillNavigator();
+                bool useNavigator = true;
+                if (iCurrentLocation != null)
+                {
+                    BreadcrumbTrail currentLocationTrail = iCurrentLocation.BreadcrumbTrail;
+                    if (currentLocationTrail.Count > aBreadcrumbTrail.Count)
+                    {
+                        useNavigator = false;
+                        for (int i = 0; i < aBreadcrumbTrail.Count && !useNavigator; i++)
+                        {
+                            useNavigator = aBreadcrumbTrail[i].Id != currentLocationTrail[i].Id && aBreadcrumbTrail[i].Title != currentLocationTrail[i].Title;
+                        }
+                    }
+                }
+                if (useNavigator)
+                {
+                    iNavigationState = ENavigationState.Navigating;
+                    iNavigator = new Navigator(iScheduler, iRootContainer, aBreadcrumbTrail);
+                    iNavigator.EventFailed += EventFailedHandler;
+                    iNavigator.EventSucceeded += EventSucceededHandler;
+                    iNavigator.Navigate(aRetryCount);
+
+                }
+                else
+                {
+                    iNavigationState = ENavigationState.Navigated;
+                    iBrowser.Up((uint)(iCurrentLocation.BreadcrumbTrail.Count - aBreadcrumbTrail.Count));
+                }
+            }
+        }
+
+
+        private void KillNavigator()
+        {
+            lock (iLock)
+            {
+                if (iNavigator != null)
+                {
+                    iNavigator.Cancel();
+                    iNavigator.EventFailed -= EventFailedHandler;
+                    iNavigator.EventSucceeded -= EventSucceededHandler;
+                    iNavigator = null;
+                }
+            }
+        }
+
+        private void EventFailedHandler(object aSender, EventArgs aArgs)
+        {
+            KillNavigator();
+            lock (iLock)
+            {
+                iNavigationState = ENavigationState.Failed;
+            }
+            OnEventNavigationStateChanged();
+        }
+
+        private void EventSucceededHandler(object aSender, EventArgsLocation aArgs)
+        {
+            KillNavigator();
+            lock (iLock)
+            {
+                iNavigationState = ENavigationState.Navigated;
+            }
+            OnEventNavigationStateChanged();
+            iBrowser.Browse(aArgs.Location);
+        }
+
+        private void OnEventNavigationStateChanged()
+        {
+            if (EventNavigationStateChanged != null)
+            {
+                EventNavigationStateChanged(this, EventArgs.Empty);
+            }
+        }
+
+        private Navigator iNavigator;
+        private Scheduler iScheduler;
+        private object iLock;
+        private Linn.Kinsky.IContainer iRootContainer;
+        private IBrowser iBrowser;
+        private ENavigationState iNavigationState;
+        private Location iCurrentLocation;
+        private ViewWidgetBreadcrumb iViewWidgetBreadcrumb;
+        private BreadcrumbTrail iLastNavigation;
+        private HelperKinsky iHelperKinsky;
+    }
+
+    class Navigator
+    {
+        public event EventHandler<EventArgs> EventFailed;
+        public event EventHandler<EventArgsLocation> EventSucceeded;
+        public Navigator(Scheduler aScheduler, Linn.Kinsky.IContainer aRootContainer, BreadcrumbTrail aBreadcrumbTrail)
+        {
+            iLock = new object();
+            iScheduler = aScheduler;
+            iBreadcrumbTrail = new BreadcrumbTrail(aBreadcrumbTrail);
+            iRootContainer = aRootContainer;
+        }
+
+        public void Cancel()
+        {
+            lock (iLock)
+            {
+                iCancelled = true;
+            }
+        }
+
+        public void Navigate(int aRetryCount)
+        {
+            if (iBreadcrumbTrail.Count > 0)
+            {
+                iScheduler.Schedule(() =>
+                {
+                    lock (iLock)
+                    {
+                        if (iCancelled)
+                        {
+                            return;
+                        }
+                    }
+
+                    LocatorAsync locatorAsync = new LocatorAsync(iRootContainer, iBreadcrumbTrail);
+                    locatorAsync.Locate((sender, location) =>
+                    {
+
+                        lock (iLock)
+                        {
+                            if (iCancelled)
+                            {
+                                return;
+                            }
+                        }
+                        if (location != null)
+                        {
+                            lock (iLock)
+                            {
+                                if (!iCancelled)
+                                {
+                                    OnEventSucceeded(location);
+                                }
+                            }
+                        }
+                        else if (aRetryCount > 0)
+                        {
+                            Thread.Sleep(3000);
+                            lock (iLock)
+                            {
+                                if (!iCancelled)
+                                {
+                                    Navigate(aRetryCount - 1);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            lock (iLock)
+                            {
+                                if (!iCancelled)
+                                {
+                                    OnEventFailed();
+                                }
+                            }
+                        }
+
+                    });
+
+                });
+            }
+        }
+
+        private void OnEventFailed()
+        {
+            EventHandler<EventArgs> del = EventFailed;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+        private void OnEventSucceeded(Location aLocation)
+        {
+            EventHandler<EventArgsLocation> del = EventSucceeded;
+            if (del != null)
+            {
+                del(this, new EventArgsLocation(aLocation));
+            }
+        }
+
+        private object iLock;
+        private bool iCancelled;
+        private Scheduler iScheduler;
+        private BreadcrumbTrail iBreadcrumbTrail;
+        private Linn.Kinsky.IContainer iRootContainer;
+    }
+
+    class EventArgsLocation : EventArgs
+    {
+        public EventArgsLocation(Location aLocation)
+            : base()
+        {
+            Location = aLocation;
+        }
+
+        public Location Location { get; set; }
     }
 
     class ViewWidgetButton : IViewWidgetButton
@@ -1483,7 +1749,6 @@ namespace KinskyDesktopWpf
 
     class ViewWidgetPlaylistReceiver : IViewWidgetPlaylistReceiver, IViewWidgetSelector<Linn.Kinsky.Room>
     {
-        private Object iLockObject;
         private bool iOpen;
         private List<MrItem> iPlaylistItems;
         private IViewSaveSupport iSaveSupport;
@@ -1499,7 +1764,6 @@ namespace KinskyDesktopWpf
             iSenders = aSenders;
             iPlaylistWidget = aPlaylistWidget;
             iPlaylistWidget.AllowDrop = false;
-            iLockObject = new Object();
             iOpen = false;
             iContainer = aContainer;
             iSaveSupport = aSaveSupport;
@@ -1513,38 +1777,8 @@ namespace KinskyDesktopWpf
         {
             if (e.SelectedItem != null && EventSelectionChanged != null)
             {
-                Linn.Kinsky.Room foundRoom = null;
-                lock (iLockObject)
-                {
-                    Linn.ControlPoint.Device device = null;
-                    foreach (ModelSender modelSender in iSenders.SendersList)
-                    {
-                        if (modelSender.Metadata[0].Title == e.SelectedItem.WrappedItem.DidlLite[0].Title)
-                        {
-                            device = modelSender.Sender.Device;
-                            break;
-                        }
-                    }
+                Linn.Kinsky.Room foundRoom = FindRoom(iChannel);
 
-                    if (device != null)
-                    {
-                        foreach (Linn.Kinsky.Room room in iRooms)
-                        {
-                            foreach (Linn.Kinsky.Source source in room.Sources)
-                            {
-                                if (source.Udn == device.Udn)
-                                {
-                                    foundRoom = room;
-                                    break;
-                                }
-                            }
-                            if (foundRoom != null)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
                 if (foundRoom != null)
                 {
                     EventSelectionChanged(this, new EventArgsSelection<Linn.Kinsky.Room>(foundRoom));
@@ -1552,26 +1786,51 @@ namespace KinskyDesktopWpf
             }
         }
 
-        void iPlaylistWidget_PlaylistItemDropped(object sender, PlaylistDropEventArgs e)
+        private Linn.Kinsky.Room FindRoom(Channel aChannel)
         {
-            lock (iLockObject)
+            Linn.Kinsky.Room foundRoom = null;
+
+            if (aChannel != null)
             {
-                if (e.Data != null)
+                foreach (ModelSender modelSender in iSenders.SendersList)
                 {
-                    if (EventSetChannel != null)
+                    foreach (resource r in modelSender.Metadata[0].Res)
                     {
-                        EventSetChannel(this, new EventArgsSetChannel(new MediaRetrieverNoRetrieve(e.Data.Media)));
+                        if (r.Uri == aChannel.Uri)
+                        {
+                            foundRoom = (from room in iRooms where room.Name == modelSender.Room select room).SingleOrDefault();
+                            if (foundRoom != null)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (foundRoom != null)
+                    {
+                        break;
                     }
                 }
             }
+            return foundRoom;
         }
+
+        void iPlaylistWidget_PlaylistItemDropped(object sender, PlaylistDropEventArgs e)
+        {
+            if (e.Data != null)
+            {
+                if (EventSetChannel != null)
+                {
+                    EventSetChannel(this, new EventArgsSetChannel(new MediaRetrieverNoRetrieve(e.Data.Media)));
+                }
+            }
+        }
+
         void iPlaylistWidget_SelectionChanged(object sender, PlaylistSelectionEventArgs e)
         {
             if (EventSetChannel != null)
             {
                 List<upnpObject> items = new List<upnpObject>();
                 items.Add(e.SelectedItem.WrappedItem.DidlLite[0]);
-
                 EventSetChannel(this, new EventArgsSetChannel(new MediaRetrieverNoRetrieve(items)));
             }
         }
@@ -1580,105 +1839,74 @@ namespace KinskyDesktopWpf
 
         public void Open()
         {
-            lock (iLockObject)
-            {
-                Assert.Check(!iOpen);
-                iOpen = true;
-                iContainer.Dispatcher.BeginInvoke(new Action(delegate()
-                {
-                    iContainer.Children.Add(iPlaylistWidget as UIElement);
-                    iPlaylistWidget.SetLoading(true, false);
-                    iScrollToSelected = true;
-                }));
-            }
+            Assert.Check(!iOpen);
+            iOpen = true;
+            iContainer.Children.Add(iPlaylistWidget as UIElement);
+            iPlaylistWidget.SetLoading(true, false);
+            iScrollToSelected = true;
         }
 
         public void Close()
         {
-            lock (iLockObject)
+            if (iOpen)
             {
-
-                if (iOpen)
-                {
-                    iContainer.Dispatcher.BeginInvoke(new Action(delegate()
-                    {
-                        iPlaylistItems.Clear();
-                        iContainer.Children.Remove(iPlaylistWidget as UIElement);
-                    }));
-                }
-
-                iOpen = false;
-
+                iPlaylistItems.Clear();
+                iContainer.Children.Remove(iPlaylistWidget as UIElement);
             }
+            iOpen = false;
         }
 
         public void Initialised()
         {
-            iContainer.Dispatcher.BeginInvoke(new Action(delegate()
-            {
-                iPlaylistWidget.SetLoading(false, false);
-            }));
+
+            iPlaylistWidget.SetLoading(false, false);
+
         }
 
         public void SetSenders(IList<ModelSender> aSenders)
         {
-            lock (iLockObject)
+            iPlaylistItems.Clear();
+            List<IPlaylistItem> items = new List<IPlaylistItem>();
+            for (int i = 0; i < aSenders.Count; ++i)
             {
-
-                iContainer.Dispatcher.BeginInvoke(new Action(delegate()
+                if (aSenders[i].Metadata != null)
                 {
-                    iPlaylistItems.Clear();
-                    List<IPlaylistItem> items = new List<IPlaylistItem>();
-                    for (int i = 0; i < aSenders.Count; ++i)
-                    {
-                        if (aSenders[i].Metadata != null)
-                        {
-                            MrItem p = new MrItem(0, "", aSenders[i].Metadata);
-                            iPlaylistItems.Add(p);
-                            SenderListItem item = new SenderListItem() { WrappedItem = p, Sender = aSenders[i] };
-                            items.Add(item);
-                        }
-                    }
-                    iPlaylistWidget.Items = items;
-                    UpdateChannel(iChannel);
-                }));
+                    MrItem p = new MrItem(0, "", aSenders[i].Metadata);
+                    iPlaylistItems.Add(p);
+                    SenderListItem item = new SenderListItem() { WrappedItem = p, Sender = aSenders[i] };
+                    items.Add(item);
+                }
             }
+            iPlaylistWidget.Items = items;
+            UpdateChannel(iChannel);
         }
 
         public void SetChannel(Channel aChannel)
         {
-            lock (iLockObject)
-            {
-                iContainer.Dispatcher.BeginInvoke(new Action(delegate()
-                {
-                    UpdateChannel(aChannel);
-                }));
-            }
+            UpdateChannel(aChannel);
         }
 
         private void UpdateChannel(Channel aChannel)
         {
-            lock (iLockObject)
+            SenderListItem newItem = null;
+            if (aChannel != null)
             {
-                SenderListItem newItem = null;
-                if (aChannel != null)
+                MrItem found = (from m in iPlaylistItems
+                                where m.DidlLite[0].Title == aChannel.DidlLite[0].Title
+                                select m).SingleOrDefault();
+                Linn.Kinsky.Room foundRoom = FindRoom(aChannel);
+                if (found != null)
                 {
-                    MrItem found = (from m in iPlaylistItems
-                                    where m.DidlLite[0].Title == aChannel.DidlLite[0].Title
-                                    select m).SingleOrDefault();
-                    if (found != null)
-                    {
-                        newItem = new SenderListItem() { WrappedItem = found };
-                    }
+                    newItem = new SenderListItem() { WrappedItem = found, HasRoom = foundRoom != null };
                 }
-
-                iPlaylistWidget.SetNowPlayingItem(newItem, iScrollToSelected);
-                if (newItem != null)
-                {
-                    iScrollToSelected = false;
-                }
-                iChannel = aChannel;
             }
+
+            iPlaylistWidget.SetNowPlayingItem(newItem, iScrollToSelected);
+            if (newItem != null)
+            {
+                iScrollToSelected = false;
+            }
+            iChannel = aChannel;
         }
 
         public void Save()
@@ -1692,23 +1920,22 @@ namespace KinskyDesktopWpf
         #region IViewWidgetSelector<Room> Members
 
         void IViewWidgetSelector<Linn.Kinsky.Room>.Open() { }
-        void IViewWidgetSelector<Linn.Kinsky.Room>.Close() { }
+        void IViewWidgetSelector<Linn.Kinsky.Room>.Close()
+        {
+            iRooms.Clear();
+        }
 
 
         public void InsertItem(int aIndex, Linn.Kinsky.Room aItem)
         {
-            lock (iLockObject)
-            {
-                iRooms.Add(aItem);
-            }
+            iRooms.Add(aItem);
+            UpdateChannel(iChannel);
         }
 
         public void RemoveItem(Linn.Kinsky.Room aItem)
         {
-            lock (iLockObject)
-            {
-                iRooms.Remove(aItem);
-            }
+            iRooms.Remove(aItem);
+            UpdateChannel(iChannel);
         }
 
         public void ItemChanged(Linn.Kinsky.Room aItem)
@@ -3444,6 +3671,7 @@ namespace KinskyDesktopWpf
         private const int kCacheSize = 1 * 1024 * 1024;
         private const int kThreadCount = 1;
         private string iPendingImageUri;
+        private WpfImageWrapper iErrorImage;
 
         public ViewWidgetTrack(ViewWidgetTrackDisplay aViewWidgetTrackDisplay, IPlaylistWidget[] aPlaylistWidgets)
         {
@@ -3452,11 +3680,18 @@ namespace KinskyDesktopWpf
             iPlaylistWidgets = aPlaylistWidgets;
             iLock = new object();
             iOpen = false;
-            iFullResCache = new ThreadedImageCache<BitmapImage>(kCacheSize, 0, kThreadCount, new WpfImageWrapper(StaticImages.ImageSourceIconLoading), new WpfImageLoader(new DefaultUriConverter()));
-            iFullResCache.EventImageAdded += iFullResCache_EventImageAdded;
+            iErrorImage = new WpfImageWrapper(StaticImages.ImageSourceIconLoading);
+            iFullResCache = new ThreadedImageCache<BitmapImage>(kCacheSize, 0, kThreadCount, new WpfImageLoader(new ScalingUriConverter(kUpscaleImageSize, true, true)));
+            iFullResCache.EventImageAdded += EventImageAddedHandler;
+            iFullResCache.EventRequestFailed += EventRequestFailedHandler;
         }
 
-        void iFullResCache_EventImageAdded(object sender, EventArgsImage<BitmapImage> e)
+        private void EventRequestFailedHandler(object sender, EventArgsImageFailure e)
+        {
+            EventImageAddedHandler(sender, new EventArgsImage<BitmapImage>(e.Uri, iErrorImage));
+        }
+
+        private void EventImageAddedHandler(object sender, EventArgsImage<BitmapImage> e)
         {
             iViewWidgetTrackDisplay.Dispatcher.BeginInvoke((Action)(() =>
             {
@@ -3539,7 +3774,7 @@ namespace KinskyDesktopWpf
                         if (icon.IsUri)
                         {
                             iPendingImageUri = icon.ImageUri.OriginalString;
-                            IImage<BitmapImage> image = iFullResCache.Image(icon.ImageUri);
+                            IImage<BitmapImage> image = iFullResCache.Image(iPendingImageUri);
                             if (image != null)
                             {
                                 iViewWidgetTrackDisplay.Artwork = image.Image;
@@ -3734,6 +3969,8 @@ namespace KinskyDesktopWpf
         }
 
         #endregion
+
+        private const int kUpscaleImageSize = 2048;
     }
 
     class ViewSysTrayContextMenu : IViewWidgetTransportControl, IViewWidgetVolumeControl, IViewWidgetPlayMode
@@ -4190,7 +4427,7 @@ namespace KinskyDesktopWpf
             SetSelectionState(null);
         }
 
-        public void InsertItem(int aIndex, T aItem)
+        public virtual void InsertItem(int aIndex, T aItem)
         {
             Trace.WriteLine(Trace.kKinskyDesktop, "ViewWidgetSelector.InsertItem: " + aIndex + ", " + aItem);
             ListViewModelBase model = CreateViewModel(aItem);
@@ -4203,7 +4440,7 @@ namespace KinskyDesktopWpf
             iItems.Insert(aIndex, model);
         }
 
-        public void RemoveItem(T aItem)
+        public virtual void RemoveItem(T aItem)
         {
 
             ListViewModelBase foundItem = null;
@@ -4363,9 +4600,35 @@ namespace KinskyDesktopWpf
     class ViewWidgetSelectorRoom : ViewWidgetSelector<Linn.Kinsky.Room>
     {
 
-        public ViewWidgetSelectorRoom(ListBox aSelectorList, Control aSelectorDisplay)
+        public ViewWidgetSelectorRoom(ListBox aSelectorList, Control aSelectorDisplay, Button aStandbyAllButton)
             : base(aSelectorList, aSelectorDisplay)
         {
+            iStandbyAllButton = aStandbyAllButton;
+            iStandbyAllButton.IsEnabled = false;
+            aStandbyAllButton.Click += StandbyAllButtonClickHandler;
+        }
+
+        public override void InsertItem(int aIndex, Linn.Kinsky.Room aItem)
+        {
+            base.InsertItem(aIndex, aItem);
+            EvaluateStandbyAllButtonState();
+        }
+
+        public override void RemoveItem(Linn.Kinsky.Room aItem)
+        {
+            base.RemoveItem(aItem);
+            EvaluateStandbyAllButtonState();
+        }
+
+        private void StandbyAllButtonClickHandler(object sender, EventArgs e)
+        {
+            foreach (RoomViewModel vm in iItems)
+            {
+                if (!vm.WrappedItem.Standby)
+                {
+                    vm.WrappedItem.Standby = true;
+                }
+            }
         }
 
         public override ListViewModelBase CreateViewModel(Linn.Kinsky.Room aItem)
@@ -4380,7 +4643,6 @@ namespace KinskyDesktopWpf
 
         public override void ItemChanged(Linn.Kinsky.Room aTag)
         {
-
             RoomViewModel foundItem = null;
             foreach (RoomViewModel item in iItems)
             {
@@ -4399,9 +4661,14 @@ namespace KinskyDesktopWpf
                     iItems[idx] = foundItem;
                 }
             }
+            EvaluateStandbyAllButtonState();
         }
 
-
+        private void EvaluateStandbyAllButtonState()
+        {
+            iStandbyAllButton.IsEnabled = (from RoomViewModel vm in iItems where vm.WrappedItem.Standby == false select vm).Count() > 0;
+        }
+        private Button iStandbyAllButton;
     }
 
     class ViewWidgetSelectorSource : ViewWidgetSelector<Linn.Kinsky.Source>
@@ -4447,12 +4714,6 @@ namespace KinskyDesktopWpf
         public ViewWidgetButtonStandby(ViewKinsky aViewKinsky)
         {
             iLockObject = new object();
-            aViewKinsky.EventStandby += aViewKinsky_EventStandby;
-        }
-
-        void aViewKinsky_EventStandby(object sender, EventArgs e)
-        {
-            OnEventClick();
         }
 
         #region IViewWidgetButton Members

@@ -10,14 +10,14 @@ Depends(didl, kode)
 
 didl += ['Properties/AssemblyInfo.cs', 'Upnp/DidlLiteAdapter.cs']
 clilibs = ['OssSysLib', 'OssCore', 'mscorlib', 'System', 'System.Xml', 'System.Web.Services']
-if _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'Android':
     lib =  _default_env.CliLibrary('OssDidlLite', didl, CLILIBS=clilibs)
 else:    
     msproj = _default_env.MSBuildFileGenerator('OssDidlLite', didl, LINKS=didl, CLILIBS=clilibs, ROOTNAMESPACE='Linn.DidlLite')
     lib = _default_env.MSBuildLibBuilder('OssDidlLite', msproj, CLILIBS=clilibs)
     
 test = []
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Droid':
+if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Android':
     test += _default_env.CliProgram('Test/TestDidlLite', 'UpnpAv/Test/TestDidlLite.cs', CLILIBS=['mscorlib', 'System.Xml', 'OssCore', 'OssTestFramework', 'OssDidlLite'])
 
 Alias('Lib', kode)

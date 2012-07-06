@@ -1,6 +1,7 @@
 Import('env')
 
 import re
+import SCons.Node.Python
 
 
 def TagReplaceBuilder(target, source, env): 
@@ -19,6 +20,7 @@ def TagReplaceBuilder(target, source, env):
     f.write(contents)
     f.close()
 
+    env.Depends(target, Value(env['TAGS']))
     return 0
 
 

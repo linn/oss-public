@@ -179,7 +179,31 @@ namespace Linn.Kinsky
 
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
-        public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgsContentRemoved> EventContentRemoved;        
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+        
+        string IContainer.Id
+        {
+            get { return kRootId; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private void SaveDirectoryChanged(object sender, EventArgs e)
         {
@@ -497,6 +521,30 @@ namespace Linn.Kinsky
         public event EventHandler<EventArgs> EventContentUpdated { add { } remove { } }
         public event EventHandler<EventArgs> EventContentAdded { add { } remove { } }
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved { add { } remove { } }
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private container iMetadata;
     }
@@ -626,6 +674,30 @@ namespace Linn.Kinsky
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private void PlaylistAdded(string aFilename)
         {
@@ -813,6 +885,30 @@ namespace Linn.Kinsky
         public event EventHandler<EventArgs> EventContentUpdated { add { } remove { } }
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private Mutex iMutex;
 

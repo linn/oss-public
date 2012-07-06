@@ -28,8 +28,16 @@ namespace OssToolkitDroid
 
         public void BeginInvoke(System.Delegate aDelegate, params object[] aArgs)
         {
-            iHandler.Post((Action)(()=>{
-                aDelegate.DynamicInvoke(aArgs);
+            iHandler.Post((Action)(() =>
+            {
+                try
+                {
+                    aDelegate.DynamicInvoke(aArgs);
+                }
+                catch (System.Exception ex)
+                {
+                    ThrowException(ex);
+                }
             }));
         }
 
@@ -41,6 +49,15 @@ namespace OssToolkitDroid
                 return true;
             }
             return false;
+        }
+
+        public void ThrowException(System.Exception ex)
+        {
+            // force exception throw off UI thread
+            new System.Threading.Thread(new System.Threading.ThreadStart(() =>
+            {
+                throw new System.Exception("Unhandled exception in main thread", ex);
+            })).Start();
         }
 
         #endregion

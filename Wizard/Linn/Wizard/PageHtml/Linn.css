@@ -1,0 +1,1367 @@
+html{color:#000;background:#FFF;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+
+
+html 
+{
+    cursor:default;
+    width:100%;
+    height:100%;
+    margin:0px;
+} 
+
+
+*
+{
+    padding: 0;
+    position:relative;
+}
+
+@font-face
+{
+    font-family: 'MyEffraRegular';
+    src: url('../Resources/Fonts/effra-webfont.eot');
+    src: url('../Resources/Fonts/effra-webfont.eot?#iefix') format('embedded-opentype'), 
+    url('../Resources/Fonts/effra-webfont.woff') format('woff'), 
+    url('../Resources/Fonts/effra-webfont.ttf') format('truetype'), 
+    url('../Resources/Fonts/effra-webfont.svg#EffraRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body
+{
+    
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+    line-height:20px;
+    font-size:15px;
+    color:rgb(76,76,76);
+    width:100%;
+    height:100%;
+    margin:0px;
+}
+
+h1, h2, h3, h4, h5
+{
+    padding: 0;
+    margin: 0 0 10px 0;
+    color: #010101;
+    font-weight: normal;
+}
+
+h1
+{
+    font-size: 36px;
+    line-height: 36px;
+}
+
+h2
+{
+    font-size: 30px;
+    line-height: 30px;
+    text-transform: uppercase;
+    margin: 0 0 20px 0;
+}
+
+h3
+{
+    font-size: 24px;
+    line-height: 24px;
+}
+
+h4
+{
+    font-size: 16px;
+    line-height: 16px;
+}
+
+h5
+{
+    font-size: 12px;
+    line-height: 12px;
+}
+
+.clear
+{
+    clear:both;
+    font-size: 1px;
+    line-height: 0;
+    height: 1px;
+}
+
+
+
+/* **************************************************** Wizard specific CSS *********************************************************** */
+
+#all
+{
+    height:100%;
+}
+
+.background
+{
+    margin-top:0px;           /* -20px; problem in David's framework causing 20px gap at top if <div id="all"> not first chars in index.xapp */
+    
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position-x:center;    
+	background-position-y:top;    
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;	
+	z-index:-200;
+	width:100%;
+	height:100%;
+	min-width:1440px;
+	min-height:800px;
+	position:absolute;
+}
+
+#Background
+{
+	z-index:-200;
+}
+
+div
+{
+    margin:auto;
+}
+
+ul, li
+{
+    list-style-type:disc;
+}
+
+ol, ol li
+{
+    list-style-type:decimal;
+}
+
+.section
+{    
+	clear:left;
+}
+
+.horiz_separator    /* horizontal line */
+{
+    line-height: 0;
+    height: 0px;
+    border-bottom:1px solid #d0d0d0;
+    padding-top:0px;   /* margin-top doesn't work here on i.e & moz */
+    margin:0px; 
+    color:gray;
+}
+
+.navigation_tab, .navigation_tab_initial, .navigation_tab_initial_main, .navigation_tab_initial_use
+{
+    float:left;
+    padding-left:10px;
+    padding-right:10px;
+    height:40px;
+    line-height:40px;
+    list-style-position:outside;
+    list-style-type:none;
+    color:black;
+}
+.navigation_tab
+{
+    border-left:2px solid #a19589;
+}
+.navigation_tab_initial
+{
+    cursor:pointer;
+    border-left:2px solid #a19589;
+    background:url(./Resources/Images/Miscellaneous/MainExitButtonRed.png) repeat; 
+ 	background:rgba(223, 80, 92, 0.8);
+}
+.navigation_tab_initial:hover
+{
+    background:rgb(244, 186, 181);
+}
+.navigation_tab_initial_use
+{
+    cursor:pointer;
+    border-left:2px solid #a19589;
+    background:url(./Resources/Images/Miscellaneous/UseExitButtonBlue.png) repeat;
+    background:rgba(56, 163, 219, 0.8);
+}
+.navigation_tab_initial_use:hover
+{
+    background:rgb(189, 224, 227);
+}
+.navigation_tab_initial_main
+{
+    border-left:2px solid #a19589;
+    background:url(./Resources/Images/Miscellaneous/SelectSystemExitButtonPurple.png) repeat;
+    background:rgba(181, 102, 162, 0.8)
+}
+
+.progress_step
+{
+    float:left;
+    height:30px;
+    line-height:30px;
+    font-size:13px;
+    list-style-position:outside;
+    list-style-type:none;
+    text-transform:uppercase;
+    color:white;
+    background-color:#c6bfb7; 
+    display:inline;
+    padding:0px 15px 0px 15px;
+    margin:0px;
+    border:0px;
+    width:auto;
+    cursor:default;
+}
+
+.progress_separator
+{
+    float:left;
+    height:30px;
+    width:10px;
+    background-color:#c6bfb7;
+    background-image: url(../Resources/Images/Miscellaneous/Progress.png);    
+    display:inline;
+}
+
+button 
+{
+    height:30px;
+    outline: medium none;
+    font-family: 'MyEffraRegular',Arial,Helvetica,sans-serif; 
+    padding: 4px 10px 5px 10px;
+    text-align: center; 
+    text-decoration: none; 
+    text-transform: uppercase;
+    font-size: 12px; 
+    line-height:20px;
+    border-style:none; 
+    z-index:220;
+    cursor:pointer;
+}
+
+input
+{
+    cursor:pointer;
+    z-index:220;
+}
+
+
+.dark_button { background-color: black; color: white;}
+.dark_button:hover { background-color: rgb(192, 186, 186); -moz-transition: background-color 0.3s ease-in-out; -webkit-transition: background-color 0.3s ease-in; }
+.light_button { background-color: #c6bfb7; color: black;}
+.light_button:hover { background-color: rgb(72, 72, 72); -moz-transition: background-color 0.3s ease-in-out; -webkit-transition: background-color 0.3s ease-in; }
+
+
+.speech_bubble	{ position:absolute;}
+.speech_bubble_box	{ background-color: rgb(198, 191, 183); height:inherit; padding: 30px 22px; }
+.speech_bubble_box_large	{ background-color: #38A3DB; height:inherit; padding: 30px 22px; }
+.speech_bubble_tail	{ width: 0; height: 0; border-right: 70px solid transparent; border-top: 40px solid rgb(198, 191, 183); float: right; }
+.speech_bubble_tail_large	{ width: 0; height: 0; border-right: 70px solid transparent; border-top: 40px solid #38A3DB; float: right; }
+.speech_bubble_header	{ margin-bottom:30px; text-transform:uppercase; }
+.speech_bubble_item	{ margin-left:20px; }
+
+
+/* ------------- page sections ------------------- */
+
+#pagesection
+{
+    width:1024px; 
+    top:-40px;
+    z-index:200;
+}
+
+#header 
+{
+    height:100px;
+    width:100%;
+    margin-top:0px;
+    margin-bottom:0px;
+    z-index:210;
+}
+
+#main 
+{
+    background-color:White;
+    z-index:200;
+}
+
+#footer 
+{
+    height:30px;
+    background-color:White;
+    padding:22px 20px 23px 20px;
+    z-index:200;
+}
+
+
+
+/* +++++++++++++++++++  #header section ++++++++++++++++++ */
+
+#navigation_bar
+{
+    float:left;
+    width:100%;
+    z-index:100;
+}
+
+#navigation_background
+{
+    width:100%;
+    min-width:1024px;
+    height:40px;
+    background:url(./Resources/Images/Miscellaneous/NavigationBarBackground.png) repeat;
+    background:rgba(255, 255, 255, 0.8);
+    z-index:-5;
+}
+
+#just_listen
+{
+    float:right;
+    margin-right:50px;
+    margin-top:-30px;
+    z-index:10;
+}
+
+#LinnWebLink
+{
+    float:right;
+    width:65px;
+    height:80px;
+    margin-top:-40px;
+    background-color:White;
+    z-index:4;
+}
+
+
+/* +++++++++++++++++++  #main section ++++++++++++++++++ */
+
+
+#Main
+{    
+    height:488px;
+}
+#MainContent
+{    
+    height:inherit;
+    padding:20px; 
+}
+.maintext
+{
+    z-index:3;
+    overflow:hidden;    
+    text-align:justify;
+    padding:0px;
+}
+#MainText1, #MainText2, #MainText3, #MainText4, #MainText5, #MainText6, #MainText7, #MainText8, #MainText9   
+{
+    position:absolute; /* absolute position must be defined in xml using Top/Left */
+    text-align:center;
+    width:600px;       /* position text at centre-300px from l.h. edge */
+    font-size:13px;
+}
+#MainTextCalloutLargeSingleLine, #MainTextCalloutLargeMultiLine, #MainTextCalloutSmall1, #MainTextCalloutSmall2   
+{
+    position:absolute; /* absolute position must be defined in xml using Top/Left */
+    font-size:15px;
+    color:rgb(153, 153, 153);
+    padding-top: 2px;
+}
+#MainTextCalloutLargeMultiLine 
+{
+    width:280px;    
+    text-align:justify; 
+}
+#MainTextCalloutLargeSingleLine
+{
+    width:280px;    
+    text-align:center; 
+}
+#MainTextCalloutSmall1, #MainTextCalloutSmall2   
+{
+    width:180px;   
+    text-align:center; 
+}
+#MainTextTL, #MainTextBL
+{
+    max-width:40%;
+    float:left;   
+}
+#MainTextTR, #MainTextBR
+{
+    max-width:40%;
+    float:right;  
+}
+#MainTextTL, #MainTextTR
+{
+    height:381px;
+    margin-top:0px;  /* set to top of image */
+}
+#MainTextBL, #MainTextBR
+{
+    height:150px;
+    margin-top:231px;  /* set to middle of image */
+}
+#MainText
+{
+    max-width:40%;
+}
+#TextList
+{
+    padding-left:50px;
+}
+#HelpImage
+{
+    border:2px solid rgb(198, 191, 183);
+    margin-right:8px;
+    margin-top:8px;
+    margin-bottom:8px;
+}
+#HelpImageRight
+{
+    border:2px solid rgb(198, 191, 183);
+    margin-right:8px;
+    margin-top:8px;
+    margin-bottom:8px;
+    float:right;
+}
+
+.mainimage
+{
+    overflow:hidden;
+    clear:both; 
+}
+#MainImage
+{
+    position:absolute;
+    top:-171px;
+    left:-208px;
+    z-index:-200;
+}
+
+#ProgressHeader
+{
+    height:30px; 
+    padding:20px;
+    margin:0px;
+    z-index:250;
+}
+#progress_bar
+{
+    float:left;
+    width:80%;
+    height:inherit;    
+    z-index:2;
+    font-size:11px;
+    vertical-align:middle;
+    display:inline;
+}
+
+#TroubleshootButton
+{
+    float:right;
+    height:inherit;
+}
+
+#title_bar 
+{
+    height:30px;
+    padding:10px 0px 15px 0px;    
+}
+#Title 
+{
+    float:left;
+    font-size:30px;
+    line-height:30px;
+}
+
+#SpeechBubbleLarge /* must make SpeechBubble generic and dependent on number of active lines */
+{
+width: 311px; 
+height: 150px;
+}
+
+#SpeechBubbleHeaderL, #SpeechBubbleL1
+{
+    color: white;
+    margin: 0 0 20px;
+    font-size:20px;
+    text-transform:none;
+}
+#SpeechBubbleL1
+{
+    font-size:13px;
+    line-height:16px;
+}
+
+#SpeechBubbleMedium
+{
+width: 280px; 
+height: 110px;
+}
+
+#SpeechBubbleSmall
+{
+width: 280px; 
+height: 70px;
+}
+/* Specials >>>>>>>>>>>>>>>>>>>>>>>> */
+
+/* >>> Discovery */
+#ListBox 
+{
+    float:left;
+    height:30px;
+    margin:30px;
+}
+
+#DeviceList
+{
+    float:left;
+    width:380px;
+    margin:30px 302px 0px 302px;
+    display:block;
+}
+#DeviceListTitle
+{
+    height:20px;
+    line-height:20px;
+    width:100%;
+    margin-bottom:2px;
+    background-color:#c6bfb7; 
+    font-size:20px;
+    padding:25px 0px 25px 0px;
+    text-align:center;
+    display:inherit; 
+}
+.devicebutton
+{
+    width:100%;  
+    height:30px;
+    display:inherit;    
+    margin-bottom:1px;
+    color:Black;
+    background-color:#c6bfb7;
+    text-transform: none;
+}
+.devicebutton:hover {background-color: rgb(72, 72, 72); -moz-transition: background-color 0.3s ease-in-out; -webkit-transition: background-color 0.3s ease-in; }
+
+#DeviceListButtons
+{
+    height:30px;
+    display:inline;
+    margin-top:20px;
+}
+#RefreshButton
+{
+    width:inherit;  
+    float:right;
+    height:inherit;
+    margin-top:inherit;
+    text-transform:uppercase;
+}
+#DiscoveryRefreshSpinner
+{
+    position:relative;
+    left:229px;
+    height:30px;
+    margin-top:inherit;
+}
+#DeviceListPageUp, #DeviceListPageDown
+{
+    float:left;
+    height:inherit;
+    width:40px;
+    margin-right:10px;
+    font-size:30px; /* should use arrow image ! */
+    margin-top:inherit;
+    padding: 2px 10px 5px 10px;
+}
+/* Discovery <<< */
+
+
+/* Update >>> */
+#UpdateBox
+{
+    float:left;
+    width:380px;
+    margin:30px 302px 0px 302px;
+    display:block;
+}
+#UpdateBoxTitle, #UpdateBoxFooter
+{
+    height:20px;
+    line-height:20px;
+    width:inherit;
+    background-color:#c6bfb7; 
+    font-size:20px;
+    padding:15px 0px 25px 0px;
+    text-align:center;
+    display:inherit; 
+}
+#UpdateBoxText
+{
+    background-color:#c6bfb7; 
+    padding:15px 10px 45px 10px;
+    text-align:center;
+    display:inherit; 
+    min-height:50px;
+}
+#UpdateButton {
+    left: -103px;
+    position: relative;
+    top: -48px;
+    width: 150px;
+}
+#UpdateProgressBar { 
+    position: relative;
+    display: block;                 
+    float: left;     
+    width: 220px; 
+    height: 20px; 
+    background-image: url("../Resources/Images/Miscellaneous/ProgressGray.gif");
+    z-index:3;
+    left:80px;
+    top:-140px;
+ }
+ #UpdateProgressBarFilled { 
+    position: relative;
+    background-image: url("../Resources/Images/Miscellaneous/ProgressBlack.gif"); 
+    float: left;
+    height: 20px; 
+    width: 75%; 
+    text-align:right; 
+    display:block;
+ }
+ #UpdateProgressText
+{
+    background-color:transparent;
+    position:relative;
+    width:380px;
+    text-align:center;
+    top:-145px;
+}
+/* Update <<< */
+
+/* Stream >>> */
+#MainTextTrackInfo
+{
+    position:absolute;
+    top:220px;
+    left:302px;
+    margin-left:30px;
+}
+#MainTextStreamStatus
+{
+    position:absolute;
+    top:240px;
+    left:302px;
+    margin-left:30px;
+}
+#MainTextVolume
+{
+    position:absolute;
+    top:220px;
+    left:302px;
+    margin-left:30px;
+}
+#PlayButton, #StopButton, #VolumeIncButton, #VolumeDecButton
+{
+    position:absolute;
+    top:169px;
+    height:30px;
+    width:30px;
+    margin-left:30px;
+}
+#PlayButton
+{
+    left:302px;
+    background-image:url(../Resources/Images/Miscellaneous/PlayButton.png);
+}
+#PlayButton:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/PlayButtonPressed.png);
+}
+#StopButton
+{
+    left:362px;
+    background-image:url(../Resources/Images/Miscellaneous/StopButton.png);
+}
+#StopButton:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/StopButtonPressed.png);
+}
+#VolumeIncButton
+{
+    left:482px;
+    background-image:url(../Resources/Images/Miscellaneous/VolumePlusButton.png);
+}
+#VolumeIncButton:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/VolumePlusButtonPressed.png);
+}
+#VolumeDecButton
+{
+    left:422px;
+    background-image:url(../Resources/Images/Miscellaneous/VolumeMinusButton.png);
+}
+#VolumeDecButton:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/VolumeMinusButtonPressed.png);
+}
+/* Stream <<< */
+
+/* >>> Use */
+#Support
+{
+    left: 345px;
+    top: -17px;
+}
+.SupportEntryL
+{
+    width: 300px;
+    left: -342px;
+}
+.SupportEntryR
+{
+    width: 300px;
+    left: -14px;
+    top: -327px;
+}
+#SupportTextMainTitle
+{
+    font-size: 20px;
+    color: #A19589;
+    padding-bottom: 3px;
+    width:610px;
+}
+#SupportHorizontalLine
+{
+    border-bottom:2px solid #C6BFB7;
+    left:-177px;
+    width:630px;
+}
+.SupportText, .SupportTextTitle
+{
+    z-index:3;
+    overflow:hidden;    
+    text-align:justify;
+    padding:0px;
+}
+.SupportTextTitle
+{
+    padding: 20px 0 10px 0;
+    color: black;
+    font-size: 20px;
+}
+.SupportTextTitle:link
+{
+    text-decoration:none;
+}
+.SupportTextTitle:hover
+{
+    cursor: pointer;
+    text-decoration:underline;
+}
+.SupportText
+{
+    padding-bottom: 7px;
+    font-size:13px;
+    line-height:16px;
+}
+.SupportLink
+{
+    color: #38A3DB;
+    font-size:13px;
+}
+.SupportLinkContainer
+{
+    color: #38A3DB;
+    background:url(./Resources/Images/Miscellaneous/right-light.png);
+    width: 130px;
+    left:-85px;
+}
+.SupportLinkContainer:hover
+{
+    cursor: pointer;
+    background:url(./Resources/Images/Miscellaneous/right-dark.png);
+    text-decoration:underline;
+}
+.SupportLink:link
+{
+    text-decoration:none;
+}
+.SupportLink:hover
+{
+    
+}
+/* >>> Use */
+
+/* >>> Main */
+#MainPagePromptLine
+{    
+    width:inherit;
+    height:30px;
+    padding:10px;
+    margin:0px;
+    background-color:White;
+}
+#MainPagePromptText
+{    
+    float:left;
+    line-height:30px;
+    width:700px;
+    margin:0px;
+    text-transform: uppercase;
+}
+
+.productselectorl, .productselectorr
+{
+    float:left;
+    padding:0px;
+    width:502px;
+    height:260px;
+    background-color:White;
+    border:0;
+}
+.productselectorr
+{
+    margin:20px 0px 0px 10px;
+}
+.productselectorl
+{
+    margin:20px 10px 0px 0px;
+}
+
+.productselectorl:hover, .productselectorr:hover
+{
+    background:url(./Resources/Images/Miscellaneous/ProductSelectButtonHover.png) repeat;
+    background:rgba(227, 193, 217, 0.8);
+}
+
+.productimage
+{
+    width:inherit;
+    z-index:10;
+}
+.producttext
+{
+    width:inherit;
+    margin-top:-50px;
+    text-align:center;
+    z-index:9;
+}
+/* Main <<< */
+
+/* >>> Help */
+#Help
+{
+    height:730px;
+    top:70px;
+    background-color:White;
+}
+#HelpMenu
+{
+    float:left;
+    width:400px;
+    height:inherit;
+    background-color:#c6bfb7;
+}
+#HelpMenuTitle
+{
+    padding:25px 0px 30px 20px;
+    margin-bottom:0px;
+    border-bottom:1px solid black;
+    text-transform:uppercase;
+}
+.modal_menu_item
+{
+    height:40px;
+    width:inherit;
+    font-size:15px;
+    padding-left:20px;
+    border-bottom:1px solid black;
+    color:black;
+    background-color:#c6bfb7;
+    background-image:url(../Resources/Images/Miscellaneous/HelpMenuArrow.png);
+    background-position:right;
+    background-repeat:no-repeat;
+    text-align:left;
+    text-transform:uppercase;
+}
+.modal_menu_item:hover
+{
+    background-color:gray; /* requires correct colour here! */
+}
+
+#HelpContent
+{
+    float:right;
+    width:584px;
+    height:617px;
+    margin:20px;
+}
+#HelpSeparator
+{
+    float:right;
+    width:624px;
+}
+#HelpFooter
+{
+    float:right;
+    width:584px;
+    height:30px;
+    padding:22px 20px 23px 20px;
+}
+#HelpTitle
+{
+    float:left;
+    width:inherit;
+    text-transform:uppercase;
+    padding:50px 0px 10px 0px;
+}
+#HelpText
+{
+    float:left;
+    width:inherit;
+    padding:10px 0px 50px 0px;
+}
+#TicketForm
+{
+    float:left;
+    height:300px;
+}
+#FormCloseButton, #FormSubmitButton, #FormClearButton, #SubmitWaitSpinner
+{
+    float:right;
+    margin-left:20px;
+}
+
+.text_entry
+{
+    width:inherit;
+    display:table-row;
+}
+.text_title
+{
+    float:left;
+    width:180px;
+    margin:10px 0px 0px 0px;
+    display:table-cell;
+    text-transform:uppercase;
+}
+.text_valid
+{
+    color: Black;
+    font-style:normal
+}
+.text_invalid
+{
+    color: Red;
+    font-style: italic;
+}
+.text_edit
+{
+    float:right;
+    width:390px;
+    margin:4px 0px 4px 0px;
+    display:table-cell;
+    border:7px solid #c6bfb7;
+    background-color:#c6bfb7;
+    overflow:auto;
+    resize:none;
+}
+/* Help <<< */
+
+
+/* >>> Customise */
+#DialogueBox
+{
+    height:140px;
+    width:335px;
+    position:absolute;
+    background-color: rgb(198, 191, 183);
+    padding: 20px;
+}
+#DialogueBoxHeader
+{
+    border-bottom:20px;
+    text-align:center;    
+    text-transform: uppercase;
+}
+#DialogueBoxText
+{
+    border-bottom:10px;
+    text-align:center;
+}
+#DialogueBoxInput
+{
+    text-align:left;
+    width:205px;
+    margin:30px;
+    border:5px solid white;
+    padding:0px 30px;
+    overflow:auto;
+    resize:none;
+    font-style:italic;
+}
+/* layout styles */
+
+#install-wizard #installer.img-wrapper {
+height: 100%; padding-bottom: 60px;
+}
+.img-wrapper { auto; height: auto; min-width: 978px; width: 100%;
+}
+
+
+/*#content { width: 1024px; height: 640px; margin: 0 auto; background: #fff; }*/
+#content .stages, #content .main, #content .paginate { position: relative; width: 984px; padding: 20px; }
+#content .stages	{ height: 30px; border-bottom: 1px solid #c6bfb7;  }
+#content .main		{ height: 421px; padding: 48px 20px 20px; }
+#content .paginate	{ height: 39px; border-top: 1px solid #c6bfb7; }
+#content .no-margin	{ margin: 0; }
+#content .left, #content .right		{ display: block; position: relative; width: 480px; float: right;  }
+#content .left		{ float: left; margin: 0 18px 0 0;  }
+#content .intro		{ float: left; width: 480px; position: relative; clear: both; }
+
+
+/* unpack */
+
+#content .unpack-item	{ float: left; margin: 0 20px 15px 0; }
+#content .related-items, #content .remote	{ float: right; }
+#content .related-box	{ background-color: rgb(198, 191, 183); width: 236px; padding: 30px 22px; }
+#content .box-arrow	{ width: 0; height: 0; border-right: 70px solid transparent; border-top: 40px solid rgb(198, 191, 183); float: right; }
+
+#content .ethernet, #content .speaker-cable, #content .power-cable,
+#content .hdmi-cable, #content .kiko-feet, #content .batteries		{ width: 180px; height: 90px; margin: 0 0 3px 0; }
+
+/* products 
+could envisage a setup where each installer has a different
+pruduct id, eg #product-rear.akurate, #product-rear.majik
+these containes have a product image that can be swapped out by the port.wizard grid via javascript 
+
+*/
+
+#content .left #product-rear.kiko{
+	position:fixed;
+	top:440px;
+}
+.main .customise-list
+{
+    position:fixed;
+	top:325px;
+}
+
+.main .customise-list ul 	{ list-style: none outside none; margin: 0px auto 0; padding: 0; }
+.main .customise-list ul li	{ position: relative; margin-bottom: 1px; width: 480px; display: block; height: 36px;  }
+.main .customise-list ul li span.label	{ color: #a19589; text-decoration: none; line-height: 36px; padding-left: 60px; display: block; }
+.main .customise-list ul li span.options{
+	display: none;
+}
+
+.main .customise-list ul li span.label:hover { color: white; }
+
+.main .customise-list ul li span.label	span.label-user{
+	float:right;
+	width:305px;
+	color:#4C4C4C;
+}
+
+.main .customise-list input.field	{ width: 138px; background: #fff; position: absolute; left: 100px; padding: 4px 10px; border: none 0; margin: 5px 0 0; }
+.main .customise-list ul li .choose-icon { float: right; position: relative; margin: 6px 10px 0 0;  }
+.main .customise-list ul li .choose-icon a.customise-btn	{float: right; background: #000; color: #fff; line-height: 12px; padding: 5px 10px; margin: 1px 0px; font-size: 10px; text-decoration: none; text-transform: uppercase; }
+.main .customise-list ul li .choose-icon a:hover	{ background-color: #EB8784; -moz-transition: none; }
+
+.main .customise-list ul li{
+	background-color: #e2ded5;
+	background-repeat: no-repeat;
+}
+
+.main .customise-list ul li:hover{
+	background-color: #EB8784; color: white;
+	-moz-transition: background-color 0.2s ease-in; -webkit-transition: background-color 0.2s ease-in; 
+	transition:background-color 0.2s ease-in;
+	cursor:pointer;
+}
+.main .customise-list ul li.edited span.label,
+.main .customise-list ul li.edited{
+	color:#4C4C4C;
+}
+
+.main .customise-list ul li.tos			{ background-image: url(../Resources/Images/SourceIcons/TOS.png); background-position: 10px 8px;   }
+.main .customise-list ul li.tos:hover	{ background-position: 10px -32px;}
+
+.main .customise-list ul li.spdif			{ background-image: url(./Resources/Images/SourceIcons/SPDIF.png); background-position: 10px 8px;}
+.main .customise-list ul li.spdif:hover	{ background-position:10px -32px; }
+
+.main .customise-list ul li.anlg			{ background-image: url(./Resources/Images/SourceIcons/ANLG.png); background-position: 10px 8px;  }
+.main .customise-list ul li.anlg:hover	{  background-position: 10px -32px; }
+
+.main .customise-list ul li.hdmi			{ background-image: url(./Resources/Images/SourceIcons/HDMI1.png); background-position: 10px 8px;  }
+.main .customise-list ul li.hdmi:hover	{  background-position: 10px -32px; }
+
+.main .customise-list ul li.customise { background-color: rgb(224, 79, 92); color: white; padding-left: 60px; line-height: 36px; width: 420px; background-position: 10px -32px; }
+
+.main .customise-list ul li.customise:hover	{ background-color: rgb(224, 79, 92); }
+
+/* floaty icon panel*/		
+
+.main .customise-list .panel-icons{
+	width:324px;
+	height:204px;
+	background-image: url(./Resources/Images/SourceIcons/icon-panel.png);
+	background-repeat: no-repeat;
+	background-position: bottom;
+	margin:0;padding:0;
+	display:none;
+	position: absolute;
+	z-index: 2000;
+	top:0px; left:-215px;
+}
+
+.main .customise-list .panel-icons ul{
+	display:block;
+	padding:52px 0 0 20px;
+	margin:0;
+}
+
+.main .customise-list .panel-icons li{
+	float:left;
+	width:32px;
+	height: 32px;
+	margin:0 17px 17px 0;
+	padding:0;
+	text-align: center;
+	list-style: none;
+	background-color:#fff;
+
+}
+
+.main .customise-list .panel-icons li:hover{
+	/*prevent css inheritance*/
+	-moz-transition: none;
+	-webkit-transition: none;
+	transition:none;
+	background-color:#fff;
+}
+
+.main .customise-list .panel-icons li span{
+	display:table-cell;
+	text-align: center;
+	vertical-align: middle;
+	width:32px;
+	height: 32px;
+	border:1px solid #fff;
+	line-height:0;
+}
+
+.main .customise-list .panel-icons li span:hover{
+	cursor: pointer;
+	border:1px solid #000;
+}
+
+.main .customise-list .panel-icons li span img{
+	margin:1px;
+}
+
+
+/* configurable config */
+.customSourceEntry 
+{
+    width:inherit;
+    height:34px;
+    float:right; 
+    display:inline;
+    border-top:1px solid white;
+    background-color: rgb(198, 191, 183);
+    background-position:8px 6px;
+	background-repeat: no-repeat;
+    outline-style:none;  
+}
+/*
+.customSourceEntry:hover
+{
+    background-color:rgb(223, 80, 92);
+    z-index:90;
+}
+*/
+#CustomProductImage
+{
+    margin-top:100px;     
+}
+.customSourceImage, #CustomProductImageDefault
+{
+    width:0px;     
+    height:0px;
+    display:inline;
+}
+.customSourceIcon 
+{
+    width:30px;     /*need to split on/off icon*/
+    height:30px;
+    display:inline;
+    margin:0px;
+}
+
+.customSourceName 
+{
+    width:140px;
+    display:inline;
+    vertical-align:top;
+    top:10px;
+    margin-left:40px;
+    font-size:12px;
+    line-height:12px;
+    color:White;
+}
+.customSourceNameEdit 
+{
+    width:160px;
+    float:right;
+    display:inline;
+    margin: 4px 4px 4px 0px;
+    padding:4px;
+    overflow:hidden;
+    resize:none;
+    border:0;
+    background-color: white;
+    outline-style:none;  
+    font-style:italic;
+}
+
+.customSourceIconEdit 
+{
+    width:100px;
+    height:20px;
+    float:right;
+    display:inline;
+    margin: 7px 10px 7px 10px;
+    padding:0px;
+    color: white;
+    background-color: black;
+    font-size:10px;
+    line-height:10px;
+}
+
+/* floaty icon panel*/		
+
+.panel-icons{
+	width:324px;
+	height:204px;
+	/*background-image: url(./Resources/Images/SourceIcons/icon-panel.png);*/
+	background-repeat: no-repeat;
+	background-position: bottom;
+	margin:0;padding:0;
+	display:inline;
+	position: absolute;
+	z-index: 2000;
+	top:10px; left:150px;
+}
+
+.panel-icons ul{
+	display:block;
+	padding:52px 0 0 20px;
+	margin:0;
+}
+
+.panel-icons li{
+	float:left;
+	width:32px;
+	height: 32px;
+	margin:0 17px 17px 0;
+	padding:0;
+	text-align: center;
+	list-style: none;
+	background-color:#fff;
+
+}
+
+.panel-icons li:hover{
+	/*prevent css inheritance*/
+	-moz-transition: none;
+	-webkit-transition: none;
+	transition:none;
+	background-color:#fff;
+}
+
+.panel-icons li span{
+	display:table-cell;
+	text-align: center;
+	vertical-align: middle;
+	width:32px;
+	height: 32px;
+	border:1px solid #fff;
+	line-height:0;
+}
+
+.panel-icons li span:hover{
+	cursor: pointer;
+	border:1px solid #000;
+}
+
+.panel-icons li span img{
+	margin:1px;
+}
+
+/* Customise <<< */
+
+/* >>> Sequence */
+.thumbnail
+{
+    float:left;
+    height:50px;
+    width:50px;
+    border:1px solid #ccc;
+    overflow:hidden;
+}
+.thumbnail:hover
+{
+    border:1px solid blue;
+}
+
+#ThumbnailWindow
+{
+    float:right;
+    height:300px;
+    max-width:50%;
+    z-index:2;
+    border:1px solid #ccc;
+}
+#ThumbnailLine
+{
+    height:50px;
+    width:100%;
+}
+#ZoomedThumbnail
+{
+    float:left;
+    height:250px;
+    max-width:100%;
+    overflow:hidden;
+}
+/* Sequence <<< */
+/* <<<<<<<<<<<<<<<<<<<<<<<< Specials */
+/* +++++++++++++++++++  #footer section ++++++++++++++++++ */
+
+#NextButton, #FinishButton
+{
+    float:right;
+}
+#PreviousButton 
+{
+    float:left;    
+}
+
+
+#Rotator
+{
+    width:76px;
+    height:10px;
+    top:30px;
+    left:474px;
+    position:absolute;
+}
+

@@ -1,17 +1,29 @@
 Import('_default_env')
 
-kVersion = 'development'
+import BuildInfo
 
-SConscript('WinForms/SConscript', exports = ['_default_env', 'kVersion'])
+_default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=BuildInfo.kBuildVersion)
+kBuildInfo = _default_env['build_information'].BuildInformation
+
+appAssemblyInfo = _default_env.TagReplace(_default_env.subst('$build_hardware_dir/share/Kinsky/AssemblyInfo.cs'), 'Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
+
+if _default_env['hardware'] != 'Android' and _default_env['hardware'] != 'Ios':
+    SConscript('WinForms/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
 
 if _default_env['hardware'] == 'MacOsX':
-    SConscript('Cocoa/SConscript', exports = ['_default_env', 'kVersion'])
+    SConscript('Cocoa/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
 
 # can only build wpf on windows platform due to MSBuild currently being the only xaml compiler available
 import sys
 if sys.platform == 'win32' and _default_env['hardware'] == 'Windows':
-    SConscript('Wpf/SConscript', exports = ['_default_env', 'kVersion'])
+    SConscript('Wpf/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
 
+if sys.platform == 'win32' and _default_env['hardware'] == 'Android':
+    SConscript('Android/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
+
+if _default_env['hardware'] == 'Ios':
+    SConscript('Ios/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
+	
 Alias('Test', 'Lib')
 Alias('Docs')
 Default(['Test','Docs'])

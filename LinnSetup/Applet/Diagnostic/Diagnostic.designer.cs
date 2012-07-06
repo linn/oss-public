@@ -47,7 +47,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(335, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(335, 27);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -55,13 +55,13 @@
             // 
             this.diagnosticComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.diagnosticComboBox.Name = "diagnosticComboBox";
-            this.diagnosticComboBox.Size = new System.Drawing.Size(750, 21);
+            this.diagnosticComboBox.Size = new System.Drawing.Size(750, 23);
             this.diagnosticComboBox.SelectedIndexChanged += new System.EventHandler(this.diagnosticComboBox_SelectedIndexChanged);
             // 
             // diagnosticInputBox
             // 
             this.diagnosticInputBox.Name = "diagnosticInputBox";
-            this.diagnosticInputBox.Size = new System.Drawing.Size(100, 21);
+            this.diagnosticInputBox.Size = new System.Drawing.Size(100, 23);
             this.diagnosticInputBox.ToolTipText = "input";
             this.diagnosticInputBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.diagnosticInputBox_KeyPress);
             this.diagnosticInputBox.DoubleClick += new System.EventHandler(this.buttonRefresh_Click);
@@ -81,13 +81,13 @@
             this.textBoxDiagnosticResult.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxDiagnosticResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxDiagnosticResult.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxDiagnosticResult.Location = new System.Drawing.Point(0, 25);
+            this.textBoxDiagnosticResult.Location = new System.Drawing.Point(0, 27);
             this.textBoxDiagnosticResult.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxDiagnosticResult.Multiline = true;
             this.textBoxDiagnosticResult.Name = "textBoxDiagnosticResult";
             this.textBoxDiagnosticResult.ReadOnly = true;
             this.textBoxDiagnosticResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxDiagnosticResult.Size = new System.Drawing.Size(335, 152);
+            this.textBoxDiagnosticResult.Size = new System.Drawing.Size(335, 150);
             this.textBoxDiagnosticResult.TabIndex = 1;
             // 
             // Diagnostic
@@ -99,7 +99,6 @@
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "Diagnostic";
             this.Size = new System.Drawing.Size(335, 177);
-            this.Load += new System.EventHandler(this.Diagnostic_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);

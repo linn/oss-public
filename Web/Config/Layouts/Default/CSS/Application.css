@@ -35,8 +35,8 @@ body, html
 }
 
 #container
-{    
-    max-width:800px;
+{   
+    /* max-width handled in code depending on target device */
     margin:auto;
 }
 
@@ -59,7 +59,6 @@ body, html
     border:none;
 }
 
-#SwUpdateIcon,
 #RebootIcon,
 #ToggleIcon
 {
@@ -94,17 +93,6 @@ body, html
 {
     display: inline-block;
     vertical-align: middle;
-}
-
-#InfoIcon
-{
-    width:32px;
-    height:32px;
-    margin-left:15px;
-    margin-top:2px;
-    position:absolute;
-    clip:rect(0px,28px,25px,0px);
-    border:none;
 }
 
 a:active,
@@ -196,7 +184,7 @@ input.uri
 
 input.uri_iPad
 {
-    width:513px;
+    width:573px;
 }
 
 #tabs 

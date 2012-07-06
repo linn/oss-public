@@ -11,7 +11,7 @@
     <RootNamespace>Linn.Kinsky</RootNamespace>
     <MonoDroidResourcePrefix>Resources</MonoDroidResourcePrefix>
     <AssemblyName>OssKinsky</AssemblyName>
-    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <BaseDirectory>..\..\Kinsky</BaseDirectory>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
@@ -26,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -34,14 +35,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="ICSharpCode.SharpZipLib, Version=2.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -102,6 +104,9 @@
     <Compile Include="..\..\Kinsky\Linn\Kinsky\IconResolver.cs">
       <Link>Linn\Kinsky\IconResolver.cs</Link>
     </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\ItemInfo.cs">
+      <Link>Linn\Kinsky\ItemInfo.cs</Link>
+    </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\Library.cs">
       <Link>Linn\Kinsky\Library.cs</Link>
     </Compile>
@@ -129,11 +134,17 @@
     <Compile Include="..\..\Kinsky\Linn\Kinsky\Playlist.cs">
       <Link>Linn\Kinsky\Playlist.cs</Link>
     </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\PlaylistDisplayHelper.cs">
+      <Link>Linn\Kinsky\PlaylistDisplayHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\PlaylistSupport.cs">
       <Link>Linn\Kinsky\PlaylistSupport.cs</Link>
     </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\PluginManager.cs">
       <Link>Linn\Kinsky\PluginManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\RotaryControlTracker.cs">
+      <Link>Linn\Kinsky\RotaryControlTracker.cs</Link>
     </Compile>
     <Compile Include="..\..\Kinsky\Linn\Kinsky\SaveSupport.cs">
       <Link>Linn\Kinsky\SaveSupport.cs</Link>
@@ -147,8 +158,8 @@
     <Compile Include="..\..\Kinsky\Linn\Kinsky\Views.cs">
       <Link>Linn\Kinsky\Views.cs</Link>
     </Compile>
-    <Compile Include="..\..\Kinsky\Linn\Kinsky\RemotePlaylists.cs">
-      <Link>Linn\Kinsky\RemotePlaylists.cs</Link>
+    <Compile Include="..\..\Kinsky\Linn\Kinsky\SharedPlaylists.cs">
+      <Link>Linn\Kinsky\SharedPlaylists.cs</Link>
     </Compile>
     <Compile Include="..\..\Kinsky\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>

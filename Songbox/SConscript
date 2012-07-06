@@ -1,0 +1,16 @@
+Import('_default_env')
+
+import BuildInfo
+
+_default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=BuildInfo.kBuildVersion)
+kBuildInfo = _default_env['build_information'].BuildInformation
+
+    
+if _default_env['hardware'] == 'Windows':
+    SConscript('Linn/Songbox/Windows/SConscript', exports = ['_default_env', 'kBuildInfo'])
+elif _default_env['hardware'] == 'MacOsX':
+    SConscript('Linn/Songbox/MacOsX/SConscript', exports = ['_default_env', 'kBuildInfo'])
+
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])

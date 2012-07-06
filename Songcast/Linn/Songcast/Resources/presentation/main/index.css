@@ -1,0 +1,512 @@
+@import url('Widgets/Common/Common.css');
+@import url('Widgets/ToggleButton/ToggleButton.css');
+@import url('Widgets/Rotary/Rotary.css');
+@import url('Widgets/Rocker/Rocker.css');
+
+
+body 
+{
+    background-color: white;
+    margin: 0px;
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+#header
+{
+    width: 100%;
+    height: 30px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+#topbar
+{
+    background-color: #e04f5c;
+    width: 100%;
+    height: 30px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+}
+
+#title
+{
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 30px;
+    position: fixed;
+    top: 0px;
+    left: 16px;
+}
+
+#help
+{
+    background-image: url(images/help.png);
+    width: 15px;
+    height: 15px;
+    position: fixed;
+    top: 7px;
+    left: 236px;
+    cursor: pointer;
+}
+
+#help:active
+{
+    background-image: url(images/help_rollover.png);
+}
+
+#configuration
+{
+    background-image: url(images/settings.png);
+    width: 15px;
+    height: 15px;
+    position: fixed;
+    top: 7px;
+    left: 270px;
+    cursor: pointer;
+}
+
+#configuration:active
+{
+    background-image: url(images/settings_rollover.png);
+}
+
+#logo
+{
+    background-image: url(images/linn_logo.png);
+    width: 50px;
+    height: 61px;
+    position: fixed;
+    top: 0px;
+    right: 9px;
+}
+
+#selector-title
+{
+    width: 100%;
+    color: #000000;
+    font-size: 18px;
+    position: fixed;
+    top: 60px;
+    left: 26px;
+}
+
+#selector #button-cpu
+{
+    background-repeat: no-repeat;
+    background-position: 35px 10px;
+    width: 132px;
+    height: 84px;
+    position: fixed;
+    top: 89px;
+    left: 30px;
+}
+
+#selector #button-ds
+{
+    background-repeat: no-repeat;
+    background-position: 19px 30px;
+    width: 132px;
+    height: 84px;
+    position: fixed;
+    top: 89px;
+    left: 198px;
+}
+
+#selector.off #button-cpu
+{
+    background-image: url(images/computer_off.png);
+}
+
+#selector.off #button-ds
+{
+    background-image: url(images/ds_disabled.png);
+    cursor: pointer;
+}
+
+#selector.on #button-cpu
+{
+    background-image: url(images/computer_disabled.png);
+    cursor: pointer;
+}
+
+#selector.on #button-ds
+{
+    background-image: url(images/ds_off.png);
+}
+
+#selector.off #button-ds:hover
+{
+    background-image: url(images/ds_rollover.png);
+}
+
+#selector.on #button-cpu:hover
+{
+    background-image: url(images/computer_rollover.png);
+}
+
+#label-cpu
+{
+    font-size: 13px;
+    position: fixed;
+    top: 156px;
+    left: 58px;
+}
+
+#label-ds
+{
+    font-size: 13px;
+    position: fixed;
+    top: 156px;
+    left: 198px;
+    width: 132px;
+    text-align: center;
+}
+
+#selector #label-cpu,
+#selector.on #label-ds
+{
+    color: #4b4b4b;
+}
+
+#selector.on #label-cpu,
+#selector #label-ds
+{
+    color: #e2dedb;
+}
+
+#divider
+{
+    background-color: #e2dedb;
+    width: 310px;
+    height: 1px;
+    position: fixed;
+    top: 186px;
+    left: 25px;
+}
+
+#warning-box
+{
+    background-color: #e2dedb;
+    width: 310px;
+    height: 80px;
+    position: fixed;
+    top: 204px;
+    left: 25px;
+}
+
+#warning-icon
+{
+    background-image: url(images/warning.png);
+    width: 15px;
+    height: 15px;
+    position: fixed;
+    top: 214px;
+    left: 310px;
+}
+
+#warning-text
+{
+    font-size: 13px;
+    position: fixed;
+    top: 232px;
+    left: 46px;
+    width: 240px;
+    color: #000000;
+}
+
+#controlpanel
+{
+    background-image: url(images/ControlDeviceBackground.png);
+    position: fixed;
+    top: 205px;
+    left: 63px;
+    width: 237px;
+    height: 109px;
+}
+
+#volume-rotary,
+#volume-rotary div.wheel div.filler1,
+#volume-rotary div.wheel div.filler2,
+#volume-rocker,
+#volume-rocker div.wheel div.filler1,
+#volume-rocker div.wheel div.filler2
+{
+    position: fixed;
+    top: 197px;
+    left: 96px;
+    width: 125px;
+    height: 125px;
+    background-color: transparent;
+}
+
+#volume-rotary div.wheel div.progressbar,
+#volume-rocker div.wheel div.progressbar
+{
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    z-index: 1;
+}
+
+#volume-rotary div.wheel div.progressbar div.l-bar,
+#volume-rotary div.wheel div.progressbar div.r-bar,
+#volume-rocker div.wheel div.progressbar div.l-bar,
+#volume-rocker div.wheel div.progressbar div.r-bar
+{
+    background: #e04f5c;
+    z-index: 2;
+}
+
+#volume-rotary div.wheel div.filler1,
+#volume-rocker div.wheel div.filler1
+{
+    z-index: 3;
+}
+
+#volume-rotary div.wheel div.filler2,
+#volume-rocker div.wheel div.filler2
+{
+    z-index: 4;
+}
+
+#volume-rotary div.centre,
+#volume-rocker div.centre
+{
+    font-size: 22px;
+    z-index: 5;
+    top: 40%;
+}
+
+#volume-rotary div.wheel div.grip,
+#volume-rocker div.wheel div.grip
+{
+    z-index: 6;
+}
+
+#volume-rotary div.wheel div.adornment,
+#volume-rocker div.wheel div.adornment
+{
+    background-image: url(images/rotary_adornment.png);
+    background-size: 124px 125px;
+    z-index: 7;
+    opacity: 0.35;
+    filter: Alpha(opacity=35);
+}
+
+#volume-rotary div.wheel
+{
+    background-image: url(images/rotary_off.png);
+    background-size: 124px 125px;
+}
+
+#volume-rotary div.wheel div.grip
+{
+    background-image: url(images/rotary_dots.png);
+    background-size: 124px 125px;
+}
+
+#volume-rotary div.wheel div.filler1
+{
+    background-image: url(images/rotary_off_fg.png);
+    background-size: 124px 125px;
+}
+
+#volume-rotary.inner-down div.wheel
+{
+    background-image: url(images/rotary_inner_rollover.png);
+}
+
+#volume-rotary.inner-down div.wheel div.filler1
+{
+    background-image: url(images/rotary_inner_rollover_fg.png);
+}
+
+#volume-rotary.outer-down div.wheel
+{
+    background-image: url(images/rotary_outer_rollover.png);
+}
+
+#volume-rotary.outer-down div.wheel div.filler1
+{
+    background-image: url(images/rotary_outer_rollover_fg.png);
+}
+
+#volume-rotary.disabled div.wheel
+{
+    background-image: url(images/rotary_disabled.png);
+}
+
+#volume-rotary.disabled div.wheel div.grip,
+#volume-rotary.disabled div.wheel div.progressbar,
+#volume-rotary.disabled div.wheel div.adornment
+{
+    visibility: hidden;
+}
+
+#volume-rocker div.wheel
+{
+    background-image: url(images/rocker_off.png);
+    background-size: 124px 125px;
+}
+
+#volume-rocker div.wheel div.grip
+{
+    background-image: url(images/rocker_symbols.png);
+    background-size: 124px 125px;
+}
+
+#volume-rocker div.wheel div.filler1
+{
+    background-image: url(images/rocker_off_fg.png);
+    background-size: 124px 125px;
+}
+
+#volume-rocker.inner-down div.wheel
+{
+    background-image: url(images/rocker_inner_rollover.png);
+}
+
+#volume-rocker.inner-down div.wheel div.filler1
+{
+    background-image: url(images/rocker_inner_rollover_fg.png);
+}
+
+#volume-rocker.left-down div.wheel
+{
+    background-image: url(images/rocker_left_rollover.png);
+}
+
+#volume-rocker.left-down div.wheel div.filler1
+{
+    background-image: url(images/rocker_left_rollover_fg.png);
+}
+
+#volume-rocker.right-down div.wheel
+{
+    background-image: url(images/rocker_right_rollover.png);
+}
+
+#volume-rocker.right-down div.wheel div.filler1
+{
+    background-image: url(images/rocker_right_rollover_fg.png);
+}
+
+#volume-rocker.disabled div.wheel
+{
+    background-image: url(images/rocker_disabled.png);
+}
+
+#volume-rocker.disabled div.wheel div.grip,
+#volume-rocker.disabled div.wheel div.progressbar,
+#volume-rocker.disabled div.wheel div.adornment
+{
+    visibility: hidden;
+}
+
+#connecting
+{
+    background-image: url(images/songcast_spinner_animated.gif);
+    width: 26px;
+    height: 26px;
+    top: 247px;
+    left: 145px;
+    position: fixed;
+    z-index: 6;
+}
+
+#play-stop
+{
+    width: 41px;
+    height: 46px;
+    position: fixed;
+    top: 237px;
+    left: 63px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    z-index: 8;
+}
+
+#play-stop.stop
+{
+    background-image: url(images/stop_on.png);
+    background-position: 15px 14px;
+}
+
+#play-stop.stop:active
+{
+    background-image: url(images/stop_disabled.png);
+}
+
+#play-stop.play
+{
+    background-image: url(images/play_on.png);
+    background-position: 17px 12px;
+}
+
+#play-stop.play:active
+{
+    background-image: url(images/play_disabled.png);
+}
+
+#music-video
+{
+}
+
+#music
+{
+    width: 42px;
+    height: 46px;
+    position: fixed;
+    top: 237px;
+    left: 213px;
+    background-position: 9px 12px;
+    background-repeat: no-repeat;
+    z-index: 8;
+}
+
+#video
+{
+    width: 45px;
+    height: 46px;
+    position: fixed;
+    top: 237px;
+    left: 255px;
+    background-position: 12px 12px;
+    background-repeat: no-repeat;
+}
+
+#music-video.music #music
+{
+    background-image: url(images/music_on.png);
+}
+
+#music-video.music #video
+{
+    background-image: url(images/movies_disabled.png);
+    cursor: pointer;
+}
+
+#music-video.video #music
+{
+    background-image: url(images/music_disabled.png);
+    cursor: pointer;
+}
+
+#music-video.video #video
+{
+    background-image: url(images/movies_on.png);
+}
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 
-using Linn.Topology.Boxes;
+using Linn.ProductSupport;
 
 namespace LinnSetup
 {
@@ -17,13 +17,18 @@ namespace LinnSetup
             iTarget = aTarget;
             InitializeComponent();
             buttonRefresh.Image = Linn.Toolkit.WinForms.Properties.Resources.Refresh;
+            buttonBack.Image = Linn.Toolkit.WinForms.Properties.Resources.Back;
+            buttonForward.Image = Linn.Toolkit.WinForms.Properties.Resources.Forward;
+        }
 
+        protected override void OnLoad(EventArgs e) {
             if (iTarget.Box.State == Box.EState.eOff || iTarget.Box.State == Box.EState.eFallback) {
                 Disable();
             }
             else {
                 Enable();
             }
+            base.OnLoad(e);
         }
 
         public void Enable() {
@@ -36,6 +41,8 @@ namespace LinnSetup
                 this.BeginInvoke(
                  (MethodInvoker)delegate() {
                     buttonRefresh.Enabled = true;
+                    buttonBack.Enabled = true;
+                    buttonForward.Enabled = true;
                 });
             }
         }
@@ -52,6 +59,8 @@ namespace LinnSetup
             this.BeginInvoke(
              (MethodInvoker)delegate() {
                  buttonRefresh.Enabled = false;
+                 buttonBack.Enabled = false;
+                 buttonForward.Enabled = false;
              });
         }
 
@@ -60,18 +69,38 @@ namespace LinnSetup
         }
 
         private void Navigate(Uri uri) {
-            toolStripLabel1.Text = uri.ToString();
             try {
-                webBrowser2.Navigate(uri);
-                webBrowser2.Refresh(WebBrowserRefreshOption.Completely);
+                webBrowser2.Navigate(uri, false);
             }
             catch (Exception e) {
                 Navigate("Could not load: " + uri + "<br><br>" + e.Message);
             }
         }
 
+        private void webBrowser2_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
+            if (e.Url.ToString() != "about:blank") {
+                toolStripLabel1.Text = e.Url.ToString();
+            }
+            else {
+                toolStripLabel1.Text = "";
+            }
+        }
+
+        private void webBrowser2_NewWindow(object sender, CancelEventArgs e) {
+            e.Cancel = true;
+            Navigate(new Uri(webBrowser2.StatusText));
+        }
+
         private void buttonRefresh_Click(object sender, EventArgs e) {
             webBrowser2.Refresh(WebBrowserRefreshOption.Completely);
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e) {
+            webBrowser2.GoBack();
+        }
+
+        private void buttonForward_Click(object sender, EventArgs e) {
+            webBrowser2.GoForward();
         }
 
         private const int kRequestTimeout = 500;

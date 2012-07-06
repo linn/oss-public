@@ -15,7 +15,7 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
-    <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,6 +35,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -53,6 +56,9 @@
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\ENotificationType.cs">
       <Link>ENotificationType.cs</Link>
     </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\ImageCache.cs">
       <Link>ImageCache.cs</Link>
     </Compile>
@@ -62,11 +68,26 @@
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\Logging.cs">
       <Link>Logging.cs</Link>
     </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\MasterDetailView.cs">
+      <Link>MasterDetailView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\MultiViewSwitcher.cs">
+      <Link>MultiViewSwitcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\Options.cs">
+      <Link>Options.cs</Link>
+    </Compile>
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\Popup.cs">
       <Link>Popup.cs</Link>
     </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\PowerStateListener.cs">
+      <Link>PowerStateListener.cs</Link>
+    </Compile>
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\ResourceManager.cs">
       <Link>ResourceManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\ScreenStateListener.cs">
+      <Link>ScreenStateListener.cs</Link>
     </Compile>
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\Droid\WifiListener.cs">
       <Link>WifiListener.cs</Link>

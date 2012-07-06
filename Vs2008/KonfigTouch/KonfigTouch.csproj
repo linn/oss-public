@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1C9E5D60-9FC5-4F51-9A6E-4EC20C53644B}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>KonfigTouch</RootNamespace>
+    <AssemblyName>KonfigTouch</AssemblyName>
+    <BaseDirectory>..\..\KonfigTouch</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\..\KonfigTouch\Info.plist" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig114.png" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig256_Original.png" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig29.png" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig50.png" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig57.png" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig58.png" />
+    <None Include="..\..\KonfigTouch\Resources\Konfig72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\KonfigTouch\AppDelegate.cs" />
+    <Compile Include="..\..\KonfigTouch\KonfigTouchViewController.cs" />
+    <Compile Include="..\..\KonfigTouch\KonfigTouchViewController.designer.cs" />
+    <Compile Include="..\..\KonfigTouch\Main.cs" />
+    <Compile Include="..\..\KonfigTouch\ResourceManager.cs" />
+    <Compile Include="..\..\KonfigTouch\ModalWebViewController.cs" />
+    <Compile Include="..\..\KonfigTouch\ModalWebViewController.designer.cs">
+      <DependentUpon>ModalWebViewController.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\KonfigTouch\KonfigTouchViewController_iPad.xib" />
+    <InterfaceDefinition Include="..\..\KonfigTouch\KonfigTouchViewController_iPhone.xib" />
+    <InterfaceDefinition Include="..\..\KonfigTouch\ModalWebViewController_iPhone.xib" />
+    <InterfaceDefinition Include="..\..\KonfigTouch\ModalWebViewController_iPad.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Layouts\Konfig\Images\Back.png">
+      <Link>Back.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\Button.png">
+      <Link>Button.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\DeviceImagePlaceholder.png">
+      <Link>DeviceImagePlaceholder.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\LinnLogo.png">
+      <Link>LinnLogo.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\UpdateAvailable.png">
+      <Link>UpdateAvailable.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\UpdateAvailableDark.png">
+      <Link>UpdateAvailableDark.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\Error.png">
+      <Link>Error.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\Safari.png">
+      <Link>Safari.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+    <Content Include="..\..\Layouts\Konfig\Images\Forward.png">
+      <Link>Forward.png</Link>
+      <DeployService-Deploy>true</DeployService-Deploy>
+    </Content>
+  </ItemGroup>
+</Project>

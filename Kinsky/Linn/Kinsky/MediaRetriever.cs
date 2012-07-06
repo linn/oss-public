@@ -12,6 +12,11 @@ namespace Linn.Kinsky
         DidlLite Media { get; }
     }
 
+    public class MediaRetrieverException : ApplicationException
+    {
+        public MediaRetrieverException() { }
+    }
+
     public class MediaRetrieverNoRetrieve : IMediaRetriever
     {
         public MediaRetrieverNoRetrieve(IList<upnpObject> aList)
@@ -85,18 +90,25 @@ namespace Linn.Kinsky
             {
                 DidlLite result = new DidlLite();
 
-                foreach (upnpObject o in iDidlLite)
+                try
                 {
-                    if (o is item)
+                    foreach (upnpObject o in iDidlLite)
                     {
-                        result.Add(o);
-                    }
-                    else
-                    {
-                        IContainer c = iContainer.ChildContainer(o as container);
+                        if (o is item)
+                        {
+                            result.Add(o);
+                        }
+                        else
+                        {
+                            IContainer c = iContainer.ChildContainer(o as container);
 
-                        result.AddRange(GetItems(c));
+                            result.AddRange(GetItems(c));
+                        }
                     }
+                }
+                catch (MediaRetrieverException)
+                {
+                    result.Clear();
                 }
 
                 Trace.WriteLine(Trace.kKinsky, "MediaRetriever.Media: result.Count=" + result.Count);
@@ -107,38 +119,50 @@ namespace Linn.Kinsky
 
         private IList<upnpObject> GetItems(IContainer aContainer)
         {
-            uint count = aContainer.Open();
-
-            List<upnpObject> result = new List<upnpObject>();
-            DidlLite didl = new DidlLite();
-
-            uint index = 0;
-            while (index < count)
+            try
             {
-                DidlLite d = aContainer.Items(index, kCountPerCall);
-                didl.AddRange(d);
-
-                index += (uint)d.Count;
-            }
-
-            foreach (upnpObject o in didl)
-            {
-                if (o is container)
+                uint count = aContainer.Open();
+    
+                List<upnpObject> result = new List<upnpObject>();
+                DidlLite didl = new DidlLite();
+    
+                uint index = 0;
+                while (index < count)
                 {
-                    // hack for twonky servers - don't recurse into the "- ALL -" container - if someone changes its default name tough
-                    if (o.Title != "- ALL -")
+                    DidlLite d = aContainer.Items(index, kCountPerCall);
+                    if (d.Count == 0)
                     {
-                        IContainer c = aContainer.ChildContainer(o as container);
-                        result.AddRange(GetItems(c));
+                        UserLog.WriteLine("Error retrieving items from " + aContainer.Metadata.Title);
+                        throw new MediaRetrieverException();
+                    }
+                    didl.AddRange(d);
+    
+                    index += (uint)d.Count;
+                }
+    
+                foreach (upnpObject o in didl)
+                {
+                    if (o is container)
+                    {
+                        // hack for twonky servers - don't recurse into the "- ALL -" container - if someone changes its default name tough
+                        if (o.Title != "- ALL -")
+                        {
+                            IContainer c = aContainer.ChildContainer(o as container);
+                            result.AddRange(GetItems(c));
+                        }
+                    }
+                    else
+                    {
+                        result.Add(o);
                     }
                 }
-                else
-                {
-                    result.Add(o);
-                }
+    
+                return result;
             }
-
-            return result;
+            catch(HttpServerException) 
+            {
+                throw new MediaRetrieverException();
+            }
         }
 
         private const uint kCountPerCall = 100;

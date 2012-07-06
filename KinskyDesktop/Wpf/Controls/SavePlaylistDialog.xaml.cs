@@ -41,8 +41,20 @@ namespace KinskyDesktopWpf
             UpdateLocation();
             UpdateImages();
             txtFilename.Text = iSaveSupport.DefaultName;
+            this.KeyUp += SavePlaylistDialog_KeyUp;
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close,
                 new ExecutedRoutedEventHandler(delegate(object sender, ExecutedRoutedEventArgs args) { this.CloseWindow(); })));
+        }
+
+        void SavePlaylistDialog_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (Save())
+                {
+                    CloseWindow();
+                }
+            }
         }
 
         void EventSaveLocationsChangedHandler(object sender, EventArgs e)
@@ -95,6 +107,11 @@ namespace KinskyDesktopWpf
             {
                 cmbLocation.SelectedItem = iSaveSupport.SaveLocation;
             }
+            // if we failed to find a selected item, set it to first item in the list
+            if (cmbLocation.SelectedItem == null && cmbLocation.Items.Count > 0)
+            {
+                cmbLocation.SelectedIndex = 0;
+            }
         }
 
         private void UpdateImages()
@@ -140,6 +157,7 @@ namespace KinskyDesktopWpf
             iSaveSupport.EventImageListChanged += EventImageListChangedHandler;
             iSaveSupport.EventSaveLocationsChanged += EventSaveLocationsChangedHandler;
             iSaveSupport.EventSaveLocationChanged += EventSaveLocationChangedHandler;
+            this.KeyUp -= SavePlaylistDialog_KeyUp;
             Close();
         }
 

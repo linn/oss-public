@@ -34,7 +34,6 @@ namespace KinskyDesktopWpf
             InitializeComponent();
             UserLog.AddListener(this);
             txtUserLog.Text = TruncateText(UserLog.Text);
-            txtUserLog.ScrollToEnd();
         }
 
         private string TruncateText(string aText)
@@ -65,8 +64,7 @@ namespace KinskyDesktopWpf
         public void Write(string aMessage)
         {
             txtUserLog.Dispatcher.BeginInvoke((Action)(()=>{
-                txtUserLog.Text = TruncateText(txtUserLog.Text + aMessage);
-                txtUserLog.ScrollToEnd();
+                txtUserLog.Text = TruncateText(UserLog.Text);
             }));
         }
 
@@ -74,8 +72,7 @@ namespace KinskyDesktopWpf
         {
             txtUserLog.Dispatcher.BeginInvoke((Action)(() =>
             {
-                txtUserLog.Text = TruncateText(txtUserLog.Text + aMessage + "\n");
-                txtUserLog.ScrollToEnd();
+                txtUserLog.Text = TruncateText(UserLog.Text);
             }));
         }
 
@@ -84,6 +81,15 @@ namespace KinskyDesktopWpf
         private void UserLogDialog_Closed(object sender, EventArgs args)
         {
             UserLog.RemoveListener(this);
+        }
+
+        private void Button_CopyClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(UserLog.Text);
+            }
+            catch { }
         }
     }
 }

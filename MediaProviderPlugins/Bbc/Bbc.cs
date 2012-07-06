@@ -107,11 +107,11 @@ namespace OssKinskyMppBbc
                 {
                     didl.Add(iLive.Metadata);
                 }
-                if (index == 1)
+                else if (index == 1)
                 {
                     didl.Add(iPodcasts.Metadata);
                 }
-                if (index == 2)
+                else if (index == 2)
                 {
                     didl.Add(iListen.Metadata);
                 }
@@ -204,6 +204,30 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public string Name
         {
@@ -445,6 +469,30 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -825,6 +873,30 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -1114,6 +1186,30 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -1307,6 +1403,30 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -1529,6 +1649,30 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         public void Dispose()
         {
@@ -1966,9 +2110,9 @@ namespace OssKinskyMppBbc
 
             lock (this)
             {
-                foreach (ListenShow show in iShows)
+                for(int i=(int)aStartIndex;i<aStartIndex + aCount;i++)
                 {
-                    didl.Add(show.UpnpObject);
+                    didl.Add(iShows[i].UpnpObject);
                 }
             }
 
@@ -2041,5 +2185,29 @@ namespace OssKinskyMppBbc
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded;
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved;
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return iMetadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
     }
 }

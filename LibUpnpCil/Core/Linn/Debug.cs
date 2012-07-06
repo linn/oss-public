@@ -16,6 +16,7 @@ namespace Linn
     public class AssertionError : Exception
     {
         public AssertionError() : base("ASSERT") { }
+        public AssertionError(string aMessage) : base("ASSERT: " + aMessage) { }
     }
 
     public class Assert
@@ -36,6 +37,23 @@ namespace Linn
                 throw new AssertionError();
             }
         }
+
+        public static void Check(bool aVal, string aMessage)
+        {
+            if (aVal == false)
+            {
+                throw new AssertionError(aMessage);
+            }
+        }
+
+        [Conditional("DEBUG")]
+        public static void CheckDebug(bool aVal, string aMessage)
+        {
+            if (aVal == false)
+            {
+                throw new AssertionError(aMessage);
+            }
+        }
     }
 
     //
@@ -49,6 +67,8 @@ namespace Linn
             iUserLog = Linn.UserLog.Text;
             iSystemDetails = DebugInformation.SystemDetails();
             iOptions = aOptionManager.OptionValues;
+            AssemblyInfoModel model = AssemblyInfo.GetAssemblyInfo();
+            iProductDetails = string.Format("{0} - {1}", model.Product, model.InformationalVersion != string.Empty ? model.InformationalVersion : model.Version);
         }
 
         public override string ToString()
@@ -65,6 +85,8 @@ namespace Linn
             }
             logText += Environment.NewLine + Environment.NewLine;
             logText += iSystemDetails;
+            logText += "Product Details:" + Environment.NewLine + Environment.NewLine;
+            logText += iProductDetails;
             return logText;
         }
 
@@ -91,6 +113,7 @@ namespace Linn
         private Exception iException;
         private string iUserLog;
         private string iSystemDetails;
+        private string iProductDetails;
         private Dictionary<string, string> iOptions;
     }
 

@@ -63,11 +63,16 @@ namespace Linn.Kinsky
         event EventHandler<EventArgsItemsFailed> EventItemsFailed;
         T Item(int aIndex, ERequestPriority aPriority);
         int Count { get; }
+        bool IsRunning { get; set; }
+    }
+
+    public interface IFixedSizeContentCache<T> : IContentCache<T>
+    {
+        void Initialise(int aMaxItemsCount);
     }
 
     public interface IContentCache<T>
     {
-        void CollectorOpened(int aCount);
         void Clear();
         void Add(int aIndex, T aObject);
         void AddRange(int aStartIndex, IList<T> aObjects);
@@ -79,6 +84,7 @@ namespace Linn.Kinsky
     {
         int Open();
         IList<T> Items(int aStartIndex, int aCount);
+        void Close();
     }
 
     internal class ContainerWrapper : IContainer<upnpObject>
@@ -101,6 +107,10 @@ namespace Linn.Kinsky
             return iContainer.Items((uint)aStartIndex, (uint)aCount);
         }
 
+        public void Close()
+        {
+            iContainer.Close();
+        }
         #endregion
     }
 
@@ -130,9 +140,36 @@ namespace Linn.Kinsky
             iQueuedRequests = new List<RangeRequest>();
             iExecutingRequests = new Dictionary<int, int>();
             iQueueLock = new object();
-
+            iIsRunning = true;
+            iRunningEvent = new ManualResetEvent(true);
 
             iEnqueueScheduler.Schedule(new Scheduler.DCallback(Open));
+        }
+
+        public bool IsRunning
+        {
+            get
+            {
+                lock (iQueueLock)
+                {
+                    return iIsRunning;
+                }
+            }
+            set
+            {
+                lock (iQueueLock)
+                {
+                    if (!value)
+                    {
+                        iRunningEvent.Reset();
+                    }
+                    iIsRunning = value;
+                    if (value)
+                    {
+                        iRunningEvent.Set();
+                    }
+                }
+            }
         }
 
         void iScheduler_SchedulerError(object sender, EventArgsSchedulerError e)
@@ -235,14 +272,18 @@ namespace Linn.Kinsky
         public void Dispose()
         {
             Assert.Check(!iDisposed);
-            iEnqueueScheduler.Stop();
-            iDequeueScheduler.Stop();
-            iEnqueueScheduler.SchedulerError -= iScheduler_SchedulerError;
-            iDequeueScheduler.SchedulerError -= iScheduler_SchedulerError;
-            if (iOpened)
+            new Thread(new ThreadStart(() =>
             {
-                iCache.Clear();
-            }
+                iEnqueueScheduler.Stop();
+                iDequeueScheduler.Stop();
+                iEnqueueScheduler.SchedulerError -= iScheduler_SchedulerError;
+                iDequeueScheduler.SchedulerError -= iScheduler_SchedulerError;
+                if (iOpened)
+                {
+                    iCache.Clear();
+                    iContainer.Close();
+                }
+            })).Start();
             iDisposed = true;
         }
 
@@ -251,26 +292,32 @@ namespace Linn.Kinsky
         private void Open()
         {
 
-            Assert.Check(!iOpened && !iDisposed);
-            try
+            Assert.Check(!iOpened);
+            if (!iDisposed)
             {
-                iCount = iContainer.Open();
-                iCache.CollectorOpened(iCount);
-                iOpened = true;
-                EventHandler<EventArgs> eventInstance = iEventOpened;
-                if (eventInstance != null)
+                try
                 {
-                    eventInstance(this, EventArgs.Empty);
+                    iCount = iContainer.Open();
+                    if (iCache is IFixedSizeContentCache<T>)
+                    {
+                        (iCache as IFixedSizeContentCache<T>).Initialise(iCount);
+                    }
+                    iOpened = true;
+                    EventHandler<EventArgs> eventInstance = iEventOpened;
+                    if (eventInstance != null)
+                    {
+                        eventInstance(this, EventArgs.Empty);
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                UserLog.WriteLine("Exception caught opening container: " + e.Message + (e.InnerException != null ? (", " + e.InnerException.Message) : ""));
-                iOpenException = e;
-                EventHandler<EventArgsItemsFailed> eventItemsFailed = iEventItemsFailed;
-                if (eventItemsFailed != null)
+                catch (Exception e)
                 {
-                    eventItemsFailed(this, new EventArgsItemsFailed(0, 0, iOpenException));
+                    UserLog.WriteLine("Exception caught opening container: " + e.Message + (e.InnerException != null ? (", " + e.InnerException.Message) : ""));
+                    iOpenException = e;
+                    EventHandler<EventArgsItemsFailed> eventItemsFailed = iEventItemsFailed;
+                    if (eventItemsFailed != null)
+                    {
+                        eventItemsFailed(this, new EventArgsItemsFailed(0, 0, iOpenException));
+                    }
                 }
             }
         }
@@ -282,110 +329,123 @@ namespace Linn.Kinsky
 
         private void DoEnqueueRequest(params object[] aParams)
         {
-            int index = (int)aParams[0];
-            ERequestPriority priority = (ERequestPriority)aParams[1];
-            Assert.Check(iOpened);
-            Assert.Check(!iDisposed);
-            Assert.Check(index >= 0 && index < iCount);
-            T item = default(T);
-            if (!iCache.TryGet(index, out item))
+            if (!iDisposed)
             {
-                lock (iQueueLock)
+                int index = (int)aParams[0];
+                ERequestPriority priority = (ERequestPriority)aParams[1];
+                Assert.Check(iOpened);
+                Assert.Check(index >= 0 && index < iCount);
+                T item = default(T);
+                if (!iCache.TryGet(index, out item))
                 {
-                    // get the correct start index for this request's chunk
-                    int startIndex = iRangeSize * (index / iRangeSize);
-
-                    // first ensure that the request is not currently being executed
-                    if (iExecutingRequests.ContainsKey(startIndex))
+                    lock (iQueueLock)
                     {
-                        return;
-                    }
+                        // get the correct start index for this request's chunk
+                        int startIndex = iRangeSize * (index / iRangeSize);
 
-                    // enqueue the request according to its priority (readahead requests are treated as slightly lower priority).
-                    int insertIndex = 0;
-                    int existingIndex = -1;
-                    RangeRequest existingRequest = null;
+                        // first ensure that the request is not currently being executed
+                        if (iExecutingRequests.ContainsKey(startIndex))
+                        {
+                            return;
+                        }
 
-                    for (int i = 0; i < iQueuedRequests.Count; i++)
-                    {
-                        RangeRequest current = iQueuedRequests[i];
-                        if (current.Priority <= priority)
-                        {
-                            insertIndex++;
-                        }
-                        if (iQueuedRequests[i].StartIndex == startIndex)
-                        {
-                            existingIndex = i;
-                            existingRequest = current;
-                        }
-                        if (existingRequest != null && current.Priority > priority)
-                        {
-                            break;
-                        }
-                    }
-                    if (existingRequest != null)
-                    {
-                        // if it is already enqueued, but has been re-enqueued at a higher priority, move it up the queue
-                        if (insertIndex - 1 > existingIndex)
-                        {
-                            existingRequest.Priority = priority;
-                            iQueuedRequests.RemoveAt(existingIndex);
-                            iQueuedRequests.Insert(insertIndex - 1, existingRequest);
-                        }
-                    }
-                    else
-                    {
-                        Assert.Check(insertIndex <= iQueuedRequests.Count);
-                        iQueuedRequests.Insert(insertIndex, new RangeRequest() { Priority = priority, StartIndex = startIndex });
-                        iDequeueScheduler.Schedule(new Scheduler.DCallback(DoDequeueRequest));
-                    }
+                        // enqueue the request according to its priority (readahead requests are treated as slightly lower priority).
+                        int insertIndex = 0;
+                        int existingIndex = -1;
+                        RangeRequest existingRequest = null;
 
+                        for (int i = 0; i < iQueuedRequests.Count; i++)
+                        {
+                            RangeRequest current = iQueuedRequests[i];
+                            if (current.Priority <= priority)
+                            {
+                                insertIndex++;
+                            }
+                            if (iQueuedRequests[i].StartIndex == startIndex)
+                            {
+                                existingIndex = i;
+                                existingRequest = current;
+                            }
+                            if (existingRequest != null && current.Priority > priority)
+                            {
+                                break;
+                            }
+                        }
+                        if (existingRequest != null)
+                        {
+                            // if it is already enqueued, but has been re-enqueued at a higher priority, move it up the queue
+                            if (insertIndex - 1 > existingIndex)
+                            {
+                                existingRequest.Priority = priority;
+                                iQueuedRequests.RemoveAt(existingIndex);
+                                iQueuedRequests.Insert(insertIndex - 1, existingRequest);
+                            }
+                        }
+                        else
+                        {
+                            Assert.Check(insertIndex <= iQueuedRequests.Count);
+                            iQueuedRequests.Insert(insertIndex, new RangeRequest() { Priority = priority, StartIndex = startIndex });
+                            iDequeueScheduler.Schedule(new Scheduler.DCallback(DoDequeueRequest));
+                        }
+                    }
                 }
             }
         }
 
         private void DoDequeueRequest()
         {
-            Assert.Check(iOpened);
-            Assert.Check(!iDisposed);
-            int startIndex;
-            RangeRequest request;
-            lock (iQueueLock)
+            if (!iDisposed)
             {
-                Assert.Check(iQueuedRequests.Count > 0);
-                request = iQueuedRequests[iQueuedRequests.Count - 1];
-                startIndex = request.StartIndex;
-                iQueuedRequests.RemoveAt(iQueuedRequests.Count - 1);
-                Assert.Check(!iExecutingRequests.ContainsKey(startIndex));
-                iExecutingRequests.Add(startIndex, startIndex);
-            }
-            try
-            {
-                int count = Math.Min(iCount - startIndex, iRangeSize);
-                IList<T> aItems = iContainer.Items(startIndex, count);
-                iCache.AddRange(startIndex, aItems);
-                if (EventItemsLoaded != null)
+                Assert.Check(iOpened);
+                int startIndex;
+                RangeRequest request;
+                bool running = false;
+                lock (iQueueLock)
                 {
-                    EventItemsLoaded(this, new EventArgsItemsLoaded<T>(startIndex, aItems, request.Priority));
+                    running = iIsRunning;
                 }
-            }
-            catch (Exception ex)
-            {
-                EventHandler<EventArgsItemsFailed> eventItemsFailed = iEventItemsFailed;
-                if (eventItemsFailed != null)
+                if (!running)
                 {
-                    eventItemsFailed(this, new EventArgsItemsFailed(startIndex, iRangeSize, ex));
+                    iRunningEvent.WaitOne();
                 }
-            }
+                lock (iQueueLock)
+                {
+                    Assert.Check(iQueuedRequests.Count > 0);
+                    request = iQueuedRequests[iQueuedRequests.Count - 1];
+                    startIndex = request.StartIndex;
+                    iQueuedRequests.RemoveAt(iQueuedRequests.Count - 1);
+                    Assert.Check(!iExecutingRequests.ContainsKey(startIndex));
+                    iExecutingRequests.Add(startIndex, startIndex);
+                }
+                try
+                {
+                    int count = Math.Min(iCount - startIndex, iRangeSize);
+                    IList<T> aItems = iContainer.Items(startIndex, count);
+                    Assert.Check(aItems.Count == count);
+                    iCache.AddRange(startIndex, aItems);
+                    if (EventItemsLoaded != null)
+                    {
+                        EventItemsLoaded(this, new EventArgsItemsLoaded<T>(startIndex, aItems, request.Priority));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EventHandler<EventArgsItemsFailed> eventItemsFailed = iEventItemsFailed;
+                    if (eventItemsFailed != null)
+                    {
+                        eventItemsFailed(this, new EventArgsItemsFailed(startIndex, iRangeSize, ex));
+                    }
+                }
 
-            lock (iQueueLock)
-            {
-                iExecutingRequests.Remove(startIndex);
+                lock (iQueueLock)
+                {
+                    iExecutingRequests.Remove(startIndex);
+                }
             }
         }
 
-        private bool iOpened;
-        private bool iDisposed;
+        private volatile bool iOpened;
+        private volatile bool iDisposed;
         private IContainer<T> iContainer;
         private int iCount;
         private Scheduler iEnqueueScheduler;
@@ -398,6 +458,8 @@ namespace Linn.Kinsky
         private IContentCache<T> iCache;
         private int iReadAheadRanges;
         private Exception iOpenException;
+        private bool iIsRunning;
+        private ManualResetEvent iRunningEvent;
 
         private class RangeRequest
         {
@@ -415,7 +477,6 @@ namespace Linn.Kinsky
             iCache = aDictionary;
             iCacheUseage = new List<int>();
             iLock = new object();
-            iInitialised = false;
         }
 
         public DictionaryBackedContentCache(int aSize)
@@ -427,7 +488,6 @@ namespace Linn.Kinsky
 
         public void Clear()
         {
-            Assert.Check(iInitialised);
             lock (iLock)
             {
                 iCache.Clear();
@@ -439,7 +499,6 @@ namespace Linn.Kinsky
 
         public void Add(int aIndex, T aItem)
         {
-            Assert.Check(iInitialised);
             lock (iLock)
             {
                 if (iCache.ContainsKey(aIndex))
@@ -464,7 +523,6 @@ namespace Linn.Kinsky
 
         public void AddRange(int aStartIndex, IList<T> aItems)
         {
-            Assert.Check(iInitialised);
             lock (iLock)
             {
                 for (int i = 0; i < aItems.Count; i++)
@@ -476,7 +534,6 @@ namespace Linn.Kinsky
 
         public void Remove(int aIndex)
         {
-            Assert.Check(iInitialised);
             lock (iLock)
             {
                 if (iCache.ContainsKey(aIndex))
@@ -491,7 +548,6 @@ namespace Linn.Kinsky
 
         public bool TryGet(int aIndex, out T aObject)
         {
-            Assert.Check(iInitialised);
             lock (iLock)
             {
                 if (iCache.ContainsKey(aIndex))
@@ -506,25 +562,15 @@ namespace Linn.Kinsky
             }
         }
 
-        public void CollectorOpened(int aCount)
-        {
-            lock (iLock)
-            {
-                iInitialised = true;
-                Clear();
-            }
-        }
-
         #endregion
 
         private int iSize;
         private Dictionary<int, T> iCache;
         private List<int> iCacheUseage;
         private object iLock;
-        private bool iInitialised;
     }
 
-    public class ArrayBackedContentCache<T> : IContentCache<T>
+    public class ArrayBackedContentCache<T> : IFixedSizeContentCache<T>
     {
         public ArrayBackedContentCache()
         {
@@ -597,11 +643,11 @@ namespace Linn.Kinsky
             }
         }
 
-        public void CollectorOpened(int aCount)
+        public void Initialise(int aMaxItemsCount)
         {
             lock (iLock)
             {
-                iCache = new T[aCount];
+                iCache = new T[aMaxItemsCount];
                 iInitialised = true;
             }
         }

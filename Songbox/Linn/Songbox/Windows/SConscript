@@ -1,0 +1,112 @@
+Import('_default_env kBuildInfo')
+
+files = Split("""
+    ../Resources/Icon.ico
+    Installer/header.bmp
+    Installer/finish.bmp
+    Installer/NsiTemplate.txt
+""")
+installerRes = _default_env.Install('$variant_dir/share/Linn/Songbox', files)
+
+ass = _default_env.TagReplace(_default_env.subst('$build_variant_dir/share/Songbox/Windows/AssemblyInfo.cs'), 'Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
+files = Split("""
+    Properties/Resources.Designer.cs
+    Properties/Resources.resx
+    App.xaml
+    App.xaml.cs
+    ConfigurationWindow.xaml
+    ConfigurationWindow.xaml.cs
+    FormSysTray.Designer.cs
+    FormSysTray.cs
+    FormSysTray.resx
+""")
+
+
+ohCliLibs = Split("""
+    DvAvOpenhomeOrgPlaylistManager1.net
+    DvUpnpOrgConnectionManager1.net
+    DvUpnpOrgContentDirectory1.net
+    HtmlAgilityPack
+    ICSharpCode.SharpZipLib
+    ohGit
+    ohMediaServer
+    ohNet.net
+    ohPlaylistManager
+    ohXapp
+    ohXappViewer
+    ohXen
+""")
+
+
+sysCliLibs = Split("""
+    System
+    System.Drawing
+    System.Windows.Forms
+    System.Xml
+    System.Xaml
+    WindowsBase
+    PresentationCore
+    PresentationFramework
+""")
+
+linnCliLibs = Split("""
+    OssCore
+    OssToolkitWpf
+""")
+
+
+# install OpenHome libs into install tree
+
+instOhLibs = ['../../../OpenHome/Windows/' + f + '.dll' for f in ohCliLibs]
+instOhLibs.append('../../../OpenHome/Windows/ohNet.dll')
+instOhLibs = _default_env.Install('$install_dir/bin/Songbox', instOhLibs)
+
+instLinnLibs = [File(_default_env.subst('$install_dir/lib/Linn/' + f + '.dll')) for f in linnCliLibs]
+
+
+# install resources to install tree
+
+instRes = _default_env.RecursiveInstall('$install_dir/bin/Songbox/presentation', _default_env.Dir('../../../OpenHome/presentation').srcnode())
+instRes = [ _default_env.Dir('$install_dir/bin/Songbox/presentation') ]
+
+# build the assembly
+
+_default_env['OUTPUTTYPE'] = 'WinExe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    _default_env['OUTPUTTYPE'] = 'Exe'
+
+_default_env.PrependUnique(CLILIBPATH = ['$install_dir/bin/Songbox'])
+
+msproj = _default_env.MSBuildFileGenerator('Songbox', files + ass, LINKS=files + ass, CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs, ICON=_default_env.subst('$variant_dir/share/Linn/Songbox/Icon.ico'), ROOTNAMESPACE='Linn.Songbox', TOOLSVERSION='4.0', TARGETFRAMEWORKVERSION='4.0', APPLICATIONDEFINITION='App', CLIPLATFORMTARGET='x86')
+
+# ensure that the referenced assemblies get installed before the assembly is built
+Depends(msproj, instOhLibs+instRes+installerRes)
+
+app = _default_env.MSBuildExeBuilder('Songbox', msproj, CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs)
+app = _default_env.Install('$install_dir/bin/Songbox', app)
+instLinnLibs = _default_env.Install('$install_dir/bin/Songbox', instLinnLibs)
+
+
+# build the installer
+
+installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Songbox', 'InstallerSongbox',
+                            FILES = { '' : app + instOhLibs + instLinnLibs + instRes },
+                            TEMPLATE = _default_env.subst('$variant_dir/share/Linn/Songbox/NsiTemplate.txt'),
+                            RESOURCES = { 'icon' : _default_env.subst('$variant_dir/share/Linn/Songbox/Icon.ico'),
+                                          'header' : _default_env.subst('$variant_dir/share/Linn/Songbox/header.bmp'),
+                                          'finish' : _default_env.subst('$variant_dir/share/Linn/Songbox/finish.bmp'),
+                                          'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt') },
+                            PRODUCT = 'Songbox',
+                            VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                            CERT = '',
+                            LAUNCHFILE = 'Songbox.exe')
+                            
+resources = [ (_default_env.subst('$install_dir/share/Songbox/InstallerSongbox.exe'), 'InstallerSongbox.exe') ]
+updater = _default_env.CliLibrary('UpdaterSongbox_win', 'Installer/Updater.cs', CLIRESOURCES=resources)
+installer += _default_env.Install('$install_dir/share/Songbox', updater)
+
+Alias('Lib', installer)
+
+
+
+

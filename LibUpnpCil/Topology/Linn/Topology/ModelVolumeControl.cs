@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Linn.ControlPoint;
 
 namespace Linn.Topology
 {
@@ -42,8 +43,6 @@ namespace Linn.Topology
             {
                 iExiting = true;
                 iEvent.Set();
-
-                iThread.Abort();
 
                 iThread.Join();
                 iThread = null;
@@ -152,7 +151,6 @@ namespace Linn.Topology
         event EventHandler<EventArgs> EventVolumeChanged;
         event EventHandler<EventArgs> EventVolumeLimitChanged;
         void IncrementVolume();
-        void Kill();
         bool Mute { get; }
         string Name { get; }
         void Open();
@@ -162,6 +160,7 @@ namespace Linn.Topology
         uint Volume { get; }
         uint VolumeLimit { get; }
         event EventHandler<EventArgs> EventSubscriptionError;
+        Device Device { get; }
     }
 
     public abstract class ModelVolumeControl : IModelVolumeControl
@@ -170,7 +169,6 @@ namespace Linn.Topology
         public event EventHandler<EventArgs> EventSubscriptionError;
         public abstract void Open();
         public abstract void Close();
-        public abstract void Kill();
 
         public abstract string Name { get; }
 
@@ -189,6 +187,8 @@ namespace Linn.Topology
         public abstract uint Volume { get; }
         public abstract bool Mute { get; }
         public abstract uint VolumeLimit { get; }
+
+        public abstract Device Device {get;}
 
         protected void OnEventSubscriptionError()
         {

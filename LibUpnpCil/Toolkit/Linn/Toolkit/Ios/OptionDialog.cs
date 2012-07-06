@@ -11,7 +11,7 @@ namespace Linn.Toolkit.Ios
     {
         public OptionDialogIpad(IHelper aHelper, string aManualUri, UIImage aImageIcon)
         {
-            iNavigationController = new UINavigationController(new OptionDialogRoot(aHelper, aManualUri, aImageIcon));
+            iNavigationController = new UINavigationController(new OptionDialogRoot(aHelper, aManualUri, aImageIcon, new OptionPageAboutIpad(aHelper, aImageIcon)));
             iPopOverController = new UIPopoverController(iNavigationController);
         }
 
@@ -66,7 +66,7 @@ namespace Linn.Toolkit.Ios
         {
             iViewController = aViewController;
             
-            iNavigationController = new UINavigationController(new OptionDialogRoot(aHelper, aManualUri, aImageIcon));
+            iNavigationController = new UINavigationController(new OptionDialogRoot(aHelper, aManualUri, aImageIcon, new OptionPageAboutIphone(aHelper, aImageIcon)));
             iNavigationController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             iNavigationController.ModalTransitionStyle = UIModalTransitionStyle.FlipHorizontal;
             iNavigationController.TopViewController.NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate { iViewController.DismissModalViewControllerAnimated(true); });
@@ -270,12 +270,13 @@ namespace Linn.Toolkit.Ios
                 private string iManualUri;
             }
 
-            public Delegate(UITableViewController aController, IHelper aHelper, IList<IOptionPage> aOptionPages, string aManualUri, UIImage aImageIcon)
+            public Delegate(UITableViewController aController, IHelper aHelper, IList<IOptionPage> aOptionPages, string aManualUri, UIImage aImageIcon, OptionPageAbout aOptionPageAbout)
             {
                 iController = aController;
                 iHelper = aHelper;
                 iOptionPages = aOptionPages;
                 iImageIcon = aImageIcon;
+                iOptionPageAbout = aOptionPageAbout;
 
                 iAlertViewDelegate = new AlertViewDelegate(aManualUri);
             }
@@ -335,7 +336,7 @@ namespace Linn.Toolkit.Ios
                     if(aIndexPath.Section == 0)
                     {
                         //iController.Title = "Back";
-                        iController.NavigationController.PushViewController(new OptionPageAbout(iHelper, iImageIcon), true);
+                        iController.NavigationController.PushViewController(iOptionPageAbout, true);
                     }
                     else
                     {
@@ -350,14 +351,16 @@ namespace Linn.Toolkit.Ios
             private IList<IOptionPage> iOptionPages;
             private AlertViewDelegate iAlertViewDelegate;
             private UIImage iImageIcon;
+            private OptionPageAbout iOptionPageAbout;
         }
 
-        public OptionDialogRoot(IHelper aHelper, string aManualUri, UIImage aImageIcon)
+        public OptionDialogRoot(IHelper aHelper, string aManualUri, UIImage aImageIcon, OptionPageAbout aOptionPageAbout)
             : base(UITableViewStyle.Grouped)
         {
             iHelper = aHelper;
             iManualUri = aManualUri;
             iImageIcon = aImageIcon;
+            iOptionPageAbout = aOptionPageAbout;
 
             foreach(IOptionPage p in iHelper.OptionPages)
             {
@@ -415,7 +418,7 @@ namespace Linn.Toolkit.Ios
         {
             IList<IOptionPage> optionPages = CreateOptionPageList(iHelper.OptionPages);
             TableView.DataSource = new DataSource(iHelper, optionPages);
-            TableView.Delegate = new Delegate(this, iHelper, optionPages, iManualUri, iImageIcon);
+            TableView.Delegate = new Delegate(this, iHelper, optionPages, iManualUri, iImageIcon, iOptionPageAbout);
         }
 
         private IList<IOptionPage> CreateOptionPageList(IList<IOptionPage> aOptionPages)
@@ -450,6 +453,7 @@ namespace Linn.Toolkit.Ios
         private string iManualUri;
         private IHelper iHelper;
         private UIImage iImageIcon;
+        private OptionPageAbout iOptionPageAbout;
     }
 }
 

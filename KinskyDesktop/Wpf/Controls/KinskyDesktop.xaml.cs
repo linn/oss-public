@@ -40,7 +40,7 @@ namespace KinskyDesktopWpf
         private HttpClient iHttpClient;
         private MediaProviderLibrary iLibrary;
         private LocalPlaylists iLocalPlaylists;
-        private RemotePlaylists iRemotePlaylists;
+        private SharedPlaylists iSharedPlaylists;
 
         private PlaySupport iPlaySupport;
         private SaveSupport iSaveSupport;
@@ -181,19 +181,19 @@ namespace KinskyDesktopWpf
             iHttpClient = new HttpClient();
 
             iLibrary = new MediaProviderLibrary(iHelper);
-            iRemotePlaylists = new RemotePlaylists(iHelper);
+            iSharedPlaylists = new SharedPlaylists(iHelper);
             iLocalPlaylists = new LocalPlaylists(iHelper, true);
 
             iSupport = new MediaProviderSupport(iHttpServer);
 
             PluginManager pluginManager = new PluginManager(iHelper, iHttpClient, iSupport);
             iLocator = new ContentDirectoryLocator(pluginManager, new AppRestartHandler());
-            OptionBool optionRemotePlaylists = iLocator.Add(RemotePlaylists.kRootId, iRemotePlaylists);
+            OptionBool optionSharedPlaylists = iLocator.Add(SharedPlaylists.kRootId, iSharedPlaylists);
             OptionBool optionLocalPlaylists = iLocator.Add(LocalPlaylists.kRootId, iLocalPlaylists);
             iLocator.Add(MediaProviderLibrary.kLibraryId, iLibrary);
             iHelper.AddOptionPage(iLocator.OptionPage);
 
-            iSaveSupport = new SaveSupport(iHelper, iRemotePlaylists, optionRemotePlaylists, iLocalPlaylists, optionLocalPlaylists);
+            iSaveSupport = new SaveSupport(iHelper, iSharedPlaylists, optionSharedPlaylists, iLocalPlaylists, optionLocalPlaylists);
             iViewSaveSupport = new ViewSaveSupport(RequestLocalPlaylistFilename, iSaveSupport);
             iPlaySupport = new PlaySupport();
 
@@ -496,7 +496,7 @@ namespace KinskyDesktopWpf
         {
             iMediator.Open();
             iLibrary.Start(aIpAddress);
-            iRemotePlaylists.Start(aIpAddress);
+            iSharedPlaylists.Start(aIpAddress);
             iHttpClient.Start();
             iHttpServer.Start(aIpAddress);
             iLocator.Start();
@@ -517,9 +517,9 @@ namespace KinskyDesktopWpf
             {
                 iHttpClient.Stop();
             }
-            if (iRemotePlaylists != null)
+            if (iSharedPlaylists != null)
             {
-                iRemotePlaylists.Stop();
+                iSharedPlaylists.Stop();
             }
             if (iLibrary != null)
             {
@@ -666,8 +666,7 @@ namespace KinskyDesktopWpf
 
         private void RescanExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            iLocator.Refresh();
-            iHelper.Rescan();
+            viewKinsky.Rescan();
         }
 
         private void OptionsCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -769,7 +768,6 @@ namespace KinskyDesktopWpf
 
         private void Window_DragEnter(object sender, DragEventArgs e)
         {
-            Console.WriteLine("Window::DragEnter");
             if (iPlaySupport != null)
             {
                 iPlaySupport.SetDragging(true);
@@ -836,7 +834,5 @@ namespace KinskyDesktopWpf
             }
             iUIOptions.WindowLocation = new Point(Left, Top);
         }
-
-
     }
 }

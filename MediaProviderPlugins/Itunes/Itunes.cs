@@ -447,6 +447,30 @@ namespace OssKinskyMppItunes
         public event EventHandler<EventArgs> EventContentUpdated;
         public event EventHandler<EventArgs> EventContentAdded { add { } remove { } }
         public event EventHandler<EventArgsContentRemoved> EventContentRemoved { add { } remove { } }
+        public event EventHandler<EventArgs> EventTreeChanged;
+
+        protected void OnEventTreeChanged()
+        {
+            EventHandler<EventArgs> del = EventTreeChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
+        }
+
+        string IContainer.Id
+        {
+            get { return Metadata.Id; }
+        }
+
+
+        public bool HasTreeChangeAffectedLeaf
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         private IData iData;
         private Mutex iMutex;
@@ -540,8 +564,11 @@ namespace OssKinskyMppItunes
             iChildMetadata.Restricted = true;
             iChildMetadata.Title = aText;
             iChildMetadata.WriteStatus = "PROTECTED";
-            iChildMetadata.ArtworkUri.Add(aSupport.VirtualFileSystem.Uri(Path.Combine(aInstallPath, "Itunes.png")));
-
+            try
+            {
+                iChildMetadata.ArtworkUri.Add(aSupport.VirtualFileSystem.Uri(Path.Combine(aInstallPath, "Itunes.png")));
+            }
+            catch(HttpServerException) { }
             iInserter = aInserter;
         }
 
@@ -675,21 +702,27 @@ namespace OssKinskyMppItunes
                 // DS playlist and then the DS can decide whether it wants to play it
                 res.ProtocolInfo = "http-get:*:*:*";
 
-
-            System.Uri uri = new System.Uri(libItem.Location);
-            if (uri.Scheme == "file" && uri.Host == "localhost")
+            if (libItem.Location != null)
             {
-                // handle paths that are "/Users/..." or "/C:\\Users\\..." i.e. mac or windows
-                // strings passed to the VirtualFileSystem.Uri method must be unescaped. The unescaping
-                // was initially implemented at the point where the Location element is read from
-                // the XML file (the Location URI in the XML file is escaped). However, when this
-                // unescaped string was passed to the Uri constructor, the uri.AbsolutePath returns
-                // an **escaped** string, thus another unescape had to be performed here anyway. So,
-                // no point in doing it twice - just do it here
-                string path = System.Uri.UnescapeDataString(uri.AbsolutePath);
-                if (path[2] == ':')
-                    path = path.Substring(1);
-                res.Uri = iSupport.VirtualFileSystem.Uri(path);
+                System.Uri uri = new System.Uri(libItem.Location);
+                if (uri.Scheme == "file" && uri.Host == "localhost")
+                {
+                    // handle paths that are "/Users/..." or "/C:\\Users\\..." i.e. mac or windows
+                    // strings passed to the VirtualFileSystem.Uri method must be unescaped. The unescaping
+                    // was initially implemented at the point where the Location element is read from
+                    // the XML file (the Location URI in the XML file is escaped). However, when this
+                    // unescaped string was passed to the Uri constructor, the uri.AbsolutePath returns
+                    // an **escaped** string, thus another unescape had to be performed here anyway. So,
+                    // no point in doing it twice - just do it here
+                    string path = System.Uri.UnescapeDataString(uri.AbsolutePath);
+                    if (path[2] == ':')
+                        path = path.Substring(1);
+                    try
+                    {
+                        res.Uri = iSupport.VirtualFileSystem.Uri(path);
+                    }
+                    catch(HttpServerException) { }
+                }
             }
 
             if (res.ProtocolInfo != "" && res.Uri != "")
@@ -698,8 +731,12 @@ namespace OssKinskyMppItunes
             if (libItem.AlbumArtId != null)
             {
                 string filename = iLibrary.GetAlbumArtFilenameNoExt(libItem.AlbumArtId) + libItem.AlbumArtExt;
-                string albumArtUri = iSupport.VirtualFileSystem.Uri(filename);
-                track.AlbumArtUri.Add(albumArtUri);
+                try
+                {
+                    string albumArtUri = iSupport.VirtualFileSystem.Uri(filename);          
+                    track.AlbumArtUri.Add(albumArtUri);
+                }
+                catch(HttpServerException) { }
             }
 
             iMetadata = track;
@@ -715,7 +752,11 @@ namespace OssKinskyMppItunes
         public void Process(NodeRoot aNode)
         {
             container metadata = new container();
-            metadata.AlbumArtUri.Add(iSupport.VirtualFileSystem.Uri(Path.Combine(iInstallPath, "Itunes.png")));
+            try
+            {
+                metadata.AlbumArtUri.Add(iSupport.VirtualFileSystem.Uri(Path.Combine(iInstallPath, "Itunes.png")));
+            }
+            catch(HttpServerException) { }
             SetContainerMetadata(metadata, aNode);
             iMetadata = metadata;
         }
@@ -739,8 +780,12 @@ namespace OssKinskyMppItunes
             if (albumArtItem != null)
             {
                 string filename = iLibrary.GetAlbumArtFilenameNoExt(albumArtItem.AlbumArtId) + albumArtItem.AlbumArtExt;
-                string albumArtUri = iSupport.VirtualFileSystem.Uri(filename);
-                metadata.AlbumArtUri.Add(albumArtUri);
+                try
+                {
+                   string albumArtUri = iSupport.VirtualFileSystem.Uri(filename);
+                    metadata.AlbumArtUri.Add(albumArtUri);
+                }
+                catch(HttpServerException) { }
             }
 
             iMetadata = metadata;

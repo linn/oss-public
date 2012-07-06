@@ -228,6 +228,17 @@ namespace Linn.ControlPoint.Upnp
                 {
                     Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunHandle() XmlException: " + ev.Request.SubscriptionId + " " + e.ToString());
                 }
+                catch (Exception ex)
+                {
+                    // Logging for #1002, plus any future event server issues
+                    string eventXml = string.Empty;
+                    if (ev.Request.Body != null)
+                    {
+                        eventXml = ASCIIEncoding.UTF8.GetString(ev.Request.Body, 0, ev.Request.Body.Length);
+                    }
+                    UserLog.WriteLine("EventServerUpnp.RunHandle: Exception: " + ev.Request.SubscriptionId + " " + ex.ToString() + " " + eventXml);
+                    throw ex;
+                }
             }
 
             Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunHandle() finished");

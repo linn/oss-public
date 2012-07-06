@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Windows Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A5DF2109-5A06-4A92-ACFF-4CF9A066D461}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn.ProductSupport</RootNamespace>
+    <AssemblyName>OssProductSupport</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BaseDirectory>..\..\ProductSupport</BaseDirectory>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Windows Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Linux\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Linux\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Trace|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\trace\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\trace\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'MacOsX Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Xml" />
+    <Reference Include="taglib-sharp">
+      <HintPath>..\..\External\taglib-sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\install\share\Kodegen\TagsKodegen.cs">
+      <Link>Linn\ProductSupport\Core\Generated\TagsKodegen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\DhcpMessage.cs">
+      <Link>Linn\ProductSupport\Diagnostics\DhcpMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\Diagnostics.cs">
+      <Link>Linn\ProductSupport\Diagnostics\Diagnostics.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\Logger.cs">
+      <Link>Linn\ProductSupport\Diagnostics\Logger.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestBase.cs">
+      <Link>Linn\ProductSupport\Diagnostics\TestBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestDhcp.cs">
+      <Link>Linn\ProductSupport\Diagnostics\TestDhcp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestInternet.cs">
+      <Link>Linn\ProductSupport\Diagnostics\TestInternet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestTransport.cs">
+      <Link>Linn\ProductSupport\Diagnostics\TestTransport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestUpnp.cs">
+      <Link>Linn\ProductSupport\Diagnostics\TestUpnp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Playback.cs">
+      <Link>Linn\ProductSupport\Playback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Target.cs">
+      <Link>Linn\ProductSupport\Target.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\CategoryResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\CategoryResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\InstallerReportResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\InstallerReportResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\ItemResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\ItemResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\ListOfCategoryResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\ListOfCategoryResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\ListOfTestResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\ListOfTestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\TestResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\TestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\TestResourceResult.cs">
+      <Link>Linn\ProductSupport\Ticketing\TestResourceResult.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\Ticketing.cs">
+      <Link>Linn\ProductSupport\Ticketing\Ticketing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\TicketRequestResource.cs">
+      <Link>Linn\ProductSupport\Ticketing\TicketRequestResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\BasicSetup.cs">
+      <Link>Linn\ProductSupport\BasicSetup.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Boxes.cs">
+      <Link>Linn\ProductSupport\Boxes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Crc32.cs">
+      <Link>Linn\ProductSupport\Core\Crc32.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\HelperVolkano.cs">
+      <Link>Linn\ProductSupport\Core\HelperVolkano.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\SysLog.cs">
+      <Link>Linn\ProductSupport\Core\SysLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Tags.cs">
+      <Link>Linn\ProductSupport\Core\Tags.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\Fallback.cs">
+      <Link>Linn\ProductSupport\Flash\Fallback.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\Flash.cs">
+      <Link>Linn\ProductSupport\Flash\Flash.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\FuseMap.cs">
+      <Link>Linn\ProductSupport\Flash\FuseMap.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\RomDir.cs">
+      <Link>Linn\ProductSupport\Flash\RomDir.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Tree.cs">
+      <Link>Linn\ProductSupport\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\UpdateFirmware.cs">
+      <Link>Linn\ProductSupport\UpdateFirmware.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\ProductSupport\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LogicalName>Linn.ProductSupport.Properties.Resources.resources</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssControl\OssControl.csproj">
+      <Project>{1D1891B8-F223-4493-8E1C-D095FBDB540C}</Project>
+      <Name>OssControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssDidlLite\OssDidlLite.csproj">
+      <Project>{D07487C1-8D3F-43C8-BE1B-C1BFB5B2C562}</Project>
+      <Name>OssDidlLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssKinsky\OssKinsky.csproj">
+      <Project>{065E68F0-F588-4D65-9FFF-04E1869CBDEF}</Project>
+      <Name>OssKinsky</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssServices\OssServices.csproj">
+      <Project>{084A5442-3B6C-458D-BE7E-F48FBD74AB0A}</Project>
+      <Name>OssServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlLayout\XmlLayout.csproj">
+      <Project>{7B949BAF-2D7B-46D8-B471-74FB77E5CF78}</Project>
+      <Name>XmlLayout</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlRomCollection\XmlRomCollection.csproj">
+      <Project>{0C5892E4-556F-447C-A6B3-5EC8C2FAB666}</Project>
+      <Name>XmlRomCollection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlRom\XmlRom.csproj">
+      <Project>{5B22915C-E24E-4235-A61E-037D8BF0521F}</Project>
+      <Name>XmlRom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XmlTags\XmlTags.csproj">
+      <Project>{4853E3E0-A519-4D2D-9DBB-E9749EDAAEA6}</Project>
+      <Name>XmlTags</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\ProductSupport\Linn\ProductSupport\Core\Generated\Tags.xml">
+      <Link>Tags.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\ProductSupport\Linn\ProductSupport\SampleAudio\Folder.jpg">
+      <Link>Folder.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Linn\ProductSupport\Ticketing\Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\ProductSupport\Linn\ProductSupport\SampleAudio\AudioTrack.flac">
+      <Link>AudioTrack.flac</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -60,7 +60,7 @@ namespace KinskyDesktopWpf
     #endregion
 
     #region ListViewModel<T>
-    public class ListViewModel<T> : ListViewModelBase
+    public class ListViewModel<T> : ListViewModelBase, IImageFetch
     {
         private T iWrappedItem;
         private WeakReference iImageSource;
@@ -187,10 +187,17 @@ namespace KinskyDesktopWpf
     {
         private ModelSender iSender;
         private WeakReference iImageSource;
+        private bool iHasRoom;
         public ModelSender Sender
         {
             get { return iSender; }
             set { iSender = value; OnPropertyChanged("ImageSource"); }
+        }
+
+        public bool HasRoom
+        {
+            get { return iHasRoom; }
+            set { iHasRoom = value; OnPropertyChanged("HasRoom"); }
         }
 
         public override ImageSource ImageSource
