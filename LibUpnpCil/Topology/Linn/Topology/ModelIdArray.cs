@@ -162,24 +162,23 @@ namespace Linn.Topology
         {
             Lock();
             MrItem item;
-            if (aIndex < 0 || aIndex >= iIds.Count)
-            {
-                UserLog.WriteLine("Index out of bounds in ModelIdArray AtIndex(): " + aIndex);
-                foreach (uint i in iIds)
-                {
-                    UserLog.Write("ID:'" + i + "'");
-                }
-                Assert.Check(false);
-            }
-            uint id = iIds[(int)aIndex];
-            if (!iCacheMetadata.TryGetValue(id, out item))
+            Assert.Check(aIndex >= 0);
+            if (aIndex >= iIds.Count)
             {
                 item = iIdArray.Default;
-                /*if(id > 0)
+            }
+            else
+            {
+                uint id = iIds[(int)aIndex];
+                if (!iCacheMetadata.TryGetValue(id, out item))
                 {
-                    iRecollectMetadata = true;
-                    iEventIdArray.Set();
-                }*/
+                    item = iIdArray.Default;
+                    /*if(id > 0)
+                    {
+                        iRecollectMetadata = true;
+                        iEventIdArray.Set();
+                    }*/
+                }
             }
             Unlock();
 
@@ -209,6 +208,23 @@ namespace Linn.Topology
 
             iCacheMetadata.Clear();
             iCacheUsage.Clear();
+
+            Unlock();
+        }
+
+        public void AddToCache(uint aNewId, MrItem aMrItem)
+        {
+            Lock();
+
+            if (!iCacheMetadata.ContainsKey(aNewId))
+            {
+                iCacheMetadata.Add(aNewId, aMrItem);
+
+                RemoveStaleCacheItems();
+
+                iCacheUsage.Remove(aNewId);
+                iCacheUsage.Add(aNewId);
+            }
 
             Unlock();
         }
@@ -250,6 +266,10 @@ namespace Linn.Topology
                         Trace.WriteLine(Trace.kMediaRenderer, "ModelIdArray.ProcessEventIdArray: " + e.Message);
                     }
                     catch (WebException e)
+                    {
+                        Trace.WriteLine(Trace.kMediaRenderer, "ModelIdArray.ProcessEventIdArray: " + e.Message);
+                    }
+                    catch (System.IO.IOException e)
                     {
                         Trace.WriteLine(Trace.kMediaRenderer, "ModelIdArray.ProcessEventIdArray: " + e.Message);
                     }

@@ -1,0 +1,56 @@
+.settingsHeader
+{
+    padding-left: 15px;
+    line-height: 15px;
+}
+
+div.label_field_pair
+{
+    clear: both;
+    float: none;
+    overflow: hidden;
+}
+
+div.label_field_pair label
+{
+    clear: left;
+    display: block;
+    float: left;
+    text-align: right;
+    width: 50%;
+    margin-top: 5px;
+}
+
+div.label_field_pair input
+{
+    clear: right;
+    float: left;
+    margin-left: 10px;
+    margin-top: 5px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+.buttonUpdatesContainer
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+    width: 50%;
+}
+
+#buttonUpdates
+{
+    width: 150px; 
+    margin-right: -2px;
+}
+
+#networks
+{
+    width: 50%;
+}
+
+.settingsText
+{
+    font-size: 12px;
+}

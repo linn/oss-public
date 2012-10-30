@@ -516,6 +516,16 @@ namespace Upnp
                         result = a.Artist;
                     }
                 }
+                if (result == string.Empty)
+                {
+                    foreach (author a in item.Author)
+                    {
+                        if (a.Role != null && a.Role.ToLower() == "composer")
+                        {
+                            result = a.Author;
+                        }
+                    }
+                }
             }
             else if (aObject is musicVideoClip)
             {

@@ -360,7 +360,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
-                            <kd:ViewWidgetBreadcrumb x:Name="breadcrumbBrowser" Margin="0,-3,0,0"  KeyboardNavigation.TabIndex="41" />
+                            <kd:ViewWidgetBreadcrumb x:Name="breadcrumbBrowser" Margin="0,-3,0,0"  KeyboardNavigation.TabIndex="41" HorizontalAlignment="Left" />
                             <ToggleButton x:Name="buttonShowAddBookmark" Grid.Column="1" HorizontalAlignment="Right"  KeyboardNavigation.TabIndex="42" ToolTip="Click to add bookmark">
                                 <TextBlock Text=" + " FontSize="{StaticResource SemiLargeFontSize}" VerticalAlignment="Center" />
                             </ToggleButton>

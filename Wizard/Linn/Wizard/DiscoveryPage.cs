@@ -4,8 +4,6 @@ using System.Text;
 using System.IO;
 using System.Threading;
 
-using OpenHome.Xapp;
-
 using Linn;
 using Linn.Control.Ssdp;
 using Linn.ControlPoint.Upnp;
@@ -14,8 +12,6 @@ using Linn.ProductSupport.Diagnostics;
 
 namespace Linn.Wizard
 {
- 
-
     public class DiscoveryPage : BasePage
     {
 
@@ -24,8 +20,8 @@ namespace Linn.Wizard
         int iListCount;
         bool iShowSelected;
 
-        public DiscoveryPage(PageControl aPageControl, string aViewId, PageComponents aPageComponents, IPageNavigation aPageNavigation)
-            : base(aPageControl, aViewId, aPageComponents, aPageNavigation)
+        public DiscoveryPage(PageControl aPageControl, PageDefinitions.Page aPageDefinition)
+            : base(aPageControl, aPageDefinition)
         {
         }
         
@@ -34,17 +30,19 @@ namespace Linn.Wizard
         {
             iShowSelected = true;
 
+            string selectedProduct = aSession.Model.SelectedProduct;
             string modelSelected = "";
-            if (iPageComponents.PageDefault == "KlimaxDsm") {
+
+            if (selectedProduct == "KlimaxDsm") {
                 modelSelected = "Klimax DSM";
             }
-            else if (iPageComponents.PageDefault == "AkurateDsm") {
+            else if (selectedProduct == "AkurateDsm") {
                 modelSelected = "Akurate DSM";
             }
-            else if (iPageComponents.PageDefault == "MajikDsm") {
+            else if (selectedProduct == "MajikDsm") {
                 modelSelected = "Majik DSM";
             }
-            else if (iPageComponents.PageDefault == "KikoDsm") {
+            else if (selectedProduct == "KikoDsm") {
                 modelSelected = "Kiko DSM";
             }
             iBoxSelection = new BoxSelection(aSession, modelSelected);
@@ -52,11 +50,15 @@ namespace Linn.Wizard
             base.OnActivated(aSession);
             ShowDeviceList();
             SetSelected(aSession);
+            if (aSession.Tracking)
+            {
+                aSession.Send("BoxTrackingData", GetBoxTracking(ModelInstance.Instance.Network.BoxList()));
+            }
         }
 
         private void ShowDeviceList()
         {
-            iBoxSelection.UpdateBoxList(iPageControl.Network().BoxList());
+            iBoxSelection.UpdateBoxList(ModelInstance.Instance.Network.BoxList());
             iBoxSelection.SetSelectedBox(iMacAddress);
             iBoxSelection.ShowButtons();
         }
@@ -88,20 +90,20 @@ namespace Linn.Wizard
                         iBoxSelection.SetSelectedBox(iMacAddress);
                         iBoxSelection.ShowButtons();
 
-                        Box box = iPageControl.Network().Box(iMacAddress);
+                        Box box = ModelInstance.Instance.Network.Box(iMacAddress);
                         string deviceIpStr = box.IpAddress;
                         System.Net.IPAddress interfaceIp = box.NetworkInterfaceIpAddress();
-                        iPageControl.Network().SetNetworkInterface(interfaceIp);
+                        ModelInstance.Instance.Network.SetNetworkInterface(interfaceIp);
                         string interfaceIpStr = interfaceIp.ToString();
-                        iPageControl.Diagnostics().Run(ETest.eMulticastFromDs, interfaceIpStr, deviceIpStr);
-                        iPageControl.Diagnostics().Run(ETest.eMulticastToDs, interfaceIpStr, deviceIpStr);
-                        iPageControl.Diagnostics().Run(ETest.eUdpEcho, interfaceIpStr, deviceIpStr);
-                        iPageControl.Diagnostics().Run(ETest.eTcpEcho, interfaceIpStr, deviceIpStr);
+                        ModelInstance.Instance.Diagnostics.Run(ETest.eMulticastFromDs, interfaceIpStr, deviceIpStr);
+                        ModelInstance.Instance.Diagnostics.Run(ETest.eMulticastToDs, interfaceIpStr, deviceIpStr);
+                        ModelInstance.Instance.Diagnostics.Run(ETest.eUdpEcho, interfaceIpStr, deviceIpStr);
+                        ModelInstance.Instance.Diagnostics.Run(ETest.eTcpEcho, interfaceIpStr, deviceIpStr);
                     }
                     break;
 
                 case "Refresh":
-                    iPageControl.Network().Refresh();
+                    ModelInstance.Instance.Network.Refresh();
 
                     Send("Disable", "TroubleshootButton");
                     Send("Disable", "PreviousButton");
@@ -150,7 +152,6 @@ namespace Linn.Wizard
                     iRxMutex.ReleaseMutex();
                     break;
 
-                case "NextPage":
                 default:
                     
                 
@@ -165,22 +166,79 @@ namespace Linn.Wizard
             {
                 Box box = iBoxSelection.Box(iMacAddress);
 
-                if ((iPageControl.SelectedBox != box) || (iShowSelected == true))
+                if ((aSession.Model.SelectedBoxMacAddress != box.MacAddress) || (iShowSelected == true))
                 {
                     iShowSelected = false;
-                    iPageControl.SelectedBox = box;
+                    aSession.Model.SelectedBoxMacAddress = box.MacAddress;
 
                     // make 'next' button available
-                    JsonObject jo = new JsonObject();
-                    jo.Add("Type", new JsonValueString("Control"));
-                    jo.Add("Id", new JsonValueString("NextButton"));
-                    jo.Add("Visible", new JsonValueBool(true));
+                    OpenHome.Xapp.JsonObject jo = new OpenHome.Xapp.JsonObject();
+                    jo.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+                    jo.Add("Id", new OpenHome.Xapp.JsonValueString("NextButton"));
+                    jo.Add("Visible", new OpenHome.Xapp.JsonValueBool(true));
                     aSession.Send("Render", jo);
 
                     iBoxSelection.ShowButtons();    // update display
                 }
             }
         }
+
+
+        private OpenHome.Xapp.JsonObject GetBoxTracking(List<Box> aBoxList)
+        {
+            Dictionary<string, int> modelCount = new Dictionary<string, int>();
+            Dictionary<string, int> softwareVersionCount = new Dictionary<string, int>();
+            foreach (Box b in aBoxList)
+            {
+                if (!modelCount.ContainsKey(b.Model))
+                {
+                    modelCount.Add(b.Model, 1);
+                }
+                else
+                {
+                    modelCount[b.Model] += 1;
+                }
+
+                string softwareVersion = b.SoftwareVersion;
+                // log nulls and blanks as Unknown
+                if (softwareVersion == null || softwareVersion == String.Empty)
+                {
+                    softwareVersion = "Unknown";
+                }
+                if (!softwareVersionCount.ContainsKey(softwareVersion))
+                {
+                    softwareVersionCount.Add(softwareVersion, 1);
+                }
+                else
+                {
+                    softwareVersionCount[softwareVersion] += 1;
+                }
+            }
+            var resultJson = new OpenHome.Xapp.JsonObject();
+
+            var modelsJson = new OpenHome.Xapp.JsonArray<OpenHome.Xapp.JsonObject>();
+            foreach (string modelName in modelCount.Keys)
+            {
+                OpenHome.Xapp.JsonObject modelJson = new OpenHome.Xapp.JsonObject();
+                modelJson.Add("Name", new OpenHome.Xapp.JsonValueString(modelName));
+                modelJson.Add("Value", new OpenHome.Xapp.JsonValueInt(modelCount[modelName]));
+                modelsJson.Add(modelJson);
+            }
+            resultJson.Add("Models", modelsJson);
+
+            var versionsJson = new OpenHome.Xapp.JsonArray<OpenHome.Xapp.JsonObject>();
+            foreach (string version in softwareVersionCount.Keys)
+            {
+                OpenHome.Xapp.JsonObject versionJson = new OpenHome.Xapp.JsonObject();
+                versionJson.Add("Name", new OpenHome.Xapp.JsonValueString(version));
+                versionJson.Add("Value", new OpenHome.Xapp.JsonValueInt(softwareVersionCount[version]));
+                versionsJson.Add(versionJson);
+            }
+            resultJson.Add("Versions", versionsJson);
+
+            return resultJson;
+        }
+
 
 
         private static int CompareByRoom(Box r1, Box r2)
@@ -243,7 +301,7 @@ namespace Linn.Wizard
                 bool morepages = false;
                 foreach (Box box in iBoxListDisplayed)
                 {
-                    if (box.Model == iSelectedProduct && box.State == ProductSupport.Box.EState.eOn)
+                    if (box.Model == iSelectedProduct && box.State == Linn.ProductSupport.Box.EState.eOn)
                     //if (box.Room.Contains("Jim") || box.Room.Contains("EPB"))
                     {
                         // filter out fake Majik DSM devices (non-HDMI)
@@ -270,15 +328,15 @@ namespace Linn.Wizard
                                 iMacAddressList[button] = box.MacAddress;     // use mac address to identify button
                                 button++;
 
-                                JsonObject jo = new JsonObject();
-                                jo.Add("Button", new JsonValueString("DeviceButton" + button));
-                                jo.Add("Id", new JsonValueString(box.MacAddress));
-                                jo.Add("Room", new JsonValueString(box.Room));
-                                jo.Add("Name", new JsonValueString(box.Name));
-                                jo.Add("Selected", new JsonValueBool(selected));
-                                jo.Add("New", new JsonValueBool(newbox));
-                                jo.Add("Color", new JsonValueString(color));
-                                jo.Add("BackgroundColor", new JsonValueString(backgroundcolor));
+                                OpenHome.Xapp.JsonObject jo = new OpenHome.Xapp.JsonObject();
+                                jo.Add("Button", new OpenHome.Xapp.JsonValueString("DeviceButton" + button));
+                                jo.Add("Id", new OpenHome.Xapp.JsonValueString(box.MacAddress));
+                                jo.Add("Room", new OpenHome.Xapp.JsonValueString(box.Room));
+                                jo.Add("Name", new OpenHome.Xapp.JsonValueString(box.Name));
+                                jo.Add("Selected", new OpenHome.Xapp.JsonValueBool(selected));
+                                jo.Add("New", new OpenHome.Xapp.JsonValueBool(newbox));
+                                jo.Add("Color", new OpenHome.Xapp.JsonValueString(color));
+                                jo.Add("BackgroundColor", new OpenHome.Xapp.JsonValueString(backgroundcolor));
 
                                 iSession.Send("DeviceButtonUpdate", jo);
                             }
@@ -290,15 +348,15 @@ namespace Linn.Wizard
                     iMacAddressList[button % iButtonsPerPage] = "";     // use mac address to identify button
                     button++;
 
-                    JsonObject jo = new JsonObject();
-                    jo.Add("Button", new JsonValueString("DeviceButton" + button));
-                    jo.Add("Id", new JsonValueString(""));
-                    jo.Add("Room", new JsonValueString(""));
-                    jo.Add("Name", new JsonValueString(""));
-                    jo.Add("Selected", new JsonValueBool(false));
-                    jo.Add("New", new JsonValueBool(false));
-                    jo.Add("Color", new JsonValueString("gray"));
-                    jo.Add("BackgroundColor", new JsonValueString("#c6bfb7"));
+                    OpenHome.Xapp.JsonObject jo = new OpenHome.Xapp.JsonObject();
+                    jo.Add("Button", new OpenHome.Xapp.JsonValueString("DeviceButton" + button));
+                    jo.Add("Id", new OpenHome.Xapp.JsonValueString(""));
+                    jo.Add("Room", new OpenHome.Xapp.JsonValueString(""));
+                    jo.Add("Name", new OpenHome.Xapp.JsonValueString(""));
+                    jo.Add("Selected", new OpenHome.Xapp.JsonValueBool(false));
+                    jo.Add("New", new OpenHome.Xapp.JsonValueBool(false));
+                    jo.Add("Color", new OpenHome.Xapp.JsonValueString("gray"));
+                    jo.Add("BackgroundColor", new OpenHome.Xapp.JsonValueString("#c6bfb7"));
 
                     iSession.Send("DeviceButtonUpdate", jo);
                 }
@@ -306,20 +364,21 @@ namespace Linn.Wizard
                 bool visible = (morepages || iButtonPage > 0);
                 
                 // 'previous page' button availability
-                JsonObject joUp = new JsonObject();
-                joUp.Add("Type", new JsonValueString("Control"));
-                joUp.Add("Id", new JsonValueString("DeviceListPageUp"));
-                joUp.Add("Visible", new JsonValueBool(visible));
-                joUp.Add("Enabled", new JsonValueBool(iButtonPage > 0));
+                OpenHome.Xapp.JsonObject joUp = new OpenHome.Xapp.JsonObject();
+                joUp.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+                joUp.Add("Id", new OpenHome.Xapp.JsonValueString("DeviceListPageUp"));
+                joUp.Add("Visible", new OpenHome.Xapp.JsonValueBool(visible));
+                joUp.Add("Enabled", new OpenHome.Xapp.JsonValueBool(iButtonPage > 0));
                 iSession.Send("Render", joUp);
 
                 // 'next page' button availability
-                JsonObject joDown = new JsonObject();
-                joDown.Add("Type", new JsonValueString("Control"));
-                joDown.Add("Id", new JsonValueString("DeviceListPageDown"));
-                joDown.Add("Visible", new JsonValueBool(visible));
-                joDown.Add("Enabled", new JsonValueBool(morepages));
+                OpenHome.Xapp.JsonObject joDown = new OpenHome.Xapp.JsonObject();
+                joDown.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+                joDown.Add("Id", new OpenHome.Xapp.JsonValueString("DeviceListPageDown"));
+                joDown.Add("Visible", new OpenHome.Xapp.JsonValueBool(visible));
+                joDown.Add("Enabled", new OpenHome.Xapp.JsonValueBool(morepages));
                 iSession.Send("Render", joDown);
+
             }
 
 
@@ -355,10 +414,10 @@ namespace Linn.Wizard
                 return null;
             }
 
+            
         
         }
         
     }
-
  
 }

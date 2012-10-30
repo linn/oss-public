@@ -10,6 +10,8 @@ namespace OssToolkitDroid
 
         private IHelper iHelper;
         private Scheduler iScheduler;
+        private Context iContext;
+
         // default constructor to satisfy framework requirements, should not be used
         public WifiListener()
             : base()
@@ -17,28 +19,23 @@ namespace OssToolkitDroid
             Assert.Check(false);
         }
 
-        public WifiListener(System.IntPtr aIntPtr, JniHandleOwnership aHandleOwnership)
-            : base()
-        {
-            iLockObject = new object();
-        }
-
-        public WifiListener(IHelper aHelper)
+        public WifiListener(Context aContext, IHelper aHelper)
             : base()
         {
             iHelper = aHelper;
             iScheduler = new Scheduler("WifiStateChangeScheduler", 1);
+            iContext = aContext;
             iLockObject = new object();
+            iContext.RegisterReceiver(this, new IntentFilter(Android.Net.Wifi.WifiManager.NetworkStateChangedAction));
         }
 
-        public new void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            lock (iLockObject)
-            {
-                iScheduler.Stop();
-                iScheduler = null;
-            }
-            base.Dispose();
+            UserLog.WriteLine("WifiListener::Dispose");
+            iScheduler.Stop();
+            iContext.UnregisterReceiver(this);
+            iContext = null;
+            base.Dispose(disposing);
         }
 
         public override void OnReceive(Context aContext, Intent aIntent)

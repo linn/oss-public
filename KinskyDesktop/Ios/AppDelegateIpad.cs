@@ -17,7 +17,7 @@ namespace KinskyTouch
         // This method is invoked when the application has loaded its UI and its ready to run
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            Console.SetOut (System.IO.TextWriter.Null/*new Application.NSLogWriter ()*/);
+            Ticker tick = new Ticker();
 
 			helper.Helper.SetStackExtender(this);
             helper.Helper.Stack.EventStatusChanged += StatusChanged;
@@ -66,6 +66,8 @@ namespace KinskyTouch
             };
 
             new Action(delegate {
+                Ticker ticker = new Ticker();
+
                 iViewMaster = new ViewMaster();
     
                 iHttpServer = new HttpServer(HttpServer.kPortKinskyTouch);
@@ -92,12 +94,16 @@ namespace KinskyTouch
     
                 helper.Helper.AddOptionPage(iLocator.OptionPage);
     
-                AddViews();
+                InvokeOnMainThread(delegate {
+                    AddViews();
+                });
 
                 iModel = new Model(iViewMaster, iPlaySupport);
                 iMediator = new Mediator(helper.Helper, iModel);
-
+                
                 OnFinishedLaunching();
+
+                UserLog.WriteLine(string.Format("FinishedLaunching background tasks in {0} ms", ticker.MilliSeconds));
             }).BeginInvoke(null, null);
             
             Trace.Level = Trace.kKinskyTouch;
@@ -111,11 +117,12 @@ namespace KinskyTouch
             viewController.View.AddSubview(f.View);
             f.Initialise();*/
 
-            window.AddSubview(viewController.View);
+            window.RootViewController = viewController;
             
             window.MakeKeyAndVisible();
 
-            Trace.WriteLine(Trace.kKinskyTouch, "<FinishedLaunching");
+            UserLog.WriteLine(string.Format("FinishedLaunching in {0} ms", tick.MilliSeconds));
+
             return true;
         }
 
@@ -137,8 +144,6 @@ namespace KinskyTouch
 		
 		private void AddViews()
 		{
-            
-
             ViewWidgetSelectorRoom viewWidgetSelectorRoom = new ViewWidgetSelectorRoom();
             ViewWidgetSelectorPopover<Linn.Kinsky.Room> popOverRoom = new ViewWidgetSelectorPopover<Room>(helper.Helper, viewWidgetSelectorRoom, viewWidgetSelectorRoom, navigationItemSource.LeftBarButtonItem, navigationItemSource.RightBarButtonItem);
 			iViewMaster.ViewWidgetSelectorRoom.Add(viewWidgetSelectorRoom);
@@ -225,7 +230,5 @@ namespace KinskyTouch
         private ViewWidgetTime iViewWidgetTime;
         private ViewWidgetTimeButtons iViewWidgetTimeButtons;
         private ViewWidgetTimeRotary iViewWidgetTimeRotary;
-
-        private SaveViewController.Saver iSaver;
     }
 }

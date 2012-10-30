@@ -1,0 +1,56 @@
+.badger-outter
+{
+	background:#fff;
+	border:1px solid #ccc;
+	min-width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	box-shadow:0px 1px 5px #ccc;
+	-moz-box-shadow:0px 1px 5px #ccc;
+	-webkit-box-shadow:0px 1px 5px #ccc;
+	float:left;
+	position:absolute;
+	bottom:-8px;
+	right:-8px;
+	z-index:9999;
+}
+
+.badger-inner
+{
+	min-width: 16px;
+	height: 16px;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	background: #38a3d8;
+	background: -moz-linear-gradient(100% 100% 90deg, #38a3d8, #bde0f7);
+  	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bde0f7), to(#38a3d8));
+  	background: -webkit-linear-gradient(#bde0f7, #38a3d8);
+    background: -o-linear-gradient(#bde0f7, #38a3d8);
+    margin:2px;
+    z-index:99999;
+}
+
+.badger-badge
+{
+	color:#fff;
+	padding:2px 5px;
+	margin:0;
+	text-align:center;
+	text-shadow:0px -1px 1px #bde0f7;
+	z-index:999999;
+}
+
+.badger-text
+{
+    font-size: 14px;
+    line-height: 10px;
+}
+
+.badger-number
+{
+    font-size: 14px;
+    line-height: 10px;
+}

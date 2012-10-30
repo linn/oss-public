@@ -114,10 +114,10 @@ namespace KinskyTouch
             {
                 if(iViewWidgetTimeRotary.View.Superview == null)
                 {
-                    UIView view = new UIView(new System.Drawing.RectangleF(0.0f, 0.0f, 320.0f, 364.0f));
+                    UIView view = new UIView(new System.Drawing.RectangleF(0.0f, 0.0f, 320.0f, iViewController.View.Bounds.Bottom - 76.0f));
                     view.BackgroundColor = UIColor.FromRGBA(0.0f, 0.0f, 0.0f, 0.6f);
 
-                    iViewWidgetTimeRotary.View.Frame = new System.Drawing.RectangleF(62.0f, 84.0f, 196.0f, 196.0f);
+                    iViewWidgetTimeRotary.View.Frame = new System.Drawing.RectangleF((view.Bounds.Width - 196.0f) * 0.5f, (view.Bounds.Height - 196.0f) * 0.5f, 196.0f, 196.0f);
                     iViewWidgetTimeRotary.View.BackgroundColor = UIColor.Clear;
                     view.AddSubview(iViewWidgetTimeRotary.View);
 
@@ -137,14 +137,14 @@ namespace KinskyTouch
             {
                 if(iViewWidgetTimeButtons.View.Superview == null)
                 {
-                    UIView view1 = new UIView(new System.Drawing.RectangleF(0.0f, 0.0f, 320.0f, 367.0f));
+                    UIView view1 = new UIView(new System.Drawing.RectangleF(0.0f, 0.0f, 320.0f, iViewController.View.Bounds.Bottom - 76.0f));
                     view1.BackgroundColor = UIColor.Clear;
 
-                    UIView view2 = new UIView(new System.Drawing.RectangleF(0.0f, 290.0f, 320.0f, 77.0f));
+                    UIView view2 = new UIView(new System.Drawing.RectangleF(0.0f, view1.Bounds.Bottom - 77.0f, 320.0f, 77.0f));
                     view2.BackgroundColor = UIColor.FromRGBA(0.0f, 0.0f, 0.0f, 0.6f);
                     view1.AddSubview(view2);
 
-                    iViewWidgetTimeButtons.View.Frame = new System.Drawing.RectangleF(12, 0.0f, 320.0f, 77.0f);
+                    iViewWidgetTimeButtons.View.Frame = new System.Drawing.RectangleF(12.0f, 0.0f, 320.0f, 77.0f);
                     iViewWidgetTimeButtons.View.BackgroundColor = UIColor.Clear;
                     view2.AddSubview(iViewWidgetTimeButtons.View);
 

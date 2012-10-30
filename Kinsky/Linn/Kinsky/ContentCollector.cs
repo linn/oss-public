@@ -129,9 +129,7 @@ namespace Linn.Kinsky
             Assert.Check(aRangeSize > 0);
             iRangeSize = aRangeSize;
             iContainer = aContainer;
-            iEnqueueScheduler = new Scheduler("ContentCollectorEnqueue", 1);
             iDequeueScheduler = new Scheduler("ContentCollectorDequeue", aThreadCount);
-            iEnqueueScheduler.SchedulerError += iScheduler_SchedulerError;
             iDequeueScheduler.SchedulerError += iScheduler_SchedulerError;
             iReadAheadRanges = aReadAheadRanges;
             iCache = aCache;
@@ -143,7 +141,7 @@ namespace Linn.Kinsky
             iIsRunning = true;
             iRunningEvent = new ManualResetEvent(true);
 
-            iEnqueueScheduler.Schedule(new Scheduler.DCallback(Open));
+            iDequeueScheduler.Schedule(new Scheduler.DCallback(Open));
         }
 
         public bool IsRunning
@@ -274,9 +272,7 @@ namespace Linn.Kinsky
             Assert.Check(!iDisposed);
             new Thread(new ThreadStart(() =>
             {
-                iEnqueueScheduler.Stop();
                 iDequeueScheduler.Stop();
-                iEnqueueScheduler.SchedulerError -= iScheduler_SchedulerError;
                 iDequeueScheduler.SchedulerError -= iScheduler_SchedulerError;
                 if (iOpened)
                 {
@@ -324,24 +320,17 @@ namespace Linn.Kinsky
 
         private void EnqueueRequest(int aIndex, ERequestPriority aPriority)
         {
-            iEnqueueScheduler.Schedule(new Scheduler.DCallbackWithParams(DoEnqueueRequest), aIndex, aPriority);
-        }
-
-        private void DoEnqueueRequest(params object[] aParams)
-        {
             if (!iDisposed)
             {
-                int index = (int)aParams[0];
-                ERequestPriority priority = (ERequestPriority)aParams[1];
                 Assert.Check(iOpened);
-                Assert.Check(index >= 0 && index < iCount);
+                Assert.Check(aIndex >= 0 && aIndex < iCount);
                 T item = default(T);
-                if (!iCache.TryGet(index, out item))
+                if (!iCache.TryGet(aIndex, out item))
                 {
                     lock (iQueueLock)
                     {
                         // get the correct start index for this request's chunk
-                        int startIndex = iRangeSize * (index / iRangeSize);
+                        int startIndex = iRangeSize * (aIndex / iRangeSize);
 
                         // first ensure that the request is not currently being executed
                         if (iExecutingRequests.ContainsKey(startIndex))
@@ -357,7 +346,7 @@ namespace Linn.Kinsky
                         for (int i = 0; i < iQueuedRequests.Count; i++)
                         {
                             RangeRequest current = iQueuedRequests[i];
-                            if (current.Priority <= priority)
+                            if (current.Priority <= aPriority)
                             {
                                 insertIndex++;
                             }
@@ -366,7 +355,7 @@ namespace Linn.Kinsky
                                 existingIndex = i;
                                 existingRequest = current;
                             }
-                            if (existingRequest != null && current.Priority > priority)
+                            if (existingRequest != null && current.Priority > aPriority)
                             {
                                 break;
                             }
@@ -376,7 +365,7 @@ namespace Linn.Kinsky
                             // if it is already enqueued, but has been re-enqueued at a higher priority, move it up the queue
                             if (insertIndex - 1 > existingIndex)
                             {
-                                existingRequest.Priority = priority;
+                                existingRequest.Priority = aPriority;
                                 iQueuedRequests.RemoveAt(existingIndex);
                                 iQueuedRequests.Insert(insertIndex - 1, existingRequest);
                             }
@@ -384,7 +373,7 @@ namespace Linn.Kinsky
                         else
                         {
                             Assert.Check(insertIndex <= iQueuedRequests.Count);
-                            iQueuedRequests.Insert(insertIndex, new RangeRequest() { Priority = priority, StartIndex = startIndex });
+                            iQueuedRequests.Insert(insertIndex, new RangeRequest() { Priority = aPriority, StartIndex = startIndex });
                             iDequeueScheduler.Schedule(new Scheduler.DCallback(DoDequeueRequest));
                         }
                     }
@@ -410,7 +399,10 @@ namespace Linn.Kinsky
                 }
                 lock (iQueueLock)
                 {
-                    Assert.Check(iQueuedRequests.Count > 0);
+                    if (iQueuedRequests.Count == 0)
+                    {
+                        return;
+                    }
                     request = iQueuedRequests[iQueuedRequests.Count - 1];
                     startIndex = request.StartIndex;
                     iQueuedRequests.RemoveAt(iQueuedRequests.Count - 1);
@@ -448,7 +440,6 @@ namespace Linn.Kinsky
         private volatile bool iDisposed;
         private IContainer<T> iContainer;
         private int iCount;
-        private Scheduler iEnqueueScheduler;
         private Scheduler iDequeueScheduler;
         private List<RangeRequest> iQueuedRequests;
         private Dictionary<int, int> iExecutingRequests;

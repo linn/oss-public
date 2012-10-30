@@ -199,15 +199,9 @@ namespace Linn.Kinsky
             if (dataPath.Contains("Kinsky"))
             {
                 string previousDataPath;
-#if !PocketPC
                 previousDataPath = System.IO.Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "KinskyDesktop");
-#else
-                previousDataPath = System.IO.Path.Combine(
-                    "\\Application Data",
-                    "KinskyDesktop");
-#endif
                 if (Directory.Exists(previousDataPath))
                 {
                     string oldFilename = Path.Combine(previousDataPath, Path.GetFileName(iFilename));

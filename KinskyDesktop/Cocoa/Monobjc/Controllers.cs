@@ -138,6 +138,16 @@ namespace KinskyDesktop
         {
             iModel.Stop();
         }
+        
+        public void Pause()
+        {
+            iModel.Pause();
+        }
+        
+        public void Resume()
+        {
+            iModel.Resume();
+        }
 
         public void RescanNetwork()
         {

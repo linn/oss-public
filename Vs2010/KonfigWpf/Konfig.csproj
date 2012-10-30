@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{307AC497-6EF4-4071-8BA5-C3D35276E4FB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Linn.Konfig</RootNamespace>
+    <AssemblyName>Konfig</AssemblyName>
+    <BaseDirectory>..\..\Konfig</BaseDirectory>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\debug\bin\Konfig</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\Windows\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Windows\release\bin\Konfig</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CpAvOpenhomeOrgProduct1.net">
+      <HintPath>..\..\Konfig\OpenHome\Windows\CpAvOpenhomeOrgProduct1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="CpLinnCoUkDiagnostics1.net">
+      <HintPath>..\..\Konfig\OpenHome\Windows\CpLinnCoUkDiagnostics1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="CpLinnCoUkVolkano1.net">
+      <HintPath>..\..\Konfig\OpenHome\Windows\CpLinnCoUkVolkano1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ohNet.net">
+      <HintPath>..\..\Konfig\OpenHome\Windows\ohNet.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXapp">
+      <HintPath>..\..\Konfig\OpenHome\Windows\ohXapp.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXappViewer">
+      <HintPath>..\..\Konfig\OpenHome\Windows\ohXappViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXen">
+      <HintPath>..\..\Konfig\OpenHome\Windows\ohXen.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="..\..\Konfig\Linn\Konfig\Windows\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Link>Linn\Konfig\Windows\App.xaml</Link>
+    </ApplicationDefinition>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceAdvancedList.cs">
+      <Link>Linn\Konfig\CpDeviceAdvancedList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceDiagnosticsList.cs">
+      <Link>Linn\Konfig\CpDeviceDiagnosticsList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceDiagnosticsReportList.cs">
+      <Link>Linn\Konfig\CpDeviceDiagnosticsReportList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceFacDefList.cs">
+      <Link>Linn\Konfig\CpDeviceFacDefList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceReprogramList.cs">
+      <Link>Linn\Konfig\CpDeviceReprogramList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceUpdateList.cs">
+      <Link>Linn\Konfig\CpDeviceUpdateList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\FirmwareCache.cs">
+      <Link>Linn\Konfig\FirmwareCache.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\FlashSupport.cs">
+      <Link>Linn\Konfig\FlashSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Preferences.cs">
+      <Link>Linn\Konfig\Preferences.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\SettingsPageAdvanced.cs">
+      <Link>Linn\Konfig\SettingsPageAdvanced.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\VersionInfoReader.cs">
+      <Link>Linn\Konfig\VersionInfoReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Windows\Properties\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Windows\ResourceManager.cs">
+      <Link>Linn\Konfig\Windows\ResourceManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\XappController.cs">
+      <Link>Linn\Konfig\XappController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\XappView.cs">
+      <Link>Linn\Konfig\XappView.cs</Link>
+    </Compile>
+    <Page Include="..\..\Konfig\Linn\Konfig\Windows\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Link>Linn\Konfig\Windows\MainWindow.xaml</Link>
+    </Page>
+    <Compile Include="..\..\build\share\Konfig\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceRecogniserList.cs">
+      <Link>Linn\Konfig\CpDeviceRecogniserList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Model.cs">
+      <Link>Linn\Konfig\Model.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Windows\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+      <Link>Linn\Konfig\Windows\App.xaml.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+      <Link>Linn\Konfig\Windows\MainWindow.xaml.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\Icon.ico">
+      <Link>Resources\Icon.ico</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\IconXLarge.png">
+      <Link>Resources\IconXLarge.ico</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\IconLarge.png">
+      <Link>Resources\IconLarge.ico</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\advanced\index.xapp">
+      <Link>presentation\advanced\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\diagnostics\index.xapp">
+      <Link>presentation\diagnostics\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\about\index.css">
+      <Link>presentation\about\index.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\fragments\header.frag">
+      <Link>presentation\fragments\header.frag</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\logo.png">
+      <Link>presentation\images\logo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\select-arrow.gif">
+      <Link>presentation\images\select-arrow.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\FallbackIcon.png">
+      <Link>presentation\images\FallbackIcon.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\main\index.css">
+      <Link>presentation\main\index.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\main\index.xapp">
+      <Link>presentation\main\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\about\index.xapp">
+      <Link>presentation\about\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\settings\index.xapp">
+      <Link>presentation\settings\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\update\index.xapp">
+      <Link>presentation\update\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\update\index.css">
+      <Link>presentation\update\index.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\settings\index.css">
+      <Link>presentation\settings\index.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\diagnostics\index.css">
+      <Link>presentation\diagnostics\index.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssProductSupport\OssProductSupport.csproj">
+      <Project>{A5DF2109-5A06-4A92-ACFF-4CF9A066D461}</Project>
+      <Name>OssProductSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitWpf\OssToolkitWpf.csproj">
+      <Project>{B7939F7A-0433-4685-9799-B7AB45FBA1E0}</Project>
+      <Name>OssToolkitWpf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\Konfig\Linn\Konfig\Windows\Properties\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\just-listen.png">
+      <Link>presentation\images\just-listen.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\linn-logo.png">
+      <Link>presentation\images\linn-logo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\main-nav-spacer.png">
+      <Link>presentation\images\main-nav-spacer.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\background.jpg">
+      <Link>presentation\images\background.jpg</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\navigation-background.png">
+      <Link>presentation\images\navigation-background.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\subnavigation-background.png">
+      <Link>presentation\images\subnavigation-background.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\badger.css">
+      <Link>presentation\css\badger.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\global.css">
+      <Link>presentation\css\global.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\jquery.select.css">
+      <Link>presentation\css\jquery.select.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\badger.js">
+      <Link>presentation\javascript\badger.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\jquery.select.js">
+      <Link>presentation\javascript\jquery.select.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\jquery.tmpl.min.js">
+      <Link>presentation\javascript\jquery.tmpl.min.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\advanced\index.css">
+      <Link>presentation\advanced\index.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="..\..\Konfig\OpenHome\Windows\ohNet.dll">
+      <Link>ohNet.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /S /E /I /Y $(ProjectDir)..\..\Widgets\Common $(TargetDir)\presentation\Widgets\Common
+xcopy /S /E /I /Y $(ProjectDir)..\..\Widgets\Fonts $(TargetDir)\presentation\Widgets\Fonts</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

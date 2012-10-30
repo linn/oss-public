@@ -258,8 +258,20 @@ body
 #volume-rocker div.wheel div.progressbar div.l-bar,
 #volume-rocker div.wheel div.progressbar div.r-bar
 {
-    background: #e04f5c;
+    background-color: transparent;
     z-index: 2;
+}
+
+#volume-rotary div.wheel div.progressbar div.l-bar,
+#volume-rocker div.wheel div.progressbar div.l-bar
+{
+    background-image: url(images/lbar.png);
+}
+
+#volume-rotary div.wheel div.progressbar div.r-bar,
+#volume-rocker div.wheel div.progressbar div.r-bar
+{
+    background-image: url(images/rbar.png);
 }
 
 #volume-rotary div.wheel div.filler1,

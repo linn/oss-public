@@ -12,6 +12,36 @@ using Linn.Toolkit.Mac;
 
 namespace Linn.Songbox
 {
+	public class StartAtLoginOption : IStartAtLoginOption
+	{
+		public StartAtLoginOption(){}
+
+		
+        [DllImport("/System/Library/Frameworks/ServiceManagement.framework/ServiceManagement")]
+        static extern bool SMLoginItemSetEnabled(IntPtr aId, bool aEnabled);
+		
+        [DllImport("/System/Library/Frameworks/ServiceManagement.framework/ServiceManagement")]
+        static extern IntPtr SMJobCopyDictionary(IntPtr aDomain, IntPtr aId);		
+
+
+		#region IStartAtLoginOption implementation
+		public bool StartAtLogin {
+			get {
+				MonoMac.CoreFoundation.CFString dom = new MonoMac.CoreFoundation.CFString("kSMDomainUserLaunchd");
+    	        MonoMac.CoreFoundation.CFString id = new MonoMac.CoreFoundation.CFString("uk.co.linn.SongboxHelper");
+	            IntPtr dict = SMJobCopyDictionary(dom.Handle, id.Handle);
+				return (dict != IntPtr.Zero);
+			}
+			set {				
+            	MonoMac.CoreFoundation.CFString id = new MonoMac.CoreFoundation.CFString("uk.co.linn.SongboxHelper");
+            	SMLoginItemSetEnabled(id.Handle, value);
+			}
+		}
+		#endregion
+
+
+	}
+
     public partial class AppDelegate : NSApplicationDelegate
     {
         public AppDelegate ()
@@ -32,7 +62,9 @@ namespace Linn.Songbox
             iStatusItem.Image = sysTrayImage;
 
             // create the app helper
-            iHelper = new Helper(Environment.GetCommandLineArgs());            
+            iHelper = new Helper(Environment.GetCommandLineArgs());   
+			OptionPagePrivacy optionPagePrivacy = new OptionPagePrivacy(iHelper);
+			iHelper.AddOptionPage(optionPagePrivacy);
             iHelper.ProcessOptionsFileAndCommandLine();
 
             // create window for crash logging
@@ -43,18 +75,19 @@ namespace Linn.Songbox
             // create view and helper for the auto updates - hardcode check for beta versions for now
             IViewAutoUpdate autoUpdateView = new Linn.Toolkit.Mac.ViewAutoUpdateStandard(largeImage);
             iHelperAutoUpdate = new HelperAutoUpdate(iHelper, autoUpdateView, new Invoker());
-            //iHelperAutoUpdate.OptionPageUpdates.BetaVersions = true;
+            iHelperAutoUpdate.OptionPageUpdates.BetaVersions = iHelper.BuildType == EBuildType.Beta;
             iHelperAutoUpdate.Start();
 
+			iPageMain = new Linn.Songbox.PageMain(iHelper, optionPagePrivacy, iHelperAutoUpdate, new StartAtLoginOption());
+
+			IconInfo iconInfo = new IconInfo("logo.png", "image/png", 106, 106, 32);
+
             // create the media server
-            iServer = new Server("git://github.com/linnoss/MediaApps.git", iHelper.Company, "http://www.linn.co.uk", iHelper.Title, "http://www.linn.co.uk");
+            iServer = new Server("git://github.com/linnoss/MediaApps.git", iHelper.Company, "http://www.linn.co.uk", iHelper.Title, "http://www.linn.co.uk", new Presentation(iPageMain), iconInfo);
 
             // create the main configuration window
-            iWindow = new ConfigurationWindowController(iServer);
+            iWindow = new ConfigurationWindowController(iServer, iPageMain);
             iWindow.LoadWindow();
-
-            // initialise menu items
-            UpdateMenuItem();
 	    }
         
         public override void WillTerminate (NSNotification notification)
@@ -71,43 +104,10 @@ namespace Linn.Songbox
 
         partial void OpenConfiguration (NSObject aSender)
         {
+			Console.WriteLine("OpenConfiguration");
             NSApplication.SharedApplication.ActivateIgnoringOtherApps(true);
+			iWindow.Window.IsVisible = true;
             iWindow.Window.MakeKeyAndOrderFront(this);
-        }
-
-        partial void CheckForUpdates (NSObject sender)
-        {
-            iHelperAutoUpdate.CheckForUpdates();
-        }
-
-        [DllImport("/System/Library/Frameworks/ServiceManagement.framework/ServiceManagement")]
-        static extern bool SMLoginItemSetEnabled(IntPtr aId, bool aEnabled);
-
-        partial void StartAtLogin (NSObject sender)
-        {
-            MonoMac.CoreFoundation.CFString id = new MonoMac.CoreFoundation.CFString("uk.co.linn.SongboxHelper");
-
-            SMLoginItemSetEnabled(id.Handle, (iMenuItemStartAtLogin.State == NSCellStateValue.Off));
-
-            UpdateMenuItem();
-        }
-
-        [DllImport("/System/Library/Frameworks/ServiceManagement.framework/ServiceManagement")]
-        static extern IntPtr SMJobCopyDictionary(IntPtr aDomain, IntPtr aId);
-
-        private void UpdateMenuItem()
-        {
-            MonoMac.CoreFoundation.CFString dom = new MonoMac.CoreFoundation.CFString("kSMDomainUserLaunchd");
-            MonoMac.CoreFoundation.CFString id = new MonoMac.CoreFoundation.CFString("uk.co.linn.SongboxHelper");
-
-            IntPtr dict = SMJobCopyDictionary(dom.Handle, id.Handle);
-
-            if (dict != IntPtr.Zero) {
-                iMenuItemStartAtLogin.State = NSCellStateValue.On;
-            }
-            else {
-                iMenuItemStartAtLogin.State = NSCellStateValue.Off;
-            }
         }
 
         private NSStatusItem iStatusItem;
@@ -115,6 +115,7 @@ namespace Linn.Songbox
         private Helper iHelper;
         private HelperAutoUpdate iHelperAutoUpdate;
         private Server iServer;
+		private Linn.Songbox.PageMain iPageMain;
     }
 }
 

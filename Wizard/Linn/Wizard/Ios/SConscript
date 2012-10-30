@@ -1,0 +1,135 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+# build the main app
+
+files = Split("""
+    ../BasePage.cs
+    ../Component.cs
+    ../DiscoveryPage.cs
+    ../HelpPage.cs
+    ../Model.cs
+    ../Network.cs
+    ../PageControl.cs
+    ../PageDefinitions.cs
+    ../PageView.cs
+    ../ReprogramPage.cs
+    ../StandardPage.cs
+    ../StreamPage.cs
+    ../WizardPage.cs
+    AppDelegate.cs
+    Main.cs
+    WizardViewController.cs
+    WizardViewController.designer.cs
+""")
+
+linkCliLibs = Split("""
+    monotouch
+    ohXapp
+    ohXappViewer
+    ohXen
+    OssCore
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssToolkitIos
+    OssProductSupport
+    OssKinsky
+    XmlLayout
+    XmlRom
+    XmlRomCollection
+    XmlTags
+""")
+
+itunes_res = Split("""
+    Installer/iTunesArtwork
+    Installer/iTunesMetadata.plist
+""")
+
+prog = _default_env.CliProgram('Wizard', files + appAssemblyInfo, CLILIBS=linkCliLibs)
+_default_env.Depends(prog, _default_env.Alias('OpenHomeLib'))
+
+# build the nib files
+
+nib  = _default_env.IbTool('WizardViewController', 'WizardViewController.xib')
+_default_env.Depends(prog, nib)
+
+
+# build a list of all required assembly files
+
+reqAssemblies = []
+reqAssemblies.extend(linkCliLibs)
+reqAssemblies.extend(Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+"""))
+
+
+# build everything that needs to go in the "Resource" folder
+
+rootResources = Split("""
+    ../PageHtml
+""")
+rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Tags.xml'))
+rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/AudioTrack.flac'))
+rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Folder.jpg'))
+rootResources = [File(f) for f in rootResources]
+rootResources += [File(f) for f in nib]
+
+sharedResources = Split("""
+    $hardware_dir/share/Linn/Resources/Widgets/ToggleButton
+""")
+
+sharedResources = [_default_env.Dir(d) for d in sharedResources]
+
+
+resources = { '' : rootResources,
+              'PageHtml/Widgets' : sharedResources}
+
+
+# create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
+
+#infoPlist = {
+#    'NSMainNibFile' : 'MainMenu',
+#    'NSPrincipalClass' : 'NSApplication'
+#}
+
+
+# build the Ios .app bundles and install them
+
+bundle = _default_env.ReleaseInstallerIos('$install_dir/share/Wizard/Development', prog,
+                                          CLILIBS = linkCliLibs,
+                                          RESOURCES = resources,
+                                          ITUNESRESOURCES = itunes_res,
+                                          PRODUCT         = 'Wizard',
+                                          BUNDLEID        = 'Wizard',
+                                          VERSION         = kBuildInfo['BUILD_INFO_VERSION'],
+                                          TYPE            = kBuildInfo['BUILD_INFO_TYPE'],
+                                          IDENTITY        = "iPhone Developer: Keith Robertson (N5FMX5CWP6)",
+                                          PROFILE         = "Wizard")
+
+if _default_env['variant'] == 'release':
+    bundle += _default_env.ReleaseInstallerIos('$install_dir/share/Wizard/AdHoc', prog,
+                                               CLILIBS = linkCliLibs,
+                                               RESOURCES = resources,
+                                               ITUNESRESOURCES = itunes_res,
+                                               PRODUCT         = 'Wizard',
+                                               BUNDLEID        = 'Wizard',
+                                               VERSION         = kBuildInfo['BUILD_INFO_VERSION'],
+                                               TYPE            = kBuildInfo['BUILD_INFO_TYPE'],
+                                               IDENTITY        = "iPhone Distribution: Linn Products Ltd",
+                                               PROFILE         = "Wizard Ad Hoc")
+
+    bundle += _default_env.ReleaseInstallerIos('$install_dir/share/Wizard/AppStore', prog,
+                                               CLILIBS = linkCliLibs,
+                                               RESOURCES = resources,
+                                               ITUNESRESOURCES = itunes_res,
+                                               PRODUCT         = 'Wizard',
+                                               BUNDLEID        = 'Wizard',
+                                               VERSION         = kBuildInfo['BUILD_INFO_VERSION'],
+                                               TYPE            = kBuildInfo['BUILD_INFO_TYPE'],
+                                               IDENTITY        = "iPhone Distribution: Linn Products Ltd",
+                                               PROFILE         = "Wizard App Store")
+
+Alias('Lib', bundle)

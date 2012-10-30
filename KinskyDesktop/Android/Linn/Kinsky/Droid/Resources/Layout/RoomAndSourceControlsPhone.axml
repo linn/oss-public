@@ -9,7 +9,8 @@
     android:layout_height="fill_parent"
                   android:orientation="vertical">
 
-      <RelativeLayout style="@style/toolbardimensions"
+      <RelativeLayout android:id="@+id/roomlisttitlebar"
+        style="@style/toolbardimensions"
               android:background="@drawable/topbarfiller">
         
         <ToggleButton android:id="@+id/standbybuttonall"
@@ -73,7 +74,8 @@
       android:layout_height="fill_parent"
                   android:orientation="vertical">
 
-    <RelativeLayout style="@style/toolbardimensions"
+    <RelativeLayout android:id="@+id/sourcelisttitlebar" 
+                    style="@style/toolbardimensions"
               android:background="@drawable/topbarfiller">
       
       <Button android:id="@+id/sourcelistbackbutton"

@@ -13,16 +13,17 @@ installerRes = _default_env.Install('$variant_dir/share/Linn/Wizard', files)
 files = Split("""
     ../BasePage.cs
     ../Component.cs
-    ../CustomisePage.cs
     ../DiscoveryPage.cs
     ../HelpPage.cs
-    ../MainPage.cs
+    ../Model.cs
     ../Network.cs
     ../PageControl.cs
+    ../PageDefinitions.cs
+    ../PageView.cs
     ../ReprogramPage.cs
     ../StandardPage.cs
     ../StreamPage.cs
-    ../UsePage.cs
+    ../WizardPage.cs
     AppDelegate.cs
     AppDelegate.designer.cs
     Main.cs
@@ -34,9 +35,9 @@ files = Split("""
 linkCliLibs = Split("""
     MonoMac
     System.Drawing
-    OpenHome/MacOsX/ohXapp
-    OpenHome/MacOsX/ohXappViewer
-    OpenHome/MacOsX/ohXen
+    ohXapp
+    ohXappViewer
+    ohXen
     OssCore
     OssSysLib
     OssControl
@@ -58,7 +59,7 @@ if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
 
 progAssembly = _default_env.CliProgram('Wizard', files + appAssemblyInfo, CSCTARGET=target, CLILIBS=linkCliLibs, TARGETFRAMEWORKVERSION='4.0')
 _default_env.Depends(progAssembly, installerRes)
-
+_default_env.Depends(progAssembly, _default_env.Alias('OpenHomeLib'))
 
 # build the nib files
 
@@ -91,7 +92,15 @@ rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/
 rootResources.append(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Folder.jpg'))
 rootResources = [File(f) for f in rootResources];
 
-resources = { '' : rootResources }
+sharedResources = Split("""
+    $hardware_dir/share/Linn/Resources/Widgets/ToggleButton
+""")
+
+sharedResources = [_default_env.Dir(d) for d in sharedResources]
+
+
+resources = { '' : rootResources,
+              'PageHtml/Widgets' : sharedResources}
 
 
 # create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
@@ -115,7 +124,8 @@ pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerWizard', progAssembl
                     RESOURCES = resources,
                     ICON = '$variant_dir/share/Linn/Wizard/Icon.icns',
                     INFOPLIST = infoPlist,
-                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                    INSTALLERRESOURCES = {'LICENSEFILE': _default_env.subst('$variant_dir/share/Linn/Core/license-cookies.txt')})
 
 resources = [ (_default_env.subst('$install_dir/share/Wizard/InstallerWizard.pkg'), 'InstallerWizard.pkg') ]
 updater = _default_env.CliLibrary('UpdaterWizard_osx', 'Updater.cs', CLIRESOURCES=resources)

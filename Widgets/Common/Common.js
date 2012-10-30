@@ -2,7 +2,9 @@
 
 function linnSetUnselectable(element)
 {
-    element.attr('unselectable', 'on');
+    if(!element.is("input")) {
+        element.attr('unselectable', 'on');
+    }
 
     element.children().each(function(index) {
         linnSetUnselectable($(this));

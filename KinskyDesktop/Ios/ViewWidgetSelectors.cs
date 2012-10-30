@@ -489,34 +489,25 @@ namespace KinskyTouch
 
             public NSIndexPath IndexPathFor(Linn.Kinsky.Room aRoom)
             {
-                lock(this)
+                int index = iRooms.IndexOf(aRoom);
+                if(index > -1)
                 {
-                    int index = iRooms.IndexOf(aRoom);
-                    if(index > -1)
-                    {
-                        return NSIndexPath.FromRowSection(index, 0);
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return NSIndexPath.FromRowSection(index, 0);
+                }
+                else
+                {
+                    return null;
                 }
             }
 
             public Linn.Kinsky.Room RoomAt(int aIndex)
             {
-                lock(this)
-                {
-                    return iRooms[aIndex];
-                }
+                return iRooms[aIndex];
             }
 
             public override int RowsInSection(UITableView aTableView, int aSection)
             {
-                lock(this)
-                {
-                    return iRooms.Count;
-                }
+                return iRooms.Count;
             }
 
             public override UITableViewCell GetCell(UITableView aTableView, NSIndexPath aIndexPath)
@@ -605,42 +596,55 @@ namespace KinskyTouch
             TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             TableView.ShowsHorizontalScrollIndicator = false;
             TableView.IndicatorStyle = UIScrollViewIndicatorStyle.White;
-			
-            iDataSource = new DataSource(TableView, StandbyButtonOffsetX);
-            TableView.DataSource = iDataSource;
-            TableView.Delegate = new Delegate(this, iDataSource);
-
-            for(int i = 0; i < iRooms.Count; ++i)
-            {
-                iDataSource.InsertItem(i, iRooms[i]);
-            }
-            iDataSource.SetRoom(iRoom);
 
             Title = "Rooms";
         }
 		
-		public int StandbyButtonOffsetX {get;set;}
-
-        public override void ViewDidUnload()
-        {
-            base.ViewDidUnload();
-
-            iDataSource.Dispose();
-            iDataSource = null;
-        }
+		public int StandbyButtonOffsetX { get; set; }
 
         public override void ViewWillAppear(bool aAnimated)
         {
             base.ViewWillAppear(aAnimated);
 
+            iDataSource = new DataSource(TableView, StandbyButtonOffsetX);
+            TableView.DataSource = iDataSource;
+            iDelegate = new Delegate(this, iDataSource);
+            TableView.Delegate = new Delegate(this, iDataSource);
+            
+            for(int i = 0; i < iRooms.Count; ++i)
+            {
+                iDataSource.InsertItem(i, iRooms[i]);
+            }
+
+            iDataSource.SetRoom(iRoom);
+
+            NSIndexPath path = iDataSource.IndexPathFor(iRoom);
+            if(path != null)
+            {
+                TableView.ScrollToRow(path, UITableViewScrollPosition.Middle, false);
+            }
+        }
+
+        public override void ViewDidDisappear(bool aAnimated)
+        {
+            base.ViewDidDisappear(aAnimated);
+
+            iDataSource.Clear();
+
             if(iDataSource != null)
             {
-                NSIndexPath path = iDataSource.IndexPathFor(iRoom);
-                if(path != null)
-                {
-                    TableView.ScrollToRow(path, UITableViewScrollPosition.Middle, false);
-                }
+                iDataSource.Dispose();
+                iDataSource = null;
             }
+
+            if(iDelegate != null)
+            {
+                iDelegate.Dispose();
+                iDelegate = null;
+            }
+
+            TableView.DataSource = null;
+            TableView.Delegate = null;
         }
 
         public void Open()
@@ -722,6 +726,7 @@ namespace KinskyTouch
         private bool iOpen;
 
         private DataSource iDataSource;
+        private Delegate iDelegate;
         private List<Linn.Kinsky.Room> iRooms;
         private Linn.Kinsky.Room iRoom;
 
@@ -922,42 +927,49 @@ namespace KinskyTouch
             TableView.ShowsHorizontalScrollIndicator = false;
             TableView.IndicatorStyle = UIScrollViewIndicatorStyle.White;
 
-            iDataSource = new DataSource(TableView);
-            TableView.DataSource = iDataSource;
-            iDelegate = new Delegate(this, iDataSource);
-            TableView.Delegate = iDelegate;
-
-            for(int i = 0; i < iSources.Count; ++i)
-            {
-                iDataSource.InsertItem(i, iSources[i]);
-            }
-
-            iDataSource.SetSource(iSource);
-
             Title = "Sources";
-        }
-
-        public override void ViewDidUnload()
-        {
-            base.ViewDidUnload();
-
-            iDataSource.Dispose();
-            iDataSource = null;
-            iDelegate = null;
         }
 
         public override void ViewWillAppear(bool aAnimated)
         {
             base.ViewWillAppear(aAnimated);
 
+            iDataSource = new DataSource(TableView);
+            TableView.DataSource = iDataSource;
+            iDelegate = new Delegate(this, iDataSource);
+            TableView.Delegate = iDelegate;
+            
+            for(int i = 0; i < iSources.Count; ++i)
+            {
+                iDataSource.InsertItem(i, iSources[i]);
+            }
+
+            NSIndexPath path = iDataSource.IndexPathFor(iSource);
+            if(path != null)
+            {
+                TableView.ScrollToRow(path, UITableViewScrollPosition.Middle, false);
+            }
+        }
+
+        public override void ViewDidDisappear(bool aAnimated)
+        {
+            base.ViewDidDisappear(aAnimated);
+
             if(iDataSource != null)
             {
-                NSIndexPath path = iDataSource.IndexPathFor(iSource);
-                if(path != null)
-                {
-                    TableView.ScrollToRow(path, UITableViewScrollPosition.Middle, false);
-                }
+                iDataSource.Clear();
+                iDataSource.Dispose();
+                iDataSource = null;
             }
+
+            if(iDelegate != null)
+            {
+                iDelegate.Dispose();
+                iDelegate = null;
+            }
+
+            TableView.DataSource = null;
+            TableView.Delegate = null;
         }
 
         public void Open()

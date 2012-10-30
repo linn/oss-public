@@ -362,6 +362,50 @@ namespace KinskyDesktop
             this.IsOpaque = false;
             this.BackgroundColor = NSColor.ClearColor;
         }
+
+        [ObjectiveCMessage("mouseDown:")]
+        public override void MouseDown(NSEvent aEvent)
+        {
+            if (EventMouseDown != null)
+            {
+                EventMouseDown(aEvent);
+            }
+            else
+            {
+                this.SendMessageSuper(ThisClass, "mouseDown:", aEvent);
+            }
+        }
+        
+        [ObjectiveCMessage("mouseDragged:")]
+        public override void MouseDragged(NSEvent aEvent)
+        {
+            if (EventMouseDragged != null)
+            {
+                EventMouseDragged(aEvent);
+            }
+            else
+            {
+                this.SendMessageSuper(ThisClass, "mouseDragged:", aEvent);
+            }
+        }
+        
+        [ObjectiveCMessage("mouseUp:")]
+        public override void MouseUp(NSEvent aEvent)
+        {
+            if (EventMouseUp != null)
+            {
+                EventMouseUp(aEvent);
+            }
+            else
+            {
+                this.SendMessageSuper(ThisClass, "mouseUp:", aEvent);
+            }
+        }
+        
+        public delegate void DEventHandler(NSEvent aEvent);
+        public event DEventHandler EventMouseDown;
+        public event DEventHandler EventMouseDragged;
+        public event DEventHandler EventMouseUp;
     }
 
 

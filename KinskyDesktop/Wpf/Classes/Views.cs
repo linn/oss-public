@@ -488,8 +488,8 @@ namespace KinskyDesktopWpf
                 Image img = new Image();
                 img.Height = DragHelper.kDefaultVisualHeight;
                 img.SetValue(Image.SourceProperty, StaticImages.ImageSourceIconLoading);
-                WpfImageCache loader = (Application.Current as App).ImageCache;
-                IconResolver resolver = (Application.Current as App).IconResolver;
+                WpfImageCache loader = KinskyDesktop.Instance.ImageCache;
+                IconResolver resolver = KinskyDesktop.Instance.IconResolver;
                 loader.Load(resolver.Resolve(aBookmark.WrappedItem), (s) =>
                 {
                     iBookmarkList.Dispatcher.BeginInvoke((Action)(() =>
@@ -1455,7 +1455,8 @@ namespace KinskyDesktopWpf
             iGroupByAlbum = aGroupByAlbum;
 
             iPlaylistWidget.PlaylistSelectionChanged += new EventHandler<PlaylistSelectionEventArgs>(iPlaylistWidget_SelectionChanged);
-            iPlaylistWidget.PlaylistItemDropped += new EventHandler<PlaylistDropEventArgs>(iPlaylistWidget_PlaylistItemDropped);
+            iPlaylistWidget.PlaylistItemsMoved += new EventHandler<PlaylistDropEventArgs>(iPlaylistWidget_PlaylistItemsMoved);
+            iPlaylistWidget.PlaylistItemsAdded += new EventHandler<PlaylistDropEventArgs>(iPlaylistWidget_PlaylistItemsAdded);
             iPlaylistWidget.PlaylistItemsDeleted += new EventHandler<PlaylistDeleteEventArgs>(iPlaylistWidget_PlaylistItemsDeleted);
             iPlaylistWidget.PlaylistMoveUp += new EventHandler<PlaylistMoveEventArgs>(iPlaylistWidget_PlaylistMoveUp);
             iPlaylistWidget.PlaylistMoveDown += new EventHandler<PlaylistMoveEventArgs>(iPlaylistWidget_PlaylistMoveDown);
@@ -1544,7 +1545,39 @@ namespace KinskyDesktopWpf
             }
         }
 
-        void iPlaylistWidget_PlaylistItemDropped(object sender, PlaylistDropEventArgs e)
+        void iPlaylistWidget_PlaylistItemsMoved(object sender, PlaylistDropEventArgs e)
+        {
+            lock (iLockObject)
+            {
+                if (e.Data != null)
+                {
+                    uint afterID = 0;
+                    if (e.DropIndex > 0)
+                    {
+                        afterID = iMrItems[e.DropIndex - 1].Id;
+                    }
+                    List<MrItem> items = new List<MrItem>();
+                    foreach (MrItem mrItem in this.iMrItems)
+                    {
+                        foreach (upnpObject item in e.Data.Media)
+                        {
+                            if (mrItem.DidlLite[0] == item)
+                            {
+                                items.Add(mrItem);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (iOpen && EventPlaylistMove != null)
+                    {
+                        EventPlaylistMove(this, new EventArgsPlaylistMove(afterID, items));
+                    }
+                }
+            }
+        }
+
+        void iPlaylistWidget_PlaylistItemsAdded(object sender, PlaylistDropEventArgs e)
         {
             lock (iLockObject)
             {
@@ -1873,7 +1906,7 @@ namespace KinskyDesktopWpf
                 {
                     MrItem p = new MrItem(0, "", aSenders[i].Metadata);
                     iPlaylistItems.Add(p);
-                    SenderListItem item = new SenderListItem() { WrappedItem = p, Sender = aSenders[i] };
+                    SenderListItem item = new SenderListItem() { WrappedItem = p, Sender = aSenders[i], Name = aSenders[i].FullName };
                     items.Add(item);
                 }
             }
@@ -1975,7 +2008,7 @@ namespace KinskyDesktopWpf
             iSaveSupport = aSaveSupport;
             iPlaylistItems = new List<MrItem>();
             iPlaylistWidget.PlaylistSelectionChanged += new EventHandler<PlaylistSelectionEventArgs>(iPlaylistWidget_SelectionChanged);
-            iPlaylistWidget.PlaylistItemDropped += new EventHandler<PlaylistDropEventArgs>(iPlaylistWidget_PlaylistItemDropped);
+            iPlaylistWidget.PlaylistItemsAdded += new EventHandler<PlaylistDropEventArgs>(iPlaylistWidget_PlaylistItemDropped);
             iPresetIndex = -1;
         }
 
@@ -3770,7 +3803,7 @@ namespace KinskyDesktopWpf
                     else
                     {
                         iViewWidgetTrackDisplay.Artwork = StaticImages.ImageSourceIconLoading;
-                        Icon<BitmapImage> icon = (Application.Current as App).IconResolver.Resolve(aObject);
+                        Icon<BitmapImage> icon = KinskyDesktop.Instance.IconResolver.Resolve(aObject);
                         if (icon.IsUri)
                         {
                             iPendingImageUri = icon.ImageUri.OriginalString;

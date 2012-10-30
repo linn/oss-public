@@ -18,7 +18,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>uk.co.linn.KinskyTouch</string>
 	<key>CFBundleVersion</key>
-	<string>4.2.6</string>
+	<string>4.3.6</string>
 	<key>MinimumOSVersion</key>
 	<string>3.2</string>
 	<key>NSMainNibFile</key>

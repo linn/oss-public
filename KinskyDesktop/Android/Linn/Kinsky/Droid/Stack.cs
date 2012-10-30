@@ -11,9 +11,10 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 
+[assembly: Application(Icon = "@drawable/icon", Label = "Kinsky", Debuggable = false, Name = "kinskydroid.Stack")] //add Debuggable=true parameter for ddms support!
+
 namespace KinskyDroid
 {
-    [Application(Icon = "@drawable/icon", Label = "Kinsky", Debuggable = true)] //add Debuggable=true parameter for ddms support!
     public class Stack : ApplicationDroid, IStack
     {
 
@@ -83,7 +84,7 @@ namespace KinskyDroid
             iIconResolver = new IconResolver(iResourceManager);
             iLayoutInflater = (LayoutInflater)GetSystemService(Context.LayoutInflaterService);
 
-            iHelperKinsky = new HelperKinsky(new string[0] { }, Invoker);
+            iHelperKinsky = new HelperKinsky(new string[2] { "-t", kTraceLevel }, Invoker);
             Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += UnhandledExceptionRaiser;
 
             // name the crash dumper section general and add other UI options
@@ -146,11 +147,6 @@ namespace KinskyDroid
             iStackWatchdog = new System.Threading.Timer(StackWatchdogExpired);
             iPowerListener = new PowerStateListener(this.ApplicationContext);
             iPowerListener.EventPowerStateChanged += EventPowerStateChangedHandler;
-            RegisterReceiver(iPowerListener, new IntentFilter(Intent.ActionBatteryChanged));
-            iUserPresentListener = new ActionUserPresentListener(this.ApplicationContext);
-            RegisterReceiver(iUserPresentListener, new IntentFilter(Intent.ActionUserPresent));
-            iScreenStateListener = new ScreenStateListener(this.ApplicationContext);
-            RegisterReceiver(iScreenStateListener, new IntentFilter(Intent.ActionScreenOff));
 
             iIsCharging = PowerStateListener.IsConnected(this.ApplicationContext);
             iRescanTimer = new System.Threading.Timer((e) =>
@@ -160,19 +156,8 @@ namespace KinskyDroid
             iRescanTimer.Change(Timeout.Infinite, Timeout.Infinite);
             SetAutoLock();
             EventLowMemory += EventLowMemoryHandler;
-            iUserPresentListener.EventUserPresent += EventUserPresentHandler;
-            iScreenStateListener.EventScreenStateChanged += EventScreenStateChangedHandler;
             iInitialised = true;
             StartStack();
-        }
-
-        private void EventUserPresentHandler(object sender, EventArgs e)
-        {
-            if (IsRunning)
-            {
-                iStopTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                StartStack();
-            }
         }
 
         private void OptionAutoLock_EventValueChangedHandler(object sender, EventArgs e)
@@ -184,15 +169,6 @@ namespace KinskyDroid
         {
             iIsCharging = e.IsConnected;
             SetAutoLock();
-        }
-
-        private void EventScreenStateChangedHandler(object sender, EventArgsScreenState e)
-        {
-            Console.WriteLine("EventScreenStateChangedHandler: " + e.IsScreenOn);
-            if (!e.IsScreenOn)
-            {
-                iStopTimer.Change(kStopTimeout, Timeout.Infinite);
-            }
         }
 
         private void SetAutoLock()
@@ -347,6 +323,11 @@ namespace KinskyDroid
                {
                    if (!iRunningStack && iInitialised)
                    {
+                       EventHandler<EventArgs> eventStarted = iEventStackStarted;
+                       if (eventStarted != null)
+                       {
+                           eventStarted(this, EventArgs.Empty);
+                       }
                        iStackWatchdog.Change(kStackWatchdogTimeout, Timeout.Infinite);
                        UserLog.WriteLine("START STACK");
                        iWifiManager = (WifiManager)GetSystemService(Context.WifiService);
@@ -356,8 +337,7 @@ namespace KinskyDroid
                        iMulticastLock = iWifiManager.CreateMulticastLock("myMcastlock");
                        iMulticastLock.Acquire();
 
-                       iWifiListener = new WifiListener(iHelperKinsky);
-                       RegisterReceiver(iWifiListener, new IntentFilter(Android.Net.Wifi.WifiManager.NetworkStateChangedAction));
+                       iWifiListener = new WifiListener(this, iHelperKinsky);
                        iWifiListener.Refresh(this.ApplicationContext);
 
 
@@ -377,6 +357,11 @@ namespace KinskyDroid
                {
                    if (iRunningStack && iInitialised)
                    {
+                       EventHandler<EventArgs> eventStopped = StackStopped;
+                       if (eventStopped != null)
+                       {
+                           eventStopped(this, EventArgs.Empty);
+                       }
                        iStackWatchdog.Change(kStackWatchdogTimeout, Timeout.Infinite);
                        UserLog.WriteLine("STOP STACK");
                        iHelperKinsky.Stack.Stop();
@@ -386,7 +371,6 @@ namespace KinskyDroid
                        iMulticastLock.Release();
                        iMulticastLock.Dispose();
                        iMulticastLock = null;
-                       UnregisterReceiver(iWifiListener);
                        iWifiListener.Dispose();
                        iWifiListener = null;
                        iWifiManager.Dispose();
@@ -413,11 +397,6 @@ namespace KinskyDroid
             iLocator.Start();
 
             iStarted = true;
-            EventHandler<EventArgs> eventStarted = iEventStackStarted;
-            if (eventStarted != null)
-            {
-                eventStarted(this, EventArgs.Empty);
-            }
         }
 
         public void Stop()
@@ -430,11 +409,6 @@ namespace KinskyDroid
             iMediator.Close();
 
             iStarted = false;
-            EventHandler<EventArgs> eventStopped = StackStopped;
-            if (eventStopped != null)
-            {
-                eventStopped(this, EventArgs.Empty);
-            }
         }
 
         #endregion
@@ -566,8 +540,6 @@ namespace KinskyDroid
         private System.Threading.Timer iStackWatchdog;
         private const int kStackWatchdogTimeout = 10000;
         private PowerStateListener iPowerListener;
-        private ActionUserPresentListener iUserPresentListener;
-        private ScreenStateListener iScreenStateListener;
 
         private bool iIsCharging;
         private const string kAutoLockNever = "Never";
@@ -583,6 +555,7 @@ namespace KinskyDroid
         private const long kStopTimeout = 30000;
         private System.Threading.Timer iStopTimer;
         private AutoResetEvent iEventCreated;
+        private const string kTraceLevel = "kGui";
     }
 
     internal class AppRestartHandler : IAppRestartHandler

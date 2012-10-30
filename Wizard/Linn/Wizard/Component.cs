@@ -17,31 +17,23 @@ namespace Linn.Wizard
         private string iTop;
         private string iLeft;
         private string iHeight;
+        private string iWidth;
         private string iImage;
         private string iBackgroundImage;
         private string iColor;
         private string iBackgroundColor;
-        private string iCustomAction;
-        private string iVar;        // probably need a DeviceText and a DeviceImage variable for substitution in Render()
-        List<Constant> iConstants;
+        private string iClass;
 
-        public Component(string aParameter, XmlAttributeCollection aAttributes, List<Constant> aConstants)
+        public Component(string aParameter, XmlAttributeCollection aAttributes, PageDefinitions.Constant[] aConstants)
         {
-            iConstants = aConstants;
             if (aAttributes != null && aAttributes.Count > 0)
             {
                 XmlNode state = aAttributes.GetNamedItem("id");
                 if (state != null)
                 {
-                    Set(state.Value, aParameter, aAttributes);
+                    Set(state.Value, aParameter, aAttributes, aConstants);
                 }
             }
-        }
-
-        public Component(string aId, string aParameter, XmlAttributeCollection aAttributes, List<Constant> aConstants)
-        {
-            iConstants = aConstants;
-            Set(aId, aParameter, aAttributes);
         }
 
         public void Merge(Component c)
@@ -80,6 +72,11 @@ namespace Linn.Wizard
                 iHeight = c.iHeight;
             }
 
+            if (iWidth == "")
+            {
+                iWidth = c.iWidth;
+            }
+
             if (iImage == "")
             {
                 iImage = c.iImage;
@@ -100,19 +97,13 @@ namespace Linn.Wizard
                 iBackgroundColor = c.iBackgroundColor;
             }
 
-            if (iCustomAction == "")
+            if (iClass == "")
             {
-                iCustomAction = c.iCustomAction;
+                iClass = c.iClass;
             }
-
-            if (iVar == "")
-            {
-                iVar = c.iVar;
-            }
-            
         }
 
-        private void Set(string aId, string aParameter, XmlAttributeCollection aAttributes)
+        private void Set(string aId, string aParameter, XmlAttributeCollection aAttributes, PageDefinitions.Constant[] aConstants)
         {
             Id = aId;
             string text = aParameter.Replace("\\n", "<br>");      //cannot define control characters in xml so convert here
@@ -212,12 +203,12 @@ namespace Linn.Wizard
             iTop = "";
             iLeft = "";
             iHeight = "";
+            iWidth = "";
             iImage = "";
             iBackgroundImage = "";
             iColor = "";
             iBackgroundColor = "";
-            iCustomAction = "";
-            iVar = "";
+            iClass = "";
 
             if (aAttributes != null && aAttributes.Count > 0)
             {
@@ -248,49 +239,52 @@ namespace Linn.Wizard
                     }
                 }
                 XmlNode top = aAttributes.GetNamedItem("top");
-                iTop = getValue(top, iTop);
+                iTop = getValue(top, iTop, aConstants);
 
                 XmlNode left = aAttributes.GetNamedItem("left");
-                iLeft = getValue(left, iLeft);
+                iLeft = getValue(left, iLeft, aConstants);
 
                 XmlNode height = aAttributes.GetNamedItem("height");
-                iHeight = getValue(height, iHeight);
+                iHeight = getValue(height, iHeight, aConstants);
 
-                XmlNode action = aAttributes.GetNamedItem("action");
-                iCustomAction = getValue(action, iCustomAction);
+                XmlNode width = aAttributes.GetNamedItem("width");
+                iWidth = getValue(width, iWidth, aConstants);
 
                 XmlNode image = aAttributes.GetNamedItem("image");
-                iImage = getValue(image, iImage);
+                iImage = getValue(image, iImage, aConstants);
 
                 XmlNode backgroundimage = aAttributes.GetNamedItem("backgroundimage");
-                iBackgroundImage = getValue(backgroundimage, iBackgroundImage);
+                iBackgroundImage = getValue(backgroundimage, iBackgroundImage, aConstants);
 
                 XmlNode color = aAttributes.GetNamedItem("color");
-                iColor = getValue(color, iColor);
+                iColor = getValue(color, iColor, aConstants);
 
                 XmlNode backgroundcolor = aAttributes.GetNamedItem("backgroundcolor");
-                iBackgroundColor = getValue(backgroundcolor, iBackgroundColor);
+                iBackgroundColor = getValue(backgroundcolor, iBackgroundColor, aConstants);
 
-                XmlNode var = aAttributes.GetNamedItem("class");
-                iVar = getValue(var, iVar);
-
+                XmlNode cls = aAttributes.GetNamedItem("class");
+                iClass = getValue(cls, iClass, aConstants);
             }
         }
 
-        private string getValue(XmlNode aNode, string aValue)
+        private string getValue(XmlNode aNode, string aCurrentValue, PageDefinitions.Constant[] aConstants)
         {
-            string value = aValue;
-            if (aNode != null)
+            if (aNode == null)
             {
-                value = aNode.Value;
-                if (value.StartsWith("#"))
+                return aCurrentValue;
+            }
+
+            string value = aNode.Value;
+
+            if (value.StartsWith("#"))
+            {
+                string constId = value.Substring(1);
+
+                foreach (PageDefinitions.Constant c in aConstants)
                 {
-                    foreach (Constant c in iConstants)
+                    if (c.Id == constId)
                     {
-                        if (value == c.Id)
-                        {
-                            value = c.Value;
-                        }
+                        value = c.Value;
                     }
                 }
             }
@@ -347,6 +341,14 @@ namespace Linn.Wizard
         {
             get { return iHeight; }
         }
+        public bool WidthSet
+        {
+            get { return (iWidth != ""); }
+        }
+        public string Width
+        {
+            get { return iWidth; }
+        }
         public string Image
         {
             get { return iImage; }
@@ -363,277 +365,9 @@ namespace Linn.Wizard
         {
             get { return iBackgroundColor; }
         }
-        public string CustomAction
+        public string Class
         {
-            get { return iCustomAction; }
-        }
-        public string Var
-        {
-            get { return iVar; }
+            get { return iClass; }
         }
     }
-
-    public class PageComponents
-    {
-        string pageName;
-        string pageType;
-        string pageTag;
-        string pageProduct;
-        List<Component> text;
-        List<Component> image;
-        List<Component> control;
-        List<Component> action;
-        List<Component> special;
-
-        public PageComponents()
-        {
-            text = new List<Component>();
-            image = new List<Component>();
-            control = new List<Component>();
-            action = new List<Component>();
-            special = new List<Component>();
-        }
-
-        public PageComponents(PageComponents aPageComponents)
-        {
-            pageName = aPageComponents.PageName;
-            pageType = aPageComponents.pageType;
-            pageTag = aPageComponents.pageTag;
-            pageProduct = aPageComponents.pageProduct;
-            text = new List<Component>(aPageComponents.text);
-            image = new List<Component>(aPageComponents.image);
-            control = new List<Component>(aPageComponents.control);
-            action = new List<Component>(aPageComponents.action);
-            special = new List<Component>(aPageComponents.special);
-        }
- 
-        public void Add(string aComponentType, Component aComponent)
-        {
-            List<Component> list;
-            switch (aComponentType)
-            {
-                case "Text":
-                    list = text;
-                    break;
-                case "Image":
-                    list = image;
-                    break;
-                case "Control":
-                    list = control;
-                    break;
-                case "Action":
-                    list = action;
-                    break;
-                case "Special":
-                    list = special;
-                    break;
-                default:
-                    Console.WriteLine("Unsupported component type " + aComponentType + "\n");
-                    return;
-            }
-
-            foreach (Component c in list) 
-            {
-                if (c.Id == aComponent.Id)
-                {
-                    aComponent.Merge(c);        // merge in orifginal data
-                    int index = list.IndexOf(c);
-                    list.RemoveAt(index);       // remove original definition
-                    break;
-                }
-            }
-            list.Add(aComponent);
-
-        }
-
-        public List<Component> GetList(string aComponentType)
-        {
-            switch (aComponentType)
-            {
-                case "Text":
-                    return (text);
-                case "Image":
-                    return (image);
-                case "Control":
-                    return (control);
-                case "Action":
-                    return (action);
-                case "Special":
-                    return (special);
-                default:
-                    Console.WriteLine("Unsupported component type " + aComponentType + "\n");
-                    return (null);
-            }
-        }
-
-        public string PageType
-        {
-            get { return pageType; }
-            set { pageType = value; }
-        }
-        public string PageTag
-        {
-            get { return pageTag; }
-            set { pageTag = value; }
-        }
-        public string PageDefault
-        {
-            get { return pageProduct; }
-            set { pageProduct = value; }
-        }
-
-        public string PageName
-        {
-            get { return pageName; }
-            set { pageName = value; }
-        }
-
-        public string Next
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "Next")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string Diagnostics
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "Diagnostics")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        // MenuItem could be more generic!
-        public string MenuItem1
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "MenuItem1")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string MenuItem2
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "MenuItem2")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string MenuItem3
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "MenuItem3")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string MenuItem4
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "MenuItem4")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string MenuItem5
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "MenuItem5")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string MenuItem6
-        {
-            get
-            {
-                foreach (Component a in action)
-                {
-                    if (a.Id == "MenuItem6")
-                    {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string MenuItem7 {
-            get {
-                foreach (Component a in action) {
-                    if (a.Id == "MenuItem7") {
-                        return a.Parameter;
-                    }
-                }
-                return "";
-            }
-        }
-
-        public string CustomAction(string aAttribute, out string aValue)
-        {
-            foreach (Component a in action)
-            {
-                if (a.Id == aAttribute)
-                {
-                    aValue = a.Parameter;
-                    return a.CustomAction;
-                }
-            }
-            aValue = "";
-            return "";
-        }
-
-    }
-
 }

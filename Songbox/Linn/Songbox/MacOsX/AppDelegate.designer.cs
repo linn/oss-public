@@ -14,28 +14,14 @@ namespace Linn.Songbox
 		[Outlet]
 		MonoMac.AppKit.NSMenu StatusMenu { get; set; }
 
-		[Outlet]
-		MonoMac.AppKit.NSMenuItem iMenuItemStartAtLogin { get; set; }
-
 		[Action ("OpenConfiguration:")]
 		partial void OpenConfiguration (MonoMac.Foundation.NSObject sender);
-
-		[Action ("CheckForUpdates:")]
-		partial void CheckForUpdates (MonoMac.Foundation.NSObject sender);
-
-		[Action ("StartAtLogin:")]
-		partial void StartAtLogin (MonoMac.Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
 			if (StatusMenu != null) {
 				StatusMenu.Dispose ();
 				StatusMenu = null;
-			}
-
-			if (iMenuItemStartAtLogin != null) {
-				iMenuItemStartAtLogin.Dispose ();
-				iMenuItemStartAtLogin = null;
 			}
 		}
 	}

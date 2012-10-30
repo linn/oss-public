@@ -112,9 +112,9 @@ namespace KinskyTouch
             iTimer = new System.Threading.Timer(TimerUpdate);
         }
 
-        public override void ViewDidLoad()
+        public override void ViewWillAppear(bool aAnimated)
         {
-            base.ViewDidLoad();
+            base.ViewWillAppear(aAnimated);
 
             buttonUp.TouchDown += UpTouchDown;
             buttonUp.TouchUpInside += TouchCancel;
@@ -129,9 +129,9 @@ namespace KinskyTouch
             buttonMute.TouchDown += MuteTouchDown;
         }
 
-        public override void ViewDidUnload()
+        public override void ViewDidDisappear(bool aAnimated)
         {
-            base.ViewDidUnload();
+            base.ViewDidDisappear(aAnimated);
 
             buttonUp.TouchDown -= UpTouchDown;
             buttonUp.TouchUpInside -= TouchCancel;
@@ -146,9 +146,15 @@ namespace KinskyTouch
             buttonMute.TouchDown -= MuteTouchDown;
         }
 
-        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation aToInterfaceOrientation)
+        [Obsolete]
+        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
         {
             return true;
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.All;
         }
 
         public override void DidRotate(UIInterfaceOrientation aFromInterfaceOrientation)
@@ -312,18 +318,24 @@ namespace KinskyTouch
             SetCentreImage(iMute);
         }
 
-        public override void ViewDidUnload()
+        public override void ViewDidDisappear(bool aAnimated)
         {
-            base.ViewDidUnload();
+            base.ViewDidDisappear(aAnimated);
 
             controlRotary.EventClicked -= Clicked;
             controlRotary.EventRotateClockwise -= RotateClockwise;
             controlRotary.EventRotateAntiClockwise -= RotateAntiClockwise;
         }
 
-        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation aToInterfaceOrientation)
+        [Obsolete]
+        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
         {
             return true;
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.All;
         }
 
         public void Open()

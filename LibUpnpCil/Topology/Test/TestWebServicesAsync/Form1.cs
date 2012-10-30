@@ -33,11 +33,7 @@ namespace TestWebServicesAsync
         {
             InitializeComponent();
 
-#if PocketPC && (DEBUG || TRACE)
-            MinimizeBox = false;
-#else
             MinimizeBox = true;
-#endif
             iHelper = aHelper;
 
             iFriendlyName = aFriendlyName;

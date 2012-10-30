@@ -17,6 +17,7 @@
     <Source build="1" dir="LibUpnpCil/Core" url="${REPOS_OSS}/LibUpnpCil/Core" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="Kodegen" url="${REPOS_OSS}/Kodegen" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="Xml" url="${REPOS_OSS}/Xml" rev="XXX" opts="${OPTS_OSS}"/>  
+    <Source build="1" dir="Widgets" url="${REPOS_OSS}/Widgets" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="Layouts" url="${REPOS_OSS}/Layouts" rev="XXX" opts="Kinsky ${OPTS_OSS}"/>
     <Source build="1" dir="External" url="${REPOS_OSS}/External" rev="XXX" opts="${OPTS_OSS}"/>
     <Source build="1" dir="Docs" url="${REPOS_OSS}/Docs" rev="XXX" opts="${OPTS_OSS}"/>  

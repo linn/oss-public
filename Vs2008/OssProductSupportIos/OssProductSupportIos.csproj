@@ -12,14 +12,14 @@
     <BaseDirectory>..\..\ProductSupport</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>..\..\install\IosSim\debug\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>true</MtouchDebug>
+    <MtouchDebug>True</MtouchDebug>
     <MtouchLink>None</MtouchLink>
     <AssemblyName>OssProductSupport</AssemblyName>
     <MtouchSdkVersion>3.2</MtouchSdkVersion>
@@ -27,7 +27,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>..\..\install\IosSim\release\bin\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,14 +37,14 @@
     <MtouchUseArmv7>false</MtouchUseArmv7>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <MtouchDebug>true</MtouchDebug>
+    <MtouchDebug>True</MtouchDebug>
     <CodesignKey>iPhone Developer</CodesignKey>
     <AssemblyName>OssProductSupport</AssemblyName>
     <MtouchSdkVersion>3.2</MtouchSdkVersion>
@@ -52,7 +52,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -63,7 +63,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>..\..\install\Ios\distribution\bin\</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>OssProductSupportIos</AssemblyName>
@@ -72,7 +72,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>OssProductSupportIos</AssemblyName>
@@ -98,13 +98,32 @@
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\HelperVolkano.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\SysLog.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Tags.cs" />
-    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Core\Generated\TagsKodegen.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\Fallback.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\Flash.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\FuseMap.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Flash\RomDir.cs" />
     <Compile Include="..\..\ProductSupport\Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Playback.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\DhcpMessage.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\Diagnostics.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\Logger.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestBase.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestDhcp.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestInternet.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestTransport.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\TestUpnp.cs" />
+    <Compile Include="..\..\build\Ios\release\ProductSupport\TagsKodegen.cs">
+      <Link>Linn\ProductSupport\Core\Generated\TagsKodegen.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\InstallerReportResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\ItemResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\ListOfCategoryResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\TicketRequestResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\Ticketing.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\CategoryResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\ListOfTestResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\TestResource.cs" />
+    <Compile Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\TestResourceResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OssControlIos\OssControlIos.csproj">
@@ -146,7 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ProductSupport\Linn\ProductSupport\Core\Generated\Tags.xml" />
-    <None Include="..\..\ProductSupport\Linn\ProductSupport\SampleAudio\AudioTrack.mp3" />
-    <None Include="..\..\ProductSupport\Linn\ProductSupport\SampleAudio\Folder.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="..\..\ProductSupport\Linn\ProductSupport\Ticketing\" />
+    <Folder Include="..\..\ProductSupport\Linn\ProductSupport\Diagnostics\" />
   </ItemGroup>
 </Project>

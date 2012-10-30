@@ -31,7 +31,7 @@
     <item name="android:textSize">18sp</item>
   </style>
   <style name="semilargetextview" parent="@style/textviewtext">
-    <item name="android:textSize">13sp</item>
+    <item name="android:textSize">15sp</item>
   </style>
   <style name="mediumtextview" parent="@style/textviewtext">
     <item name="android:textSize">12sp</item>

@@ -331,6 +331,12 @@ button.button-refresh.refreshing div
     display: none;
 }
 
+div#last-scan
+{
+    display: inline;
+    font-style: italic;
+}
+
 ul#web-apps
 {
 	margin: 0px;

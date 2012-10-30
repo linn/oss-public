@@ -1,0 +1,371 @@
+@import url('../Widgets/Common/Common.css');
+@import url('jquery.select.css');
+@import url('../main/index.css');
+@import url('../update/index.css');
+@import url('../diagnostics/index.css');
+@import url('../advanced/index.css');
+@import url('../settings/index.css');
+@import url('../about/index.css');
+@import url('badger.css');
+
+html
+{
+    height: 100%;
+    margin: 0px;
+}
+
+body, #body
+{
+    background-color: white;
+    height: 100%;
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}s
+
+h1, h2, h3
+{
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+    font-weight: normal;
+}
+
+.img-wrapper
+{
+        width: 100%;
+        height: auto;
+        /*background-repeat: repeat-y; /*repeat-y is temporary until we get images that support height of content */
+        background-position: center 0px;
+        background-color: #fff;
+        background-size: 100%;
+}
+
+.background
+{
+        background-image: url(../images/background.jpg);
+        background-attachment: fixed;
+}
+
+#header
+{
+    position:fixed;
+    top:0;
+    right:0;
+    left:0;
+    z-index: 2;
+}
+
+#header .logo-container
+{
+    margin: 0 auto;
+    position: relative;
+}
+
+#header .logo-container .logo
+{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    z-index: 101;
+    width: 80px;
+    height: 98px;
+}
+
+#header .logo-container .logo
+{
+    background-image: url(../images/linn-logo.png);
+    width: 80px;
+    height: 98px;
+    display: block;
+}
+
+#header .logo-container .strapline
+{
+    position: absolute;
+    right: 110px;
+    top: 6px;
+}
+
+#header .navigation
+{
+    background: url(../images/navigation-background.png) repeat;
+    background: rgba(255,255,255,0.5);
+    height: 35px;
+    width: 100%; 
+      
+}
+
+#header .sub-navigation
+{
+    background: url(../images/subnavigation-background.png) repeat;
+    background: rgba(255,255,255,0.1);
+    height: 35px;
+    width: 100%;        
+}
+
+#header .navigation ul,
+#header .sub-navigation ul
+{
+    margin: 0; /* center the ULs inside their parent divs */
+    list-style: none;        
+    padding:0px;
+    padding-left: 10px;
+}
+
+#header .navigation ul li,
+#header .sub-navigation ul li
+{
+    float: left; position: relative;
+}
+
+#header .navigation ul li,
+#header .sub-navigation ul li {  height: 35px; line-height: 35px; }
+
+#header ul li a 
+{ 
+    color: #fff; 
+    text-decoration: none; 
+    text-transform: uppercase;     
+    display: block; 
+    padding: 0 20px;     
+}
+
+#header .navigation ul li a
+{
+    background-image: url(../images/main-nav-spacer.png);
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+#header .navigation ul li a.last { background: none; }
+
+#header .navigation ul li a.selected { background: #f0f0f0; color: #000; }
+#header .navigation ul li:hover a  { background: #fff !important; color: #000; }
+
+#header .float-left { float: left; }
+
+#header .sub-navigation ul li a:hover,
+#header .sub-navigation ul li a.selected { text-decoration: underline; }
+
+#header ul li a { font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;color: #fff; text-transform: uppercase; cursor: pointer; }
+
+.subHeaderItem
+{
+    position: absolute;
+    z-index: 2;
+    top: 40px;
+}
+
+button.btn
+{
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-size: 10px;
+    width: 75px;
+    text-align: center;
+    color: white;
+    background-color: black;
+    border: 1px black solid;
+    border-radius: 0px;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+button.btn:hover
+{
+    color: black;
+    background-color: white;
+}
+
+button.btn
+{
+    margin-right: 5px;
+    margin-bottom: 5px;
+    height: 26px;
+    background-image: none;
+}
+
+/*button.btn:hover,*/
+button.btn:active,
+button.btn.active
+{
+    background-color: black;
+}
+
+button.btn.disabled,
+button.btn[disabled]
+{
+    color: black;
+    background-color: white;
+    text-shadow: none;
+    cursor: default;
+}
+
+.bodyContainer
+{
+    position: absolute;
+    background-color: white;
+    top: 120px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    overflow: hidden;
+}
+
+/* three column layout */
+
+.leftColumn3
+{
+    float: left;
+    width: 320px;
+    overflow: hidden;
+}
+
+.middleColumn3
+{
+    margin-left: 320px;
+    margin-right: 100px;
+}
+
+.rightColumn3
+{
+    float: right;
+    width: 100px;
+}
+
+/* two column */
+
+.leftColumn2
+{
+    float: left;
+    width: 320px;
+    overflow: hidden;
+}
+
+.rightColumn2
+{
+    margin-left: 320px;
+}
+
+ul#devices
+{
+    float: left;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-bottom: -100px; /* offset from top of header */
+    padding-left: 0px;
+    white-space: nowrap;
+    overflow: auto;
+    position: absolute;
+}
+
+ul#devices li
+{
+    background-color: #E2DEDB;
+    list-style-type: none;
+    padding: 3px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+ul#devices li:nth-child(even)
+{
+    background-color: white;
+}
+
+.hide
+{
+    display: none;
+}
+
+.floatRight
+{
+    float: right;
+}
+
+ul#devices li.selected
+{
+    background-color: #38A3DB;
+}
+
+.deviceContainer
+{
+    position: relative;
+    padding-left: 70px;
+}
+
+.imageColumn
+{
+    position: relative;
+    float: left;
+    width: 80px;
+    right: 100px;
+    margin-left: -250px;
+    padding-right: 25px;
+    overflow: hidden;
+}
+
+.textColumn
+{
+    position: relative;
+    float: left;
+    width: 100%;
+    padding-left: 25px;
+}
+
+.text
+{
+}
+
+.wrapText
+{
+    font-size: 12px;
+    white-space: normal;
+}
+
+.device
+{
+    min-height: 75px;
+    max-height: 75px;
+}
+
+.device-img
+{
+    float: left;
+    max-width: 80px;
+    max-height: 75px;
+    padding-left: 10px;
+    padding-right: 25px;
+}
+
+.fullname-text
+{
+    font-size: 14px;
+    padding-bottom: 3px;
+}
+
+.model-text
+{
+    font-size: 12px;
+    padding-bottom: 3px;
+}
+
+.productId-text
+{
+    font-size: 12px;
+    color: #A1958A;
+}
+
+.macAddress-text
+{
+    font-size: 12px;
+    color: #A1958A;
+}
+
+.cursor-pointer
+{
+    cursor: pointer;
+}
+

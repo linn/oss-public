@@ -6,6 +6,7 @@ _default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=Bu
 kBuildInfo = _default_env['build_information'].BuildInformation
 
 SConscript('Linn/Wizard/SConscript', exports = ['_default_env', 'kBuildInfo'])
+SConscript('OpenHome/SConscript', exports = ['_default_env'])
 
 Alias('Test', 'Lib')
 Alias('Docs')

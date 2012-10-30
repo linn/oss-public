@@ -18,7 +18,7 @@ namespace KinskyTouch
         // This method is invoked when the application has loaded its UI and its ready to run
         public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
-            Console.SetOut (System.IO.TextWriter.Null/*new Application.NSLogWriter ()*/);
+            Ticker tick = new Ticker();
 
             helper.Helper.SetStackExtender(this);
             helper.Helper.Stack.EventStatusChanged += StatusChanged;
@@ -64,36 +64,42 @@ namespace KinskyTouch
             };
 
             new Action(delegate {
+                Ticker ticker = new Ticker();
+
                 iViewMaster = new ViewMaster();
-    
+                
                 iHttpServer = new HttpServer(HttpServer.kPortKinskyTouch);
                 iHttpClient = new HttpClient();
-    
+                
                 iLibrary = new MediaProviderLibrary(helper.Helper);
                 iSharedPlaylists = new SharedPlaylists(helper.Helper);
                 iLocalPlaylists = new LocalPlaylists(helper.Helper, false);
                 iLocalPlaylists.SaveDirectory.ResetToDefault();
-    
+                
                 iPlaySupport = new PlaySupport();
                 MediaProviderSupport support = new MediaProviderSupport(iHttpServer);
                 PluginManager pluginManager = new PluginManager(helper.Helper, iHttpClient, support);
-    
+                
                 iLocator = new ContentDirectoryLocator(pluginManager, new AppRestartHandler());
                 iLocator.Add(MediaProviderLibrary.kLibraryId, iLibrary);
                 OptionBool optionSharedPlaylists = iLocator.Add(SharedPlaylists.kRootId, iSharedPlaylists);
                 OptionBool optionLocalPlaylists = iLocator.Add(LocalPlaylists.kRootId, iLocalPlaylists);
-
+                
                 iSaveSupport = new SaveSupport(helper.Helper, iSharedPlaylists, optionSharedPlaylists, iLocalPlaylists, optionLocalPlaylists);
                 iViewSaveSupport = new ViewSaveSupport(SavePlaylistHandler, iSaveSupport);
-
+                
                 helper.Helper.AddOptionPage(iLocator.OptionPage);
-    
-                AddViews();
-    
+
+                InvokeOnMainThread(delegate {
+                    AddViews();
+                });
+
                 iModel = new Model(iViewMaster, iPlaySupport);
                 iMediator = new Mediator(helper.Helper, iModel);
-
+                
                 OnFinishedLaunching();
+
+                UserLog.WriteLine(string.Format("FinishedLaunching background tasks in {0} ms", ticker.MilliSeconds));
             }).BeginInvoke(null, null);
             
             Trace.Level = Trace.kKinskyTouch;
@@ -102,10 +108,12 @@ namespace KinskyTouch
             navigationController.View.Frame = new RectangleF(PointF.Empty, viewBrowser.Frame.Size);
             viewBrowser.InsertSubview(navigationController.View, 0);
 
-            window.AddSubview(viewController.View);
+            window.RootViewController = viewController;
             
             window.MakeKeyAndVisible();
-            
+
+            UserLog.WriteLine(string.Format("FinishedLaunching in {0} ms", tick.MilliSeconds));
+
             return true;
         }
 
@@ -211,7 +219,5 @@ namespace KinskyTouch
         private ViewWidgetTime iViewWidgetTime;
         private ViewWidgetTimeRotary iViewWidgetTimeRotary;
         private ViewWidgetTimeButtons iViewWidgetTimeButtons;
-
-        private SaveViewController.Saver iSaver;
     }
 }

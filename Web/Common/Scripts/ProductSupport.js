@@ -15,6 +15,8 @@ Linn.ProductSupport =
     kModelMajikDsi:"Majik DS-I",
     kModelMajikDsm:"Majik DSM",
     kModelKikoDsm:"Kiko DSM",
+	kModelMusikbox:"Musikbox",
+	kModelSekritDsm:"Sekrit DSM",
     kModelConceptDs:"Concept DS",
     kModelConceptDsm:"Concept DS-M",
     kModelProxyNone:"None",
@@ -78,6 +80,8 @@ Linn.Parameter =
     kNameCurrentDelayPreset:"Current Delay Preset",
     kNameOutputModeRca:"Analog Output Mode",
     kNameHdmi:"HDMI",
+    kNameEthernetLeds:"Ethernet LEDs",
+	kNameAmplifierMode:"Internal Power Amplifier Mode",
     // Parameter Names (target=<Source System Name>, collection=Sources)
     kNameSourceName:"Name",
     kNameSourceVisible:"Visible",
@@ -126,6 +130,7 @@ Linn.Parameter =
     kNameDisplayBrightness:"Brightness",
     kNameDisplaySleep:"Sleep Mode",
     kNameDisplayOrientationLed:"Linn Logo LED",
+    kNameDisplayOrientationLedStandby:"Linn Logo LED (Sleep Mode)",
     kNameUpdateNotifications:"Update Notifications",
     // Parameter Names (target=Slimline Handset)
     kNameDirectSource1:"Input 1 Button",

@@ -39,6 +39,7 @@ namespace Linn.ProductSupport
                 iActionSetStandby = iServiceProduct.CreateAsyncActionSetStandby();
                 iActionSetSourceIndex = iServiceProduct.CreateAsyncActionSetSourceIndex();
                 iActionSourceIndex = iServiceProduct.CreateAsyncActionSourceIndex();
+                iActionSetSourceIndexByName = iServiceProduct.CreateAsyncActionSetSourceIndexByName();
             }
 
             if (iDevice.HasService(ServiceVolume.ServiceType(1)) > 0) {
@@ -204,6 +205,13 @@ namespace Linn.ProductSupport
             iActionVolumeDec.VolumeDecBegin();
         }
 
+        public void SetSourceIndexByName(string aName)
+        {
+            iActionSetSourceIndexByName.EventResponse += InvokeActionSetSourceIndexByName;
+            iActionSetSourceIndexByName.EventError += InvokeActionError;
+            iActionSetSourceIndexByName.SetSourceIndexByNameBegin(aName);
+        }
+
         public void SetStandby(bool aStandby) {
             iActionSetStandby.SetStandbyBegin(aStandby);
         }
@@ -276,7 +284,14 @@ namespace Linn.ProductSupport
             iActionSetSourceIndex.EventError -= InvokeActionError;
         }
 
-        private void InvokeActionInsert(object obj, ServicePlaylist.AsyncActionInsert.EventArgsResponse e) {
+        private void InvokeActionSetSourceIndexByName(object obj, ServiceProduct.AsyncActionSetSourceIndexByName.EventArgsResponse e)
+        {
+            iActionSetSourceIndexByName.EventResponse -= InvokeActionSetSourceIndexByName;
+            iActionSetSourceIndexByName.EventError -= InvokeActionError;
+        }
+
+        private void InvokeActionInsert(object obj, ServicePlaylist.AsyncActionInsert.EventArgsResponse e)
+        {
             iActionInsert.EventResponse -= InvokeActionInsert;
             iActionInsert.EventError -= InvokeActionError;
         }
@@ -348,6 +363,8 @@ namespace Linn.ProductSupport
             iActionSourceIndex.EventError -= InvokeActionError;
             iActionSetSourceIndex.EventResponse -= InvokeActionSetSourceIndex;
             iActionSetSourceIndex.EventError -= InvokeActionError;
+            iActionSetSourceIndexByName.EventResponse -= InvokeActionSetSourceIndexByName;
+            iActionSetSourceIndexByName.EventError -= InvokeActionError;
             iActionVolumeInc.EventResponse -= InvokeActionVolumeInc;
             iActionVolumeInc.EventError -= InvokeActionError;
             iActionVolumeDec.EventResponse -= InvokeActionVolumeDec;
@@ -658,6 +675,7 @@ namespace Linn.ProductSupport
         private ServiceProduct.AsyncActionSetStandby iActionSetStandby;
         private ServiceProduct.AsyncActionSetSourceIndex iActionSetSourceIndex;
         private ServiceProduct.AsyncActionSourceIndex iActionSourceIndex;
+        private ServiceProduct.AsyncActionSetSourceIndexByName iActionSetSourceIndexByName;
 
         private ServiceVolume iServiceVolume = null;
         private ServiceVolume.AsyncActionVolumeInc iActionVolumeInc;

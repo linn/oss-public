@@ -18,6 +18,23 @@
     var currMute = false;
     var currHasVolume = false;
     var images = new Array();
+    var currOn = false;
+    var currRoom = '';
+    
+    window['_xappSend'] = xappSend;
+    window['xappSend'] = function(name, value)
+    {
+        //filter rotation events as these can be numerous
+        if ('ClockwiseRotate' != name && 'AntiClockwiseRotate' != name){
+            trackEvent(name, value, getDateTime());
+        }
+        _xappSend(name, value);
+    }
+                               
+    function getDateTime()
+    {
+        return new Date().toUTCString();
+    }
 
     function preload()
     {
@@ -27,6 +44,7 @@
             images[i].src = preload.arguments[i];
         }
     }
+    
 
     function onInitialise(json)
     {
@@ -104,6 +122,16 @@
             $('#selector').addClass('off');
         }
 
+        if (on != currOn){
+            currOn = on;
+            trackEvent('SongcastStateChange', currOn, getDateTime());
+        }
+        
+        if (room != currRoom){
+            currRoom = room;
+            trackEvent('SongcastRoomChange', currRoom, getDateTime());            
+        }
+        
         $('.room').html(room);
     }
 
@@ -261,7 +289,8 @@
             $('#volume-rotary').hide();
             $('#volume-rocker').show();
         }
-    
+        
+        trackEvent("SongcastVolumeControllerChange", json.Value ? "Rotary" : "Rocker", getDateTime());
         updateVolumeUi(currHasVolume, currVolume, currVolumeLimit, currMute);
     }
 

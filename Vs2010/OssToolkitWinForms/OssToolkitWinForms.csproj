@@ -152,9 +152,6 @@
       <Link>Linn\Toolkit\Invoker.cs</Link>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\ProductImages.cs">
-      <Link>Linn\Toolkit\ProductImages.cs</Link>
-    </Compile>
     <Compile Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\WinForms\Properties\Resources.Designer.cs">
       <Link>Properties\Resources.Designer.cs</Link>
       <AutoGen>True</AutoGen>

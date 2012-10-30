@@ -1,0 +1,16 @@
+#aboutContainer
+{
+    text-align: center;
+}
+
+#logo
+{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.text-padding
+{
+    padding-bottom: 2px;
+    cursor: default;
+}

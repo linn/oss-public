@@ -20,6 +20,8 @@ using System.Threading;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using System.Windows.Interop;
+using System.Windows.Markup;
+using System.Runtime.InteropServices;
 
 namespace KinskyDesktopWpf
 {
@@ -28,6 +30,37 @@ namespace KinskyDesktopWpf
     /// </summary>
     public partial class KinskyDesktop : Window, IStack
     {
+
+
+        [DllImport("WtsApi32.dll")]
+        private static extern bool WTSRegisterSessionNotification(IntPtr hWnd, [MarshalAs(UnmanagedType.U4)]int dwFlags);
+        [DllImport("WtsApi32.dll")]
+        private static extern bool WTSUnRegisterSessionNotification(IntPtr hWnd);
+        [DllImport("kernel32.dll")]
+        public static extern int WTSGetActiveConsoleSessionId();
+
+        // dwFlags options for WTSRegisterSessionNotification
+        const int NOTIFY_FOR_THIS_SESSION = 0;     // Only session notifications involving the session attached to by the window identified by the hWnd parameter value are to be received.
+        const int NOTIFY_FOR_ALL_SESSIONS = 1;     // All session notifications are to be received.
+
+        // session change message ID
+        const int WM_WTSSESSION_CHANGE = 0x2b1;
+
+        public enum WTSMessage
+        {
+            // WParam values that can be received:
+            WTS_CONSOLE_CONNECT = 0x1, // A session was connected to the console terminal.
+            WTS_CONSOLE_DISCONNECT = 0x2, // A session was disconnected from the console terminal.
+            WTS_REMOTE_CONNECT = 0x3, // A session was connected to the remote terminal.
+            WTS_REMOTE_DISCONNECT = 0x4, // A session was disconnected from the remote terminal.
+            WTS_SESSION_LOGON = 0x5, // A user has logged on to the session.
+            WTS_SESSION_LOGOFF = 0x6, // A user has logged off the session.
+            WTS_SESSION_LOCK = 0x7, // A session has been locked.
+            WTS_SESSION_UNLOCK = 0x8, // A session has been unlocked.
+            WTS_SESSION_REMOTE_CONTROL = 0x9 // A session has changed its remote controlled status.
+        }
+
+
 
         private const string kUpdateFeedUrl = "http://oss.linn.co.uk/Feeds/Updates/Application.xml";
         private const string kOnlineManualUrl = "http://oss.linn.co.uk/trac/wiki/KinskyWindowsDavaarManual";
@@ -97,10 +130,51 @@ namespace KinskyDesktopWpf
         private bool iProcessedOptions = false;
         private AutoUpdate.EUpdateType iAutoUpdateType = AutoUpdate.EUpdateType.Stable;
         private OptionPageUpdates iOptionPageUpdates;
+        private const int kCacheSize = 100 * 1024 * 1024;
+        private const int kThreadCount = 4;
+        private const int kDownscaleImageSize = 128;
+        private WpfImageCache iImageCache;
+        private IconResolver iIconResolver;
+        private static KinskyDesktop iInstance;
+        private int iInitialSessionId;
+        private bool iSessionConnected;
+        private bool iStackStarted;
+        private bool iSessionHookAdded;
+
+        public static KinskyDesktop Instance
+        {
+            get
+            {
+                return iInstance;
+            }
+        }
 
         public KinskyDesktop()
-        {
+        {            
+            iInstance = this;
+            HttpWebRequest.DefaultWebProxy = WebRequest.GetSystemWebProxy();
+            HttpWebRequest.DefaultWebProxy.Credentials = CredentialCache.DefaultCredentials;
             iWindowLoaded = new AutoResetEvent(false);
+            iImageCache = new WpfImageCache(kCacheSize, kDownscaleImageSize, kThreadCount);
+            iIconResolver = new IconResolver();
+            ResourceDictionary dictionary = App.Current.Resources;
+            string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().FullName;
+            string[] resourceDictionaries = {
+                                                "Shared",
+                                                "ControlStyles",
+                                                "ScrollBar",
+                                                "ComboBox",
+                                                "ListBox",
+                                                "TileViewStyle",
+                                                "WindowChromeStyle",
+                                                "MenuItem",
+                                                "Slider"
+                                            };
+
+            foreach (string resourceDictionary in resourceDictionaries)
+            {
+                dictionary.MergedDictionaries.Add(Application.LoadComponent(new Uri(string.Format("/{0};component/{1}.xaml", assemblyName, resourceDictionary), UriKind.Relative)) as ResourceDictionary);
+            }
             InitializeComponent();
             iUpdateOnExit = false;
             iHelper = new HelperKinsky(Environment.GetCommandLineArgs(), new Invoker(this.Dispatcher));
@@ -119,13 +193,72 @@ namespace KinskyDesktopWpf
             this.Loaded += new RoutedEventHandler(KinskyDesktop_Loaded);
         }
 
+        private IntPtr HandleSessionEvents(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            int evtSessionID = WTSGetActiveConsoleSessionId();
+            switch (msg)
+            {
+                case WM_WTSSESSION_CHANGE:
+                    {
+                        WTSMessage wParamValue = (WTSMessage)wParam;
+                        UserLog.WriteLine("Session message " + wParamValue + " Active Session ID:" + evtSessionID + " Current Process Session ID:" + iInitialSessionId);
+                        if (evtSessionID == iInitialSessionId)
+                        {
+                            OnSessionConnected();
+                        }
+                        else
+                        {
+                            OnSessionDisconnected();
+                        }
+                    }
+                    break;
+            }
+            return IntPtr.Zero;
+        }
+
+        private void OnSessionDisconnected()
+        {
+            if (iSessionConnected)
+            {
+                UserLog.WriteLine("Session disconnected...");
+                iSessionConnected = false;
+                StopStack();
+            }
+        }
+
+        private void OnSessionConnected()
+        {
+            if (!iSessionConnected)
+            {
+                UserLog.WriteLine("Session connected...");
+                iSessionConnected = true;
+                StartStack();
+            }
+        }
+
+        public WpfImageCache ImageCache
+        {
+            get
+            {
+                return iImageCache;
+            }
+        }
+
+        public IconResolver IconResolver
+        {
+            get
+            {
+                return iIconResolver;
+            }
+        }
+
         void KinskyDesktop_Loaded(object sender, RoutedEventArgs e)
         {
             if (iSoftwareRenderingOption.Native)
             {
                 HwndSource hwndSource = PresentationSource.FromVisual(this) as HwndSource;
                 HwndTarget hwndTarget = hwndSource.CompositionTarget;
-                hwndTarget.RenderMode = RenderMode.SoftwareOnly; 
+                hwndTarget.RenderMode = RenderMode.SoftwareOnly;
             }
             iWindowLoaded.Set();
         }
@@ -328,7 +461,20 @@ namespace KinskyDesktopWpf
 
             iHelper.SetStackExtender(this);
             iHelper.Stack.SetStatusHandler(new StackStatusHandlerWpf(iHelper.Title, iSystrayForm.NotifyIcon));
-            Open();
+            
+            Dispatcher.BeginInvoke((Action)delegate()
+            {
+                HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+                source.AddHook(HandleSessionEvents);
+                if (!WTSRegisterSessionNotification((new WindowInteropHelper(this)).Handle, NOTIFY_FOR_THIS_SESSION))
+                {
+                    UserLog.WriteLine("Could not register for user session changes.");
+                }
+                iInitialSessionId = System.Diagnostics.Process.GetCurrentProcess().SessionId;
+                iSessionConnected = true;
+                iSessionHookAdded = true;
+                StartStack();
+            });
             // show the options dialog if specified by the user
             if (iHelper.Stack.StatusHandler.ShowOptions)
             {
@@ -535,24 +681,32 @@ namespace KinskyDesktopWpf
             }
         }
 
-        internal void Open()
+        internal void StartStack()
         {
-            iSystrayForm.Start();
-            viewKinsky.Start();
-            iHelper.Stack.Start();
+            if (iSessionConnected && !iStackStarted)
+            {
+                iSystrayForm.Start();
+                viewKinsky.Start();
+                iHelper.Stack.Start();
+                iStackStarted = true;
+            }
         }
 
-        internal new void Close()
+        internal void StopStack()
         {
-            if (iHelper != null && iHelper.Stack != null)
+            if (iStackStarted)
             {
-                iHelper.Stack.Stop();
-            }
-            Trace.WriteLine(Trace.kKinskyDesktop, "Stack stopped");
-            viewKinsky.Stop();
-            if (iSystrayForm != null)
-            {
-                iSystrayForm.Stop();
+                if (iHelper != null && iHelper.Stack != null)
+                {
+                    iHelper.Stack.Stop();
+                }
+                Trace.WriteLine(Trace.kKinskyDesktop, "Stack stopped");
+                viewKinsky.Stop();
+                if (iSystrayForm != null)
+                {
+                    iSystrayForm.Stop();
+                }
+                iStackStarted = false;
             }
         }
 
@@ -560,7 +714,7 @@ namespace KinskyDesktopWpf
         {
             try
             {
-                SavePlaylistDialog dialog = new SavePlaylistDialog(aSaveSupport);
+                SavePlaylistDialog dialog = new SavePlaylistDialog(aSaveSupport, iUIOptions);
                 dialog.Owner = Window.GetWindow(this);
                 dialog.ShowDialog();
                 //if (dialog.DialogResult.HasValue && dialog.DialogResult.Value)
@@ -582,7 +736,7 @@ namespace KinskyDesktopWpf
             // add a new stack status change handler while the options page  is visible
             // leave the default one so the balloon tips still appear
             iHelper.Stack.EventStatusChanged += iHelper.Stack.StatusHandler.StackStatusOptionsChanged;
-            OptionsDialog dialog = new OptionsDialog(iHelper);
+            OptionsDialog dialog = new OptionsDialog(iHelper, iUIOptions);
             if (aStartOnNetwork)
             {
                 dialog.SetPageByName("Network");
@@ -610,7 +764,7 @@ namespace KinskyDesktopWpf
                     iSystrayForm.Close();
                 });
             }
-            Close();
+            StopStack();
             if (iNamedMutex != null)
             {
                 iNamedMutex.Close();
@@ -627,6 +781,20 @@ namespace KinskyDesktopWpf
                         waitHandle2.WaitOne();
                     }
                 }
+            }
+            if (iSessionHookAdded)
+            {
+                try
+                {
+                    // try to clean up session notifications, but don't worry if this fails as it should be cleaned up by OS anyway.
+                    WTSUnRegisterSessionNotification((new WindowInteropHelper(this)).Handle);
+                    HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+                    if (source != null)
+                    {
+                        source.RemoveHook(HandleSessionEvents);
+                    }
+                }
+                catch { }
             }
             Environment.Exit(0);
         }
@@ -688,7 +856,7 @@ namespace KinskyDesktopWpf
 
         private void DebugConsoleExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            UserLogDialog dialog = new UserLogDialog();
+            UserLogDialog dialog = new UserLogDialog(iUIOptions);
             dialog.Owner = Window.GetWindow(this);
             dialog.Show();
         }
@@ -720,7 +888,7 @@ namespace KinskyDesktopWpf
 
         private void HelpAboutExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AboutDialog dialog = new AboutDialog(iHelper, iFontsOption.Value);
+            AboutDialog dialog = new AboutDialog(iHelper, iFontsOption.Value, iUIOptions);
             dialog.Owner = Window.GetWindow(this);
             dialog.ShowDialog();
         }
@@ -778,12 +946,13 @@ namespace KinskyDesktopWpf
 
         private void Window_DragLeave(object sender, DragEventArgs e)
         {
-            try{
-            if (iPlaySupport != null)
+            try
             {
-                iPlaySupport.SetDragging(false);
-            }
-            e.Handled = true;
+                if (iPlaySupport != null)
+                {
+                    iPlaySupport.SetDragging(false);
+                }
+                e.Handled = true;
             }
             catch (Exception ex)
             {
@@ -793,13 +962,14 @@ namespace KinskyDesktopWpf
 
         private void Window_DragOver(object sender, DragEventArgs e)
         {
-            try{
-            if (iPlaySupport != null)
+            try
             {
-                iPlaySupport.SetDragging(true);
-            }
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
+                if (iPlaySupport != null)
+                {
+                    iPlaySupport.SetDragging(true);
+                }
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
             }
             catch (Exception ex)
             {
@@ -809,12 +979,13 @@ namespace KinskyDesktopWpf
 
         private void Window_Drop(object sender, DragEventArgs e)
         {
-            try{
-            if (iPlaySupport != null)
+            try
             {
-                iPlaySupport.SetDragging(false);
-            }
-            e.Handled = true;
+                if (iPlaySupport != null)
+                {
+                    iPlaySupport.SetDragging(false);
+                }
+                e.Handled = true;
             }
             catch (Exception ex)
             {

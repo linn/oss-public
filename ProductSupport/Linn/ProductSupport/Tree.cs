@@ -373,13 +373,13 @@ namespace Linn.ProductSupport
 
         public string ConfigurationUri {
             get {
-                return "http://" + IpAddress + "/Config/Layouts/Default/index.html" + (IsDs(Udn) ? "#service=Ds" : "") + (IsPreamp(Udn) ? "#service=Preamp" : "") + (IsCd(Udn) ? "#service=Cd" : "");
+                return "http://" + IpAddress + "/Config/Layouts/Default/index.html" + (IsDs(Udn) ? "?service=Ds" : "") + (IsPreamp(Udn) ? "?service=Preamp" : "") + (IsCd(Udn) ? "?service=Cd" : "");
             }
         }
 
         public string ConfigurationAppUri {
             get {
-                return "http://" + IpAddress + "/App/Config/Layouts/Default/index.html" + (IsDs(Udn) ? "#service=Ds" : "") + (IsPreamp(Udn) ? "#service=Preamp" : "") + (IsCd(Udn) ? "#service=Cd" : "");
+                return "http://" + IpAddress + "/App/Config/Layouts/Default/index.html" + (IsDs(Udn) ? "?service=Ds" : "") + (IsPreamp(Udn) ? "?service=Preamp" : "") + (IsCd(Udn) ? "?service=Cd" : "");
             }
         }
 

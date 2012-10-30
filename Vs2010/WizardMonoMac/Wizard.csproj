@@ -8,7 +8,7 @@
     <ProjectGuid>{596A5166-2D0F-4530-91BA-7976613F8579}</ProjectGuid>
     <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Linn.Wizard</RootNamespace>
+    <RootNamespace>Wizard</RootNamespace>
     <AssemblyName>Wizard</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -23,10 +23,15 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="cp ../../install/MacOsX/debug/bin/UpdateWindow.nib ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../LibUpnpCil/Toolkit/obj/MacOsX Debug/nibs/CrashLogDumperWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
         <Command type="AfterBuild" command="cp -R ../../Wizard/Linn/Wizard/PageHtml ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../LibUpnpCil/Toolkit/obj/MacOsX Debug/nibs/UpdateWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
       </CustomCommands>
     </CustomCommands>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -36,6 +41,17 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp &quot;../../LibUpnpCil/Toolkit/obj/MacOsX Release/nibs/CrashLogDumperWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp -R ../../Wizard/Linn/Wizard/PageHtml ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../LibUpnpCil/Toolkit/obj/MacOsX Release/nibs/UpdateWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+      </CustomCommands>
+    </CustomCommands>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,17 +97,11 @@
     <Compile Include="..\..\Wizard\Linn\Wizard\Component.cs">
       <Link>Linn\Wizard\Component.cs</Link>
     </Compile>
-    <Compile Include="..\..\Wizard\Linn\Wizard\CustomisePage.cs">
-      <Link>Linn\Wizard\CustomisePage.cs</Link>
-    </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\DiscoveryPage.cs">
       <Link>Linn\Wizard\DiscoveryPage.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\HelpPage.cs">
       <Link>Linn\Wizard\HelpPage.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Wizard\Linn\Wizard\MainPage.cs">
-      <Link>Linn\Wizard\MainPage.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\Network.cs">
       <Link>Linn\Wizard\Network.cs</Link>
@@ -108,8 +118,17 @@
     <Compile Include="..\..\Wizard\Linn\Wizard\StreamPage.cs">
       <Link>Linn\Wizard\StreamPage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Wizard\Linn\Wizard\UsePage.cs">
-      <Link>Linn\Wizard\UsePage.cs</Link>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageDefinitions.cs">
+      <Link>Linn\Wizard\PageDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\WizardPage.cs">
+      <Link>Linn\Wizard\WizardPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Model.cs">
+      <Link>Linn\Wizard\Model.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageView.cs">
+      <Link>Linn\Wizard\PageView.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

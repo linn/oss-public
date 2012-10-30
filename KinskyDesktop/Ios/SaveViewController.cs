@@ -356,9 +356,9 @@ namespace KinskyTouch
             iSaveSupport.EventImageListChanged += ImageListChanged;
         }
 
-        public override void ViewDidUnload()
+        public override void ViewDidDisappear(bool aAnimated)
         {
-            base.ViewDidUnload();
+            base.ViewDidDisappear(aAnimated);
 
             iButtonSave.Clicked -= SaveClicked;
             iButtonCancel.Clicked -= CancelClicked;
@@ -370,9 +370,15 @@ namespace KinskyTouch
             iSaveSupport.EventImageListChanged -= ImageListChanged;
         }
 
+        [Obsolete]
         public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
         {
             return true;
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.All;
         }
 
         public uint ImageId
@@ -393,14 +399,14 @@ namespace KinskyTouch
 
         private void SaveClicked(object sender, EventArgs e)
         {
-            DismissModalViewControllerAnimated(true);
+            DismissViewController(true, () => {});
 
             iSaver.Save(textFieldFilename.Text, textFieldDescription.Text, iImageId);
         }
 
         private void CancelClicked(object sender, EventArgs e)
         {
-            DismissModalViewControllerAnimated(true);
+            DismissViewController(true, () => {});
         }
 
         private void SaveLocationChanged(object sender, EventArgs e)
@@ -501,9 +507,9 @@ namespace KinskyTouch
             TableView.Delegate = new Delegate(iSaveSupport);
         }
 
-        public override void ViewDidUnload()
+        public override void ViewDidDisappear(bool aAnimated)
         {
-            base.ViewDidUnload();
+            base.ViewDidDisappear(aAnimated);
 
             iSaveSupport.EventSaveLocationChanged -= SaveLocationChanged;
             iSaveSupport.EventSaveLocationsChanged -= SaveLocationsChanged;
@@ -630,9 +636,10 @@ namespace KinskyTouch
             TableView.Delegate = new Delegate(iSaveSupport, iListener);
         }
 
-        public override void ViewDidUnload()
+        public override void ViewDidDisappear(bool aAnimated)
         {
-            base.ViewDidUnload();
+            base.ViewDidDisappear(aAnimated);
+
             iSaveSupport.EventImageListChanged -= ImageListChanged;
         }
 

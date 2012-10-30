@@ -36,9 +36,9 @@ namespace Linn.Wizard
             iHelperAutoUpdate.Start();
 
             // create the xapp components
-            iXapp = new Framework(Path.Combine(OpenHome.Xen.Environment.AppPath, "PageHtml"));
+            iXapp = new Framework<Session>(Path.Combine(OpenHome.Xen.Environment.AppPath, "PageHtml"));
             iWebServer = new WebServer(iXapp);
-            iControl = new PageControl(iHelper, iXapp, Path.Combine(OpenHome.Xen.Environment.AppPath, "PageHtml/Resources"), "PageDefinitions.xml");
+            iControl = new PageControl(iHelper, iXapp, Path.Combine(OpenHome.Xen.Environment.AppPath, "PageHtml"), "PageDefinitions.xml");
             iControl.EventCloseApplicationRequested += CloseApplicationRequested;
 
             // create and show the main window

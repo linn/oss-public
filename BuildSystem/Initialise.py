@@ -39,7 +39,6 @@ Help(opts.GenerateHelpText(_default_env))
 # General tools
 _default_env.Tool('makensis', toolpath=['../BuildSystem/Tool'])
 _default_env.Tool('dpkg-deb', toolpath=['../BuildSystem/Tool'])
-_default_env.Tool('cabwiz', toolpath=['../BuildSystem/Tool'])
 _default_env.Tool('kodegen', toolpath=['../BuildSystem/Tool'])
 _default_env.Tool('ibtool', toolpath=['../BuildSystem/Tool'])
 _default_env.Tool('doxygen', toolpath=['../BuildSystem/Tool'])

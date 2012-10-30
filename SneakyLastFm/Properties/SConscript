@@ -1,6 +1,0 @@
-Import('_default_env')
-
-res = _default_env.Resgen('SneakyLastFm.Properties.Resources.resources', 'Resources.resx')
-
-Return('res')
-

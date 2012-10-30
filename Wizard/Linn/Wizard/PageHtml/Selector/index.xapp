@@ -1,0 +1,29 @@
+<div id="all">
+<!-- Selector -->
+  <page-frag frag="PageFragments/top.frag"/>
+  <script src="selector.js" type="text/javascript"></script>
+
+  <div id="pagesection">
+    <page-frag frag="PageFragments/header.frag"/>
+    <page-frag frag="PageFragments/breadcrumb.frag"/>
+
+    <div id="main" class="section">
+        <div id="MainContent">
+          <img class="mainimage" id="MainImage" style="visibility:hidden"></img>
+          <div id="title_bar">
+            <h3 class="title" id="Title"></h3>
+          </div>
+          <p class="maintext" id="MainTextTL"></p>
+
+          <div id="SelectorWrapper">
+            <div id="Selector"/>
+            <div id="Div1"/>
+            <div id="Div2"/>
+            <div id="Div3"/>
+          </div>
+        </div>
+    </div>
+
+    <page-frag frag="PageFragments/footer.frag"/>
+  </div>
+</div>

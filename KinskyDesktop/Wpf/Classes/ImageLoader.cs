@@ -400,8 +400,6 @@ namespace KinskyDesktopWpf
         public static readonly BitmapImage ImageSourceBottomFiller = BottomFiller.ToBitmapImage();
         public static readonly BitmapImage ImageSourceBottomLeftEdge = BottomLeftEdge.ToBitmapImage();
         public static readonly BitmapImage ImageSourceBottomRightEdge = BottomRightEdge.ToBitmapImage();
-        public static readonly BitmapImage ImageSourceFooter = Footer.ToBitmapImage();
-        public static readonly BitmapImage ImageSourceHeader = Header.ToBitmapImage();
         public static readonly BitmapImage ImageSourceLeftFiller = LeftFiller.ToBitmapImage();
         public static readonly BitmapImage ImageSourceRightFiller = RightFiller.ToBitmapImage();
         public static readonly BitmapImage ImageSourceTopFiller = TopFiller.ToBitmapImage();

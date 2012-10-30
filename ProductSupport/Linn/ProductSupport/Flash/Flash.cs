@@ -361,6 +361,7 @@ namespace Linn.ProductSupport.Flash
             iXmlFile = aXmlFile;
             iCrc32 = new Crc32();
             iDoFallback = false;
+            iDoWriteFallbackFpga = true;
             iDoNoExec = false;
             iDoWait = false;
             iDoNoTrust = false;
@@ -781,9 +782,12 @@ namespace Linn.ProductSupport.Flash
 
             CollectRomDirFallback();
 
-            if (!CheckIdenticalBinary("FallbackFpga"))
+            if (iDoWriteFallbackFpga)
             {
-                return (false);
+                if (!CheckIdenticalBinary("FallbackFpga"))
+                {
+                    return (false);
+                }
             }
 
             if (!CheckIdenticalBinary("FallbackApp"))
@@ -1015,7 +1019,10 @@ namespace Linn.ProductSupport.Flash
                 ClearRomDir("MainRomDir");
             }
 
-            WriteBinary("FallbackFpga", "MainFpga");
+            if (iDoWriteFallbackFpga)
+            {
+                WriteBinary("FallbackFpga", "MainFpga");
+            }
             WriteBinary("FallbackApp", "MainApp");
             WriteCrash("MainCrash");
             WriteRoStores("StoreReadOnly");
@@ -1044,7 +1051,10 @@ namespace Linn.ProductSupport.Flash
                 ClearRomDir("FallbackRomDir");
             }
 
-            WriteBinary("FallbackFpga", "FallbackFpga");
+            if (iDoWriteFallbackFpga)
+            {
+                WriteBinary("FallbackFpga", "FallbackFpga");
+            }
             WriteBinary("FallbackApp", "FallbackApp");
             WriteCrash("FallbackCrash");
             WriteRoStores("StoreReadOnlyFallback");
@@ -2403,6 +2413,18 @@ namespace Linn.ProductSupport.Flash
             }
         }
 
+        public bool WriteFallbackFpga
+        {
+            get
+            {
+                return (iDoWriteFallbackFpga);
+            }
+            set
+            {
+                iDoWriteFallbackFpga = value;
+            }
+        }
+
         public bool NoExec
         {
             get
@@ -2504,6 +2526,7 @@ namespace Linn.ProductSupport.Flash
         private RomDir iRomDir;
 
         private bool iDoFallback;
+        private bool iDoWriteFallbackFpga;
         private bool iDoNoExec;
         private bool iDoWait;
         private bool iDoNoTrust;
@@ -2928,7 +2951,7 @@ namespace Linn.ProductSupport.Flash
             {
                 iFallback = value;
             }
-        }
+        }        
 
         public bool NoExec
         {

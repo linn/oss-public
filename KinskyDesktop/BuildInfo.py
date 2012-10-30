@@ -1,4 +1,5 @@
 
-kBuildVersion = '4.3.4'
+kBuildVersion = '4.3.9'
 kBuildType = 'development'
+kAndroidVersionCode = '3'
 

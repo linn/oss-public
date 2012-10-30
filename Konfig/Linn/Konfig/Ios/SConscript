@@ -1,0 +1,139 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+
+files = Split("""
+    AppDelegate.cs
+    Main.cs
+    KonfigViewController.cs
+    KonfigViewController.designer.cs
+    ../CpDeviceAdvancedList.cs
+    ../CpDeviceDiagnosticsList.cs
+    ../CpDeviceDiagnosticsReportList.cs
+    ../CpDeviceRecogniserList.cs
+    ../CpDeviceReprogramList.cs
+    ../CpDeviceUpdateList.cs
+    ../FirmwareCache.cs
+    ../FlashSupport.cs
+    ../Model.cs
+    ../Preferences.cs
+    ../VersionInfoReader.cs
+    ../XappController.cs
+    ../XappView.cs
+""")
+
+linkCliLibs = Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+    monotouch
+    XmlLayout
+    XmlRom
+    XmlRomCollection
+    XmlTags
+    OssCore
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssToolkitIos
+    OssProductSupport
+    OssKinsky
+    ohXapp
+    ohXappViewer
+    ohXen
+    ohNet.net
+    CpLinnCoUkDiagnostics1.net
+    CpLinnCoUkVolkano1.net
+    CpAvOpenhomeOrgProduct1.net
+""")
+
+
+itunes_res = Split("""
+    Installer/iTunesArtwork
+    Installer/iTunesMetadata.plist
+""")
+
+prog = _default_env.CliProgram('Konfig', files + appAssemblyInfo, CLILIBS=linkCliLibs)
+_default_env.Depends(appAssemblyInfo, _default_env.Alias('OpenHomeLib'))
+
+# build the nib files
+
+nib  = _default_env.IbTool('KonfigViewController', 'KonfigViewController.xib')
+_default_env.Depends(prog, nib)
+
+
+# build a list of all required assembly files
+
+reqAssemblies = []
+reqAssemblies.extend(linkCliLibs)
+reqAssemblies.extend(Split("""
+    libohNetCore.a
+"""))
+
+
+# build everything that needs to go in the "Resource" folder
+rootResources = Split("""
+    ../Resources/IconLarge.png
+    ../Resources/presentation
+""")
+rootResources = [File(f) for f in rootResources];
+rootResources += [File(f) for f in nib]
+
+widgetResources = Split("""
+    $hardware_dir/share/Linn/Resources/Widgets/Common
+    $hardware_dir/share/Linn/Resources/Widgets/Fonts
+""")
+widgetResources = [_default_env.Dir(d) for d in widgetResources]
+
+resources = { '' : rootResources,
+              'presentation/Widgets' : widgetResources }
+
+
+# create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
+
+#infoPlist = {
+#    'NSMainNibFile' : 'MainMenu',
+#    'NSPrincipalClass' : 'NSApplication'
+#}
+
+
+# build the Ios .app bundles and install them
+
+bundle = _default_env.ReleaseInstallerIos('$install_dir/share/Konfig/Development', prog,
+                                          CLILIBS = reqAssemblies,
+                                          MTOUCHFLAGS= '--armv7 "-cxx" -gcc_flags "-L$install_dir/lib -lohNetCore -force_load $install_dir/lib/libohNetCore.a"' + _default_env['MTOUCHFLAGS'],
+                                          RESOURCES = resources,
+                                          ITUNESRESOURCES = itunes_res,
+                                          PRODUCT         = 'Konfig',
+                                          BUNDLEID        = 'Konfig',
+                                          VERSION         = kBuildInfo['BUILD_INFO_VERSION'],
+                                          TYPE            = kBuildInfo['BUILD_INFO_TYPE'],
+                                          IDENTITY        = "iPhone Developer: Keith Robertson (N5FMX5CWP6)",
+                                          PROFILE         = "Konfig")
+
+if _default_env['variant'] == 'release':
+    bundle += _default_env.ReleaseInstallerIos('$install_dir/share/Konfig/AdHoc', prog,
+                                               CLILIBS = reqAssemblies,
+                                               MTOUCHFLAGS= '--armv7 "-cxx" -gcc_flags "-L$install_dir/lib -lohNetCore -force_load $install_dir/lib/libohNetCore.a"' + _default_env['MTOUCHFLAGS'],
+                                               RESOURCES = resources,
+                                               ITUNESRESOURCES = itunes_res,
+                                               PRODUCT         = 'Konfig',
+                                               BUNDLEID        = 'Konfig',
+                                               VERSION         = kBuildInfo['BUILD_INFO_VERSION'],
+                                               TYPE            = kBuildInfo['BUILD_INFO_TYPE'],
+                                               IDENTITY        = "iPhone Distribution: Linn Products Ltd",
+                                               PROFILE         = "Konfig Ad Hoc")
+
+    bundle += _default_env.ReleaseInstallerIos('$install_dir/share/Konfig/AppStore', prog,
+                                               CLILIBS = reqAssemblies,
+                                               MTOUCHFLAGS= '--armv7 "-cxx" -gcc_flags "-L$install_dir/lib -lohNetCore -force_load $install_dir/lib/libohNetCore.a"' + _default_env['MTOUCHFLAGS'],
+                                               RESOURCES = resources,
+                                               ITUNESRESOURCES = itunes_res,
+                                               PRODUCT         = 'Konfig',
+                                               BUNDLEID        = 'Konfig',
+                                               VERSION         = kBuildInfo['BUILD_INFO_VERSION'],
+                                               TYPE            = kBuildInfo['BUILD_INFO_TYPE'],
+                                               IDENTITY        = "iPhone Distribution: Linn Products Ltd",
+                                               PROFILE         = "Konfig App Store")
+
+Alias('Lib', bundle)

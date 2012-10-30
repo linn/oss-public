@@ -2,12 +2,14 @@
 using System.Windows;
 using System.ComponentModel;
 using System.Threading;
+using System.IO;
 
 using Linn;
 using Linn.Toolkit;
 using Linn.Toolkit.Wpf;
 
 using OpenHome.Xapp;
+
 
 namespace Linn.Wizard
 {
@@ -38,9 +40,9 @@ namespace Linn.Wizard
             iHelper.ProcessOptionsFileAndCommandLine();
 
             // create components
-            iXapp = new Framework("PageHtml");
+            iXapp = new Framework<Session>(Path.Combine(OpenHome.Xen.Environment.AppPath, "PageHtml"));
             iWebServer = new WebServer(iXapp);
-            iControl = new PageControl(iHelper, iXapp, "PageHtml/Resources", "PageDefinitions.xml");
+            iControl = new PageControl(iHelper, iXapp, Path.Combine(OpenHome.Xen.Environment.AppPath, "PageHtml"), "PageDefinitions.xml");
 
             // create the main window
             iMainWindow = new MainWindow(iHelper, iWebServer.ResourceUri, iControl);

@@ -119,7 +119,8 @@ if _default_env['installers']:
                             RESOURCES = { '' : [ File(_default_env.subst('$variant_dir/share/Linn/Kinsky/Kinsky.ico')) ] },
                             EXERESOURCES = { '' : [ File(_default_env.subst('$install_dir/lib/policy.2.0.taglib-sharp.config')) ] },
                             ICON = '$variant_dir/share/Linn/Kinsky/Kinsky.icns',
-                            VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+                            VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                            INSTALLERRESOURCES = {'LICENSEFILE': _default_env.subst('$variant_dir/share/Linn/Core/license.txt')})
     Depends(installer, installerResources)
 
 Alias('Lib', installerResources)

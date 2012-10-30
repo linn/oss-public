@@ -5,11 +5,6 @@
   xmlns:kd="clr-namespace:KinskyDesktopWpf" 
   xmlns:s="clr-namespace:System;assembly=mscorlib">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Shared.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
-
     <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -814,14 +809,14 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0">
-                        <TextBlock Text="{Binding}" VerticalAlignment="Center" FontSize="{DynamicResource LargeFontSize}" />
+                    <DockPanel Margin="5,0,5,0" LastChildFill="True">
                         <Path x:Name="arrow" Fill="{DynamicResource GlyphBrush}"
                             Data="{StaticResource BreadcrumbArrow}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" 
-                            Margin="5,2,0,0" IsHitTestVisible="True" />
-                    </StackPanel>
+                            Margin="5,2,0,0" IsHitTestVisible="True" DockPanel.Dock="Right" />
+                        <TextBlock Text="{Binding}" VerticalAlignment="Center" FontSize="{DynamicResource LargeFontSize}" />
+                    </DockPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

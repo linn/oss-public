@@ -1,0 +1,14 @@
+Import('_default_env')
+
+libs  = _default_env.Install('$install_dir/bin', 'ohXen.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohXen.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohXen.dll')
+libs += _default_env.Install('$install_dir/bin', 'ohXapp.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohXapp.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohXapp.dll')
+libs += _default_env.Install('$install_dir/bin', 'ohXappViewer.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohXappViewer.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohXappViewer.dll')
+
+_default_env.Alias('OpenHomeLib', libs)
+

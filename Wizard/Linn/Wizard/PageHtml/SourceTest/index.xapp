@@ -1,0 +1,36 @@
+<div id="all">
+<!-- SourceTest -->
+  <page-frag frag="PageFragments/top.frag"/>
+  <script src="sourcetest.js" type="text/javascript"></script>
+
+  <div id="pagesection">
+    <page-frag frag="PageFragments/header.frag"/>
+    <page-frag frag="PageFragments/breadcrumb.frag"/>
+
+    <div id="main" class="section">
+        <div id="MainContent">
+          <div id="title_bar">
+            <h3 class="title" id="Title"></h3>
+          </div>
+          <p class="maintext" id="MainText"></p>
+          <p class="maintext" id="Question"></p>
+
+          <div class="sourcetest-item" id="SourceTestRings">
+            <div class="sourcetest-item" id="SourceTestNameLabel"/>
+            <div class="sourcetest-item" id="SourceTestInputLabel"/>
+            <div class="sourcetest-item" id="SourceTestIconLabel"/>
+            <div class="sourcetest-item" id="SourceTestNameTextOuter"><div id="SourceTestNameText"/></div>
+            <div class="sourcetest-item" id="SourceTestInputImg"/>
+            <div class="sourcetest-item" id="SourceTestIconImg"/>
+          </div>
+
+          <button class="sourcetest-item enabled" id="SourceTestStartButton" onclick="onStartClicked($(this));" ></button>
+          <button class="sourcetest-item" id="SourceTestStopButton" onclick="onStopClicked($(this));" ></button>
+          <button class="sourcetest-item" id="SourceTestVolumeDecButton" onclick="onButtonClicked($(this));" ></button>
+          <button class="sourcetest-item" id="SourceTestVolumeIncButton" onclick="onButtonClicked($(this))" ></button>
+        </div>
+    </div>
+
+    <page-frag frag="PageFragments/footer.frag"/>
+  </div>
+</div>

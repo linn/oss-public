@@ -117,6 +117,11 @@ namespace Linn.ProductSupport
             return source;
         }
 
+        public SortedList<string, SourceInfo> SourceInfoList
+        {
+            get { return iSourceInfoList; }
+        }
+
         public void SetStartupVolume(uint aVolume) {
             iActionSetParameter.SetParameterBegin(Parameter.kTargetVolume, Parameter.kNameStartupVolume, aVolume.ToString());
         }
@@ -470,6 +475,8 @@ namespace Linn.ProductSupport
         public const string kNameCurrentDelayPreset = "Current Delay Preset";
         public const string kNameOutputModeRca = "Analog Output Mode";
         public const string kNameHdmi = "HDMI";
+        public const string kNameEthernetLeds = "Ethernet LEDs";
+        public const string kNameAmpliferMode = "Internal Power Amplifier Mode";
         // Parameter Names (target=<Source System Name>, collection=Sources)
         public const string kNameSourceName = "Name";
         public const string kNameSourceVisible = "Visible";
@@ -519,6 +526,7 @@ namespace Linn.ProductSupport
         public const string kNameDisplaySleep = "Sleep Mode";
         public const string kNameUpdateNotifications = "Update Notifications";
         public const string kNameDisplayOrientationLed = "Linn Logo LED";
+        public const string kNameDisplayOrientationLedStandby = "Linn Logo LED (Sleep Mode)";
         // Parameter Names (target=Slimline Handset)
         public const string kNameDirectSource1 = "Input 1 Button";
         public const string kNameDirectSource2 = "Input 2 Button";
@@ -536,9 +544,6 @@ namespace Linn.ProductSupport
         public const string kUnitsMs = "ms";
         public const string kUnitsVrms = "Vrms";
 
-        // Konfig only
-        public const string kSelectSender = "Songcast Sender to Listen To";
-
         // TuneIn dropdown options
         public static Dictionary<string, string> kDictionaryTuneInUsernameAllowedValues = new Dictionary<string, string>() { // key = Country, value = corresponding username
             {"User-defined...", ""},
@@ -550,6 +555,7 @@ namespace Linn.ProductSupport
             {"Germany", "linnproducts-germany"},
             {"Germany (South)", "linnproducts-germany-south"},
             {"Gibraltar", "linnproducts-gibraltar"},
+            {"Italy", "linnitalia"},
             {"Japan", "linnproducts-japan"},
             {"Netherlands", "linnproducts-netherlands"},
             {"New Zealand", "linnproducts-newzealand"},

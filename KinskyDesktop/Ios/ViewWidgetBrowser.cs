@@ -109,7 +109,7 @@ namespace KinskyTouch
 
                     if(iCurrentSectionIndex == null || iCurrentSectionIndex.Title.ToUpperInvariant() != letter && !startsWithThe)
                     {
-                        if(!iTitles.Contains(letter) || letter == "#")
+                        if(!iTitles.Contains(letter) || (letter == "#" && iPreviousLetter != "#"))
                         {
                             if(iPreviousTitleStartsWithThe && iPreviousLetter == letter)
                             {
@@ -142,7 +142,7 @@ namespace KinskyTouch
                     {
                         if (i.Title != "#" && previousTitle != string.Empty)
                         {
-                            if (i.Title.CompareTo(previousTitle) < 0)
+                            if (i.Title.CompareTo(previousTitle) < 0 && (i.Title.CompareTo("A") <= 0 && i.Title.CompareTo("Z") >= 0) && (previousTitle.CompareTo("A") <= 0 && previousTitle.CompareTo("Z") >= 0))
                             {
                                 string message = string.Empty;
                                 for(int j = 0; j < iSectionIndexList.Count; ++j)
@@ -153,6 +153,7 @@ namespace KinskyTouch
                                     }
                                     message += string.Format("{0} ({1})", iSectionIndexList[j].Title, iSectionIndexList[j].Index);
                                 }
+                                Trace.WriteLine(Trace.kKinskyTouch, "SectionIndexCollector: " + message);
                                 UserLog.WriteLine("SectionIndexCollector: " + message);
 
                                 return; // don't show an alphabet index list if titles are not sorted alphabetically
@@ -572,12 +573,12 @@ namespace KinskyTouch
                     }
                 }
 
-                if(!iTableView.Tracking && !iTableView.Decelerating && !iTableView.Dragging)
-                {
-                    BeginInvokeOnMainThread(delegate {
+                BeginInvokeOnMainThread(delegate {
+                    if(!iTableView.Tracking && !iTableView.Decelerating && !iTableView.Dragging)
+                    {
                         iTableView.ReloadData();
-                    });
-                }
+                    }
+                });
             }
 
             protected string GetArtistAlbum(upnpObject aObject)
@@ -1243,27 +1244,6 @@ namespace KinskyTouch
             Console.WriteLine ("Back pressed");
         }
 
-        public override void ViewDidUnload()
-        {
-            base.ViewDidUnload();
-
-            if(iToolbar != null)
-            {
-                iToolbar = null;
-            }
-
-            if(iSearchController != null)
-            {
-                iSearchWasActive = iSearchController.Active;
-                iSearchString = iSearchController.SearchBar.Text;
-
-                iSearchController.Dispose();
-                iSearchController = null;
-            }
-
-            Close();
-        }
-
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
@@ -1300,6 +1280,20 @@ namespace KinskyTouch
         public override void ViewDidDisappear(bool animated)
         {
             base.ViewDidDisappear(animated);
+
+            if(iToolbar != null)
+            {
+                iToolbar = null;
+            }
+            
+            if(iSearchController != null)
+            {
+                iSearchWasActive = iSearchController.Active;
+                iSearchString = iSearchController.SearchBar.Text;
+                
+                iSearchController.Dispose();
+                iSearchController = null;
+            }
 
             if (NavigationController == null)
             {
@@ -1498,6 +1492,8 @@ namespace KinskyTouch
 
         internal void SetSectionIndexTitles(List<SectionIndexCollector.SectionIndex> aSectionIndexTitles)
         {
+            Trace.WriteLine(Trace.kKinskyTouch, ">ViewWidgetBrowser.SetSectionIndexTitles");
+
             lock(this)
             {
                 if(iDataSource != null)

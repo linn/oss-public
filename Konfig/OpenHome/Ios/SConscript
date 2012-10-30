@@ -1,0 +1,32 @@
+Import('_default_env')
+
+libs  = _default_env.Install('$install_dir/bin', 'ohXen.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohXen.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohXen.dll')
+libs += _default_env.Install('$install_dir/bin', 'ohXapp.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohXapp.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohXapp.dll')
+libs += _default_env.Install('$install_dir/bin', 'ohXappViewer.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohXappViewer.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohXappViewer.dll')
+
+libs += _default_env.Install('$install_dir/bin', 'libohNetCore.a')
+libs += _default_env.Install('$install_dir/bin/Test', 'libohNetCore.a')
+libs += _default_env.Install('$install_dir/lib', 'libohNetCore.a')
+libs += _default_env.Install('$install_dir/bin', 'ohNet.net.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'ohNet.net.dll')
+libs += _default_env.Install('$install_dir/lib', 'ohNet.net.dll')
+libs += _default_env.Install('$install_dir/bin', 'CpLinnCoUkDiagnostics1.net.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'CpLinnCoUkDiagnostics1.net.dll')
+libs += _default_env.Install('$install_dir/lib', 'CpLinnCoUkDiagnostics1.net.dll')
+libs += _default_env.Install('$install_dir/bin', 'CpLinnCoUkVolkano1.net.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'CpLinnCoUkVolkano1.net.dll')
+libs += _default_env.Install('$install_dir/lib', 'CpLinnCoUkVolkano1.net.dll')
+libs += _default_env.Install('$install_dir/bin', 'CpAvOpenhomeOrgProduct1.net.dll')
+libs += _default_env.Install('$install_dir/bin/Test', 'CpAvOpenhomeOrgProduct1.net.dll')
+libs += _default_env.Install('$install_dir/lib', 'CpAvOpenhomeOrgProduct1.net.dll')
+
+
+_default_env.Alias('OpenHomeLib', libs)
+
+

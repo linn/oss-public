@@ -278,9 +278,6 @@ namespace Linn.Kinsky
 
         public Image ReflectImage(Image aImage)
         {
-#if PocketPC
-            return null;
-#else
             int height = (int)(aImage.Height * (kReflectivity / 255.0f));
             Bitmap dest = new Bitmap(aImage.Width, height, PixelFormat.Format32bppArgb);
             Rectangle rect = new Rectangle(0, 0, aImage.Width, height);
@@ -296,7 +293,6 @@ namespace Linn.Kinsky
             }
 
             return dest;
-#endif
         }
 
         public Size ImageSize(Image aImage, uint aWidth, uint aHeight)
@@ -353,11 +349,7 @@ namespace Linn.Kinsky
 
             if (!aArtwork.Error && aArtwork.Image == null)
             {
-#if PocketPC
-                iPendingList.Add(aArtwork);
-#else
                 iPendingList.Insert(0, aArtwork);
-#endif
                 iManualResetEvent.Set();
             }
 

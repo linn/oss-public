@@ -126,12 +126,14 @@ namespace Linn.ControlPoint.Upnp
                 request.ContentLength = message.Length;
                 request.Timeout = kControlInvokeTimeout;
                 request.ReadWriteTimeout = kControlInvokeTimeout;
-
-                reqStream = request.GetRequestStream();
-                reqStream.Write(message, 0, message.Length);
-                if (aCallback != null)
+                if (aCallback == null)
                 {
-                    WebRequestPool.QueueJob(new JobGetResponse(aCallback, request));
+                    reqStream = request.GetRequestStream();
+                    reqStream.Write(message, 0, message.Length);
+                }
+                else
+                {
+                    WebRequestPool.QueueJob(new JobSendRequest(aCallback, request, message));
                 }
             }
             finally
@@ -743,7 +745,7 @@ namespace Linn.ControlPoint.Upnp
                             throw new NetworkError();
                         }
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         throw (new ServiceException(903, "Endpoint lookup failure: " + iEventUri.Host + ":" + iEventUri.Port + ", " + ex));
                     }
@@ -925,15 +927,47 @@ namespace Linn.ControlPoint.Upnp
             UserLog.WriteLine(message);
             Trace.WriteLine(Trace.kUpnp, message);
             iRequest.Close();
+            bool subscribing = false;
+            bool renewing = false;
+            bool unsubscribing = false;
             iMutex.WaitOne();
+            if (iRetryCount < kMaxRetryCount && !iClosing)
+            {
+                iRetryCount++;
+                subscribing = (iSubscribing || iPendingSubscribe) && iSubscriptionId == null;
+                renewing = (iSubscribing || iPendingSubscribe) && iSubscriptionId != null;
+                unsubscribing = (iUnsubscribing || iPendingUnsubscribe) && iSubscriptionId != null;
+            }
+            else
+            {
+                iSubscriptionId = null;
+                iUnsubscribeCompleted.Set();
+            }
             iSubscribing = false;
             iPendingSubscribe = false;
             iUnsubscribing = false;
             iPendingUnsubscribe = false;
-            iSubscriptionId = null;
-            iUnsubscribeCompleted.Set();
             iMutex.ReleaseMutex();
-            OnEventSubscriptionError();
+            if (subscribing)
+            {
+                UserLog.WriteLine("Retrying subscribe: " + this.Device.Udn);
+                Subscribe();
+            }
+            else if (renewing)
+            {
+                UserLog.WriteLine("Retrying renew: " + this.Device.Udn);
+                Renew();
+            }
+            else if (unsubscribing)
+            {
+                UserLog.WriteLine("Retrying unsubscribe: " + this.Device.Udn);
+                Unsubscribe();
+            }
+            else
+            {
+                UserLog.WriteLine("Retry attempts exceeded - raising subscription error: " + this.Device.Udn);
+                OnEventSubscriptionError();
+            }
         }
 
         private void PendingSubscribe()
@@ -1003,6 +1037,8 @@ namespace Linn.ControlPoint.Upnp
                     Trace.WriteLine(Trace.kUpnp, "Subscribe        Complete");
 
                     Server.AddSession(iSubscriptionId, EventServerEvent);
+
+                    iRetryCount = 0;
 
                     // Check for pending unsubscribe
 
@@ -1162,6 +1198,8 @@ namespace Linn.ControlPoint.Upnp
 
                 iSubscriptionId = null;
 
+                iRetryCount = 0;
+
                 iUnsubscribeCompleted.Set();
 
                 // Check for pending subscribe
@@ -1272,6 +1310,8 @@ namespace Linn.ControlPoint.Upnp
                     iMutex.WaitOne();
 
                     iSubscribing = false;
+
+                    iRetryCount = 0;
 
                     // Check for pending unsubscribe
 
@@ -1403,6 +1443,8 @@ namespace Linn.ControlPoint.Upnp
         private HeaderUpnpServer iHeaderUpnpServer;
         private HeaderUpnpTimeout iHeaderUpnpTimeout;
         private static WebProxy iWebProxy = new WebProxy();
+        private uint iRetryCount;
+        private const uint kMaxRetryCount = 3;
     }
 
     public class ServiceLocationUpnp : ServiceLocation

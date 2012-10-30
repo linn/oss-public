@@ -1,0 +1,181 @@
+<div id="body" class="img-wrapper background">
+    <script src="Widgets/Common/Common.js" type="text/javascript"></script>
+    <script src="javascript/jquery.tmpl.min.js" type="text/javascript"></script>
+    <script src="javascript/badger.js" type="text/javascript"></script>
+    
+    <script id="diagnostics-crash-template" type="text/x-jquery-tmpl">
+        <li class="device crashDevice" id="${id}">
+            <div>
+                <div class="leftColumn3">
+                    <div class="deviceContainer">
+                        <div class="textColumn">
+                            <div class="fullname-text">${room}${name}</div>
+                            <div class="model-text">${model}</div>
+                        </div>
+                        <div class="imageColumn">
+                            <img class="device-img" src='${image}' />
+                        </div>
+                    </div>
+                </div>
+                <div class="rightColumn3">
+                    <button id="buttonSend" class="btn" type="button" onclick="trackEvent('SendCrashDataClick', 'Send', '', $('#devices li').size());xappSend('Send', '${id}')">Send</button>
+                    <button id="buttonIgnore" class="btn" type="button" onclick="trackEvent('SendCrashDataClick', 'Ignore', '', $('#devices li').size());xappSend('Ignore', '${id}')">Ignore</button>
+                </div>
+                <div class="middleColumn3">
+                    <div class="wrapText textSpacer">Your ${model} has information available about a previously experienced a problem.</div>
+                    <div class="wrapText">Sending this information to Linn will help us improve your experience with your ${model}.</div>
+                </div>
+            </div>
+        </li>
+    </script>
+    
+    <script id="diagnostics-rs232-template" type="text/x-jquery-tmpl">
+        <li class="device" id="${id}">
+            <div>
+                <div class="leftColumn3">
+                    <div class="deviceContainer">
+                        <div class="textColumn">
+                            <div class="fullname-text">${room}${name}</div>
+                            <div class="model-text">${model}</div>
+                        </div>
+                        <div class="imageColumn">
+                            <img class="device-img" src='${image}' />
+                        </div>
+                    </div>
+                </div>
+                <div class="rightColumn3">
+                    <!-- FIXME: Should we be doing window.open here or using XappSend('OpenBrowser','...')? -->
+                    <button id="buttonNeedHelp" class="btn" type="button" onclick="window.open('http://docs.linn.co.uk/wiki/index.php/Systems${docsSection}')">Need Help</button>
+                </div>
+                <div class="middleColumn3">
+                    <div class="wrapText">There is a problem with the connection between your DS and ${type}.</div>
+                </div>
+            </div>
+        </li>
+    </script>
+    
+    <script type="text/javascript">
+        linnSetUnselectable($('#body'));
+    </script>
+    
+    <script type="text/javascript">
+        function onUpdateBadges(json) {
+            if(json.NumSoftwareUpdates > 0) {
+                $('#tabSoftwareUpdate').badger(json.NumSoftwareUpdates.toString());
+            } else {
+                $('#tabSoftwareUpdate').badger('');
+            }
+            
+            if(json.NumDiagnostics > 0) {
+                $('#tabDiagnostics').badger(json.NumDiagnostics.toString());
+            } else {
+                $('#tabDiagnostics').badger('');
+            }
+        }
+        
+        function onNavigationItemClicked(page) {
+            xappSend('Open', page);
+        }
+        
+        function onAllWorking(json) {
+            $('#allworking-text').removeClass('hide');
+        }
+        
+        function onDeviceAdded(json) {
+            if ($('#' + json.Id).length == 1) {
+                return;
+            }
+
+            if(json.Type == "eCrash")
+            {
+                var data = {
+                    id: json.Id,
+                    room: json.Description.Room,
+                    name: json.Description.Name,
+                    model: json.Description.Model,
+                    image: json.Description.ImageUri
+                };
+                
+                if(json.Index == 0) {
+                    $('#diagnostics-crash-template').tmpl(data).prependTo($('#devices'));
+                }
+                else {
+                    var element = $('#devices li').eq(json.Index - 1);
+                    $('#diagnostics-crash-template').tmpl(data).insertAfter(element);
+                }
+                
+                $('#buttonSendAll').removeClass('hide');
+                $('#buttonIgnoreAll').removeClass('hide');
+                $('#subHeaderOption').removeClass('hide');
+            } else {
+                var type = "unknown";
+                
+                if(json.Type == "eProxyPreamp") {
+                    type = "preamp";
+                } else if(json.Type == "eProxyCdPlayer") {
+                    type = "CD player";
+                }
+                
+                var docsSection = "";
+                if(json.Description.Model == "Klimax DS") {
+                    docsSection = '#Klimax_DS_.26_Klimax_Kontrol_.28.26_CD12.29';
+                } else if(json.Description.Model == "Akurate DS") {
+                    docsSection = '#Akurate_DS_.26_Akurate_Kontrol_.28.26_Akurate_CD.2FUnidisk.29';
+                } else if(json.Description.Model == "Majik DS") {
+                    docsSection = '#Majik_DS_.26_Majik_Kontrol.2FMajik-I_.28.26_Majik_CD.29';
+                }
+                
+                var data = {
+                    id: json.Id,
+                    room: json.Description.Room,
+                    name: json.Description.Name,
+                    model: json.Description.Model,
+                    image: json.Description.ImageUri,
+                    docsSection: docsSection,
+                    type: type
+                };
+                
+                if(json.Index == 0) {
+                    $('#diagnostics-rs232-template').tmpl(data).prependTo($('#devices'));
+                }
+                else {
+                    var element = $('#devices li').eq(json.Index - 1);
+                    $('#diagnostics-rs232-template').tmpl(data).insertAfter(element);
+                }
+            }
+            
+            $('#allworking-text').addClass('hide');
+        }
+        
+        function onDeviceRemoved(json) {
+            $('#' + json.Value).remove();
+            
+            if($('.crashDevice').size() == 0) {
+                $('#buttonSendAll').addClass('hide');
+                $('#buttonIgnoreAll').addClass('hide');
+                $('#subHeaderOption').addClass('hide');
+            }
+            
+            if($("#devices li").size() == 0) {
+                $('#allworking-text').removeClass('hide');
+            }
+        }
+    </script>
+
+    <page-frag frag="fragments/header.frag" />
+
+    <div>
+        <button id="buttonSendAll" class="btn hide" type="button" onclick="trackEvent('SendCrashDataClick', 'SendAll', '', $('#devices li').size());xappSend('SendAll', '')">Send All</button>
+        <button id="buttonIgnoreAll" class="btn hide" type="button" onclick="trackEvent('SendCrashDataClick', 'IgnoreAll', '', $('#devices li').size());xappSend('IgnoreAll', '')">Ignore All</button>
+        <div id="subHeaderOption" class="subHeaderItem hide">
+            <label id="autoSendCrashDataLabel" for="autoSendCrashData">Automatically send DS crash information to Linn</label>
+            <input id="autoSendCrashData" type="checkbox" onclick="trackEvent('AutoSendCrashData', $('#autoSendCrashData').is(':checked') ? 'On' : 'Off');xappSend('SendDsCrashData', $('#autoSendCrashData').is(':checked'));" />
+        </div>
+    </div>
+    <div class="bodyContainer">
+        <div id="diagnosticsContainer">
+            <ul id="devices" />
+        </div>
+        <div id="allworking-text" class="hide">All Linn Products Are Working Correctly</div>
+    </div>
+</div>

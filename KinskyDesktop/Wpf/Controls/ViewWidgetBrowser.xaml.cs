@@ -93,8 +93,14 @@ namespace KinskyDesktopWpf
             if (iViewIndex == kThumbsView)
             {
                 VirtualizingTilePanel panel = lstBrowser.FindVisualChild<VirtualizingTilePanel>();
-                Assert.Check(panel != null);
-                iSliderStartIndex = panel.CurrentIndex;
+                if (panel != null)
+                {
+                    iSliderStartIndex = panel.CurrentIndex;
+                }
+                else
+                {
+                    iSliderStartIndex = 0;
+                }
             }
             else
             {
@@ -140,15 +146,7 @@ namespace KinskyDesktopWpf
 
                 if (iOpen)
                 {
-                    if (iData != null)
-                    {
-                        iContentCollector.EventOpened -= iContentCollector_EventOpened;
-                        iContentCollector.EventItemsFailed -= iContentCollector_EventItemsFailed;
-                        iContentCollector.EventItemsLoaded -= iContentCollector_EventItemsLoaded;
-                        iContentCollector.Dispose();
-                        iData.Dispose();
-                        iData = null;
-                    }
+                    CancelContentCollector();
                     iNavigationState = ENavigationState.Navigating;
                     SetPanelState();
                     iContentCollector = ContentCollectorMaster.Create(iContainer, new ArrayBackedContentCache<upnpObject>(), kRangeSize, kThreadCount, 0);
@@ -168,6 +166,24 @@ namespace KinskyDesktopWpf
                         iScrollIndexCache.Remove(key);
                     }
                 }
+            }
+        }
+
+        private void CancelContentCollector()
+        {
+            if (iData != null)
+            {
+                ScrollViewer sv = lstBrowser.GetScrollViewer();
+                if (sv != null)
+                {
+                    sv.ScrollToTop();
+                }
+                iContentCollector.EventOpened -= iContentCollector_EventOpened;
+                iContentCollector.EventItemsFailed -= iContentCollector_EventItemsFailed;
+                iContentCollector.EventItemsLoaded -= iContentCollector_EventItemsLoaded;
+                iContentCollector.Dispose();
+                iData.Dispose();
+                iData = null;
             }
         }
 
@@ -198,6 +214,7 @@ namespace KinskyDesktopWpf
                     UserLog.WriteLine("Content collector failed: " + e.Exception);
                     iIsAlbum = false;
                     iErrorMessage = e.Exception.Message;
+                    CancelContentCollector();
                     SetView();
                 }
             }));
@@ -643,7 +660,7 @@ namespace KinskyDesktopWpf
         private void UpdateCacheSize()
         {
             // prevent image size being smaller than the browser image size
-            (Application.Current as App).ImageCache.DownscaleImageSize = Math.Max((int)ItemSize, kMinimumImageSize);
+            KinskyDesktop.Instance.ImageCache.DownscaleImageSize = Math.Max((int)ItemSize, kMinimumImageSize);
         }
 
         public void OnViewClick()
@@ -779,8 +796,8 @@ namespace KinskyDesktopWpf
 
                 img.Height = containerSize * (2 / 3);
                 img.SetValue(Image.SourceProperty, StaticImages.ImageSourceIconLoading);
-                WpfImageCache loader = (Application.Current as App).ImageCache;
-                IconResolver resolver = (Application.Current as App).IconResolver;
+                WpfImageCache loader = KinskyDesktop.Instance.ImageCache;
+                IconResolver resolver = KinskyDesktop.Instance.IconResolver;
                 loader.Load(resolver.Resolve(dragItem), (s) =>
                 {
                     this.Dispatcher.BeginInvoke((Action)(() =>

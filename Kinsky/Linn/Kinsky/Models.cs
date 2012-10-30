@@ -485,21 +485,21 @@ namespace Linn.Kinsky
         /// <exception cref="Linn.Kinsky.InvocationException">This code must only be called by client code on the application Invoke thread (see <see cref="Linn.Kinsky.IInvoker"/>).</exception>
         /// <exception cref="System.InvalidOperationException">Raised when <see cref="AllowPlayNowNextLater"/> returns false.</exception>
         /// <param name="aRetriever">Retrieves the media to play.</param>
-        uint PlayNow(IMediaRetriever aRetriever);
+        void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback);
         /// <summary>
         /// Retrieves and enqueues the specified media for subsequent playing.
         /// </summary>
         /// <exception cref="Linn.Kinsky.InvocationException">This code must only be called by client code on the application Invoke thread (see <see cref="Linn.Kinsky.IInvoker"/>).</exception>
         /// <exception cref="System.InvalidOperationException">Raised when <see cref="AllowPlayNowNextLater"/> returns false.</exception>
         /// <param name="aRetriever">Retrieves the media to play.</param>
-        uint PlayNext(IMediaRetriever aRetriever);
+        void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback);
         /// <summary>
         /// Retrieves and enqueues the specified media for future playing.
         /// </summary>
         /// <exception cref="Linn.Kinsky.InvocationException">This code must only be called by client code on the application Invoke thread (see <see cref="Linn.Kinsky.IInvoker"/>).</exception>
         /// <exception cref="System.InvalidOperationException">Raised when <see cref="AllowPlayNowNextLater"/> returns false.</exception>
         /// <param name="aRetriever">Retrieves the media to play.</param>
-        uint PlayLater(IMediaRetriever aRetriever);
+        void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback);
 
         /// <summary>
         /// Indicates whether the source allows <see cref="Seek"/> to be called.
@@ -616,14 +616,14 @@ namespace Linn.Kinsky
         /// <param name="aMediaRetriever">Retrieves the media to insert.</param>
         /// <returns>The number of items inserted into the playlist.</returns>
         /// <exception cref="Linn.Kinsky.InvocationException">This code must only be called by client code on the application Invoke thread (see <see cref="Linn.Kinsky.IInvoker"/>).</exception>
-        uint Insert(uint aInsertAfterId, IMediaRetriever aMediaRetriever);
+        void Insert(uint aInsertAfterId, IMediaRetriever aMediaRetriever, Action<uint> aCallback);
         /// <summary>
         /// Removes a list of items from their current location within a playlist and inserts them elsewhere.
         /// </summary>
         /// <param name="aInsertAfterId">The Id of the item after which to insert content.</param>
         /// <param name="aPlaylistItems">The items to move.</param>
         /// <exception cref="Linn.Kinsky.InvocationException">This code must only be called by client code on the application Invoke thread (see <see cref="Linn.Kinsky.IInvoker"/>).</exception>
-        void Move(uint aInsertAfterId, IList<MrItem> aPlaylistItems);
+        void Move(uint aInsertAfterId, IList<MrItem> aPlaylistItems, System.Action aCallback);
         /// <summary>
         /// Deletes items from a playlist.
         /// </summary>
@@ -708,7 +708,7 @@ namespace Linn.Kinsky
                 iOpen = false;
                 iHouse.EventRoomAdded -= RoomAdded;
                 iHouse.EventRoomRemoved -= RoomRemoved;
-                iHouse.Stop(); 
+                iHouse.Stop();
                 List<Room> rooms = new List<Room>(iRooms);
                 foreach (Room r in rooms)
                 {
@@ -722,7 +722,7 @@ namespace Linn.Kinsky
                 Assert.Check(iRooms.Count == 0);
             }
         }
-        
+
 
         /// <summary>
         /// Ordered collection of IRooms present within the house.
@@ -1053,7 +1053,7 @@ namespace Linn.Kinsky
         {
             add
             {
-                lock(iRoom)
+                lock (iRoom)
                 {
                     if (DEventStandbyChanged == null)
                     {
@@ -1064,7 +1064,7 @@ namespace Linn.Kinsky
             }
             remove
             {
-                lock(iRoom)
+                lock (iRoom)
                 {
                     DEventStandbyChanged -= value;
                     if (DEventStandbyChanged == null)
@@ -2564,11 +2564,11 @@ namespace Linn.Kinsky
 
         public abstract bool Next();
 
-        public abstract uint PlayNow(IMediaRetriever aRetriever);
+        public abstract void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback);
 
-        public abstract uint PlayNext(IMediaRetriever aRetriever);
+        public abstract void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback);
 
-        public abstract uint PlayLater(IMediaRetriever aRetriever);
+        public abstract void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback);
 
         public abstract bool AllowSeeking { get; }
 
@@ -2781,19 +2781,19 @@ namespace Linn.Kinsky
             throw new InvalidOperationException();
         }
 
-        public override uint PlayNow(IMediaRetriever aRetriever)
+        public override void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayNext(IMediaRetriever aRetriever)
+        public override void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayLater(IMediaRetriever aRetriever)
+        public override void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
@@ -2960,19 +2960,19 @@ namespace Linn.Kinsky
             return false;
         }
 
-        public override uint PlayNow(IMediaRetriever aRetriever)
+        public override void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayNext(IMediaRetriever aRetriever)
+        public override void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayLater(IMediaRetriever aRetriever)
+        public override void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
@@ -3399,34 +3399,142 @@ namespace Linn.Kinsky
             return false;
         }
 
-        public override uint PlayNow(IMediaRetriever aRetriever)
+        public override void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            if (iModelSource != null)
+            uint count = 0;
+            IModelSourceMediaRenderer model = iModelSource;
+            if (model != null)
             {
-                return iModelSource.PlayNow(aRetriever.Media);
+                // sync operation - move off invoker thread
+                iScheduler.Schedule(() =>
+                {
+                    try
+                    {
+                        DidlLite didl = aRetriever.Media;
+
+                        Trace.WriteLine(Trace.kKinsky, "PlayNow about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("PlayNow about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+
+                        count = model.PlayNow(aRetriever.Media);
+
+                        Trace.WriteLine(Trace.kKinsky, "PlayNow inserted " + count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("PlayNow inserted " + count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(Trace.kKinsky, "PlayNow error: " + ex);
+                        UserLog.WriteLine("PlayNow error: " + ex);
+                    }
+                    finally
+                    {
+                        if (aCallback != null)
+                        {
+                            aCallback(count);
+                        }
+                    }
+                });
             }
-            return (uint)0;
+            else
+            {
+                if (aCallback != null)
+                {
+                    aCallback(count);
+                }
+            }
         }
 
-        public override uint PlayNext(IMediaRetriever aRetriever)
+        public override void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            if (iModelSource != null)
+            uint count = 0;
+            IModelSourceMediaRenderer model = iModelSource;
+            if (model != null)
             {
-                return iModelSource.PlayNext(aRetriever.Media);
+                // sync operation - move off invoker thread
+                iScheduler.Schedule(() =>
+                {
+                    try
+                    {
+                        DidlLite didl = aRetriever.Media;
+
+                        Trace.WriteLine(Trace.kKinsky, "PlayNext about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("PlayNext about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+
+                        count = model.PlayNext(aRetriever.Media);
+
+                        Trace.WriteLine(Trace.kKinsky, "PlayNext inserted " + count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("PlayNext inserted " + count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(Trace.kKinsky, "PlayNext error: " + ex);
+                        UserLog.WriteLine("PlayNext error: " + ex);
+                    }
+                    finally
+                    {
+                        if (aCallback != null)
+                        {
+                            aCallback(count);
+                        }
+                    }
+                });
             }
-            return (uint)0;
+            else
+            {
+                if (aCallback != null)
+                {
+                    aCallback(count);
+                }
+            }
         }
 
-        public override uint PlayLater(IMediaRetriever aRetriever)
+        public override void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            if (iModelSource != null)
+            uint count = 0;
+            IModelSourceMediaRenderer model = iModelSource;
+            if (model != null)
             {
-                return iModelSource.PlayLater(aRetriever.Media);
+                // sync operation - move off invoker thread
+                iScheduler.Schedule(() =>
+                {
+                    try
+                    {
+                        DidlLite didl = aRetriever.Media;
+
+                        Trace.WriteLine(Trace.kKinsky, "PlayLater about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("PlayLater about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+
+                        count = model.PlayLater(aRetriever.Media);
+
+                        Trace.WriteLine(Trace.kKinsky, "PlayLater inserted " + count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("PlayLater inserted " + count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(Trace.kKinsky, "PlayLater error: " + ex);
+                        UserLog.WriteLine("PlayLater error: " + ex);
+                    }
+                    finally
+                    {
+                        if (aCallback != null)
+                        {
+                            aCallback(count);
+                        }
+                    }
+                });
             }
-            return (uint)0;
+            else
+            {
+                if (aCallback != null)
+                {
+                    aCallback(count);
+                }
+            }
         }
 
         public override bool AllowSeeking
@@ -3544,25 +3652,68 @@ namespace Linn.Kinsky
 
         #region IPlaylistSource Members
 
-        public uint Insert(uint aInsertAfterId, IMediaRetriever aMediaRetriever)
+        public void Insert(uint aInsertAfterId, IMediaRetriever aMediaRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             uint count = 0;
-            if (iModelSource != null)
+            IModelSourceMediaRenderer model = iModelSource;
+            if (model != null)
             {
-                count = iModelSource.PlaylistInsert(aInsertAfterId, aMediaRetriever.Media);
-                Trace.WriteLine(Trace.kKinsky, "Inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                UserLog.WriteLine("Inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
+                // sync operation - move off invoker thread
+                iScheduler.Schedule(() =>
+                {
+                    try
+                    {
+                        count = model.PlaylistInsert(aInsertAfterId, aMediaRetriever.Media);
+                        Trace.WriteLine(Trace.kKinsky, "Inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
+                        UserLog.WriteLine("Inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Trace.WriteLine(Trace.kKinsky, "PlaylistInsert error: " + ex);
+                        UserLog.WriteLine("PlaylistInsert error: " + ex);
+                    }
+                    finally
+                    {
+                        if (aCallback != null)
+                        {
+                            aCallback(count);
+                        }
+                    }
+                });
             }
-            return count;
+            else
+            {
+                if (aCallback != null)
+                {
+                    aCallback(count);
+                }
+            }
         }
 
-        public void Move(uint aInsertAfterId, IList<MrItem> aPlaylistItems)
+        public void Move(uint aInsertAfterId, IList<MrItem> aPlaylistItems, System.Action aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            if (iModelSource != null)
+            IModelSourceMediaRenderer model = iModelSource;
+            if (model != null)
             {
-                iModelSource.PlaylistMove(aInsertAfterId, aPlaylistItems);
+                // sync operation - move off invoker thread
+                iScheduler.Schedule(() =>
+                {
+                    model.PlaylistMove(aInsertAfterId, aPlaylistItems);
+                    if (aCallback != null)
+                    {
+                        aCallback();
+                    }
+                });
+            }
+            else
+            {
+                if (aCallback != null)
+                {
+                    aCallback();
+                }
             }
         }
 
@@ -3950,7 +4101,7 @@ namespace Linn.Kinsky
         }
 
         #region Source Overrides
-        
+
         internal override void Close()
         {
             base.Close();
@@ -4014,19 +4165,19 @@ namespace Linn.Kinsky
             return false;
         }
 
-        public override uint PlayNow(IMediaRetriever aRetriever)
+        public override void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayNext(IMediaRetriever aRetriever)
+        public override void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayLater(IMediaRetriever aRetriever)
+        public override void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
@@ -4484,19 +4635,19 @@ namespace Linn.Kinsky
             return false;
         }
 
-        public override uint PlayNow(IMediaRetriever aRetriever)
+        public override void PlayNow(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayNext(IMediaRetriever aRetriever)
+        public override void PlayNext(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
         }
 
-        public override uint PlayLater(IMediaRetriever aRetriever)
+        public override void PlayLater(IMediaRetriever aRetriever, Action<uint> aCallback)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
             throw new InvalidOperationException();
@@ -4936,7 +5087,14 @@ namespace Linn.Kinsky
             Retriever = aRetriever;
         }
 
+        public EventArgsPlay(IMediaRetriever aRetriever, Action<uint> aCallback)
+            : this(aRetriever)
+        {
+            Callback = aCallback;
+        }
+
         public IMediaRetriever Retriever;
+        public Action<uint> Callback;
     }
 
     public class EventArgsInsert : EventArgs
@@ -4947,8 +5105,29 @@ namespace Linn.Kinsky
             Retriever = aRetriever;
         }
 
+        public EventArgsInsert(uint aInsertAfterId, IMediaRetriever aRetriever, Action<uint> aCallback)
+            : this(aInsertAfterId, aRetriever)
+        {
+            Callback = aCallback;
+        }
+
         public uint InsertAfterId;
         public IMediaRetriever Retriever;
+        public Action<uint> Callback;
+    }
+
+    public class EventArgsMove : EventArgs
+    {
+        public EventArgsMove(uint aInsertAfterId, IList<MrItem> aMoveItems, System.Action aCallback)
+        {
+            InsertAfterId = aInsertAfterId;
+            MoveItems = aMoveItems;
+            Callback = aCallback;
+        }
+
+        public uint InsertAfterId;
+        public IList<MrItem> MoveItems;
+        public System.Action Callback;
     }
 
     public interface IPlaylistSupport
@@ -4969,6 +5148,8 @@ namespace Linn.Kinsky
         void PlayLater(IMediaRetriever aMediaRetriever);
         void PlayInsert(uint aInsertAfterId, IMediaRetriever aMediaRetriever);
 
+        void Move(uint aInsertAfterId, IList<MrItem> aPlaylistItems);
+
         event EventHandler<EventArgs> EventIsOpenChanged;
         event EventHandler<EventArgs> EventIsInsertingChanged;
         event EventHandler<EventArgs> EventIsDraggingChanged;
@@ -4978,10 +5159,7 @@ namespace Linn.Kinsky
         event EventHandler<EventArgsPlay> EventPlayNext;
         event EventHandler<EventArgsPlay> EventPlayLater;
         event EventHandler<EventArgsInsert> EventPlayInsert;
-
-        event EventHandler<EventArgs> EventPlayNowRequest;
-        event EventHandler<EventArgs> EventPlayNextRequest;
-        event EventHandler<EventArgs> EventPlayLaterRequest;
+        event EventHandler<EventArgsMove> EventMove;
     }
 
     public interface IModel

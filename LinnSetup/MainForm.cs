@@ -379,7 +379,7 @@ namespace LinnSetup
         }
 
         private void onlineHelpToolStripMenuItem_Click(object sender, EventArgs e) {
-            string url = "http://docs.linn.co.uk/wiki/index.php/Konfig_Manual";
+            string url = "http://docs.linn.co.uk/wiki/index.php/";
             try {
                 System.Diagnostics.Process.Start(url);
             }

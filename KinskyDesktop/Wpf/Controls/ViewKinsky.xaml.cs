@@ -264,8 +264,11 @@ namespace KinskyDesktopWpf
 
         public void Rescan()
         {
-            iLocator.Refresh();
-            iHelperKinsky.Rescan();
+            if (iHelperKinsky != null)
+            {
+                iLocator.Refresh();
+                iHelperKinsky.Rescan();
+            }
         }
 
 

@@ -14,6 +14,7 @@ namespace OssToolkitDroid
         {
             iContext = aContext;
             iHandler = new Handler(iContext.MainLooper);
+            iMainThreadId = iContext.MainLooper.Thread.Id;
         }
 
         #region IInvoker Members
@@ -22,7 +23,7 @@ namespace OssToolkitDroid
         {
             get
             {
-                return iContext.MainLooper.Thread.Id != Thread.CurrentThread().Id;
+                return iMainThreadId != Thread.CurrentThread().Id;
             }
         }
 
@@ -30,12 +31,21 @@ namespace OssToolkitDroid
         {
             iHandler.Post((Action)(() =>
             {
+
                 try
                 {
+#if DEBUG || TRACE
+                    Trace.WriteLine(Trace.kGui, string.Format("{0} INVOKING {1}", DateTime.Now.ToString(), this.GetCallInfo(aDelegate, aArgs)));
+#endif
                     aDelegate.DynamicInvoke(aArgs);
+#if DEBUG || TRACE
+                    Trace.WriteLine(Trace.kGui, string.Format("{0} INVOKED {1}", DateTime.Now.ToString(), this.GetCallInfo(aDelegate, aArgs)));
+#endif
                 }
                 catch (System.Exception ex)
                 {
+                    UserLog.WriteLine("Exception: " + ex);
+                    UserLog.WriteLine("Invocation details: " + this.GetCallInfo(aDelegate, aArgs));
                     ThrowException(ex);
                 }
             }));
@@ -63,6 +73,7 @@ namespace OssToolkitDroid
         #endregion
         private Context iContext;
         private Handler iHandler;
+        private long iMainThreadId;
     }
 
 }

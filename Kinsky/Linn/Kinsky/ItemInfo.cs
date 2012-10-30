@@ -153,10 +153,25 @@ namespace Linn.Kinsky
                             fullList.Add(new KeyValuePair<string, string>("Count", count));
                         }
 
+                        string composer = DidlLiteAdapter.Composer(iItem);
+                        if (composer != string.Empty)
+                        {
+                            displayList.Add(new KeyValuePair<string, string>("Composer", composer));
+                            fullList.Add(new KeyValuePair<string, string>("Composer", composer));
+                        }
+
                         string genre = DidlLiteAdapter.Genre(iItem);
                         if (genre != string.Empty)
                         {
-                            displayList.Add(new KeyValuePair<string, string>("Genre", genre));
+                            string parentGenre = string.Empty;
+                            if (iParent != null)
+                            {
+                                parentGenre = DidlLiteAdapter.Genre(iParent);
+                            }
+                            if (parentGenre != genre)
+                            {
+                                displayList.Add(new KeyValuePair<string, string>("Genre", genre));
+                            }
                             fullList.Add(new KeyValuePair<string, string>("Genre", genre));
                         }
 
@@ -171,13 +186,6 @@ namespace Linn.Kinsky
                         if (originalTrackNumber != string.Empty)
                         {
                             fullList.Add(new KeyValuePair<string, string>("Original Track No.", originalTrackNumber));
-                        }
-
-                        string composer = DidlLiteAdapter.Composer(iItem);
-                        if (composer != string.Empty)
-                        {
-                            displayList.Add(new KeyValuePair<string, string>("Composer", composer));
-                            fullList.Add(new KeyValuePair<string, string>("Composer", composer));
                         }
 
                         string conductor = DidlLiteAdapter.Conductor(iItem);

@@ -46,9 +46,7 @@ namespace Linn.ProductSupport
             // Configure Service Point Manager
             ServicePointManager.DefaultConnectionLimit = 50;
             ServicePointManager.Expect100Continue = false;
-#if !PocketPC
             ServicePointManager.UseNagleAlgorithm = false;
-#endif
         }
 
         public void Start(IPAddress aInterface)

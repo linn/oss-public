@@ -23,38 +23,12 @@ gWebLinuxOnly = sys.platform.startswith('linux') and ['Web'] or []
 gTopLevelCmpnts = {
     'Volkano': {
         'components': ['External', 'Xml', 'Kodegen'] + gLibUpnp \
-                    + gWebLinuxOnly + ['Gui', 'Layouts', 'Kinsky']
-    },
-
-    'LinnSysTray': {
-        'components': ['Xml', 'Kodegen'] + gLibUpnp + ['LinnSysTray']
-    },
-
-    'SneakyLastFm': {
-        'components': ['Xml', 'Kodegen'] + gLibUpnp + ['SneakyLastFm']
-    },
-
-    'SneakyMedia': {
-        'components': ['Xml', 'Kodegen'] + gLibUpnp + ['SneakyMedia']
+                    + gWebLinuxOnly + ['Layouts', 'Kinsky']
     },
 
     'KinskyDesktop': {
         'components': ['External', 'Xml', 'Kodegen'] + gLibUpnp \
                     + ['Kinsky', 'MediaProviderPlugins', ('Layouts', 'Kinsky'), 'KinskyDesktop']
-    },
-
-    'KinskyPda': {
-        'components': ['External', 'Xml', 'Kodegen'] + gLibUpnp \
-                    + ['Kinsky', 'MediaProviderPlugins', ('Layouts', 'Kinsky'), 'KinskyDesktop'],
-        'toolchain': 'PocketPc'
-    },
-
-    'KinskyClassic': {
-        'components': ['External', 'Xml', 'Kodegen'] + gLibUpnp + ['Gui', 'Kinsky', 'MediaProviderPlugins', 'Layouts', 'KinskyClassic']
-    },
-
-    'KinskyWeb': {
-        'components': ['External', 'Xml', 'Kodegen'] + gLibUpnp + ['Kinsky', 'MediaProviderPlugins', 'KinskyWeb']
     },
 
     'LibUpnpCil': {
@@ -71,14 +45,6 @@ gTopLevelCmpnts = {
 
     'LinnSetup': {
         'components': ['Xml', 'Kodegen'] + gLibUpnp + ['LinnSetup']
-    },
-
-    'KinskyPronto': {
-        'components': ['KinskyPronto']
-    },
-
-    'Jed2Bin': {
-        'components': ['Jed2Bin']
     },
 
     'Services': {

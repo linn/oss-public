@@ -382,7 +382,6 @@ namespace KinskyDesktop.Widgets
             }
         }
 
-#if !PocketPC
         public override bool AutoSize
         {
             get
@@ -409,7 +408,6 @@ namespace KinskyDesktop.Widgets
                 }
             }
         }
-#endif
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -468,7 +466,6 @@ namespace KinskyDesktop.Widgets
                 ImageAttributes ia1 = new ImageAttributes();
                 ImageAttributes ia2 = new ImageAttributes();
 
-#if !PocketPC
                 ColorMatrix mx = new ColorMatrix();
                 mx.Matrix11 = mx.Matrix22 = mx.Matrix44 = 1.0f;
                 mx.Matrix33 = 1.0f - iAlpha;
@@ -478,7 +475,6 @@ namespace KinskyDesktop.Widgets
                 mx.Matrix33 = iAlpha;
 
                 ia2.SetColorMatrix(mx);
-#endif
 
                 int offset = iImageThumb.Height;
                 if (iImageThumbTop != null)
@@ -664,7 +660,6 @@ namespace KinskyDesktop.Widgets
             }
         }
 
-#if !PocketPC
         protected override void OnMouseEnter(EventArgs e)
         {
             base.OnMouseEnter(e);
@@ -695,7 +690,6 @@ namespace KinskyDesktop.Widgets
 
             iTimerAutoRepeat.Change(Timeout.Infinite, Timeout.Infinite);
         }
-#endif
 
         protected override void OnResize(EventArgs e)
         {

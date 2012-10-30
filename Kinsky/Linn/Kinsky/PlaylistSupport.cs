@@ -14,55 +14,14 @@ namespace Linn.Kinsky
 {
     public class PlaySupport : IPlaylistSupport
     {
-        private class PlayParams
-        {
-            public enum EPlayType
-            {
-                ePlayNow,
-                ePlayNext,
-                ePlayLater,
-                ePlayInsert
-            }
-
-            public PlayParams(EPlayType aPlayType, IMediaRetriever aRetriever)
-            {
-                PlayType = aPlayType;
-                Retriever = aRetriever;
-                InsertAfterId = 0;
-            }
-
-            public PlayParams(EPlayType aPlayType, IMediaRetriever aRetriever, uint aInsertAfterId)
-            {
-                PlayType = aPlayType;
-                Retriever = aRetriever;
-                InsertAfterId = aInsertAfterId;
-            }
-
-            public EPlayType PlayType;
-            public uint InsertAfterId;
-            public IMediaRetriever Retriever;
-        }
-
         public PlaySupport()
         {
             iLock = new object();
-            iEventInsert = new ManualResetEvent(false);
         }
 
         public void Open()
         {
             Assert.Check(!iOpen);
-
-            iPlayParams = null;
-            iAborting = false;
-
-            iEventInsert.Reset();
-
-            iThreadInsert = new Thread(ProcessInsert);
-            iThreadInsert.Name = "PlaySupport";
-            iThreadInsert.IsBackground = true;
-
-            iThreadInsert.Start();
 
             iOpen = true;
 
@@ -74,13 +33,6 @@ namespace Linn.Kinsky
 
         public void Close()
         {
-            iAborting = true;
-
-            iThreadInsert.Abort();
-            iThreadInsert.Join();
-
-            iThreadInsert = null;
-
             iOpen = false;
 
             if (EventIsOpenChanged != null)
@@ -98,7 +50,7 @@ namespace Linn.Kinsky
         {
             lock (iLock)
             {
-                return (iPlayParams != null);
+                return iInserting;
             }
         }
 
@@ -110,30 +62,6 @@ namespace Linn.Kinsky
         public bool IsInsertAllowed()
         {
             return iInsertAllowed;
-        }
-
-        protected void FireEventPlayNowRequest()
-        {
-            if (EventPlayNowRequest != null)
-            {
-                EventPlayNowRequest(this, EventArgs.Empty);
-            }
-        }
-
-        protected void FireEventPlayNextRequest()
-        {
-            if (EventPlayNextRequest != null)
-            {
-                EventPlayNextRequest(this, EventArgs.Empty);
-            }
-        }
-
-        protected void FireEventPlayLaterRequest()
-        {
-            if (EventPlayLaterRequest != null)
-            {
-                EventPlayLaterRequest(this, EventArgs.Empty);
-            }
         }
 
         public void SetDragging(bool aDragging)
@@ -162,131 +90,101 @@ namespace Linn.Kinsky
             }
         }
 
+        private void InsertCompletedCallback(uint aCount)
+        {
+            lock (iLock)
+            {
+                iInserting = false;
+                OnEventIsInsertingChanged();
+            }
+        }
+
+        private void MoveCompletedCallback()
+        {
+            lock (iLock)
+            {
+                iInserting = false;
+                OnEventIsInsertingChanged();
+            }
+        }
+
         public void PlayNow(IMediaRetriever aMediaRetriever)
         {
-            Play(aMediaRetriever, PlayParams.EPlayType.ePlayNow);
+            lock (iLock)
+            {
+                EventHandler<EventArgsPlay> del = EventPlayNow;
+                if (iInsertAllowed && !iInserting && del != null)
+                {
+                    iInserting = true;
+                    del(this, new EventArgsPlay(aMediaRetriever, InsertCompletedCallback));
+                    OnEventIsInsertingChanged();
+                }
+            }
         }
 
         public void PlayNext(IMediaRetriever aMediaRetriever)
         {
-            Play(aMediaRetriever, PlayParams.EPlayType.ePlayNext);
+            lock (iLock)
+            {
+                EventHandler<EventArgsPlay> del = EventPlayNext;
+                if (iInsertAllowed && !iInserting && del != null)
+                {
+                    iInserting = true;
+                    del(this, new EventArgsPlay(aMediaRetriever, InsertCompletedCallback));
+                    OnEventIsInsertingChanged();
+                }
+            }
         }
 
         public void PlayLater(IMediaRetriever aMediaRetriever)
         {
-            Play(aMediaRetriever, PlayParams.EPlayType.ePlayLater);
-        }
-
-        private void Play(IMediaRetriever aMediaRetriever, PlayParams.EPlayType aPlayType)
-        {
-            EventHandler<EventArgs> ev = null;
-
             lock (iLock)
             {
-                if (iPlayParams == null)
+                EventHandler<EventArgsPlay> del = EventPlayLater;
+                if (iInsertAllowed && !iInserting && del != null)
                 {
-                    iPlayParams = new PlayParams(aPlayType, aMediaRetriever);
-                    iEventInsert.Set();
-                    ev = EventIsInsertingChanged;
+                    iInserting = true;
+                    del(this, new EventArgsPlay(aMediaRetriever, InsertCompletedCallback));
+                    OnEventIsInsertingChanged();
                 }
-            }
-
-            if (ev != null)
-            {
-                ev(this, EventArgs.Empty);
             }
         }
 
         public void PlayInsert(uint aInsertAfterId, IMediaRetriever aMediaRetriever)
         {
-            EventHandler<EventArgs> ev = null;
-
             lock (iLock)
             {
-                if (iPlayParams == null)
+                EventHandler<EventArgsInsert> del = EventPlayInsert;
+                if (iInsertAllowed && !iInserting && del != null)
                 {
-                    iPlayParams = new PlayParams(PlayParams.EPlayType.ePlayInsert, aMediaRetriever, aInsertAfterId);
-                    iEventInsert.Set();
-                    ev = EventIsInsertingChanged;
+                    iInserting = true;
+                    del(this, new EventArgsInsert(aInsertAfterId, aMediaRetriever, InsertCompletedCallback));
+                    OnEventIsInsertingChanged();
                 }
-            }
-
-            if (ev != null)
-            {
-                ev(this, EventArgs.Empty);
             }
         }
 
-        private void ProcessInsert()
+        public void Move(uint aInsertAfterId, IList<MrItem> aPlaylistItems)
         {
-            try
+            lock (iLock)
             {
-                while (true)
+                EventHandler<EventArgsMove> del = EventMove;
+                if (iInsertAllowed && !iInserting && del != null)
                 {
-                    iEventInsert.WaitOne();
-
-                    if (iAborting)
-                    {
-                        break;
-                    }
-
-                    Assert.Check(iPlayParams != null);
-
-                    try
-                    {
-                        Trace.WriteLine(Trace.kKinsky, "Insert into playlist started...");
-                        UserLog.WriteLine("Insert into playlist started...");
-
-                        switch (iPlayParams.PlayType)
-                        {
-                            case PlayParams.EPlayType.ePlayNow:
-                                if (EventPlayNow != null)
-                                {
-                                    EventPlayNow(this, new EventArgsPlay(iPlayParams.Retriever));
-                                }
-                                break;
-                            case PlayParams.EPlayType.ePlayNext:
-                                if (EventPlayNext != null)
-                                {
-                                    EventPlayNext(this, new EventArgsPlay(iPlayParams.Retriever));
-                                }
-                                break;
-                            case PlayParams.EPlayType.ePlayLater:
-                                if (EventPlayLater != null)
-                                {
-                                    EventPlayLater(this, new EventArgsPlay(iPlayParams.Retriever));
-                                }
-                                break;
-                            case PlayParams.EPlayType.ePlayInsert:
-                                if (EventPlayInsert != null)
-                                {
-                                    EventPlayInsert(this, new EventArgsInsert(iPlayParams.InsertAfterId, iPlayParams.Retriever));
-                                }
-                                break;
-                            default:
-                                Assert.Check(false);
-                                break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Trace.WriteLine(Trace.kKinsky, "Insert into playlist failed (" + e + ")");
-                        UserLog.WriteLine("Insert into playlist failed (" + e + ")");
-                    }
-
-                    lock (iLock)
-                    {
-                        iEventInsert.Reset();
-                        iPlayParams = null;
-                    }
-
-                    if (EventIsInsertingChanged != null)
-                    {
-                        EventIsInsertingChanged(this, EventArgs.Empty);
-                    }
+                    iInserting = true;
+                    del(this, new EventArgsMove(aInsertAfterId, aPlaylistItems, MoveCompletedCallback));
+                    OnEventIsInsertingChanged();
                 }
             }
-            catch (ThreadAbortException) { }
+        }
+
+        protected void OnEventIsInsertingChanged()
+        {
+            EventHandler<EventArgs> del = EventIsInsertingChanged;
+            if (del != null)
+            {
+                del(this, EventArgs.Empty);
+            }
         }
 
         public event EventHandler<EventArgs> EventIsOpenChanged;
@@ -298,22 +196,14 @@ namespace Linn.Kinsky
         public event EventHandler<EventArgsPlay> EventPlayNext;
         public event EventHandler<EventArgsPlay> EventPlayLater;
         public event EventHandler<EventArgsInsert> EventPlayInsert;
-
-        // These events are used when the main application requires a plugin to process a play now/next/later action
-        // KinskyDesktop uses the drag 'n' drop interface for communication, KinskyPda uses these events for communication
-        public event EventHandler<EventArgs> EventPlayNowRequest;
-        public event EventHandler<EventArgs> EventPlayNextRequest;
-        public event EventHandler<EventArgs> EventPlayLaterRequest;
+        public event EventHandler<EventArgsMove> EventMove;
 
         private bool iOpen;
         private bool iDragging;
         private bool iInsertAllowed;
+        private bool iInserting;
 
-        private bool iAborting;
-        private Thread iThreadInsert;
-        private ManualResetEvent iEventInsert;
         private object iLock;
-        private PlayParams iPlayParams;
     }
 
 } // Linn.Kinsky

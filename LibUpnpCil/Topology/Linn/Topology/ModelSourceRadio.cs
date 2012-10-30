@@ -190,11 +190,11 @@ namespace Linn.Topology
             iActionPlayNowSetChannel.EventResponse += EventSetChannelResponse;
 
             iIdArray = new ModelIdArray(new RadioIdArray(iServiceRadio));
-            iIdArray.EventIdArrayChanged += EventIdArrayChanged;
         }
 
         public override void Open()
         {
+            iIdArray.EventIdArrayChanged += EventIdArrayChanged;
             iIdArray.Open();
 
             iActionSetId.EventResponse += EventActionSetIdResponse;
@@ -210,6 +210,7 @@ namespace Linn.Topology
 
         public override void Close()
         {
+            iIdArray.EventIdArrayChanged -= EventIdArrayChanged;
             iIdArray.Close();
 
             iActionSetId.EventResponse -= EventActionSetIdResponse;

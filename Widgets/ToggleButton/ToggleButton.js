@@ -1,8 +1,8 @@
-
 // function to initialise all instance of elements with the class "linn-toggle-button"
 // as toggle buttons
 function linnToggleButtonInit()
 {
+        
     $(".linn-toggle-button").each(function (index)
     {
         // replace the specified 'onclick' handler 
@@ -16,16 +16,23 @@ function linnToggleButtonInit()
         // constuct the real "onclick" handler - this changes the button state
         // and then calls the external handler
         button.removeAttr('onclick');
-        button.attr('onclick', "linnToggleButtonSetValue($(this), !linnToggleButtonValue($(this)));"
-                             + "$(this).trigger('onClickDelegate');");
-
+        button.click(function(){
+            linnToggleButtonSetValue($(this), !linnToggleButtonValue($(this)));
+            $(this).trigger('onClickDelegate');
+        });
+        
+        
+        var onLabel = 'ON', offLabel='OFF';
+        if (typeof button.data('on-label') != "undefined"){
+            onLabel = button.data('on-label');
+        }
+        if (typeof button.data('off-label') != "undefined"){
+            offLabel = button.data('off-label');
+        }
+        
         // add the additional HTML for the button
-        button.append('<div class="linn-toggle-button-label on-label">ON</div>'
-                    + '<div class="linn-toggle-button-label off-label">OFF</div>');
-
-        // apply some styling that is dynamically determined
-        button.css('line-height', button.css('height'));
-        button.css('font-size', ((parseInt(button.css('height'), 10) * 2) / 3) + 'px');
+        button.append('<div class="linn-toggle-button-label on-label">' + onLabel + '</div>'
+                    + '<div class="linn-toggle-button-label off-label">' + offLabel + '</div>');
     });
 };
 

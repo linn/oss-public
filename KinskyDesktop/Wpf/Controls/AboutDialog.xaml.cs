@@ -27,8 +27,8 @@ namespace KinskyDesktopWpf
     /// </summary>
     public partial class AboutDialog : Window
     {
-
-        public AboutDialog(HelperKinsky aHelperKinsky, string aSize)
+        private UiOptions iUiOptions;
+        public AboutDialog(HelperKinsky aHelperKinsky, string aSize, UiOptions aUiOptions)
         {
             InitializeComponent();
             if (aSize == KinskyDesktop.kFontOptionLarge)
@@ -41,6 +41,14 @@ namespace KinskyDesktopWpf
             txtCopyright.Text = aHelperKinsky.Copyright;
             txtCompany.Text = aHelperKinsky.Company;
             txtDescription.Text = aHelperKinsky.Description;
+            iUiOptions = aUiOptions;
+            this.Loaded += LoadedHandler;
+        }
+
+        void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            iUiOptions.DialogSettings.Register(this, "About");
+            this.Loaded -= LoadedHandler;
         }
 
 

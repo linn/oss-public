@@ -15,7 +15,7 @@
 @property (copy) NSString* title;
 @property (assign) EReceiverState status;
 
-- (id) initWithPref:(PrefReceiver*)aPref uniqueInRoom:(bool)aUnique;
+- (id) initWithPref:(PrefReceiver*)aPref title:(NSString*)aTitle;
 
 @end
 
@@ -25,6 +25,7 @@
 {
     IBOutlet NSButton* buttonAutoUpdates;
     IBOutlet NSButton* buttonBeta;
+    IBOutlet NSButton* buttonUsageData;
     IBOutlet NSPopUpButton* buttonNetworkAdapter;
     IBOutlet NSPopUpButton* buttonReceiver;
     IBOutlet NSMatrix* buttonVolumeControl;
@@ -45,6 +46,7 @@
 
 @property (assign) NSButton* buttonAutoUpdates;
 @property (assign) NSButton* buttonBeta;
+@property (assign) NSButton* buttonUsageData;
 @property (assign) NSPopUpButton* buttonNetworkAdapter;
 @property (assign) NSPopUpButton* buttonReceiver;
 @property (assign) NSMatrix* buttonVolumeControl;
@@ -60,6 +62,7 @@
 - (void) mainViewDidLoad;
 - (IBAction) buttonAutoUpdatesClicked:(id)aSender;
 - (IBAction) buttonBetaClicked:(id)aSender;
+- (IBAction) buttonUsageDataClicked:(id)aSender;
 - (IBAction) buttonCheckForUpdatesClicked:(id)aSender;
 - (IBAction) buttonHelpClicked:(id)aSender;
 - (IBAction) buttonMulticastChannelClicked:(id)aSender;

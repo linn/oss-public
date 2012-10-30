@@ -217,7 +217,8 @@ pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerKinsky', progAssembl
                     RESOURCES = resources,
                     EXERESOURCES = exeResources,
                     ICON = '$variant_dir/share/Linn/Kinsky/Kinsky2.icns',
-                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                    INSTALLERRESOURCES = {'LICENSEFILE': _default_env.subst('$variant_dir/share/Linn/Core/license.txt')})
 
 Alias('Lib', pkg)
 

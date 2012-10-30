@@ -22,6 +22,7 @@ linkCliLibs = Split("""
     MonoMac
     OssCore
     OssToolkitMonoMac
+    OpenHome/MacOsX/ohNet.net
     OpenHome/MacOsX/ohSongcast.net
     OpenHome/MacOsX/ohXapp
     OpenHome/MacOsX/ohXappViewer

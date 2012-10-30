@@ -4,8 +4,6 @@ using System.Text;
 using System.IO;
 using System.Threading;
 
-using OpenHome.Xapp;
-
 using Linn;
 using Linn.Control.Ssdp;
 using Linn.ControlPoint.Upnp;
@@ -13,12 +11,10 @@ using Linn.ProductSupport;
 
 namespace Linn.Wizard
 {
-
-
     public class StreamPage : BasePage
     {
-        public StreamPage(PageControl aPageControl, string aViewId, PageComponents aPageComponents, IPageNavigation aPageNavigation)
-            : base(aPageControl, aViewId, aPageComponents, aPageNavigation) {
+        public StreamPage(PageControl aPageControl, PageDefinitions.Page aPageDefinintion)
+            : base(aPageControl, aPageDefinintion) {
 
         }
 
@@ -26,8 +22,8 @@ namespace Linn.Wizard
         protected override void OnActivated(Session aSession) {
 
             base.OnActivated(aSession);
-            
-            Box box = iPageControl.SelectedBox;
+
+            Box box = aSession.Model.SelectedBox;
             box.Playback.EventPlaybackInfo += PlaybackInfo;
             box.Playback.EventVolumeChanged += VolumeChanged;
             box.Playback.EventStandbyChanged += StandbyChanged;
@@ -46,7 +42,7 @@ namespace Linn.Wizard
 
         protected override void OnDeactivated(Session aSession) {
             base.OnDeactivated(aSession);
-            Box box = iPageControl.SelectedBox;
+            Box box = aSession.Model.SelectedBox;
 
             box.Playback.Stop();
             box.Playback.EventPlaybackInfo -= PlaybackInfo;
@@ -57,11 +53,11 @@ namespace Linn.Wizard
 
         protected override void OnReceive(Session aSession, string aName, string aValue) {
 
-            Box box = iPageControl.SelectedBox;
+            Box box = aSession.Model.SelectedBox;
             switch (aName) {
 
                 case "Play":
-                    box.Playback.Start();
+                    box.Playback.Start(Path.Combine(OpenHome.Xen.Environment.AppPath, "AudioTrack.flac"));
                     break;
 
                 case "Stop":
@@ -87,7 +83,8 @@ namespace Linn.Wizard
         }
 
         private void VolumeChanged(object obj, EventArgsVolume e) {
-            if (iPageControl.SelectedBox.Playback.Standby)
+            Playback pb = obj as Playback;
+            if (pb.Standby)
             {
                 Send("MainTextVolume", "Volume: Device in standby");
             }
@@ -97,11 +94,12 @@ namespace Linn.Wizard
         }
 
         private void StandbyChanged(object obj, EventArgsStandby e) {
+            Playback pb = obj as Playback;
             if (e.Standby) {
                 Send("MainTextVolume", "Volume: Device in standby");
             }
             else {
-                Send("MainTextVolume", "Volume: " + iPageControl.SelectedBox.Playback.Volume.ToString());
+                Send("MainTextVolume", "Volume: " + pb.Volume.ToString());
             }
         }
 

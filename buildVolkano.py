@@ -62,6 +62,5 @@ if (sys.platform == 'win32') or (sys.platform == 'darwin'):
 else:
      build(['Web'], 'Lib') 
     
-build(['Gui'], 'Lib')
 build(['Layouts'], 'Lib')
 build(['Kinsky'], 'Lib')

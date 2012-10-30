@@ -87,6 +87,9 @@ namespace Linn
             logText += iSystemDetails;
             logText += "Product Details:" + Environment.NewLine + Environment.NewLine;
             logText += iProductDetails;
+            logText += Environment.NewLine + Environment.NewLine;
+            logText += "Crash date and time:" + Environment.NewLine + Environment.NewLine;
+            logText += DateTime.Now.ToString();
             return logText;
         }
 
@@ -360,19 +363,11 @@ namespace Linn
     {
         public override void Write(string aMsg)
         {
-#if PocketPC
-            Debug.Write(aMsg);
-#else
             Console.Write(aMsg);
-#endif
         }
         public override void WriteLine(string aMsg)
         {
-#if PocketPC            
-            Debug.WriteLine(aMsg);
-#else
             Console.WriteLine(aMsg);
-#endif
         }
     }
 

@@ -126,6 +126,7 @@ namespace OssToolkitDroid
         public new void Dispose()
         {
             MasterView = null;
+            iOptionsList.Adapter = null;
             iOptionsList.Dispose();
             iOptionsList = null;
             iAdapter.Dispose();
@@ -549,8 +550,11 @@ namespace OssToolkitDroid
 
         public void Close()
         {
+            iListView.Adapter = null;
             iAdapter.EventItemDeleted -= EventItemDeletedHandler;
             iAdapter.Close();
+            iAdapter.Dispose();
+            iAdapter = null;
         }
 
         private void EventItemDeletedHandler(object sender, EventArgsListEdit<string> e)
@@ -661,7 +665,7 @@ namespace OssToolkitDroid
     public class StringListEditorAdapter<T> : AsyncArrayAdapter<string, string>
     {
         public StringListEditorAdapter(Context aContext, StringListEditor<T> aParent, int aRequestDeleteButtonResourceId, int aConfirmDeleteButtonResourceId)
-            : base(aContext, aParent)
+            : base(aContext, aParent, "StringListEditorAdapter")
         {
             iParent = aParent;
             iRequestDeleteButtonResourceId = aRequestDeleteButtonResourceId;
@@ -1055,6 +1059,8 @@ namespace OssToolkitDroid
             iOptionViewModel.Option.EventAllowedChanged -= EventAllowedChangedHandler;
             iListView.ItemClick -= ItemClickHandler;
             iParent.DetailView = null;
+            iListView.Adapter.Dispose();
+            iListView.Adapter = null;
         }
 
         private void EventAllowedChangedHandler(object sender, EventArgs e)
@@ -1259,6 +1265,8 @@ namespace OssToolkitDroid
             iParent.EventDetailClosed -= EventDetailClosedHandler;
             iOptionViewModel.Option.EventAllowedChanged -= EventAllowedChangedHandler;
             iListView.ItemClick -= ItemClickHandler;
+            iListView.Adapter.Dispose();
+            iListView.Adapter = null;
             iParent.DetailView = null;
         }
 

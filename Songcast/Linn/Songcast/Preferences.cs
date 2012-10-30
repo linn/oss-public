@@ -8,13 +8,20 @@ using System.Xml.Serialization;
 
 namespace Linn.Songcast
 {
+
     public class Preferences
     {
         private const uint kDefaultMusicLatencyMs = 300;
         private const uint kDefaultVideoLatencyMs = 50;
+        private const string kTrackerAccountDev = "UA-35644544-1";
+        private const string kTrackerAccountBeta = "UA-35652600-1";
+        private const string kTrackerAccountRelease = "UA-35647838-1";
 
-        public Preferences(IHelper aHelper)
+        public Preferences(Helper aHelper)
         {
+            iOptionPagePrivacy = new OptionPagePrivacy(aHelper);
+            aHelper.AddOptionPage(iOptionPagePrivacy);
+
             iOptionReceiverList = new OptionString("linn.songcaster", "Media player list", "List of media players that have ever been seen", new MediaPlayerConfiguration().Save());
             iOptionSelectedReceiverUdn = new OptionString("songcast.selectedreceiverudn", "Selected Receiver UDN", "The UDN of the currently selected Songcast receiver", string.Empty);
             iOptionSubnetAddress = new OptionUint("songcaster.subnet", "Subnet", "Subnet to songcast over", 0);
@@ -43,6 +50,23 @@ namespace Linn.Songcast
                 int byte2 = r.Next(254) + 1;    // in range [1,254]
                 int channel = byte1 << 8 | byte2;
                 iOptionChannel.Native = (uint)channel;
+            }
+            iTrackerAccount = kTrackerAccountDev;
+            if (aHelper.BuildType == EBuildType.Release)
+            {
+                iTrackerAccount = kTrackerAccountRelease;
+            }
+            else if (aHelper.BuildType == EBuildType.Beta)
+            {
+                iTrackerAccount = kTrackerAccountBeta;
+            }
+        }
+
+        public string TrackerAccount
+        {
+            get
+            {
+                return iTrackerAccount;
             }
         }
 
@@ -126,6 +150,12 @@ namespace Linn.Songcast
             set { iOptionRotaryVolumeControl.Native = value; }
         }
 
+        public bool UsageData
+        {
+            get { return iOptionPagePrivacy.UsageData; }
+            set { iOptionPagePrivacy.UsageData = value; }
+        }
+
         public event EventHandler<EventArgs> EventSelectedReceiverChanged
         {
             add { iOptionSelectedReceiverUdn.EventValueChanged += value; }
@@ -174,6 +204,12 @@ namespace Linn.Songcast
             remove { iOptionRotaryVolumeControl.EventValueChanged -= value; }
         }
 
+        public event EventHandler<EventArgs> EventUsageDataChanged
+        {
+            add { iOptionPagePrivacy.EventUsageDataChanged += value; }
+            remove { iOptionPagePrivacy.EventUsageDataChanged -= value; }
+        }
+
         private OptionString iOptionReceiverList;
         private OptionString iOptionSelectedReceiverUdn;
         private OptionUint iOptionSubnetAddress;
@@ -183,6 +219,8 @@ namespace Linn.Songcast
         private OptionUint iOptionMusicLatencyMs;
         private OptionUint iOptionVideoLatencyMs;
         private OptionBool iOptionRotaryVolumeControl;
+        private OptionPagePrivacy iOptionPagePrivacy;
+        private string iTrackerAccount;
     }
 
 

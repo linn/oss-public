@@ -79,9 +79,13 @@ BUNDLE_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
     <key>CFBundleIconFiles</key>
     <array>
         <string>KinskyLogoIphone.png</string>
-        <string>KinskyLogo.png</string>
+        <string>KinskyLogoIphone4.png</string>
+        <string>KinskyLogoIpad.png</string>
+        <string>KinskyLogoIpad3.png</string>
         <string>KinskyLogoSpotlightIphone.png</string>
-        <string>KinskyLogoSpotlight.png</string>
+        <string>KinskyLogoSpotlightIphone4.png</string>
+        <string>KinskyLogoSpotlightIpad.png</string>
+        <string>KinskyLogoSpotlightIpad3.png</string>
     </array>
     <key>CFBundleIdentifier</key>
     <string>uk.co.linn.%s</string>
@@ -148,11 +152,8 @@ BUNDLE_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
-        <string>UIInterfaceOrientationPortraitUpsideDown</string>
-        <string>UIInterfaceOrientationLandscapeLeft</string>
-        <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
-    <key>UISupportedInterfaceOrientations~</key>
+    <key>UISupportedInterfaceOrientations~ipad</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
         <string>UIInterfaceOrientationPortraitUpsideDown</string>
@@ -216,7 +217,7 @@ def FindProvisioningProfile(profile):
         
         if d.find("<string>%s</string>" % (profile)) > -1:
             return filename
-    return None
+    raise IOError("profile " + profile + " not found");
 
 def FindApplicationIdentifierPrefix(filename):
     f = open(filename, 'r')
@@ -238,7 +239,7 @@ def ReleaseInstallerIos(target, source, **kw):
     product = kw.get('PRODUCT', 'Unknown') #os.path.splitext(target)[0]
     bundleId = kw.get('BUNDLEID', 'Unknown')
     clilibs = kw.get('CLILIBS', [])
-    resources = kw.get('RESOURCES', [])
+    resources = kw.get('RESOURCES', {})
     identity = kw.get('IDENTITY', "")
     dist = os.path.basename(str(Dir(env.subst(target))))
     profile_src = FindProvisioningProfile(kw.get('PROFILE', ""))
@@ -253,21 +254,24 @@ def ReleaseInstallerIos(target, source, **kw):
         f.write(BUNDLE_TEMPLATE % (product, product, bundleId, product, version, bundleId, product))
         f.close()
         
-    info = env.Command(os.path.join(dist, 'Info.plist'), source, make_bundleinfo)
+    infoFile = os.path.join(dist, 'Info.plist')
+    info = env.Command(infoFile, source, make_bundleinfo)
     
     def make_resourcerules(target, source, env):
         f = open(str(target[0]), 'wt')
         f.write(RESOURCERULES_TEMPLATE)
         f.close()
         
-    rules = env.Command(os.path.join(dist, 'ResourceRules.plist'), source, make_resourcerules)
+    rulesFile = os.path.join(dist, 'ResourceRules.plist')
+    rules = env.Command(rulesFile, source, make_resourcerules)
     
     def make_entitlements(target, source, env):
         f = open(str(target[0]), 'wt')
         f.write(ENTITLEMENTS_TEMPLATE %(id, bundleId, id, bundleId, str(env['variant'] == 'debug').lower()))
         f.close()
-            
-    profile = env.Command(os.path.join(dist, 'embedded.mobileprovision'), profile_src, Copy('$TARGET', '$SOURCE'))
+    
+    profileFile = os.path.join(dist, 'embedded.mobileprovision')
+    profile = env.Command(profileFile, profile_src, Copy('$TARGET', '$SOURCE'))
     entitlements = env.Command(os.path.join(dist, product + '.xcent'), source, make_entitlements)
     
     def make_manifest(target, source, env):
@@ -281,7 +285,12 @@ def ReleaseInstallerIos(target, source, **kw):
         f.write(MANIFEST_TEMPLATE %(build, product, file, product, product, bundleId, version, product))
         f.close()
     
-    kw['RESOURCES'] = [info, rules, profile, resources]
+    additionalResources = [env.File(infoFile), env.File(rulesFile), env.File(profileFile)]
+    if '' in resources:
+        resources[''] += additionalResources
+    else:
+        resources[''] = additionalResources
+    kw['RESOURCES'] = resources
     kw['ENTITLEMENTS'] = entitlements
     temp = env.Mtouch(os.path.join(dist, product), source, **kw)
     env.Depends(temp, info + rules + profile + entitlements)

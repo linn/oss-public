@@ -41,14 +41,10 @@ namespace Linn.ControlPoint.Upnp
     {
         public EventServerUpnp()
         {
-            iMutex = new Mutex();
-
             iSessions = new Dictionary<string, EventHandlerEvent>();
+            iActiveSessionStreams = new List<TcpSessionStream>();
             iEventFifo = new Fifo<Event>();
-
-            iSession = new TcpSessionStream();
-            iReadBuffer = new Srb(kMaxReadBufferBytes, iSession);
-            iWriteBuffer = new Swb(kMaxWriteBufferBytes, iSession);
+            iScheduler = new Scheduler("EventServerScheduler", kSchedulerThreads);
         }
 
         public override void Start(IPAddress aInterface)
@@ -59,6 +55,8 @@ namespace Linn.ControlPoint.Upnp
 
             iServer = new TcpServer(Interface);
             iUri = "http://" + iServer.Endpoint.ToString() + "/event";
+
+            iScheduler.Start();
 
             iThreadHandleAbort = false;
             iThreadHandle = new Thread(RunHandle);
@@ -79,9 +77,18 @@ namespace Linn.ControlPoint.Upnp
         {
             if (iThreadHandle != null && iThreadNetwork != null)
             {
+
                 iThreadNetworkAbort = true;
                 iServer.Shutdown();
-                iSession.Close();
+                lock (iActiveSessionStreams)
+                {
+                    for (int i = 0; i < iActiveSessionStreams.Count; i++)
+                    {
+                        iActiveSessionStreams[i].Close();
+                    }
+                    iActiveSessionStreams.Clear();
+                }
+                iScheduler.Stop();
                 iThreadNetwork.Join();
                 iThreadNetwork = null;
                 iServer.Close();
@@ -91,9 +98,10 @@ namespace Linn.ControlPoint.Upnp
                 iThreadHandle.Join();
                 iThreadHandle = null;
 
-                iMutex.WaitOne();
-                iSessions.Clear();
-                iMutex.ReleaseMutex();
+                lock (iSessions)
+                {
+                    iSessions.Clear();
+                }
 
                 iEventFifo = new Fifo<Event>();
 
@@ -133,37 +141,85 @@ namespace Linn.ControlPoint.Upnp
                 {
                     try
                     {
+                        TcpSessionStream sessionStream = new TcpSessionStream();
+
                         // listen for new incoming event
-                        iServer.Accept(iSession);
-
-                        // read the event request
-                        EventRequest request = new EventRequest();
-                        request.Read(iReadBuffer);
-
-                        // get the session for this subscription ID
-                        EventHandlerEvent session = null;
-                        if (request.SubscriptionId != null)
+                        iServer.Accept(sessionStream);
+                        lock (iActiveSessionStreams)
                         {
-                            session = GetSession(request.SubscriptionId);
-                            if (session == null)
+                            iActiveSessionStreams.Add(sessionStream);
+                        }
+
+                        iScheduler.Schedule(() =>
+                        {
+                            if (!iThreadNetworkAbort)
                             {
-                                // Wait 500mS and try again
-                                Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork(): Early Event!     " + request.SubscriptionId);
-                                Thread.Sleep(500);
+                                Srb readBuffer = new Srb(kMaxReadBufferBytes, sessionStream);
+                                Swb writeBuffer = new Swb(kMaxWriteBufferBytes, sessionStream);
+                                try
+                                {
+                                    // read the event request
+                                    EventRequest request = new EventRequest();
+                                    request.Read(readBuffer);
 
-                                session = GetSession(request.SubscriptionId);
+                                    // get the session for this subscription ID
+                                    EventHandlerEvent session = null;
+                                    if (request.SubscriptionId != null)
+                                    {
+                                        session = GetSession(request.SubscriptionId);
+                                        if (session == null)
+                                        {
+                                            // Wait 500mS and try again
+                                            Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork(): Early Event!     " + request.SubscriptionId);
+                                            Thread.Sleep(500);
+
+                                            session = GetSession(request.SubscriptionId);
+                                        }
+                                    }
+
+                                    // send the event response
+                                    request.WriteResponse(writeBuffer, (session != null));
+
+                                    // add event to be handled
+                                    if (session != null)
+                                    {
+                                        Event ev = new Event(request, session);
+                                        iEventFifo.Push(ev);
+                                    }
+                                }
+                                catch (HttpError e)
+                                {
+                                    Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork() HttpError: " + e.ToString());
+                                    UserLog.WriteLine("EventServerUpnp.RunNetwork() HttpError: " + e.ToString());
+                                }
+                                catch (NetworkError e)
+                                {
+                                    Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork() NetworkError: " + e.ToString());
+                                    UserLog.WriteLine("EventServerUpnp.RunNetwork() NetworkError: " + e.ToString());
+                                }
+                                catch (ReaderError e)
+                                {
+                                    Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork() ReaderError: " + e.ToString());
+                                    UserLog.WriteLine("EventServerUpnp.RunNetwork() ReaderError: " + e.ToString());
+                                }
+                                catch (WriterError e)
+                                {
+                                    Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork() WriterError: " + e.ToString());
+                                    UserLog.WriteLine("EventServerUpnp.RunNetwork() WriterError: " + e.ToString());
+                                }
+                                finally
+                                {
+                                    lock (iActiveSessionStreams)
+                                    {
+                                        if (iActiveSessionStreams.Contains(sessionStream))
+                                        {
+                                            sessionStream.Close();
+                                            iActiveSessionStreams.Remove(sessionStream);
+                                        }
+                                    }
+                                }
                             }
-                        }
-
-                        // send the event response
-                        request.WriteResponse(iWriteBuffer, (session != null));
-
-                        // add event to be handled
-                        if (session != null)
-                        {
-                            Event ev = new Event(request, session);
-                            iEventFifo.Push(ev);
-                        }
+                        });
                     }
                     catch (HttpError e)
                     {
@@ -184,10 +240,6 @@ namespace Linn.ControlPoint.Upnp
                     {
                         Trace.WriteLine(Trace.kUpnp, "EventServerUpnp.RunNetwork() WriterError: " + e.ToString());
                         UserLog.WriteLine("EventServerUpnp.RunNetwork() WriterError: " + e.ToString());
-                    }
-                    finally
-                    {
-                        iSession.Close();
                     }
                 }
             }
@@ -246,60 +298,46 @@ namespace Linn.ControlPoint.Upnp
 
         public void AddSession(string aSubscriptionId, EventHandlerEvent aDelegate)
         {
-            iMutex.WaitOne();
-            try
+            lock (iSessions)
             {
-                Trace.WriteLine(Trace.kUpnp, "Event Session+   " + aSubscriptionId);
-
-                iSessions.Add(aSubscriptionId, aDelegate);
-
-                iMutex.ReleaseMutex();
-            }
-            catch (ArgumentException)
-            {
-                // Session already exists - replace the old one with the new one
-                iSessions.Remove(aSubscriptionId);
-                iSessions.Add(aSubscriptionId, aDelegate);
-
-                iMutex.ReleaseMutex();
+                try
+                {
+                    Trace.WriteLine(Trace.kUpnp, "Event Session+   " + aSubscriptionId);
+                    iSessions.Add(aSubscriptionId, aDelegate);
+                }
+                catch (ArgumentException)
+                {
+                    // Session already exists - replace the old one with the new one
+                    iSessions.Remove(aSubscriptionId);
+                    iSessions.Add(aSubscriptionId, aDelegate);
+                }
             }
         }
 
         public void RemoveSession(string aSubscriptionId)
         {
-            iMutex.WaitOne();
-            try
+            lock (iSessions)
             {
-                Trace.WriteLine(Trace.kUpnp, "Event Session-   " + aSubscriptionId);
-                
-                iSessions.Remove(aSubscriptionId);
-
-                iMutex.ReleaseMutex();
-            }
-            catch (ArgumentException)
-            {
-                Trace.WriteLine(Trace.kUpnp, "Event Session!   " + aSubscriptionId);
-                
-                iMutex.ReleaseMutex();
-
-                throw (new EventServerException());
+                try
+                {
+                    Trace.WriteLine(Trace.kUpnp, "Event Session-   " + aSubscriptionId);
+                    iSessions.Remove(aSubscriptionId);
+                }
+                catch (ArgumentException)
+                {
+                    Trace.WriteLine(Trace.kUpnp, "Event Session!   " + aSubscriptionId);
+                    throw (new EventServerException());
+                }
             }
         }
 
         private EventHandlerEvent GetSession(string aSubscriptionId)
         {
-            iMutex.WaitOne();
-
-            EventHandlerEvent session;
-            if (iSessions.TryGetValue(aSubscriptionId, out session))
+            lock (iSessions)
             {
-                iMutex.ReleaseMutex();
+                EventHandlerEvent session = null;
+                iSessions.TryGetValue(aSubscriptionId, out session);
                 return session;
-            }
-            else
-            {
-                iMutex.ReleaseMutex();
-                return null;
             }
         }
 
@@ -319,17 +357,16 @@ namespace Linn.ControlPoint.Upnp
         private static readonly int kMaxWriteBufferBytes = 1000;
         private static readonly ThreadPriority kPriority = ThreadPriority.Normal;
 
-        private Mutex iMutex;
         private Dictionary<string, EventHandlerEvent> iSessions;
 
         private IPAddress iInterface;
         public string iUri;
         private TcpServer iServer;
 
-        private TcpSessionStream iSession;
-        private Swb iWriteBuffer;
-        private Srb iReadBuffer;
         private Fifo<Event> iEventFifo;
+        private Scheduler iScheduler;
+        private const int kSchedulerThreads = 3;
+        private List<TcpSessionStream> iActiveSessionStreams;
 
         private Thread iThreadNetwork;
         private bool iThreadNetworkAbort;

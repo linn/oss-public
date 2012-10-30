@@ -17,16 +17,16 @@
              style="@style/topcontainerdimensions">
 
       <RelativeLayout android:id="@+id/volumeandtransportcontrolscontainer"
-                    android:layout_width="388dip"
-                    android:layout_height="121dip"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                 >
         <!-- Volume/Transport Controls -->
         <include layout="@layout/volumeandtransportcontrols"
                android:id="@+id/volumeandtransportcontrols"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
                />
       </RelativeLayout>
     </RelativeLayout>

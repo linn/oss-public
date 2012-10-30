@@ -1,0 +1,309 @@
+<div id="body" class="img-wrapper background">
+    <script src="Widgets/Common/Common.js" type="text/javascript"></script>
+    <script src="../javascript/jquery.tmpl.min.js" type="text/javascript"></script>
+    <script src="../javascript/badger.js" type="text/javascript"></script>
+    
+    <script id="eDs-template" type="text/x-jquery-tmpl">
+        <li class="device cursor-pointer" id="${udn}" onclick="clickDevice('${udn}', '${presentation}');">
+            <div class="leftColumn2">
+                <div class="deviceContainer">
+                    <div class="textColumn">
+                        <div class="fullname-text cursor-pointer">${room}${name}</div>
+                        <div class="model-text cursor-pointer">${model}</div>
+                    </div>
+                    <div class="imageColumn">
+                        <img id="device-img-${udn}" class="device-img cursor-pointer" src='${image}' />
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    <script id="eSonos-template" type="text/x-jquery-tmpl">
+        <li class="device cursor-pointer" id="${udn}" onclick="clickDevice('${udn}', '${presentation}')">
+            <div class="leftColumn2">
+                <div class="deviceContainer">
+                    <div class="textColumn">
+                        <div class="fullname-text cursor-pointer">${zonename}</div>
+                    </div>
+                    <div class="imageColumn">
+                        <img id="device-img-${udn}" class="device-img cursor-pointer" src='${image}' />
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    <script id="eMediaServer-template" type="text/x-jquery-tmpl">
+        <li class="device cursor-pointer" id="${udn}" onclick="clickDevice('${udn}', '${presentation}')">
+            <div class="leftColumn2">
+                <div class="deviceContainer">
+                    <div class="textColumn">
+                        <div class="fullname-text cursor-pointer">${name}</div>
+                        <div class="model-text cursor-pointer">Media Server</div>
+                    </div>
+                    <div class="imageColumn">
+                        <img id="device-img-${udn}" class="device-img cursor-pointer" src='${image}' />
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    
+    <script type="text/javascript">
+        var selectedProductUdn = "";
+        var openPage = "";
+        
+        linnSetUnselectable($('#body'));
+        
+        $('#configuration').load(function() {
+            if(openPage == "") {
+                if($('#configuration').attr('src') != 'about:blank' && $('#configuration').attr('src') != "") {
+                    hideAllRightColumn();
+                    $('#configuration').removeClass('hide');
+                }
+            } else {
+                xappSend('Open', openPage);
+            }
+        });
+    </script>
+    
+    <script type="text/javascript">
+        function onUpdateBadges(json) {
+            if(json.NumSoftwareUpdates > 0) {
+                $('#tabSoftwareUpdate').badger(json.NumSoftwareUpdates.toString());
+            } else {
+                $('#tabSoftwareUpdate').badger('');
+            }
+            
+            if(json.NumDiagnostics > 0) {
+                $('#tabDiagnostics').badger(json.NumDiagnostics.toString());
+            } else {
+                $('#tabDiagnostics').badger('');
+            }
+        }
+        
+        function onNavigationItemClicked(page) {
+            openPage = page;
+            $('#configuration').attr('src', 'about:blank');
+        }
+        
+        function onRecognisedDeviceAdded(json) {
+            if ($('#' + json.Udn).length == 1) {
+                return;
+            }
+
+            var fullname = "";
+            var inAppConfig = true;
+            switch(json.Type)
+            {
+            case "eDs":
+                var data = {
+                    udn: json.Udn,
+                    room: json.Description.Room,
+                    name: json.Description.Name,
+                    model: json.Description.Model,
+                    image: json.Description.ImageUri,
+                    presentation: json.PresentationUri
+                };
+                if(json.Index == 0) {
+                    $('#eDs-template').tmpl(data).prependTo($('#devices'));
+                }
+                else {
+                    var element = $('#devices li').eq(json.Index - 1);
+                    $('#eDs-template').tmpl(data).insertAfter(element);
+                }
+                fullname = json.Description.Room + json.Description.Name;
+                inAppConfig = json.Description.InAppConfig;
+                break;
+            case "eSonos":
+                var data = {
+                    udn: json.Udn,
+                    zonename: json.Description.ZoneName,
+                    image: json.Description.ImageUri,
+                    presentation: json.PresentationUri
+                };
+                if(json.Index == 0) {
+                    $('#eSonos-template').tmpl(data).prependTo($('#devices'));
+                }
+                else {
+                    var element = $('#devices li').eq(json.Index - 1);
+                    $('#eSonos-template').tmpl(data).insertAfter(element);
+                }
+                fullname = json.Description.ZoneName;
+                break;
+            case "eMediaServer":
+                var data = {
+                    udn: json.Udn,
+                    name: json.Description.Name,
+                    image: json.Description.ImageUri,
+                    presentation: json.PresentationUri
+                };
+                if(json.Index == 0) {
+                    $('#eMediaServer-template').tmpl(data).prependTo($('#devices'));
+                }
+                else {
+                    var element = $('#devices li').eq(json.Index - 1);
+                    $('#eMediaServer-template').tmpl(data).insertAfter(element);
+                }
+                fullname = json.Description.Name;
+                break;
+            default:
+                break;
+            }
+            
+            $('#device-img-' + json.Udn).error(function() { $(this).hide(); });
+            
+            $('#' + json.Udn).data('presentationUri', json.PresentationUri);
+            $('#' + json.Udn).data('imageUri', json.Description.ImageUri);
+            $('#' + json.Udn).data('fullname', fullname);
+            $('#' + json.Udn).data('inAppConfig', inAppConfig);
+            
+            if(selectedProductUdn == json.Udn) {
+                clickDevice(json.Udn, json.PresentationUri);
+            }
+        }
+        
+        function onRecognisedDeviceRemoved(json) {
+            if(json.Value == selectedProductUdn) {
+                hideAllRightColumn();
+                $('#notAvailable').text($('#' + json.Value).data('fullname') + " Is Not Available");
+                $('#notAvailable').removeClass('hide');
+                $('#configuration').attr('src', 'about:blank');
+            }
+            
+            $('#' + json.Value).remove();
+        }
+        
+        function onSelectProductUdn(json) {
+            selectedProductUdn = json.Value;
+            var product = $('#' + json.Value);
+            if(product.length == 1) {
+                clickDevice(json.Value, product.data('presentationUri'));
+            } else {
+                hideAllRightColumn();
+                $('#fullname').hide();
+                $('#fullname').html('Selected: None');
+                $('#fullname').show();
+                $('#noSelection').removeClass('hide');
+            }
+        }
+        
+        function clickDevice(id, presentationUri) {
+            hideAllRightColumn();
+            
+            $('#devices li').removeClass('selected');
+            $('#' + id).addClass('selected');
+            
+            $('#loading').removeClass('hide');
+            
+            $('#fullname').hide();
+            $('#fullname').html('Selected: ' + $('#' + id).data('fullname'));
+            $('#fullname').show();
+            
+            if(presentationUri != "") {
+                if($('#' + id).data('inAppConfig'))
+                {
+                    $('#configuration').attr('src', presentationUri);
+                } else {
+                    $('#loading').addClass('hide');
+                    $('#updateRequired').removeClass('hide');
+                    $('#configurationLink').unbind('click');
+                    $('#configurationLink').click(function() {
+                        xappSend('OpenBrowser', presentationUri);
+                    });
+                }
+            } else {
+                $('#noConfiguration').removeClass('hide');
+                $('#loading').addClass('hide');
+            }
+            
+            xappSend('SetSelectedProductUdn', id);
+            
+            $('#scroller').animate({'left': '-320px'}, 200);
+        }
+        
+        function showDevicesClicked() {
+            if($('#scroller').position().left == "0") {
+                $('#scroller').animate({'left': '-320px'}, 200);
+            } else {
+                $('#scroller').animate({'left': '0'}, 200);
+            }
+        }
+        
+        function hideAllRightColumn() {
+            $('#noSelection').addClass('hide');
+            $('#noConfiguration').addClass('hide');
+            $('#notAvailable').addClass('hide');
+            $('#updateRequired').addClass('hide');
+            $('#configuration').addClass('hide');
+            $('#loading').addClass('hide');
+        }
+    </script>
+
+      <page-frag frag="fragments/header.frag" />
+    
+    <div>
+        <button id="buttonShowDevices" class="btn subHeaderItem" type="button" onclick="showDevicesClicked()">Show Devices</button>
+        <div id="selectedProduct" class="subHeaderItem">
+            <div id="fullname"></div>
+            <!--<img id="image" src=""></img>-->
+        </div>
+    </div>
+    <div class="bodyContainer">
+        <div id="scroller">
+            <div id="left">
+                <ul id="devices" />
+            </div>
+            <div id="right">
+                <div id="noSelection">Select A Product To Configure</div>
+                <div id="noConfiguration" class="hide">Product Has No Configuration Page</div>
+                <div id="notAvailable" class="hide"></div>
+                <div id="updateRequired" class="hide">
+                    <div>DS Software Update Required To Configure DS In This Window</div>
+                    <div><a target="_self" id="configurationLink">Configure DS In Default Web Browser</a>?</div>
+                </div>
+                <div id="loading" class="hide">Loading...</div>
+                <iframe id="configuration" class="hide" src=""></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- crude IE version sniffing because navigator.userAgent (and hence analytics) detects IE version incorrectly on .NET webcontrol -->
+<script type="text/javascript">
+  window.browserVersionEx = "Not IE";
+</script>
+<!--[if lt IE 7]>
+<script type="text/javascript">
+window.browserVersionEx = "<IE7";
+</script>
+<![endif]-->
+<!--[if IE 7]>
+<script type="text/javascript">
+window.browserVersionEx = "IE7";
+</script>
+<![endif]-->
+<!--[if IE 8]>
+<script type="text/javascript">
+window.browserVersionEx = "IE8";
+</script>
+<![endif]-->
+<!--[if gte IE 9]>
+<script type="text/javascript">
+window.browserVersionEx = "IE9+";
+</script>
+<![endif]-->
+
+<!-- override setTracking to record IE version once per app run -->
+<script type="text/javascript">
+  if (typeof window._setTracking == "undefined"){
+    window.trackedBrowserVersion = false;
+    window._setTracking = setTracking;
+    window.setTracking = function(aTracking, aAccount){
+      _setTracking(aTracking, aAccount);
+      if (aTracking && !window.trackedBrowserVersion){
+        trackEvent('BrowserVersion', window.browserVersionEx);
+        window.trackedBrowserVersion = true;
+      } 
+    }
+  }
+</script>

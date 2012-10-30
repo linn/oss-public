@@ -21,7 +21,7 @@ namespace Linn
         {
             if (iTextWriter != null)
             {
-                iTextWriter.WriteLine(aMessage);
+                iTextWriter.Write(aMessage);
                 iTextWriter.Flush();
             }
         }

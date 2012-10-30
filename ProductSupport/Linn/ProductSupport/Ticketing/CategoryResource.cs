@@ -7,34 +7,32 @@
 namespace Linn.Tickets.Resources
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Xml.Serialization;
 
-    public class CategoryResource : IValidatableObject
+    public class CategoryResource 
     {
         public CategoryResource()
         {
             this.Items = new List<ItemResource>();
         }
 
+        public bool Valid()
+        {
+            if ((Title.Length == 0) || (Title.Length > 256))
+            {
+                return(false);
+            }
+            return(true);
+        }
+
         [XmlElement("item", typeof(ItemResource))]
         public List<ItemResource> Items { get; set; }
 
-        [Required(ErrorMessage = "Title is required.")]
-        [StringLength(256, ErrorMessage = "Title must not exceed 256 characters.")]
+        //[Required(ErrorMessage = "Title is required.")]
+        //[StringLength(256, ErrorMessage = "Title must not exceed 256 characters.")]
         [XmlAttribute("title")]
         public string Title { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var results = new List<ValidationResult>();
-
-            foreach (var item in this.Items)
-            {
-                Validator.TryValidateObject(item, new ValidationContext(item, null, null), results, true);
-            }
-
-            return results;
-        }
+ 
     }
 }

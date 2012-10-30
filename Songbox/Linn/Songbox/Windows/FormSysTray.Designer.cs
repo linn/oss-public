@@ -32,8 +32,6 @@
             this.iNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.iContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.openMediaServerConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startAtLoginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMediaServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -49,38 +47,21 @@
             // 
             this.iContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openMediaServerConfigurationToolStripMenuItem,
-            this.checkForUpdatesToolStripMenuItem,
-            this.startAtLoginToolStripMenuItem,
             this.quitMediaServerToolStripMenuItem});
             this.iContextMenuStrip.Name = "iContextMenuStrip";
-            this.iContextMenuStrip.Size = new System.Drawing.Size(258, 114);
+            this.iContextMenuStrip.Size = new System.Drawing.Size(239, 136);
             // 
             // openMediaServerConfigurationToolStripMenuItem
             // 
             this.openMediaServerConfigurationToolStripMenuItem.Name = "openMediaServerConfigurationToolStripMenuItem";
-            this.openMediaServerConfigurationToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.openMediaServerConfigurationToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.openMediaServerConfigurationToolStripMenuItem.Text = "Open Songbox Configuration...";
             this.openMediaServerConfigurationToolStripMenuItem.Click += new System.EventHandler(this.MenuItemOpenMediaServerConfigurationClick);
-            // 
-            // checkForUpdatesToolStripMenuItem
-            // 
-            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
-            this.checkForUpdatesToolStripMenuItem.Text = "Check For Updates...";
-            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
-            // 
-            // startAtLoginToolStripMenuItem
-            // 
-            this.startAtLoginToolStripMenuItem.CheckOnClick = true;
-            this.startAtLoginToolStripMenuItem.Name = "startAtLoginToolStripMenuItem";
-            this.startAtLoginToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
-            this.startAtLoginToolStripMenuItem.Text = "Start At Login";
-            this.startAtLoginToolStripMenuItem.CheckedChanged += new System.EventHandler(this.startAtLoginToolStripMenuItem_CheckedChanged);
             // 
             // quitMediaServerToolStripMenuItem
             // 
             this.quitMediaServerToolStripMenuItem.Name = "quitMediaServerToolStripMenuItem";
-            this.quitMediaServerToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.quitMediaServerToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.quitMediaServerToolStripMenuItem.Text = "Quit Songbox";
             this.quitMediaServerToolStripMenuItem.Click += new System.EventHandler(this.MenuItemQuitMediaServerClick);
             // 
@@ -105,8 +86,6 @@
         private System.Windows.Forms.ContextMenuStrip iContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem openMediaServerConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitMediaServerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem startAtLoginToolStripMenuItem;
 
     }
 }

@@ -147,9 +147,15 @@ namespace LinnTopology
             TableView.Delegate = new TableDelegate(iDataSource);
         }
 
+        [Obsolete]
         public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
         {
             return true;
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.All;
         }
 
         private static NSString kCellIdentifier = new NSString("Source");

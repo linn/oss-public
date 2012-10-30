@@ -22,8 +22,8 @@ namespace Linn.Songbox
 
             iMediaServerApp = aMediaServerApp;
             iNotifyIcon.Icon = Linn.Songbox.Properties.Resources.SysTrayIcon;
-            startAtLoginToolStripMenuItem.Checked = iMediaServerApp.StartAtLogin;
         }
+
 
         private void NotifyIconClick(object sender, MouseEventArgs e)
         {
@@ -42,16 +42,6 @@ namespace Linn.Songbox
         private void MenuItemOpenMediaServerConfigurationClick(object sender, EventArgs e)
         {
             iMediaServerApp.OpenConfiguration();
-        }
-
-        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            iMediaServerApp.CheckForUpdates();
-        }
-
-        private void startAtLoginToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
-        {
-            iMediaServerApp.StartAtLogin = startAtLoginToolStripMenuItem.Checked;
         }
     }
 }

@@ -125,9 +125,15 @@ namespace LinnTopology
             Title = "Rooms";
         }
 
+        [Obsolete]
         public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
         {
             return true;
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.All;
         }
 
         private static NSString kCellIdentifier = new NSString("Room");

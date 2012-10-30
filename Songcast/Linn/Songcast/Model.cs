@@ -237,7 +237,7 @@ namespace Linn.Songcast
     {
         public static string kOnlineManualUri = "http://oss.linn.co.uk/trac/wiki/Songcast_4_2_DavaarManual";
 
-        public Model(IInvoker aInvoker, IHelper aHelper)
+        public Model(IInvoker aInvoker, Helper aHelper)
         {
             iPreferences = new Preferences(aHelper);
 
@@ -247,6 +247,7 @@ namespace Linn.Songcast
             
             iSongcastMonitor.EventReceiverAdded += ReceiverAdded;
             iSongcastMonitor.EventReceiverListChanged += ReceiverListChanged;
+            iSongcastMonitor.EventReceiverVolumeControlChanged += ReceiverVolumeControlChanged;
             iSongcastMonitor.EventReceiverVolumeChanged += ReceiverVolumeChanged;
             iSongcastMonitor.EventSubnetListChanged += SubnetListChanged;
             iSongcastMonitor.EventConfigurationChanged += ConfigurationChanged;
@@ -277,7 +278,7 @@ namespace Linn.Songcast
             uint preset = 0;
             iSongcast = new OpenHome.Songcast.Songcast(aDomain, iPreferences.SelectedSubnetAddress, iPreferences.MulticastChannel,
                                                        ttl, LatencyMs, iPreferences.MulticastEnabled,
-                                                       enabled, preset, iSongcastMonitor, iSongcastMonitor, iSongcastMonitor,
+                                                       enabled, preset, iSongcastMonitor, iSongcastMonitor, iSongcastMonitor, iSongcastMonitor,
                                                        aManufacturer, aManufacturerUrl, aModelUrl, aImage, aMimeType);
         }
         
@@ -372,6 +373,7 @@ namespace Linn.Songcast
         // Events to provide notification of changes to the model
         public event EventHandler EventEnabledChanged;
         public event EventHandler EventReceiverListChanged;
+        public event EventHandler<EventArgsReceiver> EventReceiverVolumeControlChanged;
         public event EventHandler<EventArgsReceiver> EventReceiverVolumeChanged;
         public event EventHandler EventSubnetListChanged;
 
@@ -380,6 +382,8 @@ namespace Linn.Songcast
         
         private void ReceiverAdded(object sender, EventArgsReceiver e)
         {
+            UserLog.WriteLine(DateTime.Now + " : Linn.Songcast.Model.ReceiverAdded " + e.ReceiverUdn);
+
             if (iSongcast == null) {
                 return;
             }
@@ -411,6 +415,8 @@ namespace Linn.Songcast
         
         private void ReceiverListChanged(object sender, EventArgs e)
         {
+            UserLog.WriteLine(DateTime.Now + " : Linn.Songcast.Model.ReceiverListChanged");
+
             if (iSongcast == null) {
                 return;
             }
@@ -420,6 +426,13 @@ namespace Linn.Songcast
             
             if (EventReceiverListChanged != null) {
                 EventReceiverListChanged(this, EventArgs.Empty);
+            }
+        }
+
+        private void ReceiverVolumeControlChanged(object sender, EventArgsReceiver e)
+        {
+            if (iSongcast != null && EventReceiverVolumeControlChanged != null) {
+                EventReceiverVolumeControlChanged(this, e);
             }
         }
 
@@ -445,12 +458,29 @@ namespace Linn.Songcast
             if (iPreferences.SelectedSubnetAddress != 0)
             {
                 // the current subnet is set - if it is not set in the songcast lower layers, set it now if it is available
-                if (iPreferences.SelectedSubnetAddress != iSongcast.Subnet())
+                bool setSubnet = false;
+                foreach (ISubnet subnet in iSongcastMonitor.SubnetList)
                 {
-                    foreach (ISubnet subnet in iSongcastMonitor.SubnetList)
+                    if (subnet.Address == iPreferences.SelectedSubnetAddress && subnet.AdapterName != "Network adapter not present")
                     {
-                        if (subnet.Address == iPreferences.SelectedSubnetAddress) {
+                        if (iPreferences.SelectedSubnetAddress != iSongcast.Subnet())
+                        {
                             iSongcast.SetSubnet(iPreferences.SelectedSubnetAddress);
+                        }
+                        setSubnet = true;
+                        break;
+                    }
+                }
+
+                // if we haven't found our last subnet but there is only one available, select it
+                if (!setSubnet)
+                {
+                    foreach(ISubnet subnet in iSongcastMonitor.SubnetList)
+                    {
+                        if (subnet.AdapterName != "Network adapter not present")
+                        {
+                            iSongcast.SetSubnet(subnet.Address);
+                            iPreferences.SelectedSubnetAddress = subnet.Address;
                         }
                     }
                 }
@@ -581,7 +611,7 @@ namespace Linn.Songcast
 
 
     // Class to monitor the asynchronous changes in the songcast lower layers - this ensures that all change events occur in the main thread
-    public class SongcastMonitor : IReceiverHandler, ISubnetHandler, IConfigurationChangedHandler
+    public class SongcastMonitor : IReceiverHandler, ISubnetHandler, IConfigurationChangedHandler, IMessageHandler
     {
         public SongcastMonitor(IInvoker aInvoker, Receiver[] aReceiverList)
         {
@@ -652,6 +682,7 @@ namespace Linn.Songcast
         public event EventHandler EventReceiverListChanged;
         public event EventHandler EventSubnetListChanged;
         public event EventHandler EventConfigurationChanged;
+        public event EventHandler<EventArgsReceiver> EventReceiverVolumeControlChanged;
         public event EventHandler<EventArgsReceiver> EventReceiverVolumeChanged;
 
 
@@ -659,6 +690,8 @@ namespace Linn.Songcast
 
         void IReceiverHandler.ReceiverAdded(OpenHome.Songcast.IReceiver aReceiver)
         {
+            UserLog.WriteLine(DateTime.Now + " : Linn.Songcast.SongcastMonitor.ReceiverAdded " + aReceiver.Room + ":" + aReceiver.Group);
+
             // this function runs in an ohSongcast thread
             lock (iLock)
             {
@@ -679,6 +712,8 @@ namespace Linn.Songcast
 
         void IReceiverHandler.ReceiverChanged(OpenHome.Songcast.IReceiver aReceiver)
         {
+            UserLog.WriteLine(DateTime.Now + " : Linn.Songcast.SongcastMonitor.ReceiverChanged " + aReceiver.Room + ":" + aReceiver.Group);
+
             // this function runs in an ohSongcast thread
             lock (iLock)
             {
@@ -697,6 +732,8 @@ namespace Linn.Songcast
 
         void IReceiverHandler.ReceiverRemoved(OpenHome.Songcast.IReceiver aReceiver)
         {
+            UserLog.WriteLine(DateTime.Now + " : Linn.Songcast.SongcastMonitor.ReceiverRemoved " + aReceiver.Room + ":" + aReceiver.Group);
+
             // this function runs in an ohSongcast thread
             lock (iLock)
             {
@@ -726,24 +763,37 @@ namespace Linn.Songcast
                     recv.Update(aReceiver);
 
                     // notify in the main thread
-                    iInvoker.BeginInvoke(new Action<EventArgsReceiver>(NotifyReceiverVolumeChanged), new EventArgsReceiver(aReceiver.Udn));
+                    iInvoker.BeginInvoke(new Action<EventArgsReceiver>(NotifyReceiverVolumeControlChanged), new EventArgsReceiver(aReceiver.Udn));
                 }
             }
         }
 
         public void ReceiverVolumeChanged(OpenHome.Songcast.IReceiver aReceiver)
         {
-            ReceiverVolumeControlChanged(aReceiver);
+            // this function runs in an ohSongcast thread
+            lock (iLock)
+            {
+                Receiver recv = Receiver(aReceiver.Udn);
+
+                if (recv != null)
+                {
+                    // update the receiver that has changed
+                    recv.Update(aReceiver);
+
+                    // notify in the main thread
+                    iInvoker.BeginInvoke(new Action<EventArgsReceiver>(NotifyReceiverVolumeChanged), new EventArgsReceiver(aReceiver.Udn));
+                }
+            }
         }
 
         public void ReceiverMuteChanged(OpenHome.Songcast.IReceiver aReceiver)
         {
-            ReceiverVolumeControlChanged(aReceiver);
+            ReceiverVolumeChanged(aReceiver);
         }
 
         public void ReceiverVolumeLimitChanged(OpenHome.Songcast.IReceiver aReceiver)
         {
-            ReceiverVolumeControlChanged(aReceiver);
+            ReceiverVolumeChanged(aReceiver);
         }
 
         #endregion
@@ -802,7 +852,15 @@ namespace Linn.Songcast
         }
         
         #endregion
-        
+
+        #region Implementation of IMessageHandler
+
+        public void Message(string aMessage)
+        {
+            UserLog.Write(aMessage);
+        }
+
+        #endregion
 
         private void NotifyReceiverAdded(EventArgsReceiver aArgs)
         {
@@ -821,6 +879,16 @@ namespace Linn.Songcast
             
             if (EventReceiverListChanged != null) {
                 EventReceiverListChanged(this, EventArgs.Empty);
+            }
+        }
+
+        private void NotifyReceiverVolumeControlChanged(EventArgsReceiver aArgs)
+        {
+            // in main thread
+            Assert.Check(!iInvoker.InvokeRequired);
+
+            if (EventReceiverVolumeControlChanged != null) {
+                EventReceiverVolumeControlChanged(this, aArgs);
             }
         }
 

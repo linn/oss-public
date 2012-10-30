@@ -11,14 +11,8 @@ files = Split("""
     Linn/ControlPoint/Upnp/EventServer.cs
     Linn/Control/Http/Http.cs 
     Linn/ControlPoint/Discovery.cs
-""")
- 
-pcFiles = Split("""
     Linn/Control/Nct/Client.cs
 """)
-
-if _default_env['hardware'] != 'PocketPc':
-    files.append(pcFiles)
 
 res=[] 
 clilibs = ['OssSysLib', 'OssCore', 'mscorlib', 'System', 'System.Xml', 'System.Web.Services']
@@ -40,7 +34,7 @@ upnpspy = Split("""
 """)
 
 utils = []
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     utils = _default_env.CliProgram('UpnpSpy', upnpspy, CLILIBS=['mscorlib', 'System', 'OssControl', 'OssCore', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
     utils += _default_env.CliProgram('NctClient', ['Linn/Control/Nct/Program.cs'], CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl'])
 Alias('Lib', utils)
@@ -53,7 +47,7 @@ utils.append(File(_default_env.subst('$install_dir/lib/Linn/OssControl.dll')))
 utils.append(File(_default_env.subst('$variant_dir/share/Linn/Core/linn.ico')))
 
 installer = []
-if _default_env['installers'] and _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
+if _default_env['installers'] and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Control', 'UpnpDiagnostics',
                         FILES      = {''             : utils },
                         TEMPLATE   = 'UpnpDiagnosticsNsiTemplate.txt',
@@ -78,7 +72,7 @@ service = _default_env.Kodegen('UpnpControlPointTest.cs', xml, KODE="UpnpControl
 #prog += _default_env.CliProgram('Test/TestUpnpControl', ['Linn/Control/Upnp/Test/TestUpnpControl.cs'] + service, CLILIBS=['OssTestFramework', 'OssControl', 'OssSysLib', 'OssCore', 'System.Web.Services'])
 #Alias('Test', prog)
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     files = Split("""
         Test/TestWebRequestSync/Properties/AssemblyInfo.cs
         Test/TestWebRequestSync/Form1.cs

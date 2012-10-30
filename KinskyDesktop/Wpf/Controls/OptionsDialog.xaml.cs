@@ -29,7 +29,8 @@ namespace KinskyDesktopWpf
     {
         IList<OptionPageViewModel> iOptionPages;
         private HelperKinsky iHelperKinsky;
-        public OptionsDialog(HelperKinsky aHelperKinsky)
+        private UiOptions iUiOptions;
+        public OptionsDialog(HelperKinsky aHelperKinsky, UiOptions aUiOptions)
         {
             InitializeComponent();
             iHelperKinsky = aHelperKinsky;
@@ -39,6 +40,14 @@ namespace KinskyDesktopWpf
             {
                 iOptionPages[0].IsSelected = true;
             }
+            iUiOptions = aUiOptions;
+            this.Loaded += LoadedHandler;
+        }
+
+        void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            iUiOptions.DialogSettings.Register(this, "Options");
+            this.Loaded -= LoadedHandler;
         }
 
         void aHelperKinsky_EventOptionPagesChanged(object sender, EventArgs e)

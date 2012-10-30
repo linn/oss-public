@@ -13,37 +13,86 @@ using Linn.ProductSupport;
 
 namespace Linn.Wizard
 {
-    public class Network : IStack
+    public class Network
     {
-        private bool iStackStarted = false;
-        private List<Box> iBoxList;
-        private NetworkStack iNetworkStack;
-        private List<NetworkEventHandler> iNetworkEventHandlerList;
         private Helper iHelper;
+        private List<Box> iBoxList;
         private NetworkChangeWatcher iNetworkChangeWatcher;
+        private List<NetworkInterface> iInterfaces;
+        private List<NetworkStack> iNetworkStacks;
 
         public Network(Helper aHelper)
         {
             iHelper = aHelper;
             iBoxList = new List<Box>();
-            iNetworkEventHandlerList = new List<NetworkEventHandler>();
-            iNetworkStack = new NetworkStack();
             iNetworkChangeWatcher = new NetworkChangeWatcher();
-            iNetworkChangeWatcher.EventNetworkChanged += NetworkChangedHandler;
-            StartStack();
+
+            // create the list of network interfaces
+            iInterfaces = new List<NetworkInterface>();
+
+            foreach (NetworkInfoModel i in NetworkInfo.GetAllNetworkInterfaces())
+            {
+                if (i.OperationalStatus == EOperationalStatus.eUp ||
+                    i.OperationalStatus == EOperationalStatus.eUnknown)
+                {
+                    // don't add 3G network card on iPads/iPhones
+                    if (i.Name != "pdp_ip0")
+                    {
+                        iInterfaces.Add(new NetworkInterface(i));
+                    }
+                }
+            }
+
+            // create separate network stacks for each available interface
+            iNetworkStacks = new List<NetworkStack>();
+
+            foreach (NetworkInterface iface in iInterfaces)
+            {
+                if (iface.Status == NetworkInterface.EStatus.eAvailable)
+                {
+                    NetworkStack stack = new NetworkStack(aHelper, iface.Info.IPAddress);
+                    stack.Boxes.EventRoomAdded += RoomAddedHandler;
+                    stack.Boxes.EventRoomRemoved += RoomRemovedHandler;
+
+                    try
+                    {
+                        // start the stack
+                        UserLog.WriteLine(String.Format("{0}: Linn.Wizard.Network starting stack({1})", DateTime.Now, iface.Info.IPAddress.ToString()));
+                        stack.Start();
+                        UserLog.WriteLine(String.Format("{0}: Linn.Wizard.Network starting stack({1}) ok", DateTime.Now, iface.Info.IPAddress.ToString()));
+
+                        // success - add it to the list
+                        iNetworkStacks.Add(stack);
+                    }
+                    catch (Exception e)
+                    {
+                        // failed to start - unhook handlers and ignore
+                        UserLog.WriteLine(String.Format("{0}: Linn.Wizard.Network starting stack({1}) failed", DateTime.Now, iface.Info.IPAddress.ToString()));
+                        UserLog.WriteLine("Error Message: " + e.Message);
+                        UserLog.WriteLine("Error Message: " + e.ToString());
+
+                        stack.Boxes.EventRoomAdded -= RoomAddedHandler;
+                        stack.Boxes.EventRoomRemoved -= RoomRemovedHandler;
+                    }
+                }
+            }
+        }
+
+        public void Close()
+        {
+            // stop all created stacks
+            foreach (NetworkStack stack in iNetworkStacks)
+            {
+                stack.Stop();
+                stack.Boxes.EventRoomAdded -= RoomAddedHandler;
+                stack.Boxes.EventRoomRemoved -= RoomRemovedHandler;
+            }
         }
 
         public NetworkChangeWatcher GetNetworkChangeWatcher()
         {
             return (iNetworkChangeWatcher);
         }
-
-        private void NetworkChangedHandler(object sender, EventArgs e)
-        {
-
-        }
-
-
 
         public List<Box> BoxList()
         {
@@ -72,9 +121,9 @@ namespace Linn.Wizard
             return(null);
         }
 
-        public List<NetworkInterface> NetworkInterfaceList()
+        public NetworkInterface[] NetworkInterfaceList()
         {
-            return(iNetworkStack.NetworkInterfaceList());
+            return iInterfaces.ToArray();
         }
 
         public void SetNetworkInterface(string aMacAddress)
@@ -106,56 +155,14 @@ namespace Linn.Wizard
 
         public void Refresh()
         {
-            foreach (NetworkEventHandler eventHandler in iNetworkEventHandlerList)
+            foreach (NetworkStack stack in iNetworkStacks)
             {
-                eventHandler.Boxes().Rescan();
+                stack.Boxes.Rescan();
             }
         }
 
-        private void StartStack()
+        private void RoomAddedHandler(object obj, EventArgsRoom e)
         {
-            if (!iStackStarted)
-            {
-                // start the network stack
-                iNetworkStack.SetStack(this);
-                iNetworkStack.Start();
-                iStackStarted = true;
-            }
-        }
-
-        public void Close()
-        {
-            if (iStackStarted)
-            {
-                iNetworkStack.Stop();
-                iStackStarted = false;
-            }
-        }
-
-
-        void IStack.Stop()
-        {
-            // stop all the handlers in our list
-            foreach (NetworkEventHandler eventHandler in iNetworkEventHandlerList)
-            {
-                eventHandler.Stop();
-            }
-        }
-
-
-        void IStack.Start(System.Net.IPAddress aIpAddress)
-        {
-            NetworkEventHandler eventHandler = new NetworkEventHandler(iHelper, aIpAddress);
-            iNetworkEventHandlerList.Add(eventHandler);
-            Boxes boxes = eventHandler.Boxes();
-            boxes.EventRoomAdded += RoomAddedHandler;
-            boxes.EventRoomRemoved += RoomRemovedHandler;
-            eventHandler.Start();
-        }
-
-        public void RoomAddedHandler(object obj, EventArgsRoom e)
-        {
-            // Console.WriteLine("RoomAddedHandler {0}]", e.RoomArg.Name);
             lock (this)
             {
                 e.RoomArg.EventBoxAdded += BoxAddedHandler;
@@ -163,7 +170,7 @@ namespace Linn.Wizard
             }
         }
 
-        public void RoomRemovedHandler(object obj, EventArgsRoom e)
+        private void RoomRemovedHandler(object obj, EventArgsRoom e)
         {
             lock (this)
             {
@@ -172,8 +179,7 @@ namespace Linn.Wizard
             }
         }
 
-
-        public void BoxAddedHandler(object obj, EventArgsBox e)
+        private void BoxAddedHandler(object obj, EventArgsBox e)
         {
             lock (this)
             {
@@ -183,7 +189,6 @@ namespace Linn.Wizard
 
                 foreach (Box existingBox in iBoxList)
                 {
-
                     if (existingBox.MacAddress == box.MacAddress)
                     {
                         // don't add this box if it's already in the list (discovered on a different net adaptor)
@@ -197,7 +202,7 @@ namespace Linn.Wizard
         // when room name changes topology removes the box and adds the new box. 
         // this handler removes the event handler for the box in the old room. 
         // the new box box changed handler will be added in AddBox.
-        public void BoxRemovedHandler(object obj, EventArgsBox e)
+        private void BoxRemovedHandler(object obj, EventArgsBox e)
         {
             lock (this)
             {
@@ -207,11 +212,10 @@ namespace Linn.Wizard
             }
         }
 
-        public void BoxChangedHandler(object obj, EventArgsBox e)
+        private void BoxChangedHandler(object obj, EventArgsBox e)
         {
             lock (this)
             {
-
                 Console.WriteLine("BoxChangedHandler {0} ip [{1}] state [{2}] iBoxList count {3}", e.BoxArg.Name, e.BoxArg.IpAddress, e.BoxArg.State, iBoxList.Count);
 
                 Box box = e.BoxArg;
@@ -233,212 +237,70 @@ namespace Linn.Wizard
             }
         }
     
-        /***************************************************************************/
-
-        private class NetworkEventHandler
+        // private class for a stack on a particular IP address
+        private class NetworkStack
         {
-            // Provides an event handler for a single network adaptor(interface)
-
-            public NetworkEventHandler(Helper iHelper, System.Net.IPAddress aNetworkInterfaceIpAddress)
+            public NetworkStack(Helper iHelper, System.Net.IPAddress aIpAddress)
             {
-                iNetworkInterfaceIpAddress = aNetworkInterfaceIpAddress;
+                iIpAddress = aIpAddress;
                 iEventServerUpnp = new EventServerUpnp();
                 iSsdpListenerMulticast = new SsdpListenerMulticast();
                 iBoxes = new Boxes(iHelper, iEventServerUpnp, iSsdpListenerMulticast);
-
-            }
-
-            public void Stop()
-            {
-                Assert.Check(iStarted==true);
-                iEventServerUpnp.Stop();
-                iSsdpListenerMulticast.Stop();
-                iBoxes.Stop();
-                iStarted = false;
             }
 
             public void Start()
             {
-                Assert.Check(iStarted==false);
-                iEventServerUpnp.Start(iNetworkInterfaceIpAddress);
-                iSsdpListenerMulticast.Start(iNetworkInterfaceIpAddress);
-                iBoxes.Start(iNetworkInterfaceIpAddress);
+                Assert.Check(!iStarted);
+
+                bool eventStarted = false;
+                bool ssdpStarted = false;
+                try
+                {
+                    iEventServerUpnp.Start(iIpAddress);
+                    eventStarted = true;
+
+                    iSsdpListenerMulticast.Start(iIpAddress);
+                    ssdpStarted = true;
+
+                    iBoxes.Start(iIpAddress);
+                }
+                catch (Exception)
+                {
+                    if (eventStarted)
+                    {
+                        iEventServerUpnp.Stop();
+                    }
+                    if (ssdpStarted)
+                    {
+                        iSsdpListenerMulticast.Stop();
+                    }
+                    throw;
+                }
+
                 iStarted = true;
             }
 
-            public Boxes Boxes()
+            public void Stop()
             {
-                return(iBoxes);
+                Assert.Check(iStarted);
+
+                iEventServerUpnp.Stop();
+                iSsdpListenerMulticast.Stop();
+                iBoxes.Stop();
+
+                iStarted = false;
             }
 
-            System.Net.IPAddress iNetworkInterfaceIpAddress;
+            public Boxes Boxes
+            {
+                get { return iBoxes; }
+            }
+
+            System.Net.IPAddress iIpAddress;
             Boxes iBoxes;
             EventServerUpnp iEventServerUpnp;
             SsdpListenerMulticast iSsdpListenerMulticast;
             bool iStarted = false;
         }
-    
     }
-
-    /***************************************************************************/
-
-    public class NetworkStack
-    {
-        List<NetworkInterface> iNetworkInterfaceList;
-        private IStack iStack;
-        private StackStatus iStatus;
-        private bool iStackStarted;
-        private StackStatusHandler iStackStatusHandler;
-
-        public NetworkStack()
-        {
-            iNetworkInterfaceList = GetNetworkInterfaces();
-            iStatus = new StackStatus(EStackState.eStopped, null);
-            iStackStarted = false;
-        }
-
-        private List<NetworkInterface> GetNetworkInterfaces()
-        {
-            List<NetworkInterface> interfaces = new List<NetworkInterface>();
-
-            foreach (NetworkInfoModel i in NetworkInfo.GetAllNetworkInterfaces())
-            {
-                if (i.OperationalStatus == EOperationalStatus.eUp ||
-                    i.OperationalStatus == EOperationalStatus.eUnknown)
-                {
-                    // don't add 3G network card on iPads/iPhones
-                    if (i.Name != "pdp_ip0")
-                    {
-                        interfaces.Add(new NetworkInterface(i));
-                    }
-                }
-            }
-
-            return (interfaces);
-        }
-
-        public List<NetworkInterface> NetworkInterfaceList()
-        {
-            return (iNetworkInterfaceList);
-        }
-
-        public void SetStack(IStack aStack)
-        {
-            Assert.Check(iStack == null);
-            Assert.Check(iStatus.State == EStackState.eStopped);
-            iStack = aStack;
-        }
-
-        public void SetStatusHandler(StackStatusHandler aHandler)
-        {
-            Assert.Check(iStackStatusHandler == null);
-            iStackStatusHandler = aHandler;
-        }
-
-        public void Start()
-        {
-            lock (this)
-            {
-                StartStack();
-
-            }
-        }
-
-        public void Stop()
-        {
-            lock (this)
-            {
-                StopStack();
-            }
-        }
-
-        private void StartStack()
-        {
-            iStackStarted = false;
-
-            foreach (NetworkInterface netInterface in iNetworkInterfaceList)
-            {
-                switch (netInterface.Status)
-                {
-                    case NetworkInterface.EStatus.eUnconfigured:
-                        iStatus = new StackStatus(EStackState.eNoInterface, netInterface);
-
-                        Trace.WriteLine(Trace.kCore, "Stack.StartStack() no configured interface");
-                        UserLog.WriteLine(DateTime.Now + ": Linn.Stack start failed - no interface is configured");
-                        break;
-
-                    case NetworkInterface.EStatus.eUnavailable:
-                        iStatus = new StackStatus(EStackState.eNonexistentInterface, netInterface);
-
-                        Trace.WriteLine(Trace.kCore, "Stack.StartStack() configured interface error");
-                        UserLog.WriteLine(DateTime.Now + ": Linn.Stack start failed - configured interface is unavailable " + netInterface.ToString());
-                        break;
-
-                    case NetworkInterface.EStatus.eAvailable:
-                        try
-                        {
-                            Trace.WriteLine(Trace.kCore, "Stack.StartStack() starting...");
-                            UserLog.WriteLine(DateTime.Now + ": Linn.Stack starting... " + netInterface.ToString());
-
-                            if (iStack != null)
-                            {
-                                iStack.Start(netInterface.Info.IPAddress);
-                            }
-                            iStatus = new StackStatus(EStackState.eOk, netInterface);
-                            iStackStarted = true;
-
-                            Trace.WriteLine(Trace.kCore, "Stack.StartStack() OK");
-                            UserLog.WriteLine(DateTime.Now + ": Linn.Stack start ok " + netInterface.ToString());
-                        }
-                        catch (Exception e)
-                        {
-                            iStatus = new StackStatus(EStackState.eBadInterface, netInterface);
-                            iStackStarted = false;
-
-                            Trace.WriteLine(Trace.kCore, "Stack.StartStack() failure: " + e.ToString());
-                            Console.Write("Stack.StartStack() failure: " + e.ToString());
-                            UserLog.WriteLine(DateTime.Now + ": Linn.Stack start failed " + netInterface.ToString());
-                            UserLog.WriteLine("Error Message: " + e.Message);
-                            UserLog.WriteLine("Error Message: " + e.ToString());
-
-                            // stop the stack to cleanup any stack components that were started
-                            if (iStack != null)
-                            {
-                                iStack.Stop();
-                            }
-                        }
-                        break;
-
-                    default:
-                        Assert.Check(false);
-                        break;
-                }
-            }
-        }
-
-        private void StopStack()
-        {
-            if (iStatus.State != EStackState.eStopped)
-            {
-                Trace.WriteLine(Trace.kCore, "Stack.StopStack() stopping stack...");
-                UserLog.WriteLine(DateTime.Now + ": Linn.Stack stopping...");
-
-                if (iStackStarted && iStack != null)
-                {
-                    iStack.Stop();
-                }
-
-                iStatus = new StackStatus(EStackState.eStopped, null);
-                iStackStarted = false;
-
-                Trace.WriteLine(Trace.kCore, "Stack.StopStack() stack stopped");
-                UserLog.WriteLine(DateTime.Now + ": Linn.Stack stop ok");
-            }
-        }
-
-
-
-    }
-
-
 }

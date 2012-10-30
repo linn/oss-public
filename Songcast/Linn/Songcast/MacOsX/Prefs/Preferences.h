@@ -77,6 +77,7 @@ typedef enum
 - (bool) rotaryVolumeControl;
 - (bool) autoUpdatesEnabled;
 - (bool) betaUpdatesEnabled;
+- (bool) usageDataEnabled;
 - (NSArray*) receiverList;
 - (NSString*) selectedReceiverUdn;
 - (NSArray*) subnetList;
@@ -90,6 +91,7 @@ typedef enum
 - (void) setRotaryVolumeControl:(bool)aRotaryVolumeControl;
 - (void) setAutoUpdatesEnabled:(bool)aEnabled;
 - (void) setBetaUpdatesEnabled:(bool)aEnabled;
+- (void) setUsageDataEnabled:(bool)aEnabled;
 - (void) setSelectedReceiverUdn:(NSString*)aUdn;
 - (void) setSelectedSubnetAddress:(uint32_t)aAddress;
 

@@ -182,12 +182,15 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
+                                <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Label Content="Automatic update checks:" Height="28" HorizontalContentAlignment="Right" Padding="5,5,25,5" />
                             <CheckBox Name="checkBoxAutoUpdate" Height="16" IsChecked="{Binding Path=AutomaticUpdateChecks}" Grid.Column="1" />
                             <Button Content="Check Now" Height="23" Name="buttonUpdateCheck" Click="ButtonUpdateCheckClick" Grid.Column="2" Margin="34,2,0,2" Width="177" />
                             <Label Content="Participate in beta program:" Height="28" Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" Padding="5,5,25,5" />
                             <CheckBox Height="16" Name="checkBoxBeta" IsChecked="{Binding Path=ParticipateInBeta}" Grid.Row="1" Grid.Column="1" />
+                            <Label Content="Send anonymous usage data:" Height="28" Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" Padding="5,5,25,5" />
+                            <CheckBox Height="16" Name="checkBoxUsageData" IsChecked="{Binding Path=UsageData}" Grid.Row="2" Grid.Column="1" />
                         </Grid>
                     </GroupBox>
                 </StackPanel>

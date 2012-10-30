@@ -20,6 +20,7 @@ files = Split("""
     Linn/OptionManager.cs
     Linn/OptionPage.cs
     Linn/OptionPageUpdates.cs
+    Linn/OptionPagePrivacy.cs
     Linn/OptionParser.cs
     Linn/VersionSupport.cs
     Linn/Scheduler.cs
@@ -44,17 +45,6 @@ iosFiles = Split("""
     Linn/IImageCache.cs
 """)
 
-pocketPcFiles = Split("""
-    Linn/Framework/NetworkChangeWatcher.cs
-    Linn/Framework/AssemblyInfoCompact.cs
-    Linn/Framework/NetworkInfoCompact.cs
-    Linn/Framework/SemaphoreCompact.cs
-    Linn/Framework/ServiceInfo.cs
-    Linn/Framework/SystemEventsCompact.cs
-    Linn/Framework/SystemInfoCompact.cs
-    Linn/Framework/TimerCompact.cs
-""")
-
 windowsFiles = Split("""
     Linn/Framework/NetworkChangeWatcher.cs
     Linn/Framework/AssemblyInfo.cs
@@ -70,7 +60,7 @@ windowsFiles = Split("""
 macOsXFiles = Split("""
     Linn/Framework/NetworkChangeWatcherCocoa.cs
     Linn/Framework/AssemblyInfo.cs
-    Linn/Framework/NetworkInfo.cs
+    Linn/Framework/NetworkInfoCocoa.cs
     Linn/Framework/ServiceInfo.cs
     Linn/Framework/SystemEventsFull.cs
     Linn/Framework/SystemInfoCocoa.cs
@@ -104,9 +94,7 @@ droidFiles = Split("""
 """)
 
 
-if _default_env['hardware'] == 'PocketPc':
-    files.append(pocketPcFiles)
-elif _default_env['hardware'] == 'Ios':
+if _default_env['hardware'] == 'Ios':
     files.append(iosFiles)
 elif _default_env['hardware'] == 'Windows':
     files.append(windowsFiles)
@@ -123,10 +111,7 @@ else:
 
 lib = None
 
-if _default_env['hardware'] == 'PocketPc':
-    lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml'])
-
-elif _default_env['hardware'] == 'Ios':
+if _default_env['hardware'] == 'Ios':
     lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml'])
 
 elif _default_env['hardware'] == 'Android':
@@ -141,7 +126,7 @@ elif _default_env['hardware'] == 'MacOsX':
 else:
     lib = _default_env.CliLibrary('OssCore', files, CLILIBS=['mscorlib', 'System', 'System.Xml', 'System.ServiceProcess'])
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Android':
     lib += _default_env.CliLibrary('OssTestFramework', ['Linn/TestFramework/Properties/AssemblyInfo.cs', 'Linn/TestFramework/TestFramework.cs'], CLILIBS=['mscorlib', 'OssCore'])
 
 Alias('Lib', lib)
@@ -150,7 +135,7 @@ docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Core.tar', files, DOXY
 
 Alias('Docs', docs)
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Android':
     prog  = _default_env.CliProgram('Test/TestCs', 'Linn/Test/TestCs.cs', CLILIBS=['mscorlib', 'System.Xml', 'OssTestFramework', 'OssCore'] )
     prog += _default_env.CliProgram('Test/TestDebug', 'Linn/Test/TestDebug.cs', CLILIBS=['mscorlib', 'System', 'OssTestFramework', 'OssCore'] )
     prog += _default_env.CliProgram('Test/TestOptionParser', 'Linn/Test/TestOptionParser.cs', CLILIBS=['mscorlib', 'OssTestFramework', 'OssCore'] )
@@ -160,9 +145,11 @@ if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Andro
 Alias('Test', 'Lib')
 
 files = Split("""
+    Installer/copyright
     Installer/finish.bmp
     Installer/header.bmp
     Installer/license.txt
+    Installer/license-cookies.txt
     Installer/linn.ico
     Installer/linn.icns
     Installer/linn.xpm

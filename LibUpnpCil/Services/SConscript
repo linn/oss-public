@@ -583,7 +583,7 @@ gwt += _default_env.Install('$hardware_dir/share/Services/Gwt/uk/co/linn/gwt/ser
 
 js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/ServiceCollection.js')
 js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/Helpers.js')
-js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/Prototype.js')
+js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/jquery-1.8.1.min.js')
 js += _default_env.Install('$hardware_dir/share/Web/Root/ServiceProxies', 'Js/SoapRequest.js')
 
 # Build library

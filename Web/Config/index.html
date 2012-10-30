@@ -3,17 +3,16 @@
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=8" />
         <script type="text/javascript" src="../Common/Scripts/helpers.js"></script>  
         <script type="text/javascript">
             var qs = GetQueryString();
             var service = "";
             if (qs.service){
-                service = "#service=" + qs.service;
+                service = "?service=" + qs.service;
             }
             var device = "";
             if (qs.device){
-                device = "#device=" + qs.device;
+                device = "?device=" + qs.device;
             }
             <!-- Only apply service if explicitly included. -->
             <!-- This means DS + Proxy devices will be shown in one page (with tabs) if no service is used, -->

@@ -12,7 +12,11 @@ def ReleaseInstallerMacOsXWithMono(target, source, **kw):
     appInst = env.Install(env.subst(kw['APPINSTFOLDER']), app)
 
     # build the Mac OSX .pkg
-    pkg = env.ProductBuild(target, app, **kw)
+    if 'INSTALLERRESOURCES' in kw and len(kw['INSTALLERRESOURCES']) > 0:
+        kw['SOURCEOPTIONNAME'] = '--component'
+        pkg = env.ProductBuildWithResources(target, app, **kw)
+    else:
+        pkg = env.ProductBuild(target, app, **kw)
 
     # install the Mac OSX .pkg
     pkgInst = env.Install(env.subst(kw['PKGINSTFOLDER']), pkg)

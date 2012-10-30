@@ -1,0 +1,39 @@
+/* other css styling is shared with update/index.css */
+
+#notfound-text
+{
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    position: absolute;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    /*color: white;*/
+}
+
+.hint
+{
+    color: GrayText;
+    font-style: italic;
+}
+
+.hintActive
+{
+    color: black;
+}
+
+.firmwareFilename
+{
+    width: 100%;
+    margin-right: -6px;
+}
+
+.deviceRecoveryLabel
+{
+    font-size: 12px;
+}
+
+.deviceRecoveryInput
+{
+    padding-right: 5px;
+}

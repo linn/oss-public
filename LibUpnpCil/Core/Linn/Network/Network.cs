@@ -8,7 +8,6 @@ using Linn;
 namespace Linn.Network
 {
     // TcpStream
-
     public class NetworkError : Exception
     {
     }
@@ -16,7 +15,6 @@ namespace Linn.Network
     public class TcpServer
     {
         private const int kListenSlots = 100;
-
         private const int kMinPort = 49832;
         private const int kMaxPort = 49932;
 
@@ -63,11 +61,7 @@ namespace Linn.Network
 
                     iListener.Server.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
 
-#if PocketPC
-                    iListener.Start();
-#else
                     iListener.Start(kListenSlots);
-#endif
                     Endpoint = new IPEndPoint(aInterface, port);
 
                     UserLog.WriteLine("Success");
@@ -84,9 +78,9 @@ namespace Linn.Network
 
         public void Accept(TcpSessionStream aSession)
         {
-        	try
-        	{
-            	aSession.SetSocket(iListener.AcceptSocket());
+            try
+            {
+                aSession.SetSocket(iListener.AcceptSocket());
             }
             catch (SocketException)
             {
@@ -236,7 +230,6 @@ namespace Linn.Network
             }
         }
 
-
         public void BeginWaitForData(AsyncCallback aCallback)
         {
             byte[] buffer = new byte[0];
@@ -344,7 +337,7 @@ namespace Linn.Network
                     iSocket.Bind(new IPEndPoint(aInterface, port));
                     iSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, false);
                     iSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, aTtl);
-                    
+
                     Trace.WriteLine(Trace.kUpnp, "Success");
                     return;
                 }
@@ -406,17 +399,44 @@ namespace Linn.Network
             {
                 iReadOpen = false;
 
-                int count = 0;
+                // This has been moved back to an async call as it caused weird interactions with subscription requests on mac
+                // I had made it synchronous in 10103 but this seemed to cause a delay sending tcp requests after initial handshake
+                // Unfortunately the DS appears to terminate tcp comms that are idle for too long
+                // Quite why a change to udp code would cause an impact on tcp on mono though, I don't know...
 
-                while (count == 0)
+                int count = 0;
+                ManualResetEvent semaphore = new ManualResetEvent(false);
+                bool socketClosed = false;
+                while (count == 0 && !socketClosed)
                 {
                     try
                     {
-                        count = iSocket.ReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender);
+                        iSocket.BeginReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender, delegate(IAsyncResult aResult)
+                        {
+                            try
+                            {
+                                count = iSocket.EndReceiveFrom(aResult, ref iSender);
+                            }
+                            catch (SocketException)
+                            {
+                                socketClosed = true;
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                socketClosed = true;
+                            }
+                            semaphore.Set();
+                        }, null);
+                        semaphore.WaitOne();
                     }
-                    catch (SocketException) { break; }
-                    catch (ObjectDisposedException) { break; }
-
+                    catch (SocketException)
+                    {
+                        socketClosed = true;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        socketClosed = true;
+                    }
                 }
 
                 return (count);
@@ -437,8 +457,12 @@ namespace Linn.Network
                 iSocket.Blocking = false;
                 iSocket.Shutdown(SocketShutdown.Both);
             }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
+            catch (SocketException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
 
         public void Close()
@@ -447,17 +471,18 @@ namespace Linn.Network
             {
                 iSocket.Close();
             }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
+            catch (SocketException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
 
         private IPEndPoint iMulticast;
-
         private Socket iSocket;
-
         private bool iReadOpen;
         private bool iWriteOpen;
-
         private EndPoint iSender;
     }
 
@@ -521,16 +546,43 @@ namespace Linn.Network
 
                 int count = 0;
 
-                ManualResetEvent semaphore = new ManualResetEvent(false);
+                // This has been moved back to an async call as it caused weird interactions with subscription requests on mac
+                // I had made it synchronous in 10103 but this seemed to cause a delay sending tcp requests after initial handshake
+                // Unfortunately the DS appears to terminate tcp comms that are idle for too long
+                // Quite why a change to udp code would cause an impact on tcp on mono though, I don't know...
 
-                while (count == 0)
+                ManualResetEvent semaphore = new ManualResetEvent(false);
+                bool socketClosed = false;
+                while (count == 0 && !socketClosed)
                 {
                     try
                     {
-                        count = iSocket.ReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender);   
+                        iSocket.BeginReceiveFrom(aBuffer, aOffset, aMaxBytes, SocketFlags.None, ref iSender, delegate(IAsyncResult aResult)
+                        {
+                            try
+                            {
+                                count = iSocket.EndReceiveFrom(aResult, ref iSender);
+                            }
+                            catch (SocketException)
+                            {
+                                socketClosed = true;
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                socketClosed = true;
+                            }
+                            semaphore.Set();
+                        }, null);
+                        semaphore.WaitOne();
                     }
-                    catch (SocketException) { break; }
-                    catch (ObjectDisposedException) { break; }
+                    catch (SocketException)
+                    {
+                        socketClosed = true;
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        socketClosed = true;
+                    }
                 }
 
                 return (count);
@@ -551,8 +603,12 @@ namespace Linn.Network
                 iSocket.Blocking = false;
                 iSocket.Shutdown(SocketShutdown.Both);
             }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
+            catch (SocketException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
 
         public void Close()
@@ -561,16 +617,17 @@ namespace Linn.Network
             {
                 iSocket.Close();
             }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
+            catch (SocketException)
+            {
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
 
         private IPEndPoint iMulticast;
-
         private Socket iSocket;
-
         private bool iReadOpen;
-
         private EndPoint iSender;
     }
 }

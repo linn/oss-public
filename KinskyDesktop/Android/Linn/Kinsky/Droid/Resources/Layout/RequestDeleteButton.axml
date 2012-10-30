@@ -3,6 +3,7 @@
           android:id="@+id/requestdeletebutton"
           android:layout_width="20dip"
           android:layout_height="20dip"
+          android:paddingTop="5dip"
           android:background="@drawable/requestdeletebutton"
           android:paddingRight="10dip"
           />

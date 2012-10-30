@@ -7,6 +7,7 @@ using System.Linq;
 using Linn;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Runtime;
 namespace OssToolkitDroid
 {
 
@@ -32,7 +33,7 @@ namespace OssToolkitDroid
         public event EventHandler<EventArgsListEdit<ItemType>> EventItemMovedDown;
         public event EventHandler<EventArgsListEdit<SectionHeaderType>> EventSectionMovedDown;
 
-        public AsyncArrayAdapter(Context aContext, IAsyncLoader<ItemType> aLoader)
+        public AsyncArrayAdapter(Context aContext, IAsyncLoader<ItemType> aLoader, string aId)
             : base()
         {
             iContext = aContext;
@@ -44,12 +45,14 @@ namespace OssToolkitDroid
             iDeleteIndex = -1;
             EditMode = false;
             iViews = new List<RecyclingContainerView>();
+            iId = aId;
         }
 
-        public virtual void Close()
+        public virtual void Clear()
         {
             foreach (RecyclingContainerView view in iViews)
             {
+                DisconnectContainer(view);
                 ViewCache cache = view.Tag as ViewCache;
                 view.Tag = null;
                 view.EventRequestDeleteClick -= EventRequestDeleteHandler;
@@ -72,6 +75,11 @@ namespace OssToolkitDroid
             iDisconnectedItemViews.Clear();
 
             iViews.Clear();
+        }
+
+        public virtual void Close()
+        {
+            Clear();
             iLoader.EventDataChanged -= iLoader_DataChanged;
         }
 
@@ -168,6 +176,11 @@ namespace OssToolkitDroid
             if (root == null)
             {
                 root = CreateContainerView(iContext);
+            }
+            else if (root.HasResurfacedWithoutJNIHandle)
+            {
+                UserLog.WriteLine("Ticket #1194: Item has resurfaced after dispose! - " + iId);
+                Assert.Check(false);
             }
             ViewCache cache = root.Tag as ViewCache;
             Assert.Check(cache != null);
@@ -297,6 +310,8 @@ namespace OssToolkitDroid
                         else
                         {
                             DestroySectionHeaderView(iContext, cache);
+                            disconnectedChild.Dispose();
+                            disconnectedChild = null;
                         }
                         break;
                     }
@@ -309,6 +324,8 @@ namespace OssToolkitDroid
                         else
                         {
                             DestroyItemView(iContext, cache);
+                            disconnectedChild.Dispose();
+                            disconnectedChild = null;
                         }
                         break;
                     }
@@ -325,8 +342,10 @@ namespace OssToolkitDroid
         private RecyclingContainerView CreateContainerView(Context aContext)
         {
             RecyclingContainerView result = new RecyclingContainerView(aContext, RequestDeleteButtonResourceId, ConfirmDeleteButtonResourceId, MoveDownButtonResourceId, MoveUpButtonResourceId);
-            ListView.LayoutParams layoutParams = new ListView.LayoutParams(ListView.LayoutParams.FillParent, ListView.LayoutParams.WrapContent);
-            result.LayoutParameters = layoutParams;
+            using (ListView.LayoutParams layoutParams = new ListView.LayoutParams(ListView.LayoutParams.FillParent, ListView.LayoutParams.WrapContent))
+            {
+                result.LayoutParameters = layoutParams;
+            }
             ViewCache cache = new ViewCache(result);
             result.Tag = cache;
             View view = CreateItemView(aContext, default(ItemType), result);
@@ -552,6 +571,7 @@ namespace OssToolkitDroid
         private int iDeleteIndex;
         private bool iEditMode;
         private List<RecyclingContainerView> iViews;
+        private string iId;
     }
 
     public enum EItemEditMode
@@ -564,6 +584,20 @@ namespace OssToolkitDroid
     
     public class RecyclingContainerView : LinearLayout
     {
+
+        public RecyclingContainerView(IntPtr aJavaRef, JniHandleOwnership aTranserOwnership) 
+            : base(aJavaRef, aTranserOwnership)
+        {
+            iHasResurfacedWithoutJNIHandle = true;
+        }
+
+        public bool HasResurfacedWithoutJNIHandle
+        {
+            get
+            {
+                return iHasResurfacedWithoutJNIHandle;
+            }
+        }
 
         public event EventHandler<EventArgs> EventRequestDeleteClick;
         public event EventHandler<EventArgs> EventConfirmDeleteClick;
@@ -624,42 +658,52 @@ namespace OssToolkitDroid
             else{
                 iRequestDeleteButton = CreateRequestDeleteButton();
                 iRequestDeleteButton.Click += RequestDeleteClickHandler;
-                LinearLayout.LayoutParams requestDeleteButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
-                requestDeleteButtonLayoutParams.Gravity = GravityFlags.Left | GravityFlags.CenterVertical;
-                iRequestDeleteButton.LayoutParameters = requestDeleteButtonLayoutParams;
-                requestDeleteButtonLayoutParams.LeftMargin = 5;
+                using (LinearLayout.LayoutParams requestDeleteButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent))
+                {
+                    requestDeleteButtonLayoutParams.Gravity = GravityFlags.Left | GravityFlags.CenterVertical;
+                    iRequestDeleteButton.LayoutParameters = requestDeleteButtonLayoutParams;
+                    requestDeleteButtonLayoutParams.LeftMargin = 5;
+                }
                 AddView(iRequestDeleteButton);
 
 
                 iContentPlaceholder = new LinearLayout(Context);
-                LinearLayout.LayoutParams contentPlaceholderLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
-                contentPlaceholderLayoutParams.Gravity = GravityFlags.Left | GravityFlags.CenterVertical;
-                contentPlaceholderLayoutParams.Weight = 1;
-                iContentPlaceholder.LayoutParameters = contentPlaceholderLayoutParams;
+                using (LinearLayout.LayoutParams contentPlaceholderLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent))
+                {
+                    contentPlaceholderLayoutParams.Gravity = GravityFlags.Left | GravityFlags.CenterVertical;
+                    contentPlaceholderLayoutParams.Weight = 1;
+                    iContentPlaceholder.LayoutParameters = contentPlaceholderLayoutParams;
+                }
                 AddView(iContentPlaceholder);
 
                 iConfirmDeleteButton = CreateConfirmDeleteButton();
                 iConfirmDeleteButton.Click += ConfirmDeleteClickHandler;
-                LinearLayout.LayoutParams confirmDeleteButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
-                confirmDeleteButtonLayoutParams.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
-                confirmDeleteButtonLayoutParams.RightMargin = 5;
-                iConfirmDeleteButton.LayoutParameters = confirmDeleteButtonLayoutParams;
+                using (LinearLayout.LayoutParams confirmDeleteButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent))
+                {
+                    confirmDeleteButtonLayoutParams.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+                    confirmDeleteButtonLayoutParams.RightMargin = 5;
+                    iConfirmDeleteButton.LayoutParameters = confirmDeleteButtonLayoutParams;
+                }
                 AddView(iConfirmDeleteButton);
 
                 iMoveUpButton = CreateMoveUpButton();
                 iMoveUpButton.Click += MoveUpButtonClickHandler;
-                LinearLayout.LayoutParams moveUpButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
-                moveUpButtonLayoutParams.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
-                moveUpButtonLayoutParams.RightMargin = 5;
-                iMoveUpButton.LayoutParameters = moveUpButtonLayoutParams;
+                using (LinearLayout.LayoutParams moveUpButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent))
+                {
+                    moveUpButtonLayoutParams.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+                    moveUpButtonLayoutParams.RightMargin = 5;
+                    iMoveUpButton.LayoutParameters = moveUpButtonLayoutParams;
+                }
                 AddView(iMoveUpButton);
 
                 iMoveDownButton = CreateMoveDownButton();
                 iMoveDownButton.Click += MoveDownButtonClickHandler;
-                LinearLayout.LayoutParams moveDownButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
-                moveDownButtonLayoutParams.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
-                moveDownButtonLayoutParams.RightMargin = 5;
-                iMoveDownButton.LayoutParameters = moveDownButtonLayoutParams;
+                using (LinearLayout.LayoutParams moveDownButtonLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent))
+                {
+                    moveDownButtonLayoutParams.Gravity = GravityFlags.Right | GravityFlags.CenterVertical;
+                    moveDownButtonLayoutParams.RightMargin = 5;
+                    iMoveDownButton.LayoutParameters = moveDownButtonLayoutParams;
+                }
                 AddView(iMoveDownButton);
             }
         }
@@ -783,8 +827,8 @@ namespace OssToolkitDroid
             {
                 iRequestDeleteButton.Visibility = !iCanDelete ? ViewStates.Gone : ViewStates.Visible;
                 iConfirmDeleteButton.Visibility = iEditMode == EItemEditMode.ConfirmDelete && iCanDelete ? ViewStates.Visible : ViewStates.Gone;
-                iMoveUpButton.Visibility = iEditMode == EItemEditMode.ConfirmDelete || !iCanMoveUp ? ViewStates.Gone : ViewStates.Visible;
-                iMoveDownButton.Visibility = iEditMode == EItemEditMode.ConfirmDelete || !iCanMoveDown ? ViewStates.Gone : ViewStates.Visible;
+                iMoveUpButton.Visibility = iEditMode == EItemEditMode.ConfirmDelete ? ViewStates.Gone : !iCanMoveUp ? ViewStates.Invisible : ViewStates.Visible;
+                iMoveDownButton.Visibility = iEditMode == EItemEditMode.ConfirmDelete ? ViewStates.Gone : !iCanMoveDown ? ViewStates.Invisible : ViewStates.Visible;
                 iRequestDeleteButton.Selected = iEditMode != EItemEditMode.Editing;
                 iMoveUpButton.Enabled = !iIsFirst;
                 iMoveDownButton.Enabled = !iIsLast;
@@ -940,6 +984,7 @@ namespace OssToolkitDroid
         private int iConfirmDeleteButtonResourceId = 0;
         private int iMoveDownButtonResourceId = 0;
         private int iMoveUpButtonResourceId = 0;
+        private bool iHasResurfacedWithoutJNIHandle = false;
     }
 	
     public class ViewCache : Java.Lang.Object

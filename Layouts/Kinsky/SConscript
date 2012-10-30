@@ -415,6 +415,8 @@ instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Ic
 instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/VolumeDown.png')
 instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/ArrayCropped.png')
 instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Icons', 'Desktop2/Icons/Tick.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/UIBarButton.png')
+instImages += _default_env.Install('$variant_dir/share/Linn/Resources/Kinsky2/Images', 'Desktop2/Images/UIBarButtonIPhone.png')
 
 
 Alias('Kinsky', instImages)

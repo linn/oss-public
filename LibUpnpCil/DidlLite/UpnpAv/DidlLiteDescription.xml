@@ -75,6 +75,7 @@
     <class name="musicTrack" extends="audioItem" classType="object.item.audioItem.musicTrack">
         <property type="list" element="artist" xpath="upnp:artist">Artist</property>
         <property type="list" element="string" xpath="upnp:album">Album</property>
+        <property type="list" element="author" xpath="upnp:author">Author</property>
         <property type="int" xpath="upnp:originalTrackNumber">OriginalTrackNumber</property>
         <property type="list" element="string" xpath="upnp:playlist">Playlist</property>
         <property type="string" xpath="upnp:storageMedium">StorageMedium</property>

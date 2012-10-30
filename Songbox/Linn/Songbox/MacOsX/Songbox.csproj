@@ -24,8 +24,14 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp -R ${ProjectDir}/../../../OpenHome/presentation ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../../../LibUpnpCil/Toolkit/obj/MacOsX Debug/nibs/UpdateWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../../../LibUpnpCil/Toolkit/obj/MacOsX Debug/nibs/CrashLogDumperWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
       </CustomCommands>
     </CustomCommands>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -38,8 +44,14 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp -R ${ProjectDir}/../../../OpenHome/presentation ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../../../LibUpnpCil/Toolkit/obj/MacOsX Release/nibs/UpdateWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../../../../LibUpnpCil/Toolkit/obj/MacOsX Release/nibs/CrashLogDumperWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
       </CustomCommands>
     </CustomCommands>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -98,6 +110,10 @@
     <Compile Include="ConfigurationWindow.designer.cs">
       <DependentUpon>ConfigurationWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="..\TrackerConfiguration.cs" />
+    <Compile Include="..\PageMain.cs">
+      <Link>PageMain.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
@@ -105,6 +121,129 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
+    <None Include="..\..\..\OpenHome\presentation\index.html">
+      <Link>presentation\index.html</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\logo.png">
+      <Link>presentation\logo.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\index.css">
+      <Link>presentation\main\index.css</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\index.xapp">
+      <Link>presentation\main\index.xapp</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\logo.png">
+      <Link>presentation\main\logo.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\css\bootstrap-responsive.min.css">
+      <Link>presentation\main\css\bootstrap-responsive.min.css</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\css\bootstrap.min.css">
+      <Link>presentation\main\css\bootstrap.min.css</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\css\jquery.select.css">
+      <Link>presentation\main\css\jquery.select.css</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\fonts\effra-webfont.eot">
+      <Link>presentation\main\fonts\effra-webfont.eot</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\fonts\effra-webfont.woff">
+      <Link>presentation\main\fonts\effra-webfont.woff</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\advanced.png">
+      <Link>presentation\main\images\advanced.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\background.png">
+      <Link>presentation\main\images\background.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\background_t.png">
+      <Link>presentation\main\images\background_t.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\iapp-off.png">
+      <Link>presentation\main\images\iapp-off.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\iapp-on.png">
+      <Link>presentation\main\images\iapp-on.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\itoggle-off.png">
+      <Link>presentation\main\images\itoggle-off.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\itoggle-on.png">
+      <Link>presentation\main\images\itoggle-on.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\itunes.png">
+      <Link>presentation\main\images\itunes.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\just-listen.png">
+      <Link>presentation\main\images\just-listen.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\linn-logo.png">
+      <Link>presentation\main\images\linn-logo.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\logo.png">
+      <Link>presentation\main\images\logo.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\main-nav-spacer.png">
+      <Link>presentation\main\images\main-nav-spacer.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\navigation-background.png">
+      <Link>presentation\main\images\navigation-background.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\playlists.png">
+      <Link>presentation\main\images\playlists.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\refreshing.gif">
+      <Link>presentation\main\images\refreshing.gif</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\select-arrow.gif">
+      <Link>presentation\main\images\select-arrow.gif</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\subnavigation-background.png">
+      <Link>presentation\main\images\subnavigation-background.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\images\web.png">
+      <Link>presentation\main\images\web.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\scripts\jquery-ui-1.8.16.min.js">
+      <Link>presentation\main\scripts\jquery-ui-1.8.16.min.js</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\scripts\jquery.select.js">
+      <Link>presentation\main\scripts\jquery.select.js</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\jquery-ui-1.8.16.custom.css">
+      <Link>presentation\main\theme\jquery-ui-1.8.16.custom.css</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-bg_flat_0_aaaaaa_40x100.png">
+      <Link>presentation\main\theme\images\ui-bg_flat_0_aaaaaa_40x100.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-bg_flat_55_fbf9ee_40x100.png">
+      <Link>presentation\main\theme\images\ui-bg_flat_55_fbf9ee_40x100.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-bg_flat_65_ffffff_40x100.png">
+      <Link>presentation\main\theme\images\ui-bg_flat_65_ffffff_40x100.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-bg_flat_75_000000_40x100.png">
+      <Link>presentation\main\theme\images\ui-bg_flat_75_000000_40x100.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-bg_flat_75_ffffff_40x100.png">
+      <Link>presentation\main\theme\images\ui-bg_flat_75_ffffff_40x100.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-bg_flat_95_fef1ec_40x100.png">
+      <Link>presentation\main\theme\images\ui-bg_flat_95_fef1ec_40x100.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-icons_000000_256x240.png">
+      <Link>presentation\main\theme\images\ui-icons_000000_256x240.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-icons_2e83ff_256x240.png">
+      <Link>presentation\main\theme\images\ui-icons_2e83ff_256x240.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-icons_cd0a0a_256x240.png">
+      <Link>presentation\main\theme\images\ui-icons_cd0a0a_256x240.png</Link>
+    </None>
+    <None Include="..\..\..\OpenHome\presentation\main\theme\images\ui-icons_ffffff_256x240.png">
+      <Link>presentation\main\theme\images\ui-icons_ffffff_256x240.png</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
@@ -117,6 +256,7 @@
     </Content>
     <Content Include="..\..\..\OpenHome\MacOsX\libohNet.dylib">
       <Link>libohNet.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -128,5 +268,8 @@
       <Project>{22C47B98-D0D0-4B8E-A98D-F4371733E14A}</Project>
       <Name>OssToolkitMonoMac</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="presentation\" />
   </ItemGroup>
 </Project>

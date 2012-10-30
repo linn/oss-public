@@ -7,33 +7,8 @@ import xml.etree.ElementTree
 import SCons.Builder
 import SCons.Node.FS
 import SCons.Util
+import Utils
 
-
-def CopyFile(src, dst):
-    print 'CopyFile(%s -> %s)' % (src, dst)
-    shutil.copyfile(src, dst)
-
-
-def CopyTree(src, dst):
-    print 'CopyTree(%s -> %s)' % (src, dst)
-    shutil.copytree(src, dst, ignore=shutil.ignore_patterns('.svn'))
-
-
-def CopyDictionary(dict, rootDstFolder):
-    for (relDstFolder, srcs) in dict.items():
-        # create the folder for the items
-        absDstFolder = os.path.join(rootDstFolder, relDstFolder)
-        try:
-            os.mkdir(absDstFolder)
-        except OSError:
-            pass
-
-        # copy files/folders into the dst folder
-        for src in srcs:
-            if os.path.isdir(str(src)):
-                CopyTree(str(src), os.path.join(absDstFolder, src.name))
-            else:
-                CopyFile(str(src), os.path.join(absDstFolder, src.name))
 
 
 
@@ -85,7 +60,7 @@ def AddGdiPlus(monoBundleDir):
     dstDylibs = []
     for dylib in srcDylibs:
         dst = os.path.join(monoBundleDir, os.path.split(dylib)[1])
-        CopyFile(dylib, dst)
+        Utils.CopyFile(dylib, dst)
         dstDylibs.append(dst)
 
     # now relocate all dylibs
@@ -165,17 +140,17 @@ def postBuildStep(target, source, env):
     # copy resource files
     resources = env.get('RESOURCES', [])
     if resources != []:
-        CopyDictionary(resources, resFolder)
+        Utils.CopyDictionary(resources, resFolder)
 
     # copy exe resource files
     exeResources = env.get('EXERESOURCES', [])
     if exeResources != []:
-        CopyDictionary(exeResources, monoFolder)
+        Utils.CopyDictionary(exeResources, monoFolder)
 
     # copy the other resources
     otherResources = env.get('OTHERRESOURCES', [])
     if otherResources != []:
-        CopyDictionary(otherResources, contentsFolder)
+        Utils.CopyDictionary(otherResources, contentsFolder)
     
     # copy gdiplus.dylib if MonoBundle directory contains Syste.Drawing assembly
     if os.path.exists(os.path.join(monoFolder, 'System.Drawing.dll')):
@@ -183,16 +158,23 @@ def postBuildStep(target, source, env):
         AddGdiPlus(monoFolder)
 
     # copy the icon file
-    CopyFile(str(iconFilename), os.path.join(resFolder, os.path.basename(iconFilename)))
+    Utils.CopyFile(str(iconFilename), os.path.join(resFolder, os.path.basename(iconFilename)))
 
     # copy native libs alongside the executable
     nativeLibs = env.get('NATIVELIBS', [])
     for nativeLib in nativeLibs:
-        CopyFile(str(nativeLib), os.path.join(exeFolder, nativeLib.name))
+        Utils.CopyFile(str(nativeLib), os.path.join(exeFolder, nativeLib.name))
     
 
 mmpcom = "$MMP --nolink -o ${TARGET.dir} -n ${TARGET.filebase} $_CLILIBS $_NATIVELIBS $_NIBS $SOURCE"
-codesigncom = '$CODESIGN $CODESIGNFLAGS -s $APPCERT $TARGET'
+
+# Note on codesigning:
+#
+# Everything in the -r="..." argument to the codesign command is to specify a 'designated requirement' for the signing. This is required for Mac apps to work
+# nicely on Snow Leopard - the problem was that every time the app starts, the os asks whether you want to allow or deny connections through the firewall.
+# More details can be found at: http://www.red-sweater.com/blog/2390/developer-id-gotcha
+#
+codesigncom = '$CODESIGN $CODESIGNFLAGS -s $APPCERT -r="designated => anchor apple generic and identifier "uk.co.linn.${TARGET.filebase}" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = N5UMY6A236)" $TARGET'
 
 MmpBuilder = SCons.Builder.Builder(action = [preBuildStep, '$MMPCOM', postBuildStep, '$CODESIGNCOM'],
                                    source_factory = SCons.Node.FS.default_fs.File,

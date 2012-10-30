@@ -77,10 +77,11 @@ cp -R $SOURCE_ROOT/Driver .
 cp $SOURCE_ROOT/LaunchAgent.plist .
 cp $SOURCE_ROOT/PkgInfo.plist .
 cp -R $SOURCE_ROOT/Scripts .
-cp -R "$1"/ohSongcast/Build/Obj/Mac/Release/ohSongcast.net.dll .
-cp -R "$1"/ohSongcast/Build/Obj/Mac/Release/libohSongcast.so .
-cp "$1"/ohXapp/Build/Obj/Mac/Release/ohXapp.dll .
-cp "$1"/ohXapp/Build/Obj/Mac/Release/ohXappViewer.dll .
-cp "$1"/ohXen/Build/Obj/Mac/Release/ohXen.dll .
+cp -R "$1"/ohSongcast/Build/Obj/Mac-x86/Release/ohNet.net.dll .
+cp -R "$1"/ohSongcast/Build/Obj/Mac-x86/Release/ohSongcast.net.dll .
+cp -R "$1"/ohSongcast/Build/Obj/Mac-x86/Release/libohSongcast.so .
+cp "$1"/ohXapp/Build/Obj/Mac-x86/Release/ohXapp.dll .
+cp "$1"/ohXapp/Build/Obj/Mac-x86/Release/ohXappViewer.dll .
+cp "$1"/ohXen/Build/Obj/Mac-x86/Release/ohXen.dll .
 
 
