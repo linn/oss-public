@@ -43,12 +43,14 @@ def _parsewinicon(prefix, icon):
 def generate(env):
     env['BUILDERS']['CliProgramV2'] = CsBuilder
     env['BUILDERS']['CliLibraryV2'] = CsLibBuilder
+    env['BUILDERS']['CliProgramV4'] = CsBuilder
+    env['BUILDERS']['CliLibraryV4'] = CsLibBuilder
 
     env['CSC']            = env.Detect('/Developer/MonoTouch/usr/bin/smcs')
     env['_CSCLIBS']       = "${_stripixes('-r:$CLILIBPREFIX', CLILIBS, '$CLILIBSUFFIX', '-r', '', __env__)}"
     env['_CSCPKGS']       = "${_stripixes('-pkg:$CLIPKGPREFIX', CLIPKGS, '$CLIPKGSUFFIX', '-pkg', '', __env__)}"
     env['_CSCRESOURCES']  = "${_parsecscres('-res:', CLIRESOURCES)}"
-    env['_CSCLIBPATH']    = "${_stripixes('-lib:', CLILIBPATH, '', '-r', '', __env__)}"
+    env['_CSCLIBPATH']    = "${_stripixes('-lib:', CLILIBPATH, '', '-lib', '', __env__)}"
     env['_CSCWINICON']    = "${_parsewinicon('-win32icon:', WINICON)}"
     env['CSCFLAGS']       = SCons.Util.CLVar('')
     env['CSCLIBFLAGS']    = SCons.Util.CLVar('')
@@ -64,8 +66,8 @@ def generate(env):
     env['CLILIBSUFFIXES'] = [ '$CLILIBSUFFIX' ]
     env['CLIPKGPREFIX']   = ''
     env['CLIPKGSUFFIX']   = ''
-    env['_parsecscres'] = _parsecscres
-    env['_parsewinicon'] = _parsewinicon
+    env['_parsecscres']   = _parsecscres
+    env['_parsewinicon']  = _parsewinicon
     
     if env['variant'] == "debug":
         env.Append(CSCFLAGS = '-debug+')

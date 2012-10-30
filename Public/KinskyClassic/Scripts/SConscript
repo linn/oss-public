@@ -1,9 +1,0 @@
-Import('_default_env')
-
-file = _default_env.Install('$install_dir/bin', 'RunLinnGuiTests.sh')
-runTests = _default_env.AddPostAction(file, Chmod(file, 0755))
-Alias('RunLinnGuiTests', runTests)
-Alias('Test', runTests)
-
-#_default_env.CliProgram('cf-patcher', 'cf-patcher.cs', CLILIBS=['Mono.Cecil'])
-#_default_env.CliProgram('HelloWorld', 'HelloWorld.cs', CLILIBS=['System.Windows.Forms', 'System.Drawing'])

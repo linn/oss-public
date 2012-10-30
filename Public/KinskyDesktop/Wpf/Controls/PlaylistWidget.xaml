@@ -149,7 +149,7 @@
                         <Button x:Name="btnNavigateToSender" Click="SenderButton_Click" DockPanel.Dock="Right" VerticalAlignment="Top" HorizontalAlignment="Center" Visibility="Collapsed">
                             <Image Source="{Binding Source={x:Static kd:StaticImages.ImageSourceIconRoom}}" Height="20" />
                         </Button>
-                        <TextBlock x:Name="txtTitle" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" FontWeight="Medium" Text="{Binding Path=WrappedItem, Converter={StaticResource MrItemConverter}, ConverterParameter=Title}" VerticalAlignment="Top" Margin="5,0,0,0" />
+                        <TextBlock x:Name="txtTitle" TextElement.FontSize="{DynamicResource SemiLargeFontSize}" FontWeight="Medium" Text="{Binding Path=Name}" VerticalAlignment="Top" Margin="5,0,0,0" />
                     </DockPanel>
                 </StackPanel>
             </Grid>

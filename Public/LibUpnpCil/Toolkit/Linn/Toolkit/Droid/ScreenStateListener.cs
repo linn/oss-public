@@ -5,57 +5,13 @@ using System;
 namespace OssToolkitDroid
 {
 
-
-
-
-    [BroadcastReceiver]
-    public class ActionUserPresentListener : BroadcastReceiver
-    {
-        private Scheduler iScheduler;
-        public event EventHandler<EventArgs> EventUserPresent;
-
-        // default constructor to satisfy framework requirements, should not be used
-        public ActionUserPresentListener()
-            : base()
-        {
-            Assert.Check(false);
-        }
-
-        public ActionUserPresentListener(Context aContext)
-            : base()
-        {
-            iScheduler = new Scheduler("ActionUserPresentListenerScheduler", 1);
-        }
-
-
-        public override void OnReceive(Context aContext, Intent aIntent)
-        {
-            iScheduler.Schedule(() =>
-            {
-                UserLog.WriteLine("ActionUserPresentListener.OnReceive");
-                OnEventUserPresent();
-            });
-        }
-
-        private void OnEventUserPresent()
-        {
-            EventHandler<EventArgs> del = EventUserPresent;
-            if (del != null)
-            {
-                del(this, EventArgs.Empty);
-            }
-        }
-    }
-
-
-
-
     [BroadcastReceiver]
     public class ScreenStateListener : BroadcastReceiver
     {
         private bool iIsScreenOn;
         private Scheduler iScheduler;
         public event EventHandler<EventArgsScreenState> EventScreenStateChanged;
+        private Context iContext;
 
         // default constructor to satisfy framework requirements, should not be used
         public ScreenStateListener()
@@ -68,7 +24,10 @@ namespace OssToolkitDroid
             : base()
         {
             iScheduler = new Scheduler("ScreenStateScheduler", 1);
+            iContext = aContext;
             iIsScreenOn = IsScreenOn(aContext);
+            aContext.RegisterReceiver(this, new IntentFilter(Intent.ActionScreenOn));
+            aContext.RegisterReceiver(this, new IntentFilter(Intent.ActionScreenOff));
         }
 
 
@@ -96,6 +55,17 @@ namespace OssToolkitDroid
                 del(this, new EventArgsScreenState(aIsScreenOn));
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            UserLog.WriteLine("ScreenStateListener::Dispose");
+            iScheduler.Stop();
+            iScheduler = null;
+            iContext.UnregisterReceiver(this);
+            iContext = null;
+            base.Dispose(disposing);
+        }
+
     }
 
     public class EventArgsScreenState : EventArgs

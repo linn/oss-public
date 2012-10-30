@@ -118,10 +118,21 @@ dist += _default_env.InstallAs('InstallerDist/Library/LaunchAgents/uk.co.linn.so
 _default_env.Depends(dist, driver)
 
 scripts = []
-scripts += _default_env.Install('InstallerScripts/', 'Scripts/preflight')
-scripts += _default_env.Install('InstallerScripts/', 'Scripts/postflight')
+scripts += _default_env.Install('InstallerScripts/', 'Scripts/preinstall')
+scripts += _default_env.Install('InstallerScripts/', 'Scripts/postinstall')
 
-pkg = _default_env.PackageMaker('InstallerSongcast', distFolder, TITLE = '"Linn Songcast"', VERSION = kBuildInfo['BUILD_INFO_VERSION'], INFO_PLIST = _default_env.File('PkgInfo.plist'), SCRIPT_DIR = scriptsFolder)
+pkg = _default_env.ProductBuildWithResources('InstallerSongcast', distFolder,
+                    PRODUCTNAME = 'Songcast',
+                    SOURCEOPTIONNAME = '--root',
+                    INSTALLDIR = '/',
+                    IDENTIFIER = 'uk.co.linn.Songcast',
+                    COMPONENTPLIST = _default_env.File('PkgInfo.plist'),
+                    PKGCERT = '"Developer ID Installer: Linn Products Ltd"',
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                    INSTALLERRESOURCES = {'LICENSEFILE': _default_env.subst('$variant_dir/share/Linn/Core/license-cookies.txt')},
+                    SCRIPTSDIR = scriptsFolder,
+                    REQUIRERESTART = True)
+
 
 _default_env.Depends(pkg, dist)
 _default_env.Depends(pkg, scripts)

@@ -151,23 +151,26 @@
     <Compile Include="..\..\Wizard\Linn\Wizard\Component.cs">
       <Link>Component.cs</Link>
     </Compile>
-    <Compile Include="..\..\Wizard\Linn\Wizard\CustomisePage.cs">
-      <Link>CustomisePage.cs</Link>
-    </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\DiscoveryPage.cs">
       <Link>DiscoveryPage.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\HelpPage.cs">
       <Link>HelpPage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Wizard\Linn\Wizard\MainPage.cs">
-      <Link>MainPage.cs</Link>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Model.cs">
+      <Link>Model.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\Network.cs">
       <Link>Network.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\PageControl.cs">
       <Link>PageControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageDefinitions.cs">
+      <Link>PageDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageView.cs">
+      <Link>PageView.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\ReprogramPage.cs">
       <Link>ReprogramPage.cs</Link>
@@ -178,8 +181,8 @@
     <Compile Include="..\..\Wizard\Linn\Wizard\StreamPage.cs">
       <Link>StreamPage.cs</Link>
     </Compile>
-    <Compile Include="..\..\Wizard\Linn\Wizard\UsePage.cs">
-      <Link>UsePage.cs</Link>
+    <Compile Include="..\..\Wizard\Linn\Wizard\WizardPage.cs">
+      <Link>WizardPage.cs</Link>
     </Compile>
     <Compile Include="..\..\Wizard\Linn\Wizard\Windows\App.xaml.cs">
       <Link>App.xaml.cs</Link>
@@ -229,14 +232,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Customise\customise.js">
-      <Link>PageHtml\Customise\customise.js</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Customise\jquery-1.7.2.min.js">
-      <Link>PageHtml\Customise\jquery-1.7.2.min.js</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Discovery\discovery.js">
       <Link>PageHtml\Discovery\discovery.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -260,6 +255,26 @@
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Reprogram\reprogram.js">
       <Link>PageHtml\Reprogram\reprogram.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceTest\ConnectorIcons.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceTest\ConnectorIcons.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Cross.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Cross.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Speakers.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Speakers.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Tick.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Tick.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Use\use.js">
+      <Link>PageHtml\Use\use.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -310,6 +325,10 @@
       <Link>PageHtml\Resources\Images\AkurateDsm\AudioCheck.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\BackPanel.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\ConnectPowerCable.png">
       <Link>PageHtml\Resources\Images\AkurateDsm\ConnectPowerCable.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -318,68 +337,40 @@
       <Link>PageHtml\Resources\Images\AkurateDsm\ConnectSpeakerCableToDevice.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-aux.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-aux.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomisePlaylist.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-customise.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-front-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast1.gif">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast1.gif</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue1.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast2.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue2.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue2.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputAnalog.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputAnalog.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue3.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-analogue3.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputBalanced.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputBalanced.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-customise.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputHdmi.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi1.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputSpdif.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi2.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi2.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputToslink.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi3.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi3.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi4.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-hdmi4.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif1.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif1.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif2.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif2.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif3.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-spdif3.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink1.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink1.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink2.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink2.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink3.jpg">
-      <Link>PageHtml\Resources\Images\AkurateDsm\Customise\akuratedsm-rear-toslink3.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSources.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpFallbackButton.png">
@@ -422,8 +413,800 @@
       <Link>PageHtml\Resources\Images\AkurateDsm\UnpackBoxContents.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceIcon\Highlight.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceIcon\Highlight.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceIcon\IconsBlue.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceIcon\IconsBlue.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceIcon\IconsGrey.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceIcon\IconsGrey.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceIcon\IconsRed.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceIcon\IconsRed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceIcon\Kiko.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceIcon\Kiko.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultAnalog2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultAnalog2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultBalanced1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultBalanced1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultHdmi4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultSpdif3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultSpdif3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultToslink3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\DefaultToslink3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverAnalog2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverAnalog2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverBalanced1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverBalanced1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverHdmi4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverSpdif3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverSpdif3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverToslink3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\HoverToslink3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconAnalog.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconAnalog.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconAnalogHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconAnalogHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconBalanced.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconBalanced.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconBalancedHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconBalancedHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconHdmi.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconHdmi.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconHdmiHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconHdmiHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconSpdif.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconSpdif.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconSpdifHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconSpdifHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconToslink.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconToslink.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconToslinkHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\IconToslinkHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedAnalog2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedAnalog2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedBalanced1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedBalanced1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedHdmi4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedSpdif3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedSpdif3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedToslink3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\AkurateDsm\SelectedToslink3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\DefaultToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\HoverToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconAnalog.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconAnalog.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconAnalogHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconAnalogHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconHdmi.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconHdmi.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconHdmiHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconHdmiHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconSpdif.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconSpdif.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconSpdifHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconSpdifHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconToslink.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconToslink.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconToslinkHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\IconToslinkHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KikoDsm\SelectedToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultBalanced1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultBalanced1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\DefaultToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverBalanced1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverBalanced1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\HoverToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconBalanced.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconBalanced.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconBalancedHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconBalancedHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconHdmi.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconHdmi.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconHdmiHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconHdmiHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconSpdif.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconSpdif.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconSpdifHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconSpdifHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconToslink.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconToslink.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconToslinkHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\IconToslinkHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedBalanced1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedBalanced1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\KlimaxDsm\SelectedToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultAnalog4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultHdmi4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultSpdif3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultSpdif3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultToslink3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\DefaultToslink3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverAnalog4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverHdmi4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverSpdif3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverSpdif3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverToslink3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\HoverToslink3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconAnalog.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconAnalog.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconAnalogHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconAnalogHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconHdmi.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconHdmi.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconHdmiHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconHdmiHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconSpdif.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconSpdif.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconSpdifHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconSpdifHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconToslink.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconToslink.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconToslinkHighlighted.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\IconToslinkHighlighted.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedAnalog4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedHdmi4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedSpdif1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedSpdif1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedSpdif2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedSpdif2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedSpdif3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedSpdif3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedToslink1.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedToslink1.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedToslink2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedToslink2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedToslink3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceInput\MajikDsm\SelectedToslink3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceTest\Buttons.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceTest\Buttons.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceTest\Rings2.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceTest\Rings2.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceTest\Rings3.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceTest\Rings3.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Akurate.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Akurate.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Analog.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Analog.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Balanced.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Balanced.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\ConnectorCircle.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\ConnectorCircle.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hdmi.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hdmi.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover1of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover1of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover1of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover1of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover2of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover2of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover2of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover2of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover3of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover3of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover3of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover3of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover4of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover4of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover4of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover4of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Hover5of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Hover5of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Kiko.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Kiko.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Klimax.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Klimax.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Majik.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Majik.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\ProductCircle.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\ProductCircle.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected1of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected1of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected1of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected1of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected2of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected2of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected2of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected2of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected3of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected3of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected3of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected3of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected4of4.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected4of4.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected4of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected4of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Selected5of5.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Selected5of5.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Spdif.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Spdif.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\CustomiseSourceType\Toslink.png">
+      <Link>PageHtml\Resources\Images\CustomiseSourceType\Toslink.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\AudioCheck.png">
       <Link>PageHtml\Resources\Images\KikoDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\BackPanel.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectPowerCable.png">
@@ -438,40 +1221,36 @@
       <Link>PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToSpeaker.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-aux.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-aux.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomisePlaylist.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-customise.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-front-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSongcast1.gif">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSongcast1.gif</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-analogue.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-analogue.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSongcast2.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-customise.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputAnalog.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputAnalog.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi1.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputHdmi.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi2.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi2.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputSpdif.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi3.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-hdmi3.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputToslink.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-spdif.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-spdif.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-toslink.jpg">
-      <Link>PageHtml\Resources\Images\KikoDsm\Customise\kiko-rear-toslink.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSources.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpFallbackButton.png">
@@ -518,6 +1297,10 @@
       <Link>PageHtml\Resources\Images\KlimaxDsm\AudioCheck.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\BackPanel.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\ConnectPowerCable.png">
       <Link>PageHtml\Resources\Images\KlimaxDsm\ConnectPowerCable.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -526,44 +1309,36 @@
       <Link>PageHtml\Resources\Images\KlimaxDsm\ConnectSpeakerCableToDevice.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-front-customise.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-front-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomisePlaylist.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-analogue1.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-analogue1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast1.gif">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast1.gif</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-customise.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast2.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi1.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputBalanced.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputBalanced.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi2.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi2.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputHdmi.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi3.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-hdmi3.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputSpdif.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif1.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputToslink.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif2.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-spdif2.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink1.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink1.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink2.jpg">
-      <Link>PageHtml\Resources\Images\KlimaxDsm\Customise\klimaxdsm-rear-toslink2.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSources.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpFallbackButton.png">
@@ -614,6 +1389,10 @@
       <Link>PageHtml\Resources\Images\MajikDsm\AudioCheck.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\BackPanel.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\ConnectPowerCable.png">
       <Link>PageHtml\Resources\Images\MajikDsm\ConnectPowerCable.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -622,72 +1401,36 @@
       <Link>PageHtml\Resources\Images\MajikDsm\ConnectSpeakerCableToDevice.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-aux.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-aux.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomisePlaylist.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-customise.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-front-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSongcast1.gif">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSongcast1.gif</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue1.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue1.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSongcast2.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue2.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue2.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputAnalog.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputAnalog.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue3.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue3.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputHdmi.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue4.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-analogue4.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputSpdif.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-customise.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-customise.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputToslink.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi1.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi1.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi2.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi2.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi3.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi3.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi4.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-hdmi4.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif1.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif1.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif2.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif2.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif3.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-spdif3.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink1.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink1.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink2.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink2.jpg</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink3.jpg">
-      <Link>PageHtml\Resources\Images\MajikDsm\Customise\majikdsm-rear-toslink3.jpg</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSources.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpFallbackButton.png">
@@ -726,48 +1469,28 @@
       <Link>PageHtml\Resources\Images\MajikDsm\UnpackBoxContents.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots1of2.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots1of2.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedHdmiDown.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedHdmiDown.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots1of3.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots1of3.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedHdmiUp.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedHdmiUp.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots1of4.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots1of4.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\DotBlack.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\DotBlack.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots2of2.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots2of2.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\DotGrey.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\DotGrey.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots2of3.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots2of3.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots2of4.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots2of4.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots3of3.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots3of3.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots3of4.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots3of4.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Dots4of4.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\Dots4of4.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HandPoised.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\HandPoised.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HelpMenuArrow.png">
       <Link>PageHtml\Resources\Images\Miscellaneous\HelpMenuArrow.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HorizontalSeparator.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\HorizontalSeparator.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\JustListen.png">
@@ -854,6 +1577,26 @@
       <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemExitButtonPurple.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentAnalog.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentAnalog.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentBalanced.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentBalanced.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentHdmi.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentHdmi.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentSpdif.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentSpdif.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentToslink.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentToslink.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\StopButton.png">
       <Link>PageHtml\Resources\Images\Miscellaneous\StopButton.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -862,12 +1605,8 @@
       <Link>PageHtml\Resources\Images\Miscellaneous\StopButtonPressed.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\TopNavBar.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\TopNavBar.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\TopNavBarSeparator.png">
-      <Link>PageHtml\Resources\Images\Miscellaneous\TopNavBarSeparator.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\TvBackPanel.jpg">
+      <Link>PageHtml\Resources\Images\Miscellaneous\TvBackPanel.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\UseBackground.png">
@@ -894,174 +1633,130 @@
       <Link>PageHtml\Resources\Images\Miscellaneous\VolumePlusButtonPressed.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\ANLG.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\ANLG.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconAnalog.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconAnalog.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\HDMI1.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\HDMI1.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconAux.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconAux.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icon-panel.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icon-panel.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconCable.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconCable.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcable.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconcable.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconComputer.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconComputer.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcable_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconcable_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconController.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconController.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcomputer.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconcomputer.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconDisc.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconDisc.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcomputer_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconcomputer_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconHdmi1.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconHdmi1.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcontroller.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconcontroller.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconHdmi2.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconHdmi2.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconcontroller_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconcontroller_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconHdmi3.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconHdmi3.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icondisc.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icondisc.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconIpad.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconIpad.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icondisc_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icondisc_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconIphone.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconIphone.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipad.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconipad.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconIpod.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconIpod.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipad_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconipad_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconMovies.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconMovies.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconiphone.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconiphone.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconMusic.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconMusic.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconiphone_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconiphone_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconNetaux.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconNetaux.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipod.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconipod.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconPlaylist.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconPlaylist.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconipod_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconipod_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconPlaystation.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconPlaystation.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviescamera.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviescamera.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconRadio.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconRadio.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviescamera_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviescamera_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconSatelite.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconSatelite.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconSongcast.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconSongcast.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesclapperboard_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconSpdif.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconSpdif.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesfilm.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesfilm.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconTos.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconTos.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmoviesfilm_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmoviesfilm_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconTurntable.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconTurntable.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmp3.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmp3.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconTv.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconTv.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconmp3_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconmp3_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconUpnpAv.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconUpnpAv.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconplaystation.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconplaystation.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconWii.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconWii.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconplaystation_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconplaystation_on.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconXbox.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconXbox.bmp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconsatellite.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconsatellite.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Selector\selector.js">
+      <Link>PageHtml\Selector\selector.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconsatellite_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconsatellite_on.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontablet.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icontablet.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontablet_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icontablet_on.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconturntable.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconturntable.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconturntable_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconturntable_on.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontv.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icontv.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\icontv_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\icontv_on.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconwii.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconwii.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconwii_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconwii_on.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconxbox.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconxbox.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\iconxbox_on.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\iconxbox_on.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\SPDIF.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\SPDIF.png</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\TOS.png">
-      <Link>PageHtml\Resources\Images\SourceIcons\TOS.png</Link>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\SourceTest\sourcetest.js">
+      <Link>PageHtml\SourceTest\sourcetest.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Standard\index.xapp">
       <Link>PageHtml\Standard\index.xapp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Standard\standard.js">
+      <Link>PageHtml\Standard\standard.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Stream\stream.js">
       <Link>PageHtml\Stream\stream.js</Link>
@@ -1099,11 +1794,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Customise\index.xapp">
-      <Link>PageHtml\Customise\index.xapp</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Discovery\index.xapp">
       <Link>PageHtml\Discovery\index.xapp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1113,6 +1803,23 @@
       <Link>PageHtml\Help\index.xapp</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </None>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\top.frag">
+      <Link>PageHtml\PageFragments\top.frag</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\breadcrumb.frag">
+      <Link>PageHtml\PageFragments\breadcrumb.frag</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\footer.frag">
+      <Link>PageHtml\PageFragments\footer.frag</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\header.frag">
+      <Link>PageHtml\PageFragments\header.frag</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.eot">
       <Link>PageHtml\Resources\Fonts\effra-webfont.eot</Link>
@@ -1136,6 +1843,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Selector\index.xapp">
+      <Link>PageHtml\Selector\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\SourceTest\index.xapp">
+      <Link>PageHtml\SourceTest\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\Wizard\Linn\Wizard\Windows\Properties\Resources.resx">
@@ -1155,7 +1871,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
+    <PostBuildEvent>xcopy /S /E /I /Y $(ProjectDir)\..\..\Widgets $(TargetDir)\PageHtml\Widgets
     </PostBuildEvent>
   </PropertyGroup>
 </Project>

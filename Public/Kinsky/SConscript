@@ -34,13 +34,6 @@ files = Split("""
     Linn/Kinsky/PlaylistDisplayHelper.cs
 """)
 
-pocketPcFiles = Split("""
-    Properties/Resources.Designer.cs
-    Linn/Kinsky/ArtworkCache.cs
-    Linn/Kinsky/Framework/Compact/DisplayManager.cs
-    Linn/Kinsky/Framework/Compact/KeyBindings.cs
-""")
-
 pcFiles = Split("""
     Properties/Resources.Designer.cs
     Linn/Kinsky/ArtworkCache.cs
@@ -64,12 +57,6 @@ clilibs = Split("""
     ICSharpCode.SharpZipLib
 """)
 
-pocketPcLibs = Split("""
-    System.Windows.Forms
-    System.Drawing
-    Microsoft.WindowsCE.Forms
-""")
-
 pcLibs = Split("""
     System.Windows.Forms
     System.Drawing
@@ -77,10 +64,7 @@ pcLibs = Split("""
     policy.2.0.taglib-sharp
 """)
 
-if _default_env['hardware'] == 'PocketPc':
-    files.extend(pocketPcFiles)
-    clilibs.extend(pocketPcLibs)
-elif _default_env['hardware'] == 'Ios' or _default_env['hardware'] == 'Android':
+if _default_env['hardware'] == 'Ios' or _default_env['hardware'] == 'Android':
     res = []
 else:
     files.extend(pcFiles)
@@ -106,11 +90,9 @@ testlibs = Split("""
 """)
 
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     prog  = _default_env.CliProgram('Test/TestKeyBindings', 'Linn/Kinsky/Test/TestKeyBindings.cs', CLILIBS=['OssTestFramework', 'OssCore', 'OssKinsky', 'System.Windows.Forms'])
     prog += _default_env.CliProgram('Test/TestKinsky', testfiles, CLILIBS=testlibs)
-#if _default_env['hardware'] == 'PocketPc':
-    #prog += _default_env.CliProgram('Test/TestRoomSourceSelection', 'TestRoomSourceSelection.cs', CLILIBS=['OssTestFramework', 'OssCore', 'OssControl', 'OssKinsky', 'OssTopology'])
     Alias('Test', prog)
 
 docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/Kinsky.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/Kinsky', DOXYGENNAMESPACE='OssKinsky')

@@ -17,7 +17,7 @@ else:
     lib = _default_env.MSBuildLibBuilder('OssDidlLite', msproj, CLILIBS=clilibs)
     
 test = []
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Android':
     test += _default_env.CliProgram('Test/TestDidlLite', 'UpnpAv/Test/TestDidlLite.cs', CLILIBS=['mscorlib', 'System.Xml', 'OssCore', 'OssTestFramework', 'OssDidlLite'])
 
 Alias('Lib', kode)

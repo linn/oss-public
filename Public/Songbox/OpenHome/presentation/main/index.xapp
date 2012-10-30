@@ -7,8 +7,20 @@
 
     <script type="text/javascript">
     
+       window['_xappSend'] = xappSend;
+       window['xappSend'] = function(name, value){
+           trackEvent(name, value, getDateTime());
+           _xappSend(name, value);
+       }
+    
+       function getDateTime(){
+         return new Date().toUTCString();
+       }
+        
       function linnSetUnselectable(element) {
-        element.attr('unselectable', 'on');
+        if(!element.is("input")) {
+          element.attr('unselectable', 'on');
+        }
 
         element.children().each(function(index) {
           linnSetUnselectable($(this));
@@ -50,26 +62,15 @@
           xappSend('plugin', '!' + plugin);
         }
       }
-      
-      function toggleButtonTunesClick(button) {
-        toggleButtonToggleValue(button);
-            
-        if (toggleButtonValue(button)) {
-          xappSend('tunes-enabled', 'true');
-        }
-        else {
-          xappSend('tunes-enabled', 'false');
-        }
-      }
 
-      function toggleButtonPlaylistsClick(button) {
+      function toggleButtonClick(button, name) {
         toggleButtonToggleValue(button);
 
         if (toggleButtonValue(button)) {
-          xappSend('playlists', 'true');
+          xappSend(name, 'true');
         }
         else {
-          xappSend('playlists', 'false');
+          xappSend(name, 'false');
         }
       }
 
@@ -195,14 +196,36 @@
         $('#location-save').toggleClass('coloured', json.Value.Save);
         $('#location-revert').toggleClass('coloured', json.Value.Revert);
         $('#location-default').toggleClass('coloured', json.Value.Default);
-        json.Value.Save ?  $('#location-save').removeAttr('disabled').removeClass('disabled') : $('#location-save').attr('disabled', 'true'); if($.browser.msie) { $('#location-save').addClass('disabled').removeAttr('disabled') };
-        json.Value.Revert ? $('#location-revert').removeAttr('disabled').removeClass('disabled') : $('#location-revert').attr('disabled', 'true'); if($.browser.msie) { $('#location-revert').addClass('disabled').removeAttr('disabled') };
-        json.Value.Default ? $('#location-default').removeAttr('disabled').removeClass('disabled') : $('#location-default').attr('disabled', 'true'); if($.browser.msie) { $('#location-default').addClass('disabled').removeAttr('disabled') };
+        if(json.Value.Save) {
+          $('#location-save').removeAttr('disabled').removeClass('disabled');
+        } else {
+          $('#location-save').attr('disabled', 'true'); 
+          if($.browser.msie) { 
+            $('#location-save').addClass('disabled').removeAttr('disabled');
+          };
+        }
+        if(json.Value.Revert) {
+          $('#location-revert').removeAttr('disabled').removeClass('disabled');
+        } else {
+          $('#location-revert').attr('disabled', 'true');
+          if($.browser.msie) {
+            $('#location-revert').addClass('disabled').removeAttr('disabled');
+          }
+        }
+        if(json.Value.Default) {
+          $('#location-default').removeAttr('disabled').removeClass('disabled');
+        } else {
+          $('#location-default').attr('disabled', 'true');
+          if($.browser.msie) {
+            $('#location-default').addClass('disabled').removeAttr('disabled');
+          }
+        }
       }
       
       function onSetTunesState(json) {
         setTunes(json.Enabled);
         $('button#itunes-resync').attr('disabled', json.Refreshing);
+        $('#last-scan').text(json.LastScan);
       }
 
     </script>
@@ -216,7 +239,7 @@
                 <img width="60px" src="images/itunes.png" />
             </div>
             <div class="span10">
-              <div class="toggle-button-section" id="itunes-enabled" onclick="toggleButtonTunesClick($(this))">
+              <div class="toggle-button-section" id="itunes-enabled" onclick="toggleButtonClick($(this), 'tunes-enabled')">
                 <div class="toggle-button-label on-label">ON</div>
                 <div class="toggle-button-label off-label">OFF</div>
               </div>
@@ -255,6 +278,7 @@
         <div class="span7">
           <h3>Restore synchronisation</h3>
           <button id='itunes-resync' onclick="if(!$('#itunes-resync').hasClass('disabled')) { xappSend('tunes-refresh', 'itunes') }" class="btn button-refresh"><img src='images/refreshing.gif'/><div>RESYNC</div></button>
+          <div id='last-scan'></div>
         </div>
       </div>
     </section>
@@ -398,7 +422,7 @@
             <img width="60px" src="images/playlists.png" />
           </div>
           <div class="span10">
-            <div class="toggle-button-section" id="playlists-enabled" onclick="toggleButtonPlaylistsClick($(this))" >
+            <div class="toggle-button-section" id="playlists-enabled" onclick="toggleButtonClick($(this), 'playlists')" >
               <div class="toggle-button-label on-label">ON</div>
               <div class="toggle-button-label off-label">OFF</div>
             </div>
@@ -438,6 +462,17 @@
 
 
     <!-- Advanced ======================================================== -->
+    <script type="text/javascript">
+
+        function onSetStartAtLogin(json) {
+            toggleButtonSetValue($('#startatlogin-enabled'), json.Value);
+        }
+
+        function onSetUsageData(json) {
+            toggleButtonSetValue($('#usagedata-enabled'), json.Value);
+        }
+        
+    </script>
     <section id="advanced-section">
       <div id="advanced" />
       <div class="page-header">
@@ -467,6 +502,39 @@
           <select id="advanced-adapters" class="span7" onchange="xappSend('adapter', selectedIndex)"/>
         </div>
       </div>
+      <div class="row">
+        <div class="span4">
+          <h2>Check for updates</h2>
+          <p>Checks for updates to <span class="productname"/>.</p>
+        </div>
+        <div class="span7">
+            <button onclick="xappSend('checkforupdates', '')" class="btn">CHECK</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span4">
+            <h2>Start at login</h2>
+            <p>Start automatically when logged in.</p>
+        </div>    
+        <div class="span1">        
+            <div class="toggle-button-app" id="startatlogin-enabled" onclick="toggleButtonClick($(this), 'startatlogin')" >
+              <div class="toggle-button-app-label on-label">YES</div>
+              <div class="toggle-button-app-label off-label">NO</div>
+            </div>
+        </div>
+      </div>    
+      <div class="row">
+        <div class="span4">
+            <h2>Send usage data</h2>
+            <p>Sends anonymous data about <span class="productname"/>'s usage for product improvement purposes.</p>
+        </div>
+        <div class="span1">
+            <div class="toggle-button-app" id="usagedata-enabled" onclick="toggleButtonClick($(this), 'usagedata')" >
+              <div class="toggle-button-app-label on-label">YES</div>
+              <div class="toggle-button-app-label off-label">NO</div>
+            </div>
+        </div>
+      </div>    
     </section>
 
     <!-- Footer ========================================================== -->

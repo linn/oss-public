@@ -1,0 +1,945 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DCFC3AAA-F43C-42F8-ACC6-2EEE78C2AC2A}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Linn.Wizard</RootNamespace>
+    <AssemblyName>Wizard</AssemblyName>
+    <BaseDirectory>..\..\Wizard\Linn\Wizard\Ios</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\install\IosSim\debug\bin</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchProfiling>True</MtouchProfiling>
+    <MtouchLink>None</MtouchLink>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>..\..\install\IosSim\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\install\Ios\debug\bin</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchProfiling>True</MtouchProfiling>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
+    <IpaPackageName />
+    <CrashReportingApiKey />
+    <MtouchI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>..\..\install\Ios\release\bin</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\install\Ios\distribution\bin</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <MtouchExtraArgs>-aot "nimt-trampolines=2048"</MtouchExtraArgs>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <BuildIpa>True</BuildIpa>
+    <IpaPackageName />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Distribution</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="monotouch" />
+    <Reference Include="ohXapp">
+      <HintPath>..\..\Wizard\OpenHome\Ios\ohXapp.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXappViewer">
+      <HintPath>..\..\Wizard\OpenHome\Ios\ohXappViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXen">
+      <HintPath>..\..\Wizard\OpenHome\Ios\ohXen.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Info.plist" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoIpad.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoIpad3.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoIphone.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoIphone4.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoSpotlightIpad.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoSpotlightIpad3.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoSpotlightIphone.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\Ios\Resources\WizardLogoSpotlightIphone4.png" />
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\breadcrumb.frag">
+      <Link>PageHtml\PageFragments\breadcrumb.frag</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\footer.frag">
+      <Link>PageHtml\PageFragments\footer.frag</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\header.frag">
+      <Link>PageHtml\PageFragments\header.frag</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\PageFragments\top.frag">
+      <Link>PageHtml\PageFragments\top.frag</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Selector\index.xapp">
+      <Link>PageHtml\Selector\index.xapp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Selector\selector.js">
+      <Link>PageHtml\Selector\selector.js</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\SourceTest\index.xapp">
+      <Link>PageHtml\SourceTest\index.xapp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\SourceTest\sourcetest.js">
+      <Link>PageHtml\SourceTest\sourcetest.js</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Use\index.xapp">
+      <Link>PageHtml\index.xapp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconAnalog.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconAnalog.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconAux.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconAux.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconCable.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconCable.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconComputer.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconComputer.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconController.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconController.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconDisc.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconDisc.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconHdmi1.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconHdmi1.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconHdmi2.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconHdmi2.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconHdmi3.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconHdmi3.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconIpad.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconIpad.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconIphone.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconIphone.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconIpod.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconIpod.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconMovies.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconMovies.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconMusic.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconMusic.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconNetaux.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconNetaux.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconPlaylist.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconPlaylist.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconPlaystation.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconPlaystation.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconRadio.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconRadio.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconSatelite.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconSatelite.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconSongcast.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconSongcast.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconSpdif.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconSpdif.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconTos.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconTos.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconTurntable.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconTurntable.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconTv.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconTv.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconUpnpAv.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconUpnpAv.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconWii.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconWii.bmp</Link>
+    </None>
+    <None Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\SourceIcons\OledIconXbox.bmp">
+      <Link>PageHtml\Resources\Images\SourceIcons\OledIconXbox.bmp</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Ios\Main.cs" />
+    <Compile Include="..\..\Wizard\Linn\Wizard\Ios\AppDelegate.cs" />
+    <Compile Include="..\..\Wizard\Linn\Wizard\Ios\WizardViewController.cs" />
+    <Compile Include="..\..\Wizard\Linn\Wizard\Ios\WizardViewController.designer.cs">
+      <DependentUpon>WizardViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\BasePage.cs">
+      <Link>BasePage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Component.cs">
+      <Link>Component.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\DiscoveryPage.cs">
+      <Link>DiscoveryPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\HelpPage.cs">
+      <Link>HelpPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Model.cs">
+      <Link>Model.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Network.cs">
+      <Link>Network.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageControl.cs">
+      <Link>PageControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageDefinitions.cs">
+      <Link>PageDefinitions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\PageView.cs">
+      <Link>PageView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\ReprogramPage.cs">
+      <Link>ReprogramPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\StandardPage.cs">
+      <Link>StandardPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\StreamPage.cs">
+      <Link>StreamPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\WizardPage.cs">
+      <Link>WizardPage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Wizard\Linn\Wizard\Ios\AppDelegate.designer.cs">
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\Wizard\Linn\Wizard\Ios\WizardViewController.xib" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">
+      <Project>{FADD2631-1259-4A92-B87F-69A4364AE7B6}</Project>
+      <Name>OssCoreIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitIos\OssToolkitIos.csproj">
+      <Project>{CE61C5CB-180B-44A2-831C-E15889B61196}</Project>
+      <Name>OssToolkitIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssProductSupportIos\OssProductSupportIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065B}</Project>
+      <Name>OssProductSupportIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssControlIos\OssControlIos.csproj">
+      <Project>{06C84AB5-457C-4731-9FA6-72EA3BB7E9E7}</Project>
+      <Name>OssControlIos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="..\..\Wizard\Linn\Wizard\Ios\PageHtml\" />
+    <Folder Include="..\..\Wizard\Linn\Wizard\Ios\Resources\" />
+    <Folder Include="..\..\Wizard\Linn\Wizard\Ios\PageHtml\PageFragments\" />
+    <Folder Include="..\..\Wizard\Linn\Wizard\Ios\PageHtml\Selector\" />
+    <Folder Include="..\..\Wizard\Linn\Wizard\Ios\PageHtml\SourceTest\" />
+    <Folder Include="..\..\Wizard\Linn\Wizard\Ios\PageHtml\Resources\Images\SourceIcons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpEthernetLights.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpEthernetLights.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpNoEthernetCable.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpNoEthernetCable.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpRemoteBatteries.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpRemoteBatteries.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpRemoteLit.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpRemoteLit.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpStandbyButton.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpStandbyButton.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\HelpVolumeButtons.png">
+      <Link>PageHtml\Resources\Images\Accessories\HelpVolumeButtons.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\StreamAlbumArt.png">
+      <Link>PageHtml\Resources\Images\Accessories\StreamAlbumArt.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Accessories\UnpackFitRemoteBatteries.png">
+      <Link>PageHtml\Resources\Images\Accessories\UnpackFitRemoteBatteries.png</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\HelpSpeakersPhono.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\HelpSpeakersPhono.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToSpeaker.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\ConnectSpeakerCableToSpeaker.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\UnpackFitFeet.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\UnpackFitFeet.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpInputAdapters.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpInputAdapters.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\HelpSpeakersPhono.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\HelpSpeakersPhono.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\AudioCheck.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\AudioCheck.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\ConnectPowerCable.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\ConnectPowerCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\ConnectSpeakerCableToDevice.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\ConnectSpeakerCableToDevice.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpFallbackButton.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpFallbackButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpFallbackDisplay.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpFallbackDisplay.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpLinnLogo.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpLinnLogo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\HelpNoNetwork.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\HelpNoNetwork.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\NetworkConnectEthernetCable.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\NetworkConnectEthernetCable.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\NetworkPowerOff.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\NetworkPowerOff.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\PowerOn.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\PowerOn.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\SelectSystem.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\SelectSystem.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\UnpackBoxContents.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\UnpackBoxContents.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HelpMenuArrow.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\HelpMenuArrow.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\JustListen.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\JustListen.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Logo.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Logo.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\MainBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\MainBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\MainBackgroundModal.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\MainBackgroundModal.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\MainExitButtonRed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\MainExitButtonRed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\NavigationBarBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\NavigationBarBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\NewIcon.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\NewIcon.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\PlayButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\PlayButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\PlayButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\PlayButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProductSelectButtonHover.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProductSelectButtonHover.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Progress.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Progress.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressHighlight.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressHighlight.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressHighlightEnd.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressHighlightEnd.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SelectSystemBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SelectSystemBackgroundModal.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemBackgroundModal.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SelectSystemExitButtonPurple.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SelectSystemExitButtonPurple.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\StopButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\StopButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\StopButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\StopButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\UseBackground.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\UseBackground.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\UseExitButtonBlue.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\UseExitButtonBlue.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumeMinusButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumeMinusButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumeMinusButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumeMinusButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumePlusButton.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumePlusButton.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\VolumePlusButtonPressed.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\VolumePlusButtonPressed.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\right-dark.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\right-dark.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\right-light.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\right-light.png</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Linn.css">
+      <Link>PageHtml\Linn.css</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Linn.js">
+      <Link>PageHtml\Linn.js</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\PageDefinitions.xml">
+      <Link>PageHtml\PageDefinitions.xml</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Stream\index.xapp">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <Link>PageHtml\Stream\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Stream\stream.js">
+      <Link>PageHtml\Stream\stream.js</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Use\index.xapp">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <Link>PageHtml\Use\index.xapp</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Standard\index.xapp">
+      <Link>PageHtml\Standard\index.xapp</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Reprogram\index.xapp">
+      <Link>PageHtml\Reprogram\index.xapp</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Reprogram\reprogram.js">
+      <Link>PageHtml\Reprogram\reprogram.js</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Main\index.xapp">
+      <Link>PageHtml\Main\index.xapp</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Help\index.xapp">
+      <Link>PageHtml\Help\index.xapp</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Help\ticket.js">
+      <Link>PageHtml\Help\ticket.js</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Discovery\discovery.js">
+      <Link>PageHtml\Discovery\discovery.js</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Discovery\index.xapp">
+      <Link>PageHtml\Discovery\index.xapp</Link>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.eot">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <Link>PageHtml\Resources\Fonts\effra-webfont.eot</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.ttf">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <Link>PageHtml\Resources\Fonts\effra-webfont.ttf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Fonts\effra-webfont.woff">
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <Link>PageHtml\Resources\Fonts\effra-webfont.woff</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressBlack.gif">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressBlack.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ProgressGray.gif">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ProgressGray.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\Refreshing.gif">
+      <Link>PageHtml\Resources\Images\Miscellaneous\Refreshing.gif</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\BackPanel.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomisePlaylist.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast1.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast1.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSongcast2.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputAnalog.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputAnalog.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputBalanced.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputBalanced.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceInputToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSources.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\AkurateDsm\CustomiseSourceType.png">
+      <Link>PageHtml\Resources\Images\AkurateDsm\CustomiseSourceType.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\BackPanel.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomisePlaylist.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSongcast1.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSongcast1.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSongcast2.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputAnalog.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputAnalog.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSourceInputToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KikoDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\KikoDsm\CustomiseSources.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\BackPanel.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomisePlaylist.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast1.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast1.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSongcast2.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputBalanced.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputBalanced.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceInputToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSources.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceType.png">
+      <Link>PageHtml\Resources\Images\KlimaxDsm\CustomiseSourceType.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\BackPanel.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\BackPanel.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomisePlaylist.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomisePlaylist.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSongcast1.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSongcast1.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSongcast2.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSongcast2.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputAnalog.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputAnalog.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputHdmi.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputSpdif.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputToslink.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceInputToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSources.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSources.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\MajikDsm\CustomiseSourceType.png">
+      <Link>PageHtml\Resources\Images\MajikDsm\CustomiseSourceType.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedBalanced.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedBalanced.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedHdmi.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedSpdif.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedToslink.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\ConnectorPoisedToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\DotBlack.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\DotBlack.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\DotGrey.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\DotGrey.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\HandPoised.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\HandPoised.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceIconCurrent.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceIconCurrent.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceIconHover.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceIconHover.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentAnalog.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentAnalog.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentBalanced.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentBalanced.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentHdmi.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentSpdif.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentToslink.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputCurrentToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputHoverAnalog.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputHoverAnalog.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputHoverBalanced.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputHoverBalanced.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputHoverHdmi.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputHoverHdmi.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputHoverSpdif.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputHoverSpdif.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceInputHoverToslink.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceInputHoverToslink.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceTypeCurrent.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceTypeCurrent.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\SourceTypeHover.png">
+      <Link>PageHtml\Resources\Images\Miscellaneous\SourceTypeHover.png</Link>
+    </Content>
+    <Content Include="..\..\Wizard\Linn\Wizard\PageHtml\Resources\Images\Miscellaneous\TvBackPanel.jpg">
+      <Link>PageHtml\Resources\Images\Miscellaneous\TvBackPanel.jpg</Link>
+    </Content>
+  </ItemGroup>
+</Project>

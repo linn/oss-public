@@ -23964,4 +23964,54 @@
         <Key>14760</Key>
         <Desc>Flag to enable/disable auto switching of the NetAux source</Desc>
     </Entry>
+    <Entry>
+        <Tag>uEthernetLedsEnabled</Tag>
+        <Type>TUint</Type>
+        <Key>14761</Key>
+        <Desc>Flag to enable/disable LEDs on ethernet socket</Desc>
+    </Entry>
+    <Entry>
+        <Tag>uUiDisplayOrientationLedStandby</Tag>
+        <Type>TUint</Type>
+        <Key>14762</Key>
+        <Desc>Flag to enable/disable orientation led on the device display in standby</Desc>
+    </Entry>
+    <Entry>
+        <Tag>uPhaseFilterCoeffs</Tag>
+        <Type>TUint</Type>
+        <Key>14763</Key>
+        <Desc>Phase compensation filter coefficient table</Desc>
+    </Entry>
+    <Entry>
+        <Tag>uAmplifierMode</Tag>
+        <Type>TUint</Type>
+        <Key>14764</Key>
+        <Desc>Use to change the amplifier mode of a product</Desc>
+    </Entry>
+    <Entry>
+        <Tag>uPhaseCoeffs</Tag>
+        <Type>Binary</Type>
+        <Key>14765</Key>
+        <Desc>Phase compensation filter coefficients</Desc>
+    </Entry>
+    <Group>
+        <Tag>uFpgaSpartan6Prog</Tag>
+        <Type>TUint</Type>
+        <Key>14766</Key>
+        <Desc>RomDir entry code for FPGA (spartan6)</Desc>
+        <Count>20</Count>
+    </Group>
+    <Entry>
+        <Tag>uPreampTar</Tag>
+        <Type>Binary</Type>
+        <Key>14786</Key>
+        <Desc>TAR file image that contains any default files required by the Preamp</Desc>
+    </Entry>
+    <Group>
+        <Tag>uCrossoverFilterCurrentPresetName</Tag>
+        <Type>String</Type>
+        <Key>14787</Key>
+        <Desc>Name of crossover filter's current preset</Desc>
+        <Count>100</Count>
+    </Group>
 </Tags>

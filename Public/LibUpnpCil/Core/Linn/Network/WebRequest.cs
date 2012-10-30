@@ -12,6 +12,51 @@ namespace Linn
         bool HasWork();
     }
 
+    public class JobSendRequest : IJob
+    {
+        public JobSendRequest(GetResponseStreamCallback aCallback, HttpWebRequest aRequest, byte[] aMessage)
+        {
+            iRequest = aRequest;
+            iMessage = aMessage;
+            iCallback = aCallback;
+        }
+
+        public void Execute()
+        {
+            Stream reqStream = null;
+
+            try
+            {
+                reqStream = iRequest.GetRequestStream();
+                reqStream.Write(iMessage, 0, iMessage.Length);
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine(Trace.kCore, "Exception caught sending HttpWebRequest: " + ex);
+            }
+            finally
+            {
+                if (reqStream != null)
+                {
+                    reqStream.Close();
+                    reqStream.Dispose();
+                }
+            }
+
+            WebRequestPool.QueueJob(new JobGetResponse(iCallback, iRequest));
+        }
+
+        public bool HasWork()
+        {
+            return true;
+        }
+
+        private HttpWebRequest iRequest;
+        private byte[] iMessage;
+        private GetResponseStreamCallback iCallback;
+    }
+
+
     public delegate void GetResponseStreamCallback(object aResult);
     public class JobGetResponse : IJob
     {
@@ -139,11 +184,7 @@ namespace Linn
             }
         }
 
-#if PocketPC
-        private const bool kCanCreateThreads = false;
-#else
         private const bool kCanCreateThreads = true;
-#endif
         private const int kMinNumThreads = 20;
 
         private static object iLock;

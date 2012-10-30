@@ -3,18 +3,4 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:kd="clr-namespace:KinskyDesktopWpf"                     
     StartupUri="KinskyDesktop.xaml">
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ControlStyles.xaml" />
-                <ResourceDictionary Source="ScrollBar.xaml" />
-                <ResourceDictionary Source="ComboBox.xaml" />
-                <ResourceDictionary Source="ListBox.xaml" />
-                <ResourceDictionary Source="TileViewStyle.xaml" />
-                <ResourceDictionary Source="WindowChromeStyle.xaml" />
-                <ResourceDictionary Source="MenuItem.xaml" />
-                <ResourceDictionary Source="Slider.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Application.Resources>
 </Application> 

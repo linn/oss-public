@@ -282,6 +282,19 @@ namespace Linn.Songcast
             }
         }
 
+        public bool UsageData
+        {
+            get
+            {
+                return iPreferences.UsageData;
+            }
+            set
+            {
+                iPreferences.UsageData = value;
+                Notify("UsageData");
+            }
+        }
+
         private void Notify(string aName)
         {
             if (PropertyChanged != null)
@@ -511,6 +524,7 @@ namespace Linn.Songcast
         public SubnetBinding(OpenHome.Songcast.ISubnet aSubnet)
         {
             iSubnet = aSubnet;
+            iDescription = string.Format("{0} ({1})", new IPAddress(iSubnet.Address), iSubnet.AdapterName);
         }
 
         public uint Address
@@ -520,7 +534,7 @@ namespace Linn.Songcast
 
         public string Description
         {
-            get { return string.Format("{0} ({1})", new IPAddress(iSubnet.Address), iSubnet.AdapterName); }
+            get { return iDescription; }
         }
 
         public void Update(SubnetBinding aSubnet)
@@ -528,6 +542,8 @@ namespace Linn.Songcast
             string desc = Description;
 
             iSubnet = aSubnet.iSubnet;
+
+            iDescription = string.Format("{0} ({1})", new IPAddress(iSubnet.Address), iSubnet.AdapterName);
 
             if (desc != Description && PropertyChanged != null)
             {
@@ -538,6 +554,7 @@ namespace Linn.Songcast
         public event PropertyChangedEventHandler PropertyChanged;
 
         private OpenHome.Songcast.ISubnet iSubnet;
+        private string iDescription;
     }
 
     public class SubnetEqualityComparer : EqualityComparer<SubnetBinding>

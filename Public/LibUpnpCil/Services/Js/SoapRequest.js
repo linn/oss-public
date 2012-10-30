@@ -2,7 +2,6 @@ var kEnvelopeStart = '<?xml version="1.0"?>' +
         '<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<s:Body s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><u:';
 		
-var kAjaxTimeout = 10000;
 
 var SoapRequest = function(aAction, aUrl, aDomain, aType, aVersion){
 	this.iAction = aAction;
@@ -46,36 +45,34 @@ SoapRequest.prototype.GetSoapAction = function(){
 	
 SoapRequest.prototype.CreateAjaxRequest = function(aCallbackFunction, aErrorFunction) {
 	var thisObj = this;
-	return new Ajax.Request(
-	this.iUrl , {
-		method: 'post', 
-		requestHeaders: ["SOAPAction", this.GetSoapAction()],
-		postBody: this.iEnvelope, 
-		onSuccess: function(transport) {			
-			if (transport.status){
+    
+    return $.ajax({
+        url: this.iUrl,
+        success: function(data, textStatus, jqXHR) {			
+			if (data){
 				if (aCallbackFunction) { 
 					try { 
-						aCallbackFunction(transport); 
+						aCallbackFunction(jqXHR); 
 					}catch (e) {
 						debug.log("Exception caught in callback" + e.message);      
-						if (aErrorFunction) { aErrorFunction(transport); };
+						if (aErrorFunction) { aErrorFunction(jqXHR); };
 					}
 				}
 			}else{                
-				debug.log("Request has no transport status: " + thisObj.iUrl);       
-				if (aErrorFunction) { aErrorFunction(transport); };
+				debug.log("Request has no data: " + thisObj.iUrl);       
+				if (aErrorFunction) { aErrorFunction(jqXHR); };
 			}
 		},
-		onFailure : function (transport){     
-			debug.log("Request failed: " + thisObj.iUrl);       
-			if (aErrorFunction) { aErrorFunction(transport); };
-		},
-		onException : function (transport){     
+        error: function (jqXHR, textStatus, errorThrown){     
 			debug.log("Request exception: " + thisObj.iUrl);       
-			if (aErrorFunction) { aErrorFunction(transport); };
+			if (aErrorFunction) { aErrorFunction(jqXHR); };
 		},
-		contentType: "text/xml"
-	}); 
+        type: "POST",
+        data: this.iEnvelope,
+        contentType: "text/xml",
+        dataType:"xml",        
+		headers: {"SOAPAction": this.GetSoapAction()}
+    });    
 };
 	
 SoapRequest.prototype.getElementsByTagNameNS = function(tagName, ns, scope){
@@ -178,40 +175,3 @@ SoapRequest.prototype.Send = function(onSuccess, onError) {
 		}
 	);
 }
-
-/* helpers for Ajax comms */
-
-Ajax.Request.prototype.abort = function() {
-    // prevent and state change callbacks from being issued
-    this.transport.onreadystatechange = Prototype.emptyFunction;
-    // abort the XHR
-    this.transport.abort();
-    // update the request counter
-    Ajax.activeRequestCount--;
-};
-
-// Register global responders that will occur on all AJAX requests
-
- Ajax.Responders.register({
-        onCreate: function(request) {
-            request['timeoutId'] = window.setTimeout(
-                function() {
-                    if (request.options['onSuccess']){
-                        // cancel success function
-                        request.options['onSuccess'] = function(){};
-                    }
-                    debug.log("Request to " + request.url + " has timed out.");
-                    request.transport.abort();
-                    // Run the onFailure method if we set one up when creating the AJAX object
-                    if (request.options['onFailure']) {
-                        request.options['onFailure'](request.transport);
-                    }
-                },
-                window["AjaxTimeout"]?window["AjaxTimeout"]:kAjaxTimeout
-            );
-        },
-        onComplete: function(request) {
-            // Clear the timeout, the request completed ok
-            window.clearTimeout(request['timeoutId']);
-        }
-});

@@ -90,6 +90,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\PageMain.cs">
+      <Link>PageMain.cs</Link>
+    </Compile>
+    <Compile Include="..\TrackerConfiguration.cs">
+      <Link>TrackerConfiguration.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

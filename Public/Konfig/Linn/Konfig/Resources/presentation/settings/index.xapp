@@ -1,0 +1,138 @@
+<div id="body" class="img-wrapper background">
+    <script src="Widgets/Common/Common.js" type="text/javascript"></script>
+    <script src="javascript/jquery.select.js" type="text/javascript"></script>
+    <script src="javascript/badger.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        linnSetUnselectable($('#body'));
+        $('select').selectBox();
+    </script>
+    
+    <script type="text/javascript">
+        function onUpdateBadges(json) {
+            if(json.NumSoftwareUpdates > 0) {
+                $('#tabSoftwareUpdate').badger(json.NumSoftwareUpdates.toString());
+            } else {
+                $('#tabSoftwareUpdate').badger('');
+            }
+            
+            if(json.NumDiagnostics > 0) {
+                $('#tabDiagnostics').badger(json.NumDiagnostics.toString());
+            } else {
+                $('#tabDiagnostics').badger('');
+            }
+        }
+        
+        function onNavigationItemClicked(page) {
+            xappSend('Open', page);
+        }
+        
+        function onEnableAdvancedSettings(json) {
+            $('#applicationUpdates').removeClass('hide');
+            $('#network').removeClass('hide');
+        }
+        
+        function onEnableNetworkSettings(json) {
+            if(json.Value) {
+                $('#networks').selectBox('enable');
+            } else {
+                $('#networks').selectBox('disable');
+            }
+        }
+        
+        function onEnableFirmwareBeta(json) {
+            if(json.Value) {
+                $('#deviceBeta').removeAttr('disabled');
+            } else {
+                $('#deviceBeta').attr('disabled', true);
+            }
+        }
+        
+        function onSetNetworks(json) {
+            var current = json.Current;
+            var networks = "";
+
+            for (var i in json.Networks) {
+                var network = json.Networks[i];
+
+                if (i == current) {
+                    networks += "<option selected='selected'>" + network + "</option>";
+                }
+                else {
+                    networks += "<option>" + network + "</option>";
+                }
+             }
+
+             $('#networks').html(networks);
+             $("select").selectBox('destroy');
+             $("select").selectBox();
+         }
+         
+         function onSetFirmwareBeta(json) {
+            $('#deviceBeta').attr('checked', json.Value);
+         }
+         
+         function onSetSendDsCrashData(json) {
+            $('#autoSendCrashData').attr('checked', json.Value);
+         }
+         
+         function onSetBeta(json) {
+            $('#appBeta').attr('checked', json.Value);
+         }
+         
+         function onSetAutoUpdate(json) {
+            $('#appUpdateChecks').attr('checked', json.Value);
+         }
+
+         function onSetUsageDataLogging(json){
+            $('#usageDataLogging').attr('checked', json.Value);
+         }
+    </script>
+
+    <page-frag frag="fragments/header.frag" />
+    
+    <div class="bodyContainer">
+        <div id="applicationUpdates" class="hide">
+            <h3 class="settingsHeader">APPLICATION UPDATES</h3>
+            <div class="label_field_pair">
+                <label class="settingsText" for="appUpdateChecks">Automatic update checks</label>
+                <input id="appUpdateChecks" type="checkbox" onclick="xappSend('AppUpdateChecks', $('#appUpdateChecks').is(':checked'))" />
+            </div>
+            <div class="label_field_pair">
+                <label class="settingsText" for="appBeta">Participate in beta program</label>
+                <input id="appBeta" type="checkbox" onclick="xappSend('Beta', $('#appBeta').is(':checked'))" />
+            </div>
+            <div class="buttonUpdatesContainer">
+                <button id="buttonUpdates" class="btn" type="button" onclick="xappSend('CheckForUpdates', '')">Check For Updates</button>
+            </div>
+        </div>
+        <div id="deviceUpdates">
+            <h3 class="settingsHeader">DEVICE UPDATES</h3>
+            <div class="label_field_pair">
+                <label class="settingsText" for="deviceBeta">Participate in beta program</label>
+                <input id="deviceBeta" type="checkbox" onclick="xappSend('FirmwareBeta', $('#deviceBeta').is(':checked'))" />
+            </div>
+        </div>
+        <div id="diagnostics">
+            <h3 class="settingsHeader">DIAGNOSTICS</h3>
+            <div class="label_field_pair">
+                <label class="settingsText" for="autoSendCrashData">Automatically send DS crash information to Linn</label>
+                <input id="autoSendCrashData" type="checkbox" onclick="trackEvent('AutoSendCrashData', $('#autoSendCrashData').is(':checked') ? 'On' : 'Off');xappSend('SendDsCrashData', $('#autoSendCrashData').is(':checked'));"/>
+            </div>
+        </div>
+        <div id="privacy">
+          <h3 class="settingsHeader">PRIVACY</h3>
+          <div class="label_field_pair">
+            <label class="settingsText" for="usageDataLogging">Send anonymous usage data to Linn</label>
+            <input id="usageDataLogging" type="checkbox" onclick="xappSend('UsageDataLogging', $('#usageDataLogging').is(':checked'))"/>
+          </div>
+        </div>
+        <div id="network" class="hide">
+            <h3 class="settingsHeader">NETWORK</h3>
+            <div class="label_field_pair">
+                <label class="settingsText" for="networks">Network</label>
+                <select id="networks" onchange="xappSend('Network', selectedIndex)"/>
+            </div>
+        </div>
+    </div>
+</div>

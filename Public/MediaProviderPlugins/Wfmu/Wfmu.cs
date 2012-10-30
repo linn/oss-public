@@ -92,7 +92,7 @@ namespace OssKinskyMppWfmu
                 {
                     didl.Add(iLive.Metadata);
                 }
-                if (index == 1)
+                else if (index == 1)
                 {
                     didl.Add(iPodcasts.Metadata);
                 }

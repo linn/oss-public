@@ -1,0 +1,123 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+files = Split("""
+    ../Resources/Icon.xpm
+""")
+installerRes = _default_env.Install('$variant_dir/share/Linn/Konfig', files)
+
+# install resources
+
+instRes  = _default_env.RecursiveInstall('$install_dir/bin/Konfig/presentation', _default_env.Dir('../Resources/presentation').srcnode())
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Konfig/presentation/Widgets/Common', '$hardware_dir/share/Linn/Resources/Widgets/Common')
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Konfig/presentation/Widgets/Fonts', '$hardware_dir/share/Linn/Resources/Widgets/Fonts')
+
+
+files = Split("""
+    Controller.cs
+    Main.cs
+    MainWindow.cs
+    ../CpDeviceAdvancedList.cs
+    ../CpDeviceDiagnosticsList.cs
+    ../CpDeviceDiagnosticsReportList.cs
+    ../CpDeviceFacDefList.cs
+    ../CpDeviceRecogniserList.cs
+    ../CpDeviceReprogramList.cs
+    ../CpDeviceUpdateList.cs
+    ../FirmwareCache.cs
+    ../FlashSupport.cs
+    ../Model.cs
+    ../Preferences.cs
+    ../VersionInfoReader.cs
+    ../XappController.cs
+    ../XappView.cs
+""")
+
+linnLibs = Split("""
+    XmlLayout
+    XmlRom
+    XmlRomCollection
+    XmlTags
+    OssCore
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssProductSupport
+    OssKinsky
+""")
+
+otherLibs = Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+    ohXapp
+    ohXappViewer
+    ohXen
+    ohNet.net
+    CpLinnCoUkDiagnostics1.net
+    CpLinnCoUkVolkano1.net
+    CpAvOpenhomeOrgProduct1.net
+""")
+
+libs = linnLibs + otherLibs
+
+linkCliPkgs = Split("""
+    gtk-sharp-2.0
+    webkit-sharp-1.0
+""")
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+
+progAssembly = _default_env.CliProgram('Konfig', files + appAssemblyInfo, CSCTARGET=target, CLILIBS=libs, CLIPKGS=linkCliPkgs, TARGETFRAMEWORKVERSION='4.0')
+_default_env.Depends(progAssembly, installerRes + instRes)
+_default_env.Depends(appAssemblyInfo, _default_env.Alias('OpenHomeLib'))
+
+
+
+instProg  = _default_env.Install('$install_dir/bin/Konfig', progAssembly)
+instProg.append(File(_default_env.subst('$install_dir/bin/Reprog.exe')))
+instProg.append(File(_default_env.subst('$install_dir/bin/FacDef.exe')))
+instLibs  = [File(_default_env.subst('$install_dir/lib/Linn/' + f + '.dll')) for f in linnLibs]
+instLibs += [File(_default_env.subst('$install_dir/lib/' + f + '.dll')) for f in otherLibs]
+
+ohNetLib = [File(_default_env.subst('$install_dir/lib/libohNet.so'))]
+# build the debian .deb installer and install them
+deb  = _default_env.ReleaseInstallerDebian('$install_dir/share/Konfig', 'InstallerKonfig',
+                     FILES        = {'usr/lib/Konfig'               : instProg + instLibs + ohNetLib + [ _default_env.Dir('$install_dir/bin/Konfig/presentation') ]},
+                     MAINTAINER   = 'Linn <developer.programme@oss.linn.co.uk>',
+                     DEPENDECIES  = 'libwebkit1.1-cil (>= 0.3-3), mono-dmcs (>= 2.10.5-1)',
+                     ICON         = '$variant_dir/share/Linn/Konfig/Icon.xpm',
+                     DESCRIPTION  = 'Application to configure, upgrade, or diagnose problems with your Linn products',
+                     CATEGORIES   = 'Utility;',
+                     ARCHITECTURE = 'i386',
+                     PRODUCT      = 'Konfig',
+                     VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
+                     TYPE         = kBuildInfo['BUILD_INFO_TYPE'],
+                     LAUNCHFILE   = 'Konfig.exe')
+
+ohNetLib = [File('../../../OpenHome/Linux/x64/libohNet.so')] 
+deb += _default_env.ReleaseInstallerDebian('$install_dir/share/Konfig/x64', 'x64/InstallerKonfig',
+                     FILES        = {'usr/lib/Konfig'               : instProg + instLibs + ohNetLib + [ _default_env.Dir('$install_dir/bin/Konfig/presentation') ]},
+                     MAINTAINER   = 'Linn <developer.programme@oss.linn.co.uk>',
+                     DEPENDECIES  = 'libwebkit1.1-cil (>= 0.3-3), mono-dmcs (>= 2.10.5-1)',
+                     ICON         = '$variant_dir/share/Linn/Konfig/Icon.xpm',
+                     DESCRIPTION  = 'Application to configure, upgrade, or diagnose problems with your Linn products',
+                     CATEGORIES   = 'Utility;',
+                     ARCHITECTURE = 'amd64',
+                     PRODUCT      = 'Konfig',
+                     VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
+                     TYPE         = kBuildInfo['BUILD_INFO_TYPE'],
+                     LAUNCHFILE   = 'Konfig.exe')
+
+# create the auto update dll
+
+#resources = [ (_default_env.subst('$install_dir/share/Konfig/InstallerKonfig.deb'), 'InstallerKonfig.deb') ]
+#updater = _default_env.CliLibrary('UpdaterKonfig_deb', 'Installer/Updater.cs', CLIRESOURCES=resources)
+#pkg += _default_env.Install('$install_dir/share/Konfig', updater)
+
+
+Alias('Lib', deb)
+
+

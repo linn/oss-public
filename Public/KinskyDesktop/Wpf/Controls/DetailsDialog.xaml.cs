@@ -37,9 +37,13 @@ namespace KinskyDesktopWpf
             details.Content = new BrowserItem(aUpnpObject, aParent);
             details.ItemInfo = new ItemInfo(aUpnpObject, aParent);
             iUiOptions = aUiOptions;
-            Size s = aUiOptions.DetailsWindowSize;
-            this.Width = s.Width;
-            this.Height = s.Height;
+            this.Loaded += LoadedHandler;
+        }
+
+        void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            iUiOptions.DialogSettings.Register(this, "Details");
+            this.Loaded -= LoadedHandler;
         }
 
         private void ClipboardButton_Click(object sender, RoutedEventArgs e)
@@ -77,11 +81,6 @@ namespace KinskyDesktopWpf
         #endregion
 
         private UiOptions iUiOptions;
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            iUiOptions.DetailsWindowSize = e.NewSize;
-        }
         private upnpObject iUpnpObject;
         private upnpObject iParent;
     }

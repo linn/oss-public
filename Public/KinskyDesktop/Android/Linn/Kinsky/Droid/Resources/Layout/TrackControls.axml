@@ -9,11 +9,16 @@
            android:layout_marginRight="10dip"
            android:layout_marginLeft="20dip" />
 
-  <TextView android:id="@+id/trackdisplay1"
+  <RelativeLayout android:id="@+id/trackdisplaycontainer"    
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
              android:layout_toRightOf="@id/trackartwork"
-             android:layout_alignTop="@id/trackartwork"
+             android:layout_alignTop="@id/trackartwork">
+
+  <TextView android:id="@+id/trackdisplay1"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignTop="@id/trackdisplaycontainer"
              android:ellipsize="end"
              style="@style/largetextview"
              android:singleLine="true"
@@ -23,7 +28,6 @@
   <TextView android:id="@+id/trackdisplay2"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
-             android:layout_toRightOf="@id/trackartwork"
              android:layout_below="@id/trackdisplay1"
              android:ellipsize="end"
              android:singleLine="true"
@@ -32,7 +36,6 @@
   <TextView android:id="@+id/trackdisplay3"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
-             android:layout_toRightOf="@id/trackartwork"
              android:layout_below="@id/trackdisplay2"
              android:ellipsize="end"
              android:singleLine="true"
@@ -41,10 +44,10 @@
   <TextView android:id="@+id/tracktechnicalinfo"
              android:layout_width="fill_parent"
              android:layout_height="wrap_content"
-             android:layout_toRightOf="@id/trackartwork"
              android:layout_below="@id/trackdisplay3"
              android:ellipsize="end"
              android:singleLine="true"
              style="@style/smalltextview" />
-  
+
+  </RelativeLayout>
 </RelativeLayout>

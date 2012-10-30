@@ -52,7 +52,8 @@ namespace KinskyDesktopWpf
     {
         event EventHandler<PlaylistSelectionEventArgs> PlaylistSelectionChanged;
         event EventHandler<PlaylistSelectionEventArgs> EventPlaylistItemNavigationClick;
-        event EventHandler<PlaylistDropEventArgs> PlaylistItemDropped;
+        event EventHandler<PlaylistDropEventArgs> PlaylistItemsAdded;
+        event EventHandler<PlaylistDropEventArgs> PlaylistItemsMoved;
         event EventHandler<PlaylistDeleteEventArgs> PlaylistItemsDeleted;
         event EventHandler<PlaylistMoveEventArgs> PlaylistMoveUp;
         event EventHandler<PlaylistMoveEventArgs> PlaylistMoveDown;

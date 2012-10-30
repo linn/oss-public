@@ -446,14 +446,12 @@ namespace KinskyTouch
                                 iTrackViewIndex[i] = --iTrackViewIndex[i];
                             }
 
-                            iControllerPlaylistMediaRenderer.PlaylistDelete(mrItems);
-
                             aTableView.DeleteRows(paths.ToArray(), UITableViewRowAnimation.Right);
+
+                            iControllerPlaylistMediaRenderer.PlaylistDelete(mrItems);
                         }
                         else
                         {
-                            iControllerPlaylistMediaRenderer.PlaylistDelete(new List<MrItem> { iPlaylist[item.Index] });
-
                             iPlaylist.RemoveAt(item.Index);
                             iTrackViewIndex.RemoveAt(item.Index);
                             iItems.RemoveAt(aIndexPath.Row);
@@ -464,6 +462,8 @@ namespace KinskyTouch
                             }
 
                             aTableView.DeleteRows(new NSIndexPath[] { aIndexPath }, UITableViewRowAnimation.Right);
+
+                            iControllerPlaylistMediaRenderer.PlaylistDelete(new List<MrItem> { iPlaylist[item.Index] });
                         }
                     }
                 }

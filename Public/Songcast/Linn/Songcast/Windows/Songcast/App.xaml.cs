@@ -30,29 +30,29 @@ namespace Linn.Songcast
         private MainWindow iMainWindow;
         private Ticker iTicker;
 
-        private EventWaitHandle iWaitHandlePreferences;
-        private AutoResetEvent iWaitPreferencesClosed;
-        private Thread iThreadPreferences;
+        private EventWaitHandle iWaitHandleMainWindow;
+        private AutoResetEvent iWaitMainWindowClosed;
+        private Thread iThreadMainWindow;
 
         private EventWaitHandle iWaitHandleExit;
         private Thread iThreadExit;
 
-        private void ProcessOpenPreferences()
+        private void ProcessOpenMainWindow()
         {
             try
             {
                 while (true)
                 {
-                    iWaitHandlePreferences.WaitOne();
+                    iWaitHandleMainWindow.WaitOne();
 
                     Dispatcher.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate()
                     {
-                        iPreferencesWindow.Show();
-                        iPreferencesWindow.Activate();
+                        iMainWindow.Show();
+                        iMainWindow.Activate();
                     });
 
-                    iWaitPreferencesClosed.WaitOne();
-                    iWaitHandlePreferences.Reset();
+                    iWaitMainWindowClosed.WaitOne();
+                    iWaitHandleMainWindow.Reset();
                 }
             }
             catch (ThreadAbortException) { }
@@ -92,6 +92,9 @@ namespace Linn.Songcast
 
                 iHelper.ProcessOptionsFileAndCommandLine();
 
+                // this should be created before PreferencesWindowClosing event can be called or PreferencesWindowClosing will raise a null reference exception
+                iWaitMainWindowClosed = new AutoResetEvent(false);
+
                 // create the preferences window and controller
                 iPreferencesWindow = new PreferencesWindow(iHelper, new PreferenceBindings(iModel, iHelperAutoUpdate.OptionPageUpdates), iModel, iHelperAutoUpdate);
                 iPreferencesWindow.Closing += PreferencesWindowClosing;
@@ -118,23 +121,21 @@ namespace Linn.Songcast
                 iModel.Start("linn.co.uk", "Linn", "http://www.linn.co.uk", "http://www.linn.co.uk", stream.ToArray(), "image/png");
 
                 bool createdNew;
-                iWaitHandlePreferences = new EventWaitHandle(false, EventResetMode.ManualReset, "LinnSongcastOpenPreferences", out createdNew);
+                iWaitHandleMainWindow = new EventWaitHandle(false, EventResetMode.ManualReset, "LinnSongcastOpenPreferences", out createdNew);
                 if (!createdNew)
                 {
-                    iWaitHandlePreferences.Set();
+                    iWaitHandleMainWindow.Set();
                     //MessageBox.Show("Linn Songcast is already running", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     App.Current.Shutdown(0);
                     return;
                 }
 
-                iWaitPreferencesClosed = new AutoResetEvent(false);
-
                 iWaitHandleExit = new EventWaitHandle(false, EventResetMode.ManualReset, "LinnSongcastExit", out createdNew);
                 Assert.Check(createdNew);
 
-                iThreadPreferences = new Thread(ProcessOpenPreferences);
-                iThreadPreferences.IsBackground = true;
-                iThreadPreferences.Start();
+                iThreadMainWindow = new Thread(ProcessOpenMainWindow);
+                iThreadMainWindow.IsBackground = true;
+                iThreadMainWindow.Start();
 
                 iThreadExit = new Thread(ProcessExit);
                 iThreadExit.IsBackground = true;
@@ -168,9 +169,9 @@ namespace Linn.Songcast
                 iFormSysTray.Close();
             }
 
-            if (iThreadPreferences != null)
+            if (iThreadMainWindow != null)
             {
-                iThreadPreferences.Abort();
+                iThreadMainWindow.Abort();
             }
 
             if (iPreferencesWindow != null)
@@ -198,7 +199,7 @@ namespace Linn.Songcast
             iPreferencesWindow.Topmost = false;
             iPreferencesWindow.Focus();
 
-            iWaitHandlePreferences.Set();
+            iPreferencesWindow.Show();
         }
 
         private void PreferencesWindowClosing(object sender, CancelEventArgs e)
@@ -207,8 +208,6 @@ namespace Linn.Songcast
             e.Cancel = true;
             iPreferencesWindow.Hide();
             iPreferencesWindow.tabControl1.SelectedIndex = 0;
-
-            iWaitPreferencesClosed.Set();
         }
 
         private void SysTrayIconClick(object sender, EventArgs e)
@@ -260,6 +259,7 @@ namespace Linn.Songcast
             iMainWindow.Top = pt.Y;
             iMainWindow.Show();
             iMainWindow.Activate();
+            iXappController.MainPage.TrackPageVisibilityChange(true);
         }
 
         private void MainWindowDeactivated(object sender, EventArgs e)
@@ -272,6 +272,9 @@ namespace Linn.Songcast
             // SysTrayIconClick handler above
             iTicker = new Ticker();
             iMainWindow.Hide();
+            iXappController.MainPage.TrackPageVisibilityChange(false);
+
+            iWaitMainWindowClosed.Set();
         }
 
         private void PowerModeChanged(object sender, Microsoft.Win32.PowerModeChangedEventArgs e)

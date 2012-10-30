@@ -197,8 +197,10 @@ namespace Linn.Topology
                     ParseName(metadata, out iRoom, out iName);
                     iFullName = string.Format("{0} ({1})", iRoom, iName);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    UserLog.WriteLine("Logging for ticket #1125: " + ex);
+                    UserLog.WriteLine("Logging for ticket #1125: " + iServiceSender.Metadata);
                     iMetadata = null;
                 }
 

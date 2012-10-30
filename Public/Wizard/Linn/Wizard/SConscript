@@ -6,4 +6,6 @@ if _default_env['hardware'] == 'Windows':
     SConscript('Windows/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
 elif _default_env['hardware'] == 'MacOsX':
     SConscript('MacOsX/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
+elif _default_env['hardware'] == 'Ios':
+    SConscript('Ios/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
 

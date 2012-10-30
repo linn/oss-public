@@ -867,6 +867,7 @@ namespace Linn.Kinsky
                 iPlaylistSupport.EventPlayNext += EventPlayNext;
                 iPlaylistSupport.EventPlayLater += EventPlayLater;
                 iPlaylistSupport.EventPlayInsert += EventPlayInsert;
+                iPlaylistSupport.EventMove += EventMove;
                 iPlaylistSupport.SetInsertAllowed(true);
                 iPlaylistSupport.Open();
             }
@@ -952,6 +953,7 @@ namespace Linn.Kinsky
                 iPlaylistSupport.EventPlayNext -= EventPlayNext;
                 iPlaylistSupport.EventPlayLater -= EventPlayLater;
                 iPlaylistSupport.EventPlayInsert -= EventPlayInsert;
+                iPlaylistSupport.EventMove -= EventMove;
                 if (iPlaylistSupport.IsOpen())
                 {
                     iPlaylistSupport.Close();
@@ -997,6 +999,21 @@ namespace Linn.Kinsky
             }
         }
 
+        private delegate void DEventMove(object sender, EventArgsMove e);
+        void EventMove(object sender, EventArgsMove e)
+        {
+            Delegate del = new DEventMove(delegate(object s, EventArgsMove args)
+            {
+                if (iSource is IPlaylistSource)
+                {
+                    (iSource as IPlaylistSource).Move(e.InsertAfterId, e.MoveItems, e.Callback);
+                }
+            });
+            if (iInvoker.TryBeginInvoke(del, sender, e))
+                return;
+            del.Method.Invoke(del.Target, new object[] { sender, e });
+        }
+
         private delegate void DEventPlayInsert(object sender, EventArgsInsert e);
         void EventPlayInsert(object sender, EventArgsInsert e)
         {
@@ -1004,24 +1021,7 @@ namespace Linn.Kinsky
             {
                 if (iSource is IPlaylistSource)
                 {
-                    try
-                    {
-                        DidlLite didl = e.Retriever.Media;
-
-                        Trace.WriteLine(Trace.kKinsky, "Insert about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-                        UserLog.WriteLine("Insert about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-
-                        uint count = (iSource as IPlaylistSource).Insert(e.InsertAfterId, e.Retriever);
-                        Trace.WriteLine(Trace.kKinsky, "Inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                        UserLog.WriteLine("Inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                    }
-                    catch (Exception ex)
-                    {
-                        UserLog.WriteLine("PlayInsert exception caught: " + ex);
-                    }
+                    (iSource as IPlaylistSource).Insert(e.InsertAfterId, e.Retriever, e.Callback);
                 }
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
@@ -1034,25 +1034,7 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventPlayNow(delegate(object s, EventArgsPlay args)
             {
-                try
-                {
-                    DidlLite didl = e.Retriever.Media;
-
-                    Trace.WriteLine(Trace.kKinsky, "PlayNow about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-                    UserLog.WriteLine("PlayNow about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-
-                    uint count = iSource.PlayNow(e.Retriever);
-
-                    Trace.WriteLine(Trace.kKinsky, "PlayNow inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                    UserLog.WriteLine("PlayNow inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                }
-                catch (Exception ex)
-                {
-                    UserLog.WriteLine("PlayNow exception caught: " + ex);
-                }
+                iSource.PlayNow(e.Retriever, e.Callback);
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
                 return;
@@ -1064,25 +1046,7 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventPlayNext(delegate(object s, EventArgsPlay args)
             {
-                try
-                {
-                    DidlLite didl = e.Retriever.Media;
-
-                    Trace.WriteLine(Trace.kKinsky, "PlayNext about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-                    UserLog.WriteLine("PlayNext about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-
-                    uint count = iSource.PlayNext(e.Retriever);
-
-                    Trace.WriteLine(Trace.kKinsky, "PlayNext inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                    UserLog.WriteLine("PlayNext inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                }
-                catch (Exception ex)
-                {
-                    UserLog.WriteLine("PlayNext exception caught: " + ex);
-                }
+                iSource.PlayNext(e.Retriever, e.Callback);
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
                 return;
@@ -1094,25 +1058,7 @@ namespace Linn.Kinsky
         {
             Delegate del = new DEventPlayLater(delegate(object s, EventArgsPlay args)
             {
-                try
-                {
-                    DidlLite didl = e.Retriever.Media;
-
-                    Trace.WriteLine(Trace.kKinsky, "PlayLater about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-                    UserLog.WriteLine("PlayLater about to insert " + didl.Count + ((didl.Count == 1) ? " item" : " items") + " into playlist");
-
-                    uint count = iSource.PlayLater(e.Retriever);
-
-                    Trace.WriteLine(Trace.kKinsky, "PlayLater inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                    UserLog.WriteLine("PlayLater inserted " + count + ((count == 1) ? " item" : " items") + " into playlist");
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                }
-                catch (Exception ex)
-                {
-                    UserLog.WriteLine("PlayLater exception caught: " + ex);
-                }
+                iSource.PlayLater(e.Retriever, e.Callback);
             });
             if (iInvoker.TryBeginInvoke(del, sender, e))
                 return;
@@ -1231,7 +1177,7 @@ namespace Linn.Kinsky
         void EventPlaylistMove(object sender, EventArgsPlaylistMove e)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            (iSource as IPlaylistSource).Move(e.InsertAfterId, e.PlaylistItems);
+            iPlaylistSupport.Move(e.InsertAfterId, e.PlaylistItems);
         }
 
         void EventSeekTrack(object sender, EventArgsSeekTrack e)
@@ -1444,19 +1390,19 @@ namespace Linn.Kinsky
         void EventPlayNow(object sender, EventArgsPlay e)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            iSource.PlayNow(e.Retriever);
+            iSource.PlayNow(e.Retriever, e.Callback);
         }
 
         void EventPlayNext(object sender, EventArgsPlay e)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            iSource.PlayNext(e.Retriever);
+            iSource.PlayNext(e.Retriever, e.Callback);
         }
 
         void EventPlayLater(object sender, EventArgsPlay e)
         {
             if (iInvoker.InvokeRequired) { throw new InvocationException(); }
-            iSource.PlayLater(e.Retriever);
+            iSource.PlayLater(e.Retriever, e.Callback);
         }
 
         void EventSeekSeconds(object sender, EventArgsSeekSeconds e)

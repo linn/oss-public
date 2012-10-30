@@ -4,18 +4,17 @@ using System.Text;
 using System.IO;
 using System.Xml;
 
-using OpenHome.Xapp;
 
 namespace Linn.Wizard
 {
     using Linn.ProductSupport;
     using Linn.ProductSupport.Diagnostics;
     using Linn.ProductSupport.Ticketing;
-  
+
     public class HelpPage : BasePage
     {
-        public HelpPage(PageControl aPageControl, string aViewId, PageComponents aPageComponents, IPageNavigation aPageNavigation)
-            : base(aPageControl, aViewId, aPageComponents, aPageNavigation)
+        public HelpPage(PageControl aPageControl, PageDefinitions.Page aPageDefinition)
+            : base(aPageControl, aPageDefinition)
         {
         }
 
@@ -32,7 +31,7 @@ namespace Linn.Wizard
                     Send("Disable", "FormCloseButton");
                     Send("Unhide", "SubmitWaitSpinner");
 
-                    if (!SubmitTicket(aValue, out validationReport))
+                    if (!SubmitTicket(aSession, aValue, out validationReport))
                     {
                         // post failed
                         aSession.Send("SubmissionFailed", validationReport);
@@ -55,6 +54,66 @@ namespace Linn.Wizard
                     Send("Enable", "FormCloseButton");
 
                     break;
+                case "HelpMenuItem1":
+                    if (GetActionValue(iPageDefinition, "MenuItem1") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem1"));
+                    }
+                    break;
+                case "HelpMenuItem2":
+                    if (GetActionValue(iPageDefinition, "MenuItem2") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem2"));
+                    }
+                    break;
+                case "HelpMenuItem3":
+                    if (GetActionValue(iPageDefinition, "MenuItem3") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem3"));
+                    }
+                    break;
+                case "HelpMenuItem4":
+                    if (GetActionValue(iPageDefinition, "MenuItem4") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem4"));
+                    }
+                    break;
+                case "HelpMenuItem5":
+                    if (GetActionValue(iPageDefinition, "MenuItem5") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem5"));
+                    }
+                    break;
+                case "HelpMenuItem6":
+                    if (GetActionValue(iPageDefinition, "MenuItem6") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem6"));
+                    }
+                    break;
+                case "HelpMenuItem7":
+                    if (GetActionValue(iPageDefinition, "MenuItem7") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem7"));
+                    }
+                    break;
+                case "HelpMenuItem8":
+                    if (GetActionValue(iPageDefinition, "MenuItem8") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem8"));
+                    }
+                    break;
+                case "HelpMenuItem9":
+                    if (GetActionValue(iPageDefinition, "MenuItem9") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem9"));
+                    }
+                    break;
+                case "HelpMenuItem10":
+                    if (GetActionValue(iPageDefinition, "MenuItem10") != "")
+                    {
+                        aSession.Navigator.NextPageNoSave(aSession, GetActionValue(iPageDefinition, "MenuItem10"));
+                    }
+                    break;
                 default:
                     base.OnReceive(aSession, aName, aValue);
                     break;
@@ -62,10 +121,10 @@ namespace Linn.Wizard
         }
 
    
-        private bool SubmitTicket(string aValue, out string aValidationReport)
+        private bool SubmitTicket(Session aSession, string aValue, out string aValidationReport)
         {
-            string entryPoint = iPageNavigation.PreviousPageName();
-            string productModel = iPageControl.ProductModel;
+            string entryPoint = aSession.Navigator.PreviousPageId;
+            string productModel = aSession.Model.SelectedProduct;
             string thisAplicationRevision = "1.0.0";
 
             // get contents of the 6 text boxes from ticket page...
@@ -85,7 +144,7 @@ namespace Linn.Wizard
 
             string xmlData; // only needed for debug
             success = Ticket.SubmitTicket(thisAplicationRevision, productModel, entryPoint, firstName, lastName, email, phone, contact, description,
-                                            iPageControl.Diagnostics(), iPageControl.SelectedBox, out aValidationReport, out xmlData);
+                                            ModelInstance.Instance.Diagnostics, aSession.Model.SelectedBox, out aValidationReport, out xmlData);
 
             return(success);
         }

@@ -28,7 +28,7 @@ namespace Linn.ProductSupport.Diagnostics
 
         public override void ExecuteTest()
         {
-            if (!iKill)
+            /*if (!iKill)
             {
                 PingAddr(kGoogleIp, 100);
             }
@@ -43,7 +43,7 @@ namespace Linn.ProductSupport.Diagnostics
             if (!iKill)
             {
                 PingAddr(kLinnName, 100);
-            }
+            }*/
             if (!iKill)
             {
                 HttpGet(kTestUri);

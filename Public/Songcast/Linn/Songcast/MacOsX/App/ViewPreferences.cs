@@ -29,6 +29,7 @@ namespace Linn.Songcast
         private const string kPreferenceRotaryVolumeControl = "RotaryVolumeControl";
         private const string kPreferenceAutoUpdatesEnabled = "AutoUpdatesEnabled";
         private const string kPreferenceBetaUpdatesEnabled = "BetaUpdatesEnabled";
+        private const string kPreferenceUsageDataEnabled = "UsageDataEnabled";
         
         public ViewPreferences(IInvoker aInvoker, Model aModel, HelperAutoUpdate aHelperAutoUpdate)
         {
@@ -49,7 +50,8 @@ namespace Linn.Songcast
                                            kPreferenceVideoLatencyMs,
                                            kPreferenceRotaryVolumeControl,
                                            kPreferenceAutoUpdatesEnabled,
-                                           kPreferenceBetaUpdatesEnabled };
+                                           kPreferenceBetaUpdatesEnabled,
+										   kPreferenceUsageDataEnabled };
             object[] vals = new object[] { false,
                                            new NSArray(),
                                            new NSArray(),
@@ -61,7 +63,8 @@ namespace Linn.Songcast
                                            iModel.Preferences.DefaultVideoLatencyMs,
                                            true,
                                            true,
-                                           false };
+                                           false,
+			                               true};
             
             NSUserDefaults.StandardUserDefaults.RegisterDefaults(NSDictionary.FromObjectsAndKeys(vals, keys));
             
@@ -89,6 +92,7 @@ namespace Linn.Songcast
             centre.AddObserver(this, new Selector("volumeControlClicked:"), new NSString("PreferenceRotaryVolumeControlChanged"), prefAppId);
             centre.AddObserver(this, new Selector("autoUpdatesEnabledChanged:"), new NSString("PreferenceAutoUpdatesEnabledChanged"), prefAppId);
             centre.AddObserver(this, new Selector("betaUpdatesEnabledChanged:"), new NSString("PreferenceBetaUpdatesEnabledChanged"), prefAppId);
+            centre.AddObserver(this, new Selector("usageDataEnabledChanged:"), new NSString("PreferenceUsageDataEnabledChanged"), prefAppId);
             centre.AddObserver(this, new Selector("refreshReceiverListClicked:"), new NSString("RefreshReceiverList"), prefAppId);
             centre.AddObserver(this, new Selector("checkForUpdatesClicked:"), new NSString("CheckForUpdates"), prefAppId);
             
@@ -117,6 +121,7 @@ namespace Linn.Songcast
             NSUserDefaults.StandardUserDefaults.SetBool(iModel.Preferences.RotaryVolumeControl, kPreferenceRotaryVolumeControl);
             NSUserDefaults.StandardUserDefaults.SetBool(iHelperAutoUpdate.OptionPageUpdates.AutoUpdate, kPreferenceAutoUpdatesEnabled);
             NSUserDefaults.StandardUserDefaults.SetBool(iHelperAutoUpdate.OptionPageUpdates.BetaVersions, kPreferenceBetaUpdatesEnabled);
+            NSUserDefaults.StandardUserDefaults.SetBool(iModel.Preferences.UsageData, kPreferenceUsageDataEnabled);
             NSUserDefaults.StandardUserDefaults.Synchronize();
             centre.PostNotificationName("PreferenceAllChanged", iAppId, null, true);
         }        
@@ -203,6 +208,15 @@ namespace Linn.Songcast
                 return;
 
             iHelperAutoUpdate.OptionPageUpdates.BetaVersions = GetBoolValue(kPreferenceBetaUpdatesEnabled);
+        }
+
+        [Export("usageDataEnabledChanged:")]
+        private void UsageDataEnabledChanged(NSNotification aNotification)
+        {
+            if (iInvoker.TryBeginInvoke(new Action<NSNotification>(UsageDataEnabledChanged), aNotification))
+                return;
+
+            iModel.Preferences.UsageData = GetBoolValue(kPreferenceUsageDataEnabled);
         }
 
         [Export("refreshReceiverListClicked:")]

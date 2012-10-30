@@ -10,19 +10,14 @@ namespace Linn.ProductSupport.Ticketing
     using System.Xml;
     using System.Xml.Serialization;
     using Linn.Tickets.Resources;
-    using System.ComponentModel.DataAnnotations;
     using Linn;
     using Linn.ProductSupport.Diagnostics;
 
     public class Ticket
     {
 
-        ValidationContext iValidationContext;
-        List<ValidationResult> iValidationResults;
         TicketRequestResource iTicketData;
         string iTicketXmlData = "";
-        bool iValid;
-        string iValidationInfo;
 
         public Ticket(string aInstallerVersion, string aOperatingSystem, string aTimeZoneId, string aProductName, string aEntryPoint,
                       string aFirstName, string aLastName, string aEmail, string aPhoneNumber, string aContactNotes, string aFaultDescription,
@@ -49,31 +44,14 @@ namespace Linn.ProductSupport.Ticketing
 
             };
 
-            // Validate the Ticket's data
-            iValidationContext = new ValidationContext(iTicketData, null, null);
-            iValidationResults = new List<ValidationResult>();
-            iValid = Validator.TryValidateObject(iTicketData, iValidationContext, iValidationResults, true);
-
-            // Copy the validation report into a string
-            foreach (ValidationResult vr in iValidationResults)
-            {
-                iValidationInfo += (vr.ErrorMessage);
-            }
-
-            // now call the validate function to get any fails that aren't determined by the attributes
-            IEnumerable<ValidationResult> results = iTicketData.Validate(iValidationContext);
-            foreach (ValidationResult vr2 in results)
-            {
-                iValidationInfo += (vr2.ErrorMessage);
-            }
-
+            Assert.Check(iTicketData.Valid());
         }
 
 
         // Call this when a device (Box) has been selected in the list of discovered devices
         public static bool SubmitTicket(string aInstallerVersion, string aProductName, string aEntryPoint, string aFirstName, string aLastName,
                                         string aEmail, string aPhoneNumber, string aContactNotes, string aFaultDescription,
-                                        Diagnostics aDiagnostics, Box aBox, out string aValidationReport, out string aTicketXmlData)
+                                        Diagnostics aDiagnostics, Box aBox, out string aSubmissionReport, out string aTicketXmlData)
         {
             // get the test results from Diagnostics (a List of Tests)
             while (!aDiagnostics.AllComplete())
@@ -123,14 +101,14 @@ namespace Linn.ProductSupport.Ticketing
             return(SubmitTicket(aInstallerVersion, aProductName, aEntryPoint, aFirstName, aLastName,
                                         aEmail, aPhoneNumber, aContactNotes, aFaultDescription, 
                                         info.ProductId, info.SoftwareVersion, info.MacAddress, categoryList, testList,
-                                        out aValidationReport, out aTicketXmlData));
+                                        out aSubmissionReport, out aTicketXmlData));
         }
 
            
         public static bool SubmitTicket(string aInstallerVersion, string aProductName, string aEntryPoint, string aFirstName, string aLastName,
                                         string aEmail, string aPhoneNumber, string aContactNotes, string aFaultDescription, 
                                         string aProductId, string aSoftwareVersion, string aMacAddress, ListOfCategoryResource aCategoryList, ListOfTestResource aTestList,
-                                        out string aValidationReport, out string aTicketXmlData)
+                                        out string aSubmissionReport, out string aTicketXmlData)
         {
             string timeZoneId = System.TimeZoneInfo.Local.Id;
             string operatingSystem = Linn.SystemInfo.VersionString;
@@ -140,34 +118,25 @@ namespace Linn.ProductSupport.Ticketing
                                         aFirstName, aLastName, aEmail, aPhoneNumber, aContactNotes, aFaultDescription,
                                         aProductId, aSoftwareVersion, aMacAddress, aCategoryList, aTestList);
 
-            aValidationReport = "";
+            aSubmissionReport = "";
             aTicketXmlData = "";
 
-
-            if (ticket.Valid())
-            {
-                bool success = ticket.Submit(out aValidationReport);
-                aTicketXmlData = ticket.iTicketXmlData;
-                return(success);
-            }
-            else
-            {
-                aValidationReport = ticket.ValidationInfo();
-                aTicketXmlData = ticket.iTicketXmlData;
-                return (false);
-            }
-
+            bool success = ticket.Submit(out aSubmissionReport);
+            aTicketXmlData = ticket.iTicketXmlData;
+            return(success);
         }
 
 
         private InstallerReportResource CreateInstallerReport(string aEntryPoint, ListOfCategoryResource aListOfCategory, ListOfTestResource aListOfTest)
         {
-            return new InstallerReportResource
+            InstallerReportResource installerReport = new InstallerReportResource
             {
                 EntryPoint = aEntryPoint,
                 Information = aListOfCategory,
                 Tests = aListOfTest
             };
+            Assert.Check(installerReport.Valid());
+            return(installerReport);
         }
 
 
@@ -182,6 +151,7 @@ namespace Linn.ProductSupport.Ticketing
                 StartedUtc = aStartTime,
                 FinishedUtc = aEndTime
             };
+            Assert.Check(test.Valid());
 
             aTestList.Tests.Add(test);
         }
@@ -194,6 +164,7 @@ namespace Linn.ProductSupport.Ticketing
                 Title = aTitle,
                 Content = new XmlDocument().CreateCDataSection(aInfo),
             };
+            Assert.Check(item.Valid());
 
             aCategory.Items.Add(item);
         }
@@ -205,21 +176,10 @@ namespace Linn.ProductSupport.Ticketing
             {
                 Title = aTitle
             };
+            Assert.Check(category.Valid());
 
             CategoryList.Categories.Add(category);
             return (category);
-        }
-
-
-        private string ValidationInfo()
-        {
-            return(iValidationInfo);
-        }
-
-
-        private bool Valid()
-        {
-            return(iValid);
         }
 
 
@@ -228,19 +188,10 @@ namespace Linn.ProductSupport.Ticketing
             bool success = false;
             aResponse = "";
 
-            if (iValid)
-            {
-                iTicketXmlData = iTicketData.ToXmlString();
-                success = PostTicket(iTicketXmlData, out aResponse);
-                Console.WriteLine(iTicketXmlData);
-                Console.WriteLine("\n\n\n" + aResponse);
-            }
-            else
-            {
-                // we should perhaps throw here
-            }
+            iTicketXmlData = iTicketData.ToXmlString();
+            success = PostTicket(iTicketXmlData, out aResponse);
 
-            return(success);
+            return (success);
         }
 
 
@@ -249,8 +200,11 @@ namespace Linn.ProductSupport.Ticketing
         // The data is posted raw (XML serialisation is assumed to have been done already)
         private bool PostTicket(string aData, out string aResponse)
         {
+#if TRACE
+            const string kSubmitUri = "http://www-sys.linn.co.uk/api/ticket-requests/"; // test URI
+#else
             const string kSubmitUri = "http://www.linn.co.uk/api/ticket-requests/";  // production URI : must change over to this URI before release
-            //const string kSubmitUri = "http://www-sys.linn.co.uk/api/ticket-requests/"; // test URI
+#endif
             
             StreamReader reader = null;
             Stream dataStream = null;
@@ -270,8 +224,6 @@ namespace Linn.ProductSupport.Ticketing
 
                 HttpWebRequest httpWebRequest = (HttpWebRequest)webRequest;
                 httpWebRequest.Accept = "application/json, application/xml, text/json, text/x-json, text/javascript, text/xml";
-                httpWebRequest.Host = "www.linn.co.uk"; // production URI : must change over to this URI before release
-                //httpWebRequest.Host = "www-sys.linn.co.uk"; // test URI
 
                 httpWebRequest.UserAgent = "RestSharp 102.0.0.0";
                 httpWebRequest.ProtocolVersion = new Version(1, 1);

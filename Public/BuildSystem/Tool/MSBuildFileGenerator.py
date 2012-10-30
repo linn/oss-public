@@ -4,7 +4,7 @@ import SCons.Builder
 import SCons.Node.FS
 import SCons.Util
 import CsProg
-from xml.dom.minidom import parseString
+from xml.dom.minidom import parse, parseString
 import uuid 
 
 
@@ -55,7 +55,7 @@ def MSBuildFileGeneratorFn(target, source, env):
         <AndroidStoreUncompressedFileExtensions />
         <MandroidI18n />
         <AndroidResgenFile>%(ANDROIDRESGENFILE)s</AndroidResgenFile>
-        <AndroidManifest>%(ANDROIDMANIFEST)s</AndroidManifest>
+        <AndroidManifest>%(ANDROIDMANIFESTRELATIVEPATH)s</AndroidManifest>
         %(APPLICATIONICON)s
       </PropertyGroup>
       <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Trace|%(CLIPLATFORMTARGET)s' ">
@@ -120,14 +120,14 @@ def MSBuildFileGeneratorFn(target, source, env):
               'OUTPUTPATH' : builddir if 'OUTPUTPATH' not in env else env['OUTPUTPATH'],
               'IMPORTS' : '<Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />' if env['hardware'] == 'Android' else '<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />',
               'ANDROIDRESGENFILE' : "" if 'ANDROIDRESGENFILE' not in env else env['ANDROIDRESGENFILE'],
-              'ANDROIDMANIFEST' : "" if 'ANDROIDMANIFEST' not in env else env['ANDROIDMANIFEST'],
+              'ANDROIDMANIFESTRELATIVEPATH' : "" if 'ANDROIDMANIFESTRELATIVEPATH' not in env else env['ANDROIDMANIFESTRELATIVEPATH'],
               'CLILIBPATH' : "" if 'CLILIBPATH' not in env else expandCliLibs(env),
               'DEFAULTTARGETS' : "Build" if 'DEFAULTTARGETS' not in env else env['DEFAULTTARGETS'],
               'ANDROIDKEYSTORE' : "" if 'ANDROIDKEYSTORE' not in env else env['ANDROIDKEYSTORE'],
               'ANDROIDKEYSTOREPASS' : "" if 'ANDROIDKEYSTOREPASS' not in env else env['ANDROIDKEYSTOREPASS'],
               'ANDROIDKEYALIAS' : "" if 'ANDROIDKEYALIAS' not in env else env['ANDROIDKEYALIAS'],
               'ANDROIDKEYPASS' : "" if 'ANDROIDKEYPASS' not in env else env['ANDROIDKEYPASS'],
-              'ANDROIDSUPPORTEDABIS' : "armeabi%3barmeabi-v7a" if 'ANDROIDSUPPORTEDABIS' not in env else env['ANDROIDSUPPORTEDABIS'],
+              'ANDROIDSUPPORTEDABIS' : "armeabi-v7a%3barmeabi" if 'ANDROIDSUPPORTEDABIS' not in env else env['ANDROIDSUPPORTEDABIS'],
               'UUID' : uuid.uuid1(),
           }          
         
@@ -169,6 +169,17 @@ def MSBuildFileGeneratorFn(target, source, env):
     msbuild.write(doc.toxml())
     msbuild.close()    
     
+    if 'ANDROIDMANIFESTABSOLUTEPATH' in env:
+        try:
+            manifestPath = env['ANDROIDMANIFESTABSOLUTEPATH']
+            manifest = parse(manifestPath)
+            manifest.documentElement.setAttribute('android:versionName', env['ANDROIDVERSIONNAME'])
+            manifest.documentElement.setAttribute('android:versionCode', env['ANDROIDVERSIONCODE'])
+            manifestFile = open(manifestPath, "w")
+            manifestFile.write(manifest.toxml())
+            manifestFile.close()
+        except KeyError:
+            pass
     return None
 
 def expandCliLibs(env):

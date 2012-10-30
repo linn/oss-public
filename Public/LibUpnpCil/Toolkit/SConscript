@@ -22,24 +22,6 @@ else:
 
 filesRes = Split("""
     Resources/Rss.png
-    Resources/AkurateCdIcon.png
-    Resources/AkurateDsIcon.png
-    Resources/AkurateKontrolIcon.png
-    Resources/Cd12Icon.png
-    Resources/ClassikIcon.png
-    Resources/DefaultIcon.png
-    Resources/FallbackIcon.png
-    Resources/KistoIcon.png
-    Resources/KlimaxDsIcon.png
-    Resources/KlimaxKontrolIcon.png
-    Resources/MajikDsiIcon.png
-    Resources/MajikDsmIcon.png
-    Resources/MediaServerIcon.png
-    Resources/RenewDsIcon.png
-    Resources/RoomIcon.png
-    Resources/RoomAmp2Icon.png
-    Resources/SekritDsiIcon.png
-    Resources/SneakyMusicDsIcon.png
 """)
 resources = _default_env.Install('$variant_dir/share/Linn/Toolkit', filesRes)
 Alias('Resources', resources)

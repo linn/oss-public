@@ -575,9 +575,23 @@ namespace Linn.Kinsky.Test
             TEST(Playlist_Move_Should_Raise_EventPlaylistChanged(playlistSource1, itemsToMove, 5));
             TEST(Playlists_Are_Equal(iPlaylist, originalPlaylist));
             TEST(Playlist_DeleteAll_Should_Raise_EventPlaylistChanged(playlistSource1));
-            TEST(!Action_Should_Throw_InvalidOperationException(() => { playlistSource1.PlayNow(iMockMediaRetriever.Object); }));
-            TEST(!Action_Should_Throw_InvalidOperationException(() => { playlistSource1.PlayNext(iMockMediaRetriever.Object); }));
-            TEST(!Action_Should_Throw_InvalidOperationException(() => { playlistSource1.PlayLater(iMockMediaRetriever.Object); }));
+            TEST(!Action_Should_Throw_InvalidOperationException(() => {
+                ManualResetEvent evt = new ManualResetEvent(false);
+                playlistSource1.PlayNow(iMockMediaRetriever.Object, (s) => { evt.Set(); });
+                evt.WaitOne();
+            }));
+            TEST(!Action_Should_Throw_InvalidOperationException(() =>
+            {
+                ManualResetEvent evt = new ManualResetEvent(false);
+                playlistSource1.PlayNext(iMockMediaRetriever.Object, (s) => { evt.Set(); });
+                evt.WaitOne();
+            }));
+            TEST(!Action_Should_Throw_InvalidOperationException(() =>
+            {
+                ManualResetEvent evt = new ManualResetEvent(false);
+                playlistSource1.PlayLater(iMockMediaRetriever.Object, (s) => { evt.Set(); });
+                evt.WaitOne();
+            }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { playlistSource1.Play(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { playlistSource1.Pause(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { playlistSource1.Stop(); }));
@@ -592,9 +606,9 @@ namespace Linn.Kinsky.Test
             // test disc 
             TEST(IPlayModeProvider_ToggleRepeat_Should_Raise_EventRepeatChanged(discSource));
             TEST(IPlayModeProvider_ToggleShuffle_Should_Raise_EventShuffleChanged(discSource));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { discSource.PlayNow(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { discSource.PlayNext(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { discSource.PlayLater(iMockMediaRetriever.Object); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { discSource.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { discSource.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { discSource.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { discSource.Play(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { discSource.Pause(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { discSource.Stop(); }));
@@ -605,9 +619,9 @@ namespace Linn.Kinsky.Test
 
             //test radio 
             TEST(ChannelChange_Should_Raise_EventChannelChanged(radioSource1));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { radioSource1.PlayNow(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { radioSource1.PlayNext(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { radioSource1.PlayLater(iMockMediaRetriever.Object); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { radioSource1.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { radioSource1.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { radioSource1.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { radioSource1.Play(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { radioSource1.Pause(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { radioSource1.Stop(); }));
@@ -618,9 +632,9 @@ namespace Linn.Kinsky.Test
 
             //test receiver 
             TEST(ChannelChange_Should_Raise_EventChannelChanged(receiverSource));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.PlayNow(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.PlayNext(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.PlayLater(iMockMediaRetriever.Object); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { receiverSource.Play(); }));
             TEST(Action_Should_Throw_InvalidOperationException(() => { receiverSource.Pause(); }));
             TEST(!Action_Should_Throw_InvalidOperationException(() => { receiverSource.Stop(); }));
@@ -630,9 +644,9 @@ namespace Linn.Kinsky.Test
             TEST(receiverSource.TransportState == ETransportState.eUnknown);
 
             // test analog 
-            TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.PlayNow(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.PlayNext(iMockMediaRetriever.Object); }));
-            TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.PlayLater(iMockMediaRetriever.Object); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+            TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
             TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.Play(); }));
             TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.Pause(); }));
             TEST(Action_Should_Throw_InvalidOperationException(() => { analogSource1.Stop(); }));
@@ -669,7 +683,7 @@ namespace Linn.Kinsky.Test
                 try
                 {
                     TEST(Action_Should_Throw_InvocationException(() => { var x = iHouse.Rooms; }));
-                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayNow(iMockMediaRetriever.Object); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
                     TEST(Room_Add_Should_Raise_EventRoomInserted_On_Invoker_Thread(iHouse, iMockTopologyHouse, iMockMainRoom));
                     ManualResetEvent waitHandle2 = new ManualResetEvent(false);
                     iInvoker.BeginInvoke((Action)(() =>
@@ -685,9 +699,9 @@ namespace Linn.Kinsky.Test
                     TEST(Action_Should_Throw_InvocationException(() => { var x = mainRoom.Sources.Count; }));
                     TEST(Action_Should_Throw_InvocationException(() => { var x = playlistSource1.Name; }));
 
-                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayNow(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayNext(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayLater(iMockMediaRetriever.Object); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
                     TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.Play(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.Pause(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.Stop(); }));
@@ -696,9 +710,9 @@ namespace Linn.Kinsky.Test
                     TEST(Action_Should_Throw_InvocationException(() => { playlistSource1.Seek(100); }));
                     TEST(Action_Should_Throw_InvocationException(() => { var x = playlistSource1.TransportState; }));
 
-                    TEST(Action_Should_Throw_InvocationException(() => { discSource.PlayNow(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { discSource.PlayNext(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { discSource.PlayLater(iMockMediaRetriever.Object); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { discSource.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { discSource.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { discSource.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
                     TEST(Action_Should_Throw_InvocationException(() => { discSource.Play(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { discSource.Pause(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { discSource.Stop(); }));
@@ -707,9 +721,9 @@ namespace Linn.Kinsky.Test
                     TEST(Action_Should_Throw_InvocationException(() => { discSource.Seek(100); }));
                     TEST(Action_Should_Throw_InvocationException(() => { var x = discSource.TransportState; }));
 
-                    TEST(Action_Should_Throw_InvocationException(() => { radioSource1.PlayNow(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { radioSource1.PlayNext(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { radioSource1.PlayLater(iMockMediaRetriever.Object); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { radioSource1.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { radioSource1.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { radioSource1.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
                     TEST(Action_Should_Throw_InvocationException(() => { radioSource1.Play(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { radioSource1.Pause(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { radioSource1.Stop(); }));
@@ -718,9 +732,9 @@ namespace Linn.Kinsky.Test
                     TEST(Action_Should_Throw_InvocationException(() => { radioSource1.Seek(100); }));
                     TEST(Action_Should_Throw_InvocationException(() => { var x = radioSource1.TransportState; }));
 
-                    TEST(Action_Should_Throw_InvocationException(() => { receiverSource.PlayNow(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { receiverSource.PlayNext(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { receiverSource.PlayLater(iMockMediaRetriever.Object); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { receiverSource.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { receiverSource.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { receiverSource.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
                     TEST(Action_Should_Throw_InvocationException(() => { receiverSource.Play(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { receiverSource.Pause(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { receiverSource.Stop(); }));
@@ -729,9 +743,9 @@ namespace Linn.Kinsky.Test
                     TEST(Action_Should_Throw_InvocationException(() => { receiverSource.Seek(100); }));
                     TEST(Action_Should_Throw_InvocationException(() => { var x = receiverSource.TransportState; }));
 
-                    TEST(Action_Should_Throw_InvocationException(() => { analogSource1.PlayNow(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { analogSource1.PlayNext(iMockMediaRetriever.Object); }));
-                    TEST(Action_Should_Throw_InvocationException(() => { analogSource1.PlayLater(iMockMediaRetriever.Object); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { analogSource1.PlayNow(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { analogSource1.PlayNext(iMockMediaRetriever.Object, (s) => { }); }));
+                    TEST(Action_Should_Throw_InvocationException(() => { analogSource1.PlayLater(iMockMediaRetriever.Object, (s) => { }); }));
                     TEST(Action_Should_Throw_InvocationException(() => { analogSource1.Play(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { analogSource1.Pause(); }));
                     TEST(Action_Should_Throw_InvocationException(() => { analogSource1.Stop(); }));
@@ -858,7 +872,7 @@ namespace Linn.Kinsky.Test
             EventHandler<EventArgs> handlerItemsChanged = (d, e) => { raised = playlistSource.Items.Count == expectedCount; };
             aSource.EventOpened += handlerOpened;
             playlistSource.EventItemsChanged += handlerItemsChanged;
-            playlistSource.Move(aInsertAfterId, aPlaylistItems);
+            playlistSource.Move(aInsertAfterId, aPlaylistItems, () => { });
             waitHandleOpened.WaitOne();
             playlistSource.EventItemsChanged -= handlerItemsChanged;
             aSource.EventOpened -= handlerOpened;
@@ -964,13 +978,18 @@ namespace Linn.Kinsky.Test
             int expectedCount = playlistSource.Items.Count + aRetriever.Media.Count;
 
             ManualResetEvent waitHandleOpened = new ManualResetEvent(false);
+            ManualResetEvent waitHandleItemsChanged = new ManualResetEvent(false);
 
             EventHandler<EventArgs> handlerOpened = (d, e) => { waitHandleOpened.Set(); };
-            EventHandler<EventArgs> handlerItemsChanged = (d, e) => { raised = playlistSource.Items.Count == expectedCount; };
+            EventHandler<EventArgs> handlerItemsChanged = (d, e) => {
+                raised = playlistSource.Items.Count == expectedCount; 
+                waitHandleItemsChanged.Set(); 
+            };
             aSource.EventOpened += handlerOpened;
-            playlistSource.EventItemsChanged += handlerItemsChanged;
-            playlistSource.Insert(aInsertAfterId, aRetriever);
             waitHandleOpened.WaitOne();
+            playlistSource.EventItemsChanged += handlerItemsChanged;
+            playlistSource.Insert(aInsertAfterId, aRetriever, (s) => { });
+            waitHandleItemsChanged.WaitOne();
             playlistSource.EventItemsChanged -= handlerItemsChanged;
             aSource.EventOpened -= handlerOpened;
             return raised;

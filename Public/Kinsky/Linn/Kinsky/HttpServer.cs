@@ -20,7 +20,7 @@ namespace Linn.Kinsky
 
     public class HttpServerException : Exception
     {
-        public HttpServerException(string aMessage) : base(aMessage){ }
+        public HttpServerException(string aMessage) : base(aMessage) { }
     }
 
     public class HttpServer : IVirtualFileSystem
@@ -72,7 +72,6 @@ namespace Linn.Kinsky
 
                 iThread.Join();
             }
-
             private void Run()
             {
                 string filename = string.Empty;
@@ -96,6 +95,8 @@ namespace Linn.Kinsky
                         }
                     }
 
+                    UserLog.WriteLine("HttpServerSession: " + headers);
+
                     string[] splitRequest = headers.Split('\n');
 
                     Filename(splitRequest, ref filename);
@@ -107,21 +108,24 @@ namespace Linn.Kinsky
                         {
                             throw new NotSupportedException();
                         }
-
                         Stream stream = handler.GetStream();
+                        try
+                        {
+                            long startBytes = 0;
+                            long endBytes = handler.StreamBytes - 1;
+                            bool partialGet = Range(splitRequest, ref startBytes, ref endBytes);
 
-                        long startBytes = 0;
-                        long endBytes = handler.StreamBytes - 1;
-                        bool partialGet = Range(splitRequest, ref startBytes, ref endBytes);
+                            stream.Position += startBytes;
 
-                        stream.Position += startBytes;
-
-                        FileInfo fileInfo = new FileInfo(filename);
-                        SendResponseGet(partialGet, fileInfo.Name, startBytes, endBytes, stream.Length);
-                        SendResponseFile(stream);
-
-                        iSocket.Close();
-                        handler.Close();
+                            FileInfo fileInfo = new FileInfo(filename);
+                            SendResponseGet(partialGet, fileInfo.Name, startBytes, endBytes, stream.Length);
+                            SendResponseFile(stream);
+                        }
+                        finally
+                        {
+                            handler.Close();
+                            iSocket.Close();
+                        }
                     }
                 }
                 catch (ThreadAbortException)
@@ -134,13 +138,15 @@ namespace Linn.Kinsky
                 }
                 catch (SocketException e)
                 {
-                    Trace.WriteLine(Trace.kKinsky, e.Message);
+                    Trace.WriteLine(Trace.kKinsky, "HttpServerSession: " + e.Message);
+                    UserLog.WriteLine("HttpServerSession: " + e.Message);
                 }
                 catch (Exception e)
                 {
                     try
                     {
-                        Trace.WriteLine(Trace.kKinsky, e.Message);
+                        Trace.WriteLine(Trace.kKinsky, "HttpServerSession: " + e.Message);
+                        UserLog.WriteLine("HttpServerSession: " + e.Message);
                         SendResponseNotFound(filename);
                         iSocket.Close();
                     }
@@ -181,11 +187,13 @@ namespace Linn.Kinsky
                     FileInfo f = new FileInfo(aFilename);
                     aFilename = f.FullName;
                     Trace.WriteLine(Trace.kKinsky, "HttpServerSession: " + aFilename + " requested");
+                    UserLog.WriteLine("HttpServerSession: " + aFilename + " requested");
                 }
                 catch (Exception e)
                 {
                     Trace.WriteLine(Trace.kKinsky, "HttpServerSession: " + aFilename + " requested: " + e.Message);
                     aFilename = string.Empty;
+                    UserLog.WriteLine("HttpServerSession: " + aFilename + " requested: " + e.Message);
                 }
             }
 
@@ -214,6 +222,7 @@ namespace Linn.Kinsky
                                 }
 
                                 Trace.WriteLine(Trace.kKinsky, "HttpServerSession: Range " + aStartByte + " - " + aEndByte);
+                                UserLog.WriteLine("HttpServerSession: Range " + aStartByte + " - " + aEndByte);
 
                                 return true;
                             }
@@ -375,11 +384,7 @@ namespace Linn.Kinsky
             iPort = aPort;
             iBaseUri = string.Empty;
 
-#if !PocketPC
             iEvent = new EventWaitHandle(true, EventResetMode.AutoReset, string.Format("KinskyHttpServer{0}", iPort));
-#else
-            iEvent = new EventWaitHandle(true, EventResetMode.AutoReset);
-#endif
 
             iSessions = new List<HttpServerSession>();
             iPublicPaths = new List<string>();
@@ -471,7 +476,7 @@ namespace Linn.Kinsky
 
         public string Uri(string aUnescapedFilename)
         {
-            if(iBaseUri == string.Empty)
+            if (iBaseUri == string.Empty)
             {
                 throw new HttpServerException("Web server is not running");
             }
@@ -491,11 +496,7 @@ namespace Linn.Kinsky
                 iListener.Server.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
                 try
                 {
-#if PocketPC
-                    iListener.Start();
-#else
                     iListener.Start(kListenSlots);
-#endif
                     UserLog.WriteLine("Starting HTTP Server at " + iBaseUri + "...Success");
                     iStarted = true;
                 }
@@ -506,7 +507,7 @@ namespace Linn.Kinsky
                     EventHandler handler = null;
                     handler = (d, e) =>
                     {
-                        UserLog.WriteLine(String.Format("Retry HTTP Server at " + iBaseUri + " on port {0}.", iPort));                    
+                        UserLog.WriteLine(String.Format("Retry HTTP Server at " + iBaseUri + " on port {0}.", iPort));
                         iEvent.Set();
                         t.Elapsed -= handler;
                         t.Stop();
@@ -527,6 +528,7 @@ namespace Linn.Kinsky
                         iMutex.WaitOne();
 
                         Trace.WriteLine(Trace.kKinsky, "HttpServer.Run: Socket accepted from " + socket.RemoteEndPoint);
+                        UserLog.WriteLine("HttpServer.Run: Socket accepted from " + socket.RemoteEndPoint);
 
                         HttpServerSession session = new HttpServerSession(this, socket);
                         iSessions.Add(session);
@@ -614,6 +616,8 @@ namespace Linn.Kinsky
         public void Close()
         {
             iStream.Close();
+            iStream.Dispose();
+            iStream = null;
         }
 
         private FileStream iStream;
@@ -656,6 +660,8 @@ namespace Linn.Kinsky
         public void Close()
         {
             iStream.Close();
+            iStream.Dispose();
+            iStream = null;
         }
 
         private FileStream iStream;

@@ -1,0 +1,14 @@
+Import('_default_env')
+
+import BuildInfo
+
+_default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=BuildInfo.kBuildVersion)
+kBuildInfo = _default_env['build_information'].BuildInformation
+
+SConscript('Linn/Konfig/SConscript', exports = ['_default_env', 'kBuildInfo'])
+SConscript('OpenHome/SConscript', exports = ['_default_env'])
+
+Alias('Test', 'Lib')
+Alias('Docs')
+Default(['Test','Docs'])
+

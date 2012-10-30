@@ -2,7 +2,7 @@ Import('_default_env')
 
 import BuildInfo
 
-_default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=BuildInfo.kBuildVersion)
+_default_env['build_information'].Update(aType=BuildInfo.kBuildType, aVersion=BuildInfo.kBuildVersion, aAndroidVersionCode=BuildInfo.kAndroidVersionCode)
 kBuildInfo = _default_env['build_information'].BuildInformation
 
 appAssemblyInfo = _default_env.TagReplace(_default_env.subst('$build_hardware_dir/share/Kinsky/AssemblyInfo.cs'), 'Properties/AssemblyInfo.cs', TAGS=kBuildInfo)

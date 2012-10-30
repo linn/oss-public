@@ -73,6 +73,7 @@ if _default_env['hardware'] == 'Android':
     links = [f.replace("Linn/Kinsky/Droid/","") for f in files]
     files += appAssemblyInfo
     links += appAssemblyInfo
+    #todo: remove these next two lines when mono for android 4.2.8 is released
     files += [_default_env.subst('$install_dir/lib/android-support-v4.jar')]
     links += ['android-support-v4.jar']
     images = [
@@ -204,10 +205,13 @@ if _default_env['hardware'] == 'Android':
         LINKS=links, 
         ROOTNAMESPACE='KinskyDroid', 
         ANDROIDRESGENFILE='Resources.Designer.cs', 
-        ANDROIDMANIFEST='Kinsky/Droid/Properties/Manifest.xml',
+        ANDROIDMANIFESTRELATIVEPATH='Kinsky/Droid/Properties/Manifest.xml',
+        ANDROIDMANIFESTABSOLUTEPATH=manifest[0].abspath,
         ANDROIDRESOURCES=androidResources,
         DEFAULTTARGETS='SignAndroidPackage',
-        OUTPUTPATH='.')
+        OUTPUTPATH='.',
+        ANDROIDVERSIONNAME=kBuildInfo['BUILD_INFO_VERSION'],
+        ANDROIDVERSIONCODE=kBuildInfo['BUILD_INFO_ANDROID_VERSION_CODE'])
     Depends(msproj, manifest)
     libDroid = _default_env.MSBuildApkBuilder('uk.co.linn.kinsky.apk', msproj, CLILIBS=libs)
     prog += libDroid

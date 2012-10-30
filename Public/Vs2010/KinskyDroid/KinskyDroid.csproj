@@ -17,7 +17,7 @@
     <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
     <BaseDirectory>..\..\KinskyDesktop\Android\Linn\Kinsky\</BaseDirectory>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a%3barmeabi</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <DeployExternal>False</DeployExternal>
@@ -436,9 +436,11 @@
   <ItemGroup>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserItem.axml">
       <Link>Resources\Layout\BrowserItem.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomListItem.axml">
       <Link>Resources\Layout\RoomListItem.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomList.axml">
       <Link>Resources\Layout\RoomList.axml</Link>
@@ -455,6 +457,7 @@
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\TrackControls.axml">
       <Link>Resources\Layout\TrackControls.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserControls.axml">
       <Link>Resources\Layout\BrowserControls.axml</Link>
@@ -483,6 +486,7 @@
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BrowserErrorPanel.axml">
       <Link>Resources\Layout\BrowserErrorPanel.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\BackButton.axml">
       <Link>Resources\Layout\BackButton.axml</Link>
@@ -519,6 +523,7 @@
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\RoomAndSourceControlsPhone.axml">
       <Link>Resources\Layout\RoomAndSourceControlsPhone.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\PlaylistScreenPhone.axml">
       <Link>Resources\Layout\PlaylistScreenPhone.axml</Link>
@@ -529,6 +534,7 @@
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\TrackControlsPhone.axml">
       <Link>Resources\Layout\TrackControlsPhone.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\PlaylistButtonsPhone.axml">
       <Link>Resources\Layout\PlaylistButtonsPhone.axml</Link>
@@ -538,9 +544,11 @@
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\DummyPhone.axml">
       <Link>Resources\Layout\DummyPhone.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Layout\DummyTablet.axml">
       <Link>Resources\Layout\DummyTablet.axml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <None Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
@@ -549,6 +557,7 @@
   <ItemGroup>
     <AndroidResource Include="..\..\KinskyDesktop\Android\Linn\Kinsky\Droid\Resources\Drawable\ButtonBackground.xml">
       <Link>Resources\Drawable\ButtonBackground.xml</Link>
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
@@ -689,6 +698,7 @@
   <ItemGroup>
     <Folder Include="Resources\Anim\" />
   </ItemGroup>
+  <!--  #todo: remove the below ItemGroup when mono for android 4.2.8 is released -->
   <ItemGroup>
     <AndroidJavaLibrary Include="..\..\External\android-support-v4.jar">
       <Link>android-support-v4.jar</Link>

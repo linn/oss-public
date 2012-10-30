@@ -81,7 +81,7 @@ namespace Linn.ProductSupport.Diagnostics
 
         public byte[] GetOption(EOption aOption)
         {
-            byte[] val = null;
+            byte[] val = {};
             byte[] bytes = iOptions.ToArray();
             Queue<byte> data = new Queue<byte>(bytes);
 

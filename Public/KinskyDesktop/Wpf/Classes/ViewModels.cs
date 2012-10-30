@@ -97,7 +97,7 @@ namespace KinskyDesktopWpf
         {
             get
             {
-                return (Application.Current as App).IconResolver;
+                return KinskyDesktop.Instance.IconResolver;
             }
         }
 
@@ -105,7 +105,7 @@ namespace KinskyDesktopWpf
         {
             get
             {
-                return (Application.Current as App).ImageCache;
+                return KinskyDesktop.Instance.ImageCache;
             }
         }
 

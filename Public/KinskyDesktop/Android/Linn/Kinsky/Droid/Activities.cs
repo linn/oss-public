@@ -7,6 +7,7 @@ using Android.OS;
 using Linn;
 using Android.Content.Res;
 using Android.Content.PM;
+using Android.Widget;
 
 namespace KinskyDroid
 {
@@ -24,14 +25,31 @@ namespace KinskyDroid
             {
                 base.OnCreate(bundle);
                 iStack = this.Application as Stack;
+                double containerWidth, width;
                 if (iStack.IsTabletView)
                 {
                     SetContentView(Resource.Layout.DummyTablet);
+                    containerWidth = Math.Min(iStack.Resources.DisplayMetrics.WidthPixels, iStack.Resources.DisplayMetrics.HeightPixels) / 2;
+                    width = containerWidth;
                 }
                 else
                 {
+                    RequestedOrientation = ScreenOrientation.Portrait;
                     SetContentView(Resource.Layout.DummyPhone);
+                    containerWidth = iStack.Resources.DisplayMetrics.WidthPixels;
+                    width = Math.Min(containerWidth, 600);
+                    new ToolbarLayoutPhone(FindViewById<ViewGroup>(Resource.Id.trackartworkcontainer),
+                                           FindViewById<ViewGroup>(Resource.Id.playlistbuttons),                                           
+                                           FindViewById<ViewGroup>(Resource.Id.trackcontrols), null, null)
+                    .Layout(iStack.Resources.DisplayMetrics.HeightPixels);
                 }
+                
+                new ControlsLayout(FindViewById<RelativeLayout>(Resource.Id.volumeandtransportcontrolscontainer),
+                                   FindViewById<RelativeLayout>(Resource.Id.volumeandtransportcontrols),
+                                   FindViewById<TransportControls>(Resource.Id.transportcontrols),
+                                   FindViewById<DisplayControl>(Resource.Id.timedisplay),
+                                   FindViewById<DisplayControl>(Resource.Id.volumedisplay))
+                .Layout(containerWidth, width);
                 iStack.StackStarted += StackStarted;
                 iStack.StackStopped += StackStopped;
             }
@@ -42,27 +60,16 @@ namespace KinskyDroid
             }
         }
 
-        protected override void OnPause()
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
-            Console.WriteLine(DateTime.Now + ": OnPause()");
-            //iRunning = false;
-            //iStack.StopStack();
-            //if (!iStack.IsScreenOn)
-            //{
-            //    iStack.StopStack();
-            //}
-            base.OnPause();
-        }
-
-        protected override void OnResume()
-        {
-            Console.WriteLine(DateTime.Now + ": OnResume()");
-            //iRunning = true;
-            //if (iStack.IsScreenOn)
-            //{
-            //    iStack.StartStack();
-            //}
-            base.OnResume();
+            if (iViewKinsky != null)
+            {
+                if (iViewKinsky.OnKeyDown(keyCode, e))
+                {
+                    return true;
+                }
+            }
+            return base.OnKeyDown(keyCode, e);
         }
 
         public override bool OnKeyUp(Keycode keyCode, KeyEvent e)
@@ -117,7 +124,6 @@ namespace KinskyDroid
 
         public override void OnConfigurationChanged(Configuration newConfig)
         {
-            Console.WriteLine("OnConfigurationChanged()");
             Assert.Check(!iStack.Invoker.InvokeRequired);
             UserLog.WriteLine("OnConfigurationChanged()");
             base.OnConfigurationChanged(newConfig);
@@ -149,7 +155,6 @@ namespace KinskyDroid
         private ViewKinsky iViewKinsky;
         private bool iStackStarted;
     }
-
 
 
 }

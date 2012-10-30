@@ -1,0 +1,12 @@
+Import('_default_env kBuildInfo')
+
+appAssemblyInfo = _default_env.TagReplace(_default_env.subst('$build_hardware_dir/share/Konfig/AssemblyInfo.cs'), 'Properties/AssemblyInfo.cs', TAGS=kBuildInfo)
+
+if _default_env['hardware'] == 'Windows':
+    SConscript('Windows/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
+elif _default_env['hardware'] == 'MacOsX':
+    SConscript('MacOsX/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
+elif _default_env['hardware'] == 'Linux':
+    SConscript('Linux/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])
+elif _default_env['hardware'] == 'Ios':
+    SConscript('Ios/SConscript', exports = ['_default_env', 'kBuildInfo', 'appAssemblyInfo'])

@@ -19,7 +19,22 @@ namespace Linn.Toolkit.Wpf
         
         public void BeginInvoke(Delegate aDelegate, params object[] aArgs)
         {
-            iDispatcher.BeginInvoke(aDelegate, aArgs);
+                try
+                {
+#if DEBUG || TRACE
+                    Trace.WriteLine(Trace.kGui, string.Format("{0} INVOKING {1}", DateTime.Now.ToString(), this.GetCallInfo(aDelegate, aArgs)));
+#endif
+                    iDispatcher.BeginInvoke(aDelegate, aArgs);
+#if DEBUG || TRACE
+                    Trace.WriteLine(Trace.kGui, string.Format("{0} INVOKED {1}", DateTime.Now.ToString(), this.GetCallInfo(aDelegate, aArgs)));
+#endif
+                }
+                catch (System.Exception ex)
+                {
+                    UserLog.WriteLine("Exception: " + ex);
+                    UserLog.WriteLine("Invocation details: " + this.GetCallInfo(aDelegate, aArgs));
+                    throw ex;
+                }
         }
         
         public bool TryBeginInvoke(Delegate aDelegate, params object[] aArgs)

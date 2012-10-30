@@ -56,13 +56,24 @@ namespace Linn
         {
             get
             {
-                return iOptions.AsReadOnly();
+                List<Option> result = new List<Option>();
+                lock (iOptions)
+                {
+                    foreach (Option o in iOptions)
+                    {
+                        result.Add(o);
+                    }
+                }
+                return result.AsReadOnly();
             }
         }
 
         public void Insert(int aIndex, Option aOption)
         {
-            iOptions.Insert(aIndex, aOption);
+            lock (iOptions)
+            {
+                iOptions.Insert(aIndex, aOption);
+            }
 
             aOption.EventValueChanged += ValueChanged;
 
@@ -79,7 +90,10 @@ namespace Linn
 
         public void Remove(Option aOption)
         {
-            iOptions.Remove(aOption);
+            lock (iOptions)
+            {
+                iOptions.Remove(aOption);
+            }
 
             if(EventOptionRemoved != null)
             {
@@ -98,7 +112,10 @@ namespace Linn
 
         public void Add(Option aOption)
         {
-            iOptions.Add(aOption);
+            lock (iOptions)
+            {
+                iOptions.Add(aOption);
+            }
 
             aOption.EventValueChanged += ValueChanged;
 

@@ -89,6 +89,15 @@ namespace OssToolkitDroid
             }
         }
 
+        public string CancelButtonText
+        {
+            set
+            {
+                iCancelButtonText = value;
+                RefreshCancelButton();
+            }
+        }
+
         public bool ShowSaveButton
         {
             set
@@ -187,7 +196,7 @@ namespace OssToolkitDroid
             }
             LayoutInflater inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
             iCancelButton = CancelButtonLayoutId == kNoButtonLayoutId ? new Button(Context) : inflater.Inflate(CancelButtonLayoutId, null) as Button;
-            iCancelButton.Text = "Cancel";
+            iCancelButton.Text = iCancelButtonText;
             iCancelButton.Id = kCancelButtonId;
             iCancelButton.Click += CancelButtonClickHandler;
             iCancelButton.Visibility = iShowCancelButton ? ViewStates.Visible : ViewStates.Gone;
@@ -484,6 +493,7 @@ namespace OssToolkitDroid
         private bool iShowSaveButton;
         private bool iShowCancelButton;
         private Android.Graphics.Color iBackgroundColor;
+        private string iCancelButtonText = "Cancel";
     }
 
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDisplayName</key>
+	<string>Wizard</string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Resources/WizardLogoIpad.png</string>
+		<string>Resources/WizardLogoIpad3.png</string>
+		<string>Resources/WizardLogoSpotlightIpad.png</string>
+		<string>Resources/WizardLogoSpotlightIpad3.png</string>
+	</array>
+	<key>CFBundleIdentifier</key>
+	<string>uk.co.linn.Wizard</string>
+	<key>CFBundleVersion</key>
+	<string>4.1.2</string>
+	<key>MinimumOSVersion</key>
+	<string>3.2</string>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>2</integer>
+	</array>
+	<key>UIPrerenderedIcon</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>

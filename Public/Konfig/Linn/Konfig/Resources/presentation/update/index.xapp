@@ -1,0 +1,187 @@
+<div id="body" class="img-wrapper background">
+    <script src="Widgets/Common/Common.js" type="text/javascript"></script>
+    <script src="javascript/jquery.tmpl.min.js" type="text/javascript"></script>
+    <script src="javascript/badger.js" type="text/javascript"></script>
+    
+    <script id="reprogrammable-template" type="text/x-jquery-tmpl">
+        <li class="device" id="${id}">
+            <div>
+                <div class="leftColumn2">
+                    <div class="deviceContainer">
+                        <div class="textColumn">
+                            <div class="fullname-text">${room}${name}</div>
+                            <div class="model-text">${model}</div>
+                        </div>
+                        <div class="imageColumn">
+                            <img class="device-img" src='${image}' />
+                        </div>
+                    </div>
+                </div>
+                <div id="${id}-update" class="rightColumn2 updateAll ${updateHide}">
+                    <div class="updateRight">
+                        <button id="buttonUpdate" class="btn" type="button" onclick="updateClicked('${id}')">Update</button>
+                    </div>
+                    <div class="updateLeft">
+                        <div id="${id}-newVersion" class="text wrapText">Software Update ${newVersion} is available for your ${model}</div>
+                        <div id="${id}-releaseNotes" class="text wrapText ${releaseNotesHide}" >For more information about this Software Update please refer to the <a target="_self" onclick="trackEvent('OpenBrowser', '${releaseNotes}');xappSend('OpenBrowser', '${releaseNotes}');">Release Notes</a></div>
+                    </div>
+                </div>
+                <div id="${id}-progress" class="rightColumn2 progressAll ${progressHide}">
+                    <div class="progressContainer">
+                        <div class="progress">
+                            <div class="progress-value">
+                                <!--<div class="progress-text" />-->
+                            </div>
+                        </div>
+                        <div id="${id}-message" class="text updateMessage"></div>
+                        <button id="buttonOkay-${id}" class="btn hide floatRight buttonOkayAll" type="button" onclick="okayClicked('${id}')">OK</button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    
+    <script type="text/javascript">
+        linnSetUnselectable($('#body'));
+    </script>
+    
+    <script type="text/javascript">
+        function onUpdateBadges(json) {
+            if(json.NumSoftwareUpdates > 0) {
+                $('#tabSoftwareUpdate').badger(json.NumSoftwareUpdates.toString());
+            } else {
+                $('#tabSoftwareUpdate').badger('');
+            }
+            
+            if(json.NumDiagnostics > 0) {
+                $('#tabDiagnostics').badger(json.NumDiagnostics.toString());
+            } else {
+                $('#tabDiagnostics').badger('');
+            }
+        }
+        
+        function onNavigationItemClicked(page) {
+            xappSend('Open', page);
+        }
+        
+        function onAllUptodate(json) {
+            $('#uptodate-text').removeClass('hide');
+        }
+        
+        function onUpdateableDeviceAdded(json) {
+            var id = json.MacAddress.replace(/\:/g, "");
+            if ($('#' + id).length == 1) {
+                return;
+            }
+
+            var data = {
+                id: id,
+                room: json.Description.Room,
+                name: json.Description.Name,
+                model: json.Description.Model,
+                image: json.Description.ImageUri,
+                newVersion: json.NewVersion,
+                releaseNotes: json.Description.ReleaseNotesUri,
+                releaseNotesHide: json.Description.ReleaseNotesUri == '' ? 'hide' : '',
+                updateHide: json.Description.Updating ? 'hide' : '',
+                progressHide: json.Description.Updating ? '' : 'hide'
+            };
+            if(json.Index == 0) {
+                $('#reprogrammable-template').tmpl(data).prependTo($('#devices'));
+            }
+            else {
+                var element = $('#devices li').eq(json.Index - 1);
+                $('#reprogrammable-template').tmpl(data).insertAfter(element);
+            }
+            
+            onUpdateableDeviceProgress(json);
+            onUpdateableDeviceMessage(json);
+            
+            $('#' + id).data('macAddress', json.MacAddress);
+            
+            $('#buttonUpdateAll').removeClass('hide');
+            $('#uptodate-text').addClass('hide');
+        }
+        
+        function onUpdateableDeviceRemoved(json) {
+            var id = json.Value.replace(/\:/g, "");
+            $('#' + id).remove();
+            
+            if($("#devices li").size() == 0) {
+                $('#buttonUpdateAll').addClass('hide');
+                $('#uptodate-text').removeClass('hide');
+            }
+        }
+        
+        function onUpdateableDeviceChanged(json) {
+            var id = json.MacAddress.replace(/\:/g, "");
+            $('#' + id).replaceWith(
+              $('#reprogrammable-template').tmpl({
+                  id: id,
+                  room: json.Description.Room,
+                  name: json.Description.Name,
+                  model: json.Description.Model,
+                  image: json.Description.ImageUri,
+                  newVersion: json.NewVersion,
+                  releaseNotes: json.Description.ReleaseNotesUri,
+                  releaseNotesHide: json.Description.ReleaseNotesUri == '' ? 'hide' : '',
+                  updateHide: json.Description.Updating ? 'hide' : '',
+                  progressHide: json.Description.Updating ? '' : 'hide'
+              })
+            );
+            
+            onUpdateableDeviceProgress(json);
+            onUpdateableDeviceMessage(json);
+            
+            $('#' + id).data('macAddress', json.MacAddress);
+        }
+        
+        function onUpdateableDeviceProgress(json) {
+            var id = json.MacAddress.replace(/\:/g, "");
+            $('#' + id + ' .progress-value').css('width', json.Progress + "%");
+            $('#' + id + ' .progress-text').text(json.Progress + "%");
+        }
+        
+        function onUpdateableDeviceMessage(json) {
+            var id = json.MacAddress.replace(/\:/g, "");
+            $('#' + id + '-message').text(json.Message);
+            if(json.Message.indexOf('Failed') > -1) {
+                $('#buttonOkay-' + id).removeClass('hide');
+            }
+        }
+        
+        function updateClicked(id) {
+            $('#' + id + '-update').addClass('hide');
+            $('#' + id + '-progress').removeClass('hide');
+            $('#buttonOkay-' + id).addClass('hide');
+            trackEvent('UpdateClick','Update','',$("#devices li").size());
+            xappSend('Update', $('#' + id).data('macAddress'));
+        }
+        
+        function updateAllClicked() {
+            $('.updateAll').addClass('hide');
+            $('.progressAll').removeClass('hide');
+            $('.buttonOkayAll').addClass('hide');
+            trackEvent('UpdateClick','UpdateAll','',$("#devices li").size());
+            xappSend('UpdateAll', '');
+        }
+        
+        function okayClicked(id) {
+            $('#' + id + '-update').removeClass('hide');
+            $('#' + id + '-progress').addClass('hide');
+            $('#buttonOkay-' + id).addClass('hide');
+        }
+    </script>
+
+    <page-frag frag="fragments/header.frag" />
+    
+    <div>
+        <button id="buttonUpdateAll" class="btn hide" type="button" onclick="updateAllClicked()">Update All</button>
+    </div>
+    <div class="bodyContainer">
+        <div id="updateContainer">
+            <ul id="devices" />
+        </div>
+        <div id="uptodate-text" class="hide">All Linn Products Are Up to Date</div>
+    </div>
+</div>

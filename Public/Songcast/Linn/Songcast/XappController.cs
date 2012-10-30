@@ -7,6 +7,7 @@ using OpenHome.Xapp;
 
 namespace Linn.Songcast
 {
+
     public class XappController
     {
         public XappController(Model aModel, IInvoker aInvoker)
@@ -41,7 +42,7 @@ namespace Linn.Songcast
     }
 
 
-    public class MainPage : Page
+    public class MainPage : Page, ITrackerSender
     {
         public MainPage(Model aModel, IInvoker aInvoker, string aId, string aViewId)
             : base(aId, aViewId)
@@ -49,17 +50,54 @@ namespace Linn.Songcast
             iModel = aModel;
             iInvoker = aInvoker;
 
+            iTracker = new Tracker(iModel.Preferences.TrackerAccount, this);
+            iTrackerSessionId = Guid.NewGuid().ToString();
+
             iModel.EventEnabledChanged += ModelEnabledChanged;
             iModel.EventReceiverListChanged += ModelReceiverListChanged;
+            iModel.EventReceiverVolumeControlChanged += ModelReceiverVolumeControlChanged;
             iModel.EventReceiverVolumeChanged += ModelReceiverVolumeChanged;
+            iModel.EventSubnetListChanged += ModelSubnetListChanged;
 
             iModel.Preferences.EventSelectedReceiverChanged += ModelSelectedReceiverChanged;
             iModel.Preferences.EventRotaryVolumeControlChanged += ModelRotaryVolumeControlChanged;
             iModel.Preferences.EventUseMusicLatencyChanged += ModelUseMusicLatencyChanged;
+            iModel.Preferences.EventUsageDataChanged += ModelUsageDataChanged;
         }
-        
+
+        void ITrackerSender.Send(string aName, JsonObject aValue)
+        {
+            Send(aName, aValue);
+        }
+
         public event EventHandler EventShowConfig;
         public event EventHandler EventShowHelp;
+
+        public void TrackPageVisibilityChange(bool aVisibility)
+        {
+            iTracker.TrackVariable(Tracker.EVariableIndex.Index1, "PageVisibility", aVisibility ? "Visible" : "Hidden", Tracker.EVariableScope.Page);
+            iTracker.TrackPageView(this.ViewId);
+        }
+
+        private void TrackSessionId(string aSessionId)
+        {
+            iTracker.TrackVariable(Tracker.EVariableIndex.Index2, "SessionId", aSessionId, Tracker.EVariableScope.Session);
+        }
+
+        private void TrackReceiverCount(uint aCount)
+        {
+            iTracker.TrackVariable(Tracker.EVariableIndex.Index3, "ReceiverCount", aCount.ToString(), Tracker.EVariableScope.Session);
+        }
+
+        private void TrackSubnetCount(uint aCount)
+        {
+            iTracker.TrackVariable(Tracker.EVariableIndex.Index4, "SubnetCount", aCount.ToString(), Tracker.EVariableScope.Session);
+        }
+
+        private void TrackRotaryControls(bool aRotary)
+        {
+            iTracker.TrackVariable(Tracker.EVariableIndex.Index5, "RotaryControls", aRotary ? "Rotary" : "Rocker", Tracker.EVariableScope.Session);
+        }
 
         private delegate void DOnActivated(Session aSession);
         
@@ -73,9 +111,16 @@ namespace Linn.Songcast
 
             // these notifications strictly should only be sent to the new session but
             // there is no harm in sending to all
-            UpdateDisplay();
+            UpdateDisplay(true);
             Send("RotaryVolumeControl", iModel.Preferences.RotaryVolumeControl);
             Send("UseMusicLatency", iModel.Preferences.UseMusicLatency);
+
+            iTracker.SetTracking(iModel.Preferences.UsageData);
+            TrackPageVisibilityChange(false);
+            TrackSessionId(iTrackerSessionId);
+            TrackRotaryControls(iModel.Preferences.RotaryVolumeControl);
+            TrackReceiverCount((uint)iModel.ReceiverList.Length);
+            TrackSubnetCount((uint)iModel.SubnetList.Length);
         }
         
         private delegate void DOnReceive(Session aSession, string aName, string aValue);
@@ -173,25 +218,39 @@ namespace Linn.Songcast
 
         private void ModelEnabledChanged(object sender, EventArgs e)
         {
-            UpdateDisplay();
+            UpdateDisplay(true);
         }
 
         private void ModelReceiverListChanged(object sender, EventArgs e)
         {
-            UpdateDisplay();
+            TrackReceiverCount((uint)iModel.ReceiverList.Length);
+            UpdateDisplay(true);
+        }
+
+        private void ModelSubnetListChanged(object sender, EventArgs e)
+        {
+            TrackSubnetCount((uint)iModel.SubnetList.Length);
+        }
+
+        private void ModelReceiverVolumeControlChanged(object sender, EventArgsReceiver e)
+        {
+            if (e.ReceiverUdn == iModel.Preferences.SelectedReceiverUdn)
+            {
+                UpdateDisplay(true);
+            }
         }
 
         private void ModelReceiverVolumeChanged(object sender, EventArgsReceiver e)
         {
             if (e.ReceiverUdn == iModel.Preferences.SelectedReceiverUdn)
             {
-                UpdateDisplay();
+                UpdateDisplay(false);
             }
         }
 
         private void ModelSelectedReceiverChanged(object sender, EventArgs e)
         {
-            UpdateDisplay();
+            UpdateDisplay(true);
         }
 
         private void ModelRotaryVolumeControlChanged(object sender, EventArgs e)
@@ -202,6 +261,11 @@ namespace Linn.Songcast
         private void ModelUseMusicLatencyChanged(object sender, EventArgs e)
         {
             Send("UseMusicLatency", iModel.Preferences.UseMusicLatency);
+        }
+
+        private void ModelUsageDataChanged(object sender, EventArgs e)
+        {
+            iTracker.SetTracking(iModel.Preferences.UsageData);
         }
 
         private OpenHome.Songcast.EReceiverStatus ReceiverStatus(Receiver aReceiver)
@@ -216,13 +280,15 @@ namespace Linn.Songcast
             }
         }
 
-        private void UpdateDisplay()
+        private void UpdateDisplay(bool aLog)
         {
             Receiver recv = iModel.Receiver(iModel.Preferences.SelectedReceiverUdn);
+
+            JsonObject info = new JsonObject();
+
             if (recv != null && recv.IsOnline && recv.HasVolumeControl)
             {
                 // receiver with volume control is available
-                JsonObject info = new JsonObject();
                 info.Add("SongcastOn", new JsonValueBool(iModel.Enabled));
                 info.Add("Room", new JsonValueString(recv.Room));
                 info.Add("Status", new JsonValueUint((uint)ReceiverStatus(recv)));
@@ -234,7 +300,6 @@ namespace Linn.Songcast
             else if (recv != null && recv.IsOnline)
             {
                 // receiver without volume control is available
-                JsonObject info = new JsonObject();
                 info.Add("SongcastOn", new JsonValueBool(iModel.Enabled));
                 info.Add("Room", new JsonValueString(recv.Room));
                 info.Add("Status", new JsonValueUint((uint)ReceiverStatus(recv)));
@@ -243,7 +308,6 @@ namespace Linn.Songcast
             else if (recv != null && !recv.IsOnline)
             {
                 // receiver is unavailable
-                JsonObject info = new JsonObject();
                 info.Add("SongcastOn", new JsonValueBool(iModel.Enabled));
                 info.Add("Room", new JsonValueString(recv.Room));
                 Send("ReceiverOffline", info);
@@ -251,14 +315,21 @@ namespace Linn.Songcast
             else if (recv == null)
             {
                 // no receiver is selected
-                JsonObject info = new JsonObject();
                 info.Add("SongcastOn", new JsonValueBool(iModel.Enabled));
                 Send("ReceiverUnselected", info);
+            }
+
+            if (aLog)
+            {
+                UserLog.WriteLine(DateTime.Now + " : Linn.Songcast.MainPage.UpdateDisplay " + info.Serialise());
             }
         }
         
         private Model iModel;
         private IInvoker iInvoker;
+        private Tracker iTracker;
+        private string iTrackerSessionId;
+
     }
 }
 

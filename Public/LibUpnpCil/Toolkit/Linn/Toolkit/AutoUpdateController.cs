@@ -78,18 +78,21 @@ namespace Linn.Toolkit
 
         public void ManualCheck()
         {
-            // initialise the check
-            iModel.State = AutoUpdateModel.EState.eChecking;
-            iModel.UpdateInfo = null;
+            iInvoker.BeginInvoke((Action)(() =>
+            {
+                // initialise the check
+                iModel.State = AutoUpdateModel.EState.eChecking;
+                iModel.UpdateInfo = null;
 
-            // show the view
-            iView.StateChanged(iModel);
+                // show the view
+                iView.StateChanged(iModel);
 
-            // start a thread to do the update checking
-            iThread = new Thread(ThreadFuncCheck);
-            iThread.IsBackground = true;
-            iThread.Name = "UpdateCheck";
-            iThread.Start();
+                // start a thread to do the update checking
+                iThread = new Thread(ThreadFuncCheck);
+                iThread.IsBackground = true;
+                iThread.Name = "UpdateCheck";
+                iThread.Start();
+            }));
         }
         
         public event EventHandler<EventArgs> EventUpdateStarted;

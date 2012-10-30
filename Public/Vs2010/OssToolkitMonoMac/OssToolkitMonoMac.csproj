@@ -122,8 +122,12 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
   <ItemGroup>
-    <InterfaceDefinition Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\MonoMac\UpdateWindow.xib" />
-    <InterfaceDefinition Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\MonoMac\CrashLogDumperWindow.xib" />
+    <InterfaceDefinition Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\MonoMac\UpdateWindow.xib">
+      <Link>UpdateWindow.xib</Link>
+    </InterfaceDefinition>
+    <InterfaceDefinition Include="..\..\LibUpnpCil\Toolkit\Linn\Toolkit\MonoMac\CrashLogDumperWindow.xib">
+      <Link>CrashLogDumperWindow.xib</Link>
+    </InterfaceDefinition>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OssCore\OssCore.csproj">

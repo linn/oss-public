@@ -52,22 +52,9 @@ prog = []
 files = Split("""
     LinnTopology/LinnTopology.cs
     LinnTopology/App.cs
-""")
-
-pcFiles = Split("""
     LinnTopology/Framework/Full/Form1.cs
     LinnTopology/Framework/Full/Form1.Designer.cs
 """)
-
-pocketPcFiles = Split("""
-    LinnTopology/Framework/Compact/Form1.cs
-    LinnTopology/Framework/Compact/Form1.Designer.cs
-""")
-
-if _default_env['hardware'] != 'PocketPc':
-    files.extend(pcFiles)
-else:
-    files.extend(pocketPcFiles)
 
 if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     prog += _default_env.CliProgram('LinnTopology', files, CLILIBS=['mscorlib', 'System', 'OssTopology', 'OssServices', 'OssControl', 'OssCore', 'OssToolkitWinForms', 'System.Drawing', 'System.Windows.Forms'])
@@ -112,7 +99,7 @@ elif _default_env['hardware'] == 'Android':
         LINKS=links, 
         ROOTNAMESPACE='LinnTopologyDroid', 
         ANDROIDRESGENFILE='Resources.Designer.cs', 
-        ANDROIDMANIFEST='LinnTopology/Droid/Properties/Manifest.xml',
+        ANDROIDMANIFESTRELATIVEPATH='LinnTopology/Droid/Properties/Manifest.xml',
         ANDROIDRESOURCES=androidResources,
         DEFAULTTARGETS='SignAndroidPackage',
         OUTPUTPATH='.')
@@ -133,7 +120,7 @@ else:
     
     prog += _default_env.CliProgram('LinnTopology', files, CLILIBS=['mscorlib', 'System', 'OssTopology', 'OssServices', 'OssControl', 'OssCore', 'monotouch'])
 
-if _default_env['hardware'] != 'PocketPc' and _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
+if _default_env['hardware'] != 'Ios' and _default_env['hardware'] != 'Android':
     prog += _default_env.CliProgram('FindDevice', 'FindDevice/FindDevice.cs', CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssTopology'])
 
     files = Split("""

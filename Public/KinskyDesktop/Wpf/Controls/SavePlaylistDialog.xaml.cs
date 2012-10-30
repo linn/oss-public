@@ -30,7 +30,8 @@ namespace KinskyDesktopWpf
         //private string iDirectory;
         //private string iFilename;
         private ISaveSupport iSaveSupport;
-        public SavePlaylistDialog(ISaveSupport aSaveSupport)
+        private UiOptions iUiOptions;
+        public SavePlaylistDialog(ISaveSupport aSaveSupport, UiOptions aUiOptions)
         {
             InitializeComponent();
             iSaveSupport = aSaveSupport;
@@ -44,6 +45,14 @@ namespace KinskyDesktopWpf
             this.KeyUp += SavePlaylistDialog_KeyUp;
             CommandBindings.Add(new CommandBinding(ApplicationCommands.Close,
                 new ExecutedRoutedEventHandler(delegate(object sender, ExecutedRoutedEventArgs args) { this.CloseWindow(); })));
+            iUiOptions = aUiOptions;
+            this.Loaded += LoadedHandler;
+        }
+
+        void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            iUiOptions.DialogSettings.Register(this, "SavePlaylist");
+            this.Loaded -= LoadedHandler;
         }
 
         void SavePlaylistDialog_KeyUp(object sender, KeyEventArgs e)

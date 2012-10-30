@@ -9,50 +9,48 @@ import shutil
 ### editable settings for each release #####################################################
 # FIXME -- need to factor this out into separate XML config file
 
-kWizardVersion =                    '4.1.2'
-kBundleWizard =                     'B07260102'                 # for Wizard@4.1.2
+kKonfigVersion =                    '4.10.8'
+kBundleKonfig =                     'B07070186'                 # for Konfig@4.10.8
 
-kSwPartWizardWindows =              'S08600102.exe'             # for Wizard@4.1.2
-kSwPartWizardDebian =               '_S'                        # for Wizard@4.1.2
-kSwPartWizardMac =                  'S08610102.pkg'             # for Wizard@4.1.2
+kSwPartKonfigWindows =              'S08010257.exe'             # for Konfig@4.10.8
+kSwPartKonfigDebian32 =             'S08250255.deb'             # for Konfig@4.10.8
+kSwPartKonfigDebian64 =             'S08640103.deb'             # for Konfig@4.10.8
+kSwPartKonfigMac =                  'S08260257.pkg'             # for Konfig@4.10.8
 
-kSongboxVersion =                   '4.1.13'
-kBundleSongbox =                    'B07240113'                 # for Songbox@4.1.13
+kWizardVersion =                    '4.1.3'
+kBundleWizard =                     'B07260103'                 # for Wizard@4.1.3
 
-kSwPartSongboxWindows =             'S08550113.exe'             # for Songbox@4.1.13
-kSwPartSongboxDebian =              '_S08560101.deb'            # for Songbox@4.1.13
-kSwPartSongboxMac =                 'S08570113.pkg'             # for Songbox@4.1.13
+kSwPartWizardWindows =              'S08600103.exe'             # for Wizard@4.1.3
+kSwPartWizardDebian =               '_S'                        # for Wizard@4.1.3
+kSwPartWizardMac =                  'S08610103.pkg'             # for Wizard@4.1.3
 
-kSongcastVersion =                  '4.2.6'
-kBundleSongcast =                   'B07220115'                 # for Songcast@4.2.6
+kSongboxVersion =                   '4.2.1'
+kBundleSongbox =                    'B07240114'                 # for Songbox@4.2.1
 
-kSwPartSongcastWindows =            'S08520114.exe'             # for Songcast@4.2.6
-kSwPartSongcastDebian =             '_S'                        # for Songcast@4.2.6
-kSwPartSongcastMac =                'S08530114.dmg'             # for Songcast@4.2.6
+kSwPartSongboxWindows =             'S08550114.exe'             # for Songbox@4.2.1
+kSwPartSongboxDebian =              '_S08560101.deb'            # for Songbox@4.2.1
+kSwPartSongboxMac =                 'S08570114.pkg'             # for Songbox@4.2.1
 
-kKinskyVersion =                    '4.3.3'
-kBundleKinsky =                     'B07190110'                 # for Kinsky@4.3.3
+kSongcastVersion =                  '4.3.1'
+kBundleSongcast =                   'B07220116'                 # for Songcast@4.3.1
 
-kSwPartKinskyAppStore =             'S08450114.ipa'             # for Kinsky@4.3.3 (iOS AppStore)
-kSwPartKinskyAdHoc =                'S08470112.ipa'             # for Kinsky@4.3.3 (iOS AdHoc)
-kSwPartKinskyManifest =             'S08460114.plist'           # for Kinsky@4.3.3 (Manifest)
-kSwPartKinskyAppStoreDsym =         'S08480108.app.dSYM.zip'    # for Kinsky@4.3.3 (iOS AppStore dSYM)
-kSwPartKinskyAdHocDsym =            'S08490108.app.dSYM.zip'    # for Kinsky@4.3.3 (iOS AdHoc dSYM)
+kSwPartSongcastWindows =            'S08520115.exe'             # for Songcast@4.3.1
+kSwPartSongcastDebian =             '_S'                        # for Songcast@4.3.1
+kSwPartSongcastMac =                'S08530115.dmg'             # for Songcast@4.3.1
 
-kSwPartKinskyWindows =              'S08230144.exe'             # for Kinsky@4.3.3 (Windows)
-kSwPartKinskyDebian =               '_S08270140.deb'            # for Kinsky@4.3.3 (Debian)
-kSwPartKinskyMac =                  'S08280152.pkg'             # for Kinsky@4.3.3 (Mac)
-kSwPartKinskyAndroid =              '_S08580101.apk'             # for Kinsky@4.2.8 (Android)
+kKinskyVersion =                    '4.3.8'
+kBundleKinsky =                     'B07190115'                 # for Kinsky@4.3.8
 
-kSwPartKinskyActiveSync =           'S08210126.exe'             # for Kinsky@4.2.5 (ActiveSync)
-kSwPartKinskyWindowsCe =            'S08220126.cab'             # for Kinsky@4.2.5 (WinCE)
+kSwPartKinskyAppStore =             'S08450118.ipa'             # for Kinsky@4.3.8 (iOS AppStore)
+kSwPartKinskyAdHoc =                'S08470116.ipa'             # for Kinsky@4.3.8 (iOS AdHoc)
+kSwPartKinskyManifest =             'S08460118.plist'           # for Kinsky@4.3.8 (Manifest)
+kSwPartKinskyAppStoreDsym =         'S08480112.app.dSYM.zip'    # for Kinsky@4.3.8 (iOS AppStore dSYM)
+kSwPartKinskyAdHocDsym =            'S08490112.app.dSYM.zip'    # for Kinsky@4.3.8 (iOS AdHoc dSYM)
 
-kKinskyClassicVersion =             '3.3.6'
-
-kBundleKinskyClassic =              'B07060115'                 # for KinskyClassic@3.3.6
-kSwPartKinskyClassicWindows =       'S08000176.exe'             # for KinskyClassic@3.3.6 (Windows)
-kSwPartKinskyClassicDebian =        'S08350107.deb'             # for KinskyClassic@3.3.6 (Debian)
-kSwPartKinskyClassicMac =           'S08360107.app.tgz'         # for KinskyClassic@3.3.6 (Mac)
+kSwPartKinskyWindows =              'S08230147.exe'             # for Kinsky@4.3.8 (Windows)
+kSwPartKinskyDebian =               '_S08270142.deb'            # for Kinsky@4.3.8 (Debian)
+kSwPartKinskyMac =                  'S08280155.pkg'             # for Kinsky@4.3.8 (Mac)
+kSwPartKinskyAndroid =              'S08580104.apk'             # for Kinsky@4.3.8 (Android)
 
 kKinskyJukeboxVersion =             '4.1.2'
 
@@ -61,25 +59,12 @@ kSwPartKinskyJukeboxWindows =       'S08320110.exe'             # for KinskyJuke
 kSwPartKinskyJukeboxDebian =        'S08330110.deb'             # for KinskyJukebox@4.1.2 (Debian)
 kSwPartKinskyJukeboxMac =           '_S08340110.app.tgz'         # for KinskyJukebox@4.1.2 (Mac)
 
-kLinnSysTrayVersion =               '4.1.1'
-
 kOssKinskyMppBbc =                  'OssKinskyMppBbc.kpz'
 kOssKinskyMppItunes =               'OssKinskyMppItunes.kpz'
 kOssKinskyMppMovieTrailers =        'OssKinskyMppMovieTrailers.kpz'
 kOssKinskyMppRadio =                'OssKinskyMppRadio.kpz'
 kOssKinskyMppShoutcast =            'OssKinskyMppShoutcast.kpz'
 kOssKinskyMppWfmu =                 'OssKinskyMppWfmu.kpz'
-
-kBundleKinskyPronto =               'B07130107'                 # for KinskyPronto@4.1.1
-
-kOssKinskyProntoProj9600 =          'KinskyPronto3.1.3.xcf'
-kOssKinskyProntoMod9600 =           'KinskyPronto3.1.3.xgf'
-kOssKinskyProntoProj9400 =          'KinskyPronto3.1.3.xcf'
-kOssKinskyProntoMod9400 =           'KinskyPronto3.1.3.xgf'
-kSwPartKinskyProntoProj9600 =       'S08380100.xcf'             # for KinskyPronto@3.1.3
-kSwPartKinskyProntoMod9600 =        'S08390100.xgf'             # for KinskyPronto@3.1.3
-kSwPartKinskyProntoProj9400 =       'S08400100.xcf'             # for KinskyPronto@3.1.3
-kSwPartKinskyProntoMod9400 =        'S08410100.xgf'             # for KinskyPronto@3.1.3
 ############################################################################################
 
 kFamily = 'Davaar'
@@ -132,6 +117,8 @@ def Publish(aSwPart, aDestDir, aSrcFile, aDryRun):
     def Md5Hash(aFile):
         if sys.platform == "darwin":
             cmdLineMd5 = ['/sbin/md5', aFile]
+        elif sys.platform == "win32":
+            cmdLineMd5 = ['C:\\bin\\md5sum.exe', os.path.abspath(aFile)]
         else:
             cmdLineMd5 = ['/usr/bin/md5sum', aFile]
         p = subprocess.Popen(args = cmdLineMd5, stdout = subprocess.PIPE)
@@ -203,6 +190,34 @@ def PublishBundle(aProduct, aBundle, aFiles, aDryRun):
     os.remove(file)
     
     return True
+    
+def XformKonfig(aProduct, aBaseName, aDirOss, aDryRun):
+    dir = os.path.join(aDirOss, kFamily)
+        
+    file = (aBaseName % '/InstallerKonfig') + '.exe'
+    Publish(kSwPartKonfigWindows, kDirCmpnt, file, aDryRun)
+    Publish('%s_%s_win.exe' % (aProduct, kKonfigVersion), dir, file, aDryRun)
+    
+    file = (aBaseName % '/InstallerKonfig') + '.deb'
+    Publish(kSwPartKonfigDebian32, kDirCmpnt, file, aDryRun)
+    Publish('%s_%s-1_i386.deb' % (aProduct.lower(), kKonfigVersion), dir, file, aDryRun)
+    
+    file = (aBaseName % '/x64/InstallerKonfig') + '.deb'
+    Publish(kSwPartKonfigDebian64, kDirCmpnt, file, aDryRun)
+    Publish('%s_%s-1_amd64.deb' % (aProduct.lower(), kKonfigVersion), dir, file, aDryRun)
+    
+    file = (aBaseName % '/InstallerKonfig') + '.pkg'
+    Publish(kSwPartKonfigMac, kDirCmpnt, file, aDryRun)
+    Publish('%s_%s_osx.pkg' % (aProduct, kKonfigVersion), dir, file, aDryRun)
+        
+    file = (aBaseName % '/UpdaterKonfig_win') + '.dll'
+    Publish('%s_%s_win.dll' % (aProduct, kKonfigVersion), dir, file, aDryRun)
+    
+    file = (aBaseName % '/UpdaterKonfig_osx') + '.dll'
+    Publish('%s_%s_osx.dll' % (aProduct, kKonfigVersion), dir, file, aDryRun)
+    
+    files = [kSwPartKonfigWindows, kSwPartKonfigDebian32, kSwPartKonfigDebian64, kSwPartKonfigMac]
+    PublishBundle(aProduct, kBundleKonfig, files, aDryRun)
     
 def XformWizard(aProduct, aBaseName, aDirOss, aDryRun):
     dir = os.path.join(aDirOss, kFamily)
@@ -307,14 +322,6 @@ def XformKinsky(aProduct, aBaseName, aDirOss, aDryRun):
     file = (aBaseName % '/InstallerKinsky') + '.pkg'
     Publish(kSwPartKinskyMac, kDirCmpnt, file, aDryRun)
     Publish('%s_%s_osx.pkg' % (aProduct, kKinskyVersion), dir, file, aDryRun)
-	    
-    file = (aBaseName % '/Pda/InstallerKinsky') + '.exe'
-    Publish(kSwPartKinskyActiveSync, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s_wm6.exe' % (aProduct, kKinskyVersion), dir, file, aDryRun)
-    
-    file = (aBaseName % '/Pda/InstallerKinsky') + '.cab'
-    Publish(kSwPartKinskyWindowsCe, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s_wm6.cab' % (aProduct, kKinskyVersion), dir, file, aDryRun)
 	
     file = (aBaseName % '/UpdaterKinsky_win') + '.dll'
     Publish('%s_%s_win.dll' % (aProduct, kKinskyVersion), dir, file, aDryRun)
@@ -326,57 +333,27 @@ def XformKinsky(aProduct, aBaseName, aDirOss, aDryRun):
     Publish(kSwPartKinskyAndroid, kDirCmpnt, file, aDryRun)
     Publish('%s_%s_and.apk' % (aProduct, kKinskyVersion), dir, file, aDryRun)
 	
-    files = [kSwPartKinskyAppStore, kSwPartKinskyAppStoreDsym, kSwPartKinskyAdHoc, kSwPartKinskyAdHocDsym, kSwPartKinskyManifest, kSwPartKinskyWindows, kSwPartKinskyDebian, kSwPartKinskyMac, kSwPartKinskyActiveSync, kSwPartKinskyWindowsCe, kSwPartKinskyAndroid]
+    files = [kSwPartKinskyAppStore, kSwPartKinskyAppStoreDsym, kSwPartKinskyAdHoc, kSwPartKinskyAdHocDsym, kSwPartKinskyManifest, kSwPartKinskyWindows, kSwPartKinskyDebian, kSwPartKinskyMac, kSwPartKinskyAndroid]
     PublishBundle(aProduct, kBundleKinsky, files, aDryRun)
 
-	
-def XformKinskyClassic(aProduct, aBaseName, aDirOss, aDryRun):
-    dir = os.path.join(aDirOss, kFamily)
-    
-    file = aBaseName + '.exe'
-    Publish(kSwPartKinskyClassicWindows, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s_all.exe' % (aProduct, kKinskyClassicVersion), dir, file, aDryRun)
-    
-    file = aBaseName + '.deb'
-    Publish(kSwPartKinskyClassicDebian, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s-1_all.deb' % (aProduct.lower(), kKinskyClassicVersion), dir, file, aDryRun)
-    
-    file = aBaseName + '.app.tgz'
-    Publish(kSwPartKinskyClassicMac, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s_all.app.tgz' % (aProduct, kKinskyClassicVersion), dir, file, aDryRun)
-    
-    files = [kSwPartKinskyClassicWindows, kSwPartKinskyClassicDebian, kSwPartKinskyClassicMac]
-    PublishBundle(aProduct, kBundleKinskyClassic, files, aDryRun)
     
 def XformKinskyJukebox(aProduct, aBaseName, aDirOss, aDryRun):
     dir = os.path.join(aDirOss, kFamily)
     
-    file = aBaseName + '.exe'
+    file = (aBaseName % '/InstallerKinskyJukebox') + '.exe'
     Publish(kSwPartKinskyJukeboxWindows, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s_all.exe' % (aProduct, kKinskyJukeboxVersion), dir, file, aDryRun)
+    Publish('%s_%s_win.exe' % (aProduct, kKinskyJukeboxVersion), dir, file, aDryRun)
     
-    file = aBaseName + '.deb'
+    file = (aBaseName % '/InstallerKinskyJukebox') + '.deb'
     Publish(kSwPartKinskyJukeboxDebian, kDirCmpnt, file, aDryRun)
     Publish('%s_%s-1_all.deb' % (aProduct.lower(), kKinskyJukeboxVersion), dir, file, aDryRun)
     
-    file = aBaseName + '.app.tgz'
+    file = (aBaseName % '/InstallerKinskyJukebox') + '.pkg'
     Publish(kSwPartKinskyJukeboxMac, kDirCmpnt, file, aDryRun)
-    Publish('%s_%s_all.app.tgz' % (aProduct, kKinskyJukeboxVersion), dir, file, aDryRun)
+    Publish('%s_%s_osx.pkg' % (aProduct, kKinskyJukeboxVersion), dir, file, aDryRun)
     
     files = [kSwPartKinskyJukeboxWindows, kSwPartKinskyJukeboxDebian, kSwPartKinskyJukeboxMac]
     PublishBundle(aProduct, kBundleKinskyJukebox, files, aDryRun)
-    
-def XformLinnSysTray(aProduct, aBaseName, aDirOss, aDryRun):
-    dir = os.path.join(aDirOss, kFamily)
-    
-    file = aBaseName + '.exe'
-    Publish('%s_%s_all.exe' % (aProduct, kLinnSysTrayVersion), dir, file, aDryRun)
-    
-    file = aBaseName + '.deb'
-    Publish('%s_%s-1_all.deb' % (aProduct.lower(), kLinnSysTrayVersion), dir, file, aDryRun)
-    
-    file = aBaseName + '.app.tgz'
-    Publish('%s_%s_all.app.tgz' % (aProduct, kLinnSysTrayVersion), dir, file, aDryRun)
     
 def XformKinskyMppBbc(aProduct, aBaseName, aDirOss, aDryRun):
     dir = os.path.join(aDirOss, kPluginVersion)
@@ -414,45 +391,20 @@ def XformKinskyMppWfmu(aProduct, aBaseName, aDirOss, aDryRun):
     file = aBaseName + '.kpz'
     Publish(kOssKinskyMppWfmu, dir, file, aDryRun)
     
-def XformKinskyPronto(aProduct, aBaseName, aDirOss, aDryRun):
-    dir = os.path.join(aDirOss, kFamily)
-    baseName = aBaseName.replace('release/', '')
-    
-    file = baseName + '9600.xcf'
-    Publish(kSwPartKinskyProntoProj9600, kDirCmpnt, file, aDryRun)
-    Publish(kOssKinskyProntoProj9600, dir, file, aDryRun)
-    
-    file = baseName + '9600.xgf'
-    Publish(kSwPartKinskyProntoMod9600, kDirCmpnt, file, aDryRun)
-    Publish(kOssKinskyProntoMod9600, dir, file, aDryRun)
-    
-    file = baseName + '9400.xcf'
-    Publish(kSwPartKinskyProntoProj9400, kDirCmpnt, file, aDryRun)
-    Publish(kOssKinskyProntoProj9400, dir, file, aDryRun)
-    
-    file = baseName + '9400.xgf'
-    Publish(kSwPartKinskyProntoMod9400, kDirCmpnt, file, aDryRun)
-    Publish(kOssKinskyProntoMod9400, dir, file, aDryRun)
-    
-    files = [kSwPartKinskyProntoProj9600, kSwPartKinskyProntoMod9600, kSwPartKinskyProntoProj9400, kSwPartKinskyProntoMod9400]
-    PublishBundle(aProduct, kBundleKinskyPronto, files, aDryRun)
-    
     
 gkXforms = [
+    ('share/Konfig%s',                                  'Konfig',               XformKonfig),
     ('share/Wizard%s',                                  'Wizard',               XformWizard),
     ('share/Songbox%s',                                 'Songbox',              XformSongbox),
     ('share/Songcast%s',                                'Songcast',             XformSongcast),
     ('share/Kinsky%s',                                  'Kinsky',               XformKinsky),
-    ('share/KinskyClassic/InstallerKinskyClassic',      'KinskyClassic',        XformKinskyClassic),
-    ('share/KinskyJukebox/InstallerKinskyJukebox',      'KinskyJukebox',        XformKinskyJukebox),
-    ('share/LinnSysTray/InstallerLinnSysTray',          'LinnSysTray',          XformLinnSysTray),
+    ('share/KinskyJukebox%s',                           'KinskyJukebox',        XformKinskyJukebox),
     ('share/Kinsky/OssKinskyMppBbc',                    'KinskyPlugins',        XformKinskyMppBbc),
     ('share/Kinsky/OssKinskyMppItunes',                 'KinskyPlugins',        XformKinskyMppItunes),
     ('share/Kinsky/OssKinskyMppMovieTrailers',          'KinskyPlugins',        XformKinskyMppMovieTrailers),
     ('share/Kinsky/OssKinskyMppRadio',                  'KinskyPlugins',        XformKinskyMppRadio),
     ('share/Kinsky/OssKinskyMppShoutcast',              'KinskyPlugins',        XformKinskyMppShoutcast),
     ('share/Kinsky/OssKinskyMppWfmu',                   'KinskyPlugins',        XformKinskyMppWfmu),
-    ('share/KinskyPronto/KinskyPronto',                 'KinskyPronto',         XformKinskyPronto),
 ]
 
 
@@ -462,7 +414,7 @@ def Usage():
     sys.exit(1)
 
 gOptParser = None
-gHardware = ['Linux', 'MacOsX', 'Windows', 'PocketPc', 'Ios', 'Android']
+gHardware = ['Linux', 'MacOsX', 'Windows', 'Ios', 'Android']
 
 def Main():
     """Entry point into this utility."""

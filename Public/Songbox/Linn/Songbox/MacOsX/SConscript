@@ -15,12 +15,15 @@ files = Split("""
     ConfigurationWindow.designer.cs
     ConfigurationWindowController.cs
     Main.cs
+    ../TrackerConfiguration.cs
+    ../PageMain.cs
 """)
 
 linkCliLibs = Split("""
     MonoMac
     OpenHome/MacOsX/ohMediaServer
     OpenHome/MacOsX/ohXappViewer
+    OpenHome/MacOsX/ohXapp
     OssCore
     OssToolkitMonoMac
 """)
@@ -107,7 +110,8 @@ pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerSongbox', progAssemb
                     OTHERRESOURCES = others,
                     ICON = '$variant_dir/share/Linn/Songbox/Icon.icns',
                     INFOPLIST = infoPlist,
-                    VERSION = kBuildInfo['BUILD_INFO_VERSION'])
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                    INSTALLERRESOURCES = {'LICENSEFILE': _default_env.subst('$variant_dir/share/Linn/Core/license-cookies.txt')})
                     
 resources = [ (_default_env.subst('$install_dir/share/Songbox/InstallerSongbox.pkg'), 'InstallerSongbox.pkg') ]
 updater = _default_env.CliLibrary('UpdaterSongbox_osx', 'Installer/Updater.cs', CLIRESOURCES=resources)

@@ -39,4 +39,39 @@ namespace Linn
         /// <returns>True if BeginInvoke was called, otherwise False.</returns>
         bool TryBeginInvoke(Delegate aDelegate, params object[] aArgs);
     }
+
+    public static class InvokerExtensions
+    {
+
+        public static string GetCallInfo(this IInvoker aInvoker, System.Delegate aDelegate, object[] aArgs)
+        {
+            string targetString = string.Empty;
+            string methodString = string.Empty;
+            string argString = string.Empty;
+            try { targetString = aDelegate.Target.ToString(); }
+            catch { }
+            try { methodString = aDelegate.Method.ToString(); }
+            catch { }
+            try
+            {
+                for (int i = 0; i < aArgs.Length; i++)
+                {
+                    if (aArgs[i] != null)
+                    {
+                        argString += string.Format("{0}::{1}", aArgs[i].GetType().ToString(), aArgs[i].ToString());
+                    }
+                    else
+                    {
+                        argString += "UNKNOWN::NULL";
+                    }
+                    if (i < aArgs.Length - 1)
+                    {
+                        argString += ", ";
+                    }
+                }
+            }
+            catch { }
+            return string.Format("{0}.{1}({2});", targetString, methodString, argString);
+        }
+    }
 }

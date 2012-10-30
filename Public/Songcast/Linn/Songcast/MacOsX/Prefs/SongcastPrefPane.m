@@ -25,6 +25,7 @@
 
 @synthesize buttonAutoUpdates;
 @synthesize buttonBeta;
+@synthesize buttonUsageData;
 @synthesize buttonNetworkAdapter;
 @synthesize buttonReceiver;
 @synthesize buttonVolumeControl;
@@ -80,6 +81,11 @@
 - (IBAction) buttonBetaClicked:(id)aSender
 {
     [iPreferences setBetaUpdatesEnabled:([buttonBeta state] == NSOnState)];
+}
+
+- (IBAction) buttonUsageDataClicked:(id)aSender
+{
+    [iPreferences setUsageDataEnabled:([buttonUsageData state] == NSOnState)];
 }
 
 
@@ -234,29 +240,71 @@
     // create the list of receiver objects to display
     NSMutableArray* receivers = [NSMutableArray arrayWithCapacity:0];
 
-    uint i=0;
-    while (i < [sorted count])
+    // loop over all receivers to find blocks of receivers that are in the same room
+    uint roomStart = 0;
+    while (roomStart < [sorted count])
     {
-        // the receiver list is sorted by room name, so receivers in the same room
-        // will be adjacent in the list
-        NSString* thisRoom = [[sorted objectAtIndex:i] room];
+        // calculate the start and end indices of the next contiguous block of receivers in the same room
+        NSString* thisRoom = [[sorted objectAtIndex:roomStart] room];
 
-        // get the index of the next receiver that is in a different room
-        uint j = i + 1;
-        while (j < [sorted count] && [[[sorted objectAtIndex:j] room] compare:thisRoom] == NSOrderedSame)
+        uint roomEnd = roomStart + 1;
+
+        while (roomEnd < [sorted count] && [[[sorted objectAtIndex:roomEnd] room] compare:thisRoom] == NSOrderedSame)
         {
-            j++;
+            roomEnd++;
         }
-        
-        // now create all receivers that have this room name
-        bool uniqueInRoom = (j - i == 1);
-        while (i < j)
+
+        // receivers in index range [roomStart, roomEnd-1] have the same room
+        if (roomEnd - roomStart == 1)
         {
-            Receiver* r = [[Receiver alloc] initWithPref:[sorted objectAtIndex:i] uniqueInRoom:uniqueInRoom];
-            [receivers addObject:r];
-            [r release];
-            i++;
+            // this is the only receiver in this room
+            PrefReceiver* prefRecv = [sorted objectAtIndex:roomStart];
+            Receiver* recv = [[Receiver alloc] initWithPref:prefRecv title:[prefRecv room]];
+            [receivers addObject:recv];
+            [recv release];
+            roomStart = roomEnd;
+            continue;
         }
+
+        // now loop over all receivers in this room to find blocks of receivers with the same group
+        uint groupStart = roomStart;
+        while (groupStart < roomEnd)
+        {
+            // calculate the start and end indices of the next contiguous block of receivers in the same room and group
+            NSString* thisGroup = [[sorted objectAtIndex:groupStart] group];
+
+            uint groupEnd = groupStart + 1;
+
+            while (groupEnd < roomEnd && [[[sorted objectAtIndex:groupEnd] group] compare:thisGroup] == NSOrderedSame)
+            {
+                groupEnd++;
+            }
+
+            // the first receiver in a block of receivers with the same room and group is displayed as "room (group)" and
+            // subsequent ones are displayed as "room (group) 2" etc...
+            for (uint i=groupStart ; i<groupEnd ; i++)
+            {
+                PrefReceiver* prefRecv = [sorted objectAtIndex:i];
+
+                Receiver* recv = nil;
+
+                if (i == groupStart)
+                {
+                    recv = [[Receiver alloc] initWithPref:prefRecv title:[NSString stringWithFormat:@"%@ (%@)", [prefRecv room], [prefRecv group]]];
+                }
+                else
+                {
+                    recv = [[Receiver alloc] initWithPref:prefRecv title:[NSString stringWithFormat:@"%@ (%@) %d", [prefRecv room], [prefRecv group], i-groupStart+1]];
+                }
+
+                [receivers addObject:recv];
+                [recv release];
+            }
+
+            groupStart = groupEnd;
+        }
+
+        roomStart = roomEnd;
     }
 
     if (iReceiverList)
@@ -353,6 +401,7 @@
     // advanced->updates
     [self preferenceAutoUpdatesEnabledChanged:nil];
     [buttonBeta setState:([iPreferences betaUpdatesEnabled] ? NSOnState : NSOffState)];
+    [buttonUsageData setState:([iPreferences usageDataEnabled] ? NSOnState : NSOffState)];
 }
 
 
@@ -416,22 +465,14 @@
 @synthesize status;
 
 
-- (id) initWithPref:(PrefReceiver*)aPref uniqueInRoom:(bool)aUnique
+- (id) initWithPref:(PrefReceiver*)aPref title:(NSString*)aTitle
 {
     self = [super init];
 
     self.udn = [aPref udn];
     self.status = [aPref status];
+    self.title = aTitle;
 
-    if (aUnique)
-    {
-        self.title = [aPref room];
-    }
-    else
-    {
-        self.title = [NSString stringWithFormat:@"%@ (%@)", [aPref room], [aPref group]];
-    }
-    
     return self;
 }
 

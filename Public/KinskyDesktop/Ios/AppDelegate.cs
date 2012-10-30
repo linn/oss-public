@@ -155,7 +155,7 @@ namespace KinskyTouch
             UINavigationController controller = new UINavigationController(new SaveViewController(iSaver, aSaveSupport, "SaveDialog", NSBundle.MainBundle));
             controller.ModalPresentationStyle = UIModalPresentationStyle.FormSheet;
 
-            ViewController.PresentModalViewController(controller, true);
+            ViewController.PresentViewController(controller, true, () => {});
         }
 
         protected void StatusChanged(object sender, EventArgsStackStatus e)

@@ -401,6 +401,7 @@ namespace KinskyDesktop
                 iButton.Image = iImageButtonOffUp;
                 iButton.AlternateImage = iImageButtonOffDown;
             }
+            iBkgd.NeedsDisplay = true;
         }
 
         public void SetHovering(bool aHovering)
@@ -813,6 +814,7 @@ namespace KinskyDesktop
                 iBkgd.Drawer = iDrawerOff;
                 iButton.Cell.CastTo<ButtonHoverType2Cell>().Drawer = iDrawerOff;
             }
+            iBkgd.NeedsDisplay = true;
         }
 
         public void SetHovering(bool aHovering)

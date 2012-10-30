@@ -4,7 +4,9 @@
         android:layout_width="20dip"
         android:layout_height="20dip"
         android:background="@drawable/buttonbackground"
-        android:paddingRight="10dip"
+        android:paddingRight="12dip"
+        android:paddingLeft="12dip"
         style="@style/textviewtext"
-        android:text="Delete?"
+        android:text="Delete"
+        android:textStyle="bold"
           />

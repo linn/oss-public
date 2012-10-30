@@ -688,6 +688,7 @@ namespace Linn.ControlPoint.Upnp
                 {
 					iSentInitialEvent = false;
                     iEventInitial += InitialEventReceived;
+                    iRetryCount = 0;
                     Subscribe(); // could throw if no EventServer provided
                 }
                 else
@@ -738,8 +739,16 @@ namespace Linn.ControlPoint.Upnp
 			KillWatchdog();
 			if (!iInitialEventReceived)
 			{
-				UserLog.WriteLine(String.Format("{0}: WatchdogElapsed - {1}:{2}", DateTime.Now, this.Type, this.Device.Udn));
-				OnEventSubscriptionError();
+				if (iRetryCount < kMaxRetryCount)
+				{
+					iRetryCount++;
+					Resubscribe();
+				}
+				else
+				{
+					UserLog.WriteLine(String.Format("{0}: Watchdog Elapsed - {1}:{2}", DateTime.Now, this.Type, this.Device.Udn));
+					OnEventSubscriptionError();
+				}
 			}
 		}
 		
@@ -779,10 +788,12 @@ namespace Linn.ControlPoint.Upnp
 <%      { %>
         public <%=argtype[s.type]%> <%=s.name%>;
 <%      } %>
-		private const int kWatchdogTimeout = 30000;
+		private const int kWatchdogTimeout = 5000;
 		private System.Threading.Timer iWatchdog;
 		private object iWatchdogLock;
 		private uint iExpectedSequenceNumber;
+		private uint iRetryCount;
+		private uint kMaxRetryCount = 3;
 <%  } %>
     }
 }

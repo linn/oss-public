@@ -19,6 +19,8 @@ files = Split("""
     FormSysTray.Designer.cs
     FormSysTray.cs
     FormSysTray.resx
+    ../TrackerConfiguration.cs
+    ../PageMain.cs
 """)
 
 
@@ -95,7 +97,7 @@ installer = _default_env.ReleaseInstallerWin32('$install_dir/share/Songbox', 'In
                             RESOURCES = { 'icon' : _default_env.subst('$variant_dir/share/Linn/Songbox/Icon.ico'),
                                           'header' : _default_env.subst('$variant_dir/share/Linn/Songbox/header.bmp'),
                                           'finish' : _default_env.subst('$variant_dir/share/Linn/Songbox/finish.bmp'),
-                                          'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt') },
+                                          'license' : _default_env.subst('$variant_dir/share/Linn/Core/license-cookies.txt') },
                             PRODUCT = 'Songbox',
                             VERSION = kBuildInfo['BUILD_INFO_VERSION'],
                             CERT = '',

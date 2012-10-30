@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<Package>
-  <File dest='bin'>bin/Test/TestListWidgetInter_xxx_dx.exe</File>
-  <File dest='bin'>lib/Linn/Core_xxx_dx.dll</File>
-  <File dest='bin'>lib/Linn/Gui_xxx_dx.dll</File>
-  <Dir>share/Linn/Gui/TestListWidget</Dir>
-  <Dir>share/Linn/Gui/Editor/Default/</Dir>
-  <File>share/Linn/Gui/Linn.ico</File>
-</Package>

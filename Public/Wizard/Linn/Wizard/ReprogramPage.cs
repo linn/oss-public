@@ -4,8 +4,6 @@ using System.Text;
 using System.IO;
 using System.Threading;
 
-using OpenHome.Xapp;
-
 using Linn;
 using Linn.Control.Ssdp;
 using Linn.ControlPoint.Upnp;
@@ -13,12 +11,10 @@ using Linn.ProductSupport;
 
 namespace Linn.Wizard
 {
-
-
     public class ReprogramPage : BasePage, IUpdateFirmwareHandler
     {
-        public ReprogramPage(PageControl aPageControl, string aViewId, PageComponents aPageComponents, IPageNavigation aPageNavigation)
-            : base(aPageControl, aViewId, aPageComponents, aPageNavigation)
+        public ReprogramPage(PageControl aPageControl, PageDefinitions.Page aPageDefinition)
+            : base(aPageControl, aPageDefinition)
         {
             
         }
@@ -26,43 +22,45 @@ namespace Linn.Wizard
 
         protected override void OnActivated(Session aSession)
         {
-            Box box = iPageControl.SelectedBox;
-            box.UpdateCheckCompleteEvent += UpdateCheckComplete;
-            box.UpdateCheckErrorEvent += UpdateCheckError;
+            // this page stores the selected box - this will fail when multiple sessions are being used
+            // since the data needs to be per session, not per page. This is done as a temporary measure
+            // to get around some problems with the ProductSupport api
+            iSelectedBox = aSession.Model.SelectedBox;
+
+            iSelectedBox.UpdateCheckCompleteEvent += UpdateCheckComplete;
+            iSelectedBox.UpdateCheckErrorEvent += UpdateCheckError;
 
             base.OnActivated(aSession);
 
-            SetInitialUpdateState();
+            SetInitialUpdateState(iSelectedBox);
         }
 
-        private void SetInitialUpdateState() {
+        private void SetInitialUpdateState(Box aBox) {
             bool nextButtonVisible = true;
             bool updateButtonVisible = false;
             string updateButtonText = "";
 
-            Box box = iPageControl.SelectedBox;
-
-            if (box == null)
+            if (aBox == null)
             {
                 Send("UpdateBoxTitle", "Update Not Possible");
                 Send("UpdateBoxText", "Your device is no longer available.");
             }
-            else if (box.State == Box.EState.eOff)
+            else if (aBox.State == Box.EState.eOff)
             {
                 Send("UpdateBoxTitle", "Update Not Possible");
                 Send("UpdateBoxText", "Your device is turned off.");
             }
-            else if (box.IsProxy)
+            else if (aBox.IsProxy)
             {
                 Send("UpdateBoxTitle", "Update Not Possible");
                 Send("UpdateBoxText", "Your device can not be updated because it is a network proxy.");
             }
-            else if (box.UpdateCheckInProgress)
+            else if (aBox.UpdateCheckInProgress)
             {
                 Send("UpdateBoxTitle", "Update Check In Progress");
                 Send("UpdateBoxText", "Update information is currently downloading.<br>Please wait.");
             }
-            else if (box.UpdateCheckFailed)
+            else if (aBox.UpdateCheckFailed)
             {
                 Send("UpdateBoxTitle", "Update Check Failed");
                 Send("UpdateBoxText", "Unable to download update information. Please check your internet connection.");
@@ -70,20 +68,20 @@ namespace Linn.Wizard
                 updateButtonVisible = true;
                 updateButtonText = kUpdateButtonCheckForUpdatesAgain;
             }
-            else if (box.UpdateCheckDeviceNotFound)
+            else if (aBox.UpdateCheckDeviceNotFound)
             {
                 Send("UpdateBoxTitle", "Update Not Possible");
-                Send("UpdateBoxText", "No update information could be found for '" + box.Model + "'.");
+                Send("UpdateBoxText", "No update information could be found for '" + aBox.Model + "'.");
             }
-            else if (!box.SoftwareUpdateAvailable)
+            else if (!aBox.SoftwareUpdateAvailable)
             {
                 Send("UpdateBoxTitle", "No Update Is Required");
                 Send("UpdateBoxText", "Your device is already running the latest software.");
             }
-            else if (box.SoftwareUpdateAvailable)
+            else if (aBox.SoftwareUpdateAvailable)
             {
                 Send("UpdateBoxTitle", "Update Available");
-                Send("UpdateBoxText", "New software, " + box.SoftwareUpdateVersion + ", is available for your device. Click below to start the update. Please do not close the application while the update is in progress.");
+                Send("UpdateBoxText", "New software, " + aBox.SoftwareUpdateVersion + ", is available for your device. Click below to start the update. Please do not close the application while the update is in progress.");
                 
                 updateButtonVisible = true;
                 updateButtonText = kUpdateButtonTextStartUpdate;
@@ -97,44 +95,48 @@ namespace Linn.Wizard
         }
 
         private void SetButtonState(bool aNextPrevButtonsVisible, bool aUpdateButtonVisible, string aUpdateButtonText) {
-            JsonObject joNew = new JsonObject();
-            joNew.Add("Type", new JsonValueString("Control"));
-            joNew.Add("Id", new JsonValueString("NextButton"));
-            joNew.Add("Visible", new JsonValueBool(aNextPrevButtonsVisible));
+            OpenHome.Xapp.JsonObject joNew = new OpenHome.Xapp.JsonObject();
+            joNew.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+            joNew.Add("Id", new OpenHome.Xapp.JsonValueString("NextButton"));
+            joNew.Add("Visible", new OpenHome.Xapp.JsonValueBool(aNextPrevButtonsVisible));
             Send("Render", joNew);
 
-            JsonObject joPrev = new JsonObject();
-            joPrev.Add("Type", new JsonValueString("Control"));
-            joPrev.Add("Id", new JsonValueString("PreviousButton"));
-            joPrev.Add("Visible", new JsonValueBool(aNextPrevButtonsVisible));
+            OpenHome.Xapp.JsonObject joPrev = new OpenHome.Xapp.JsonObject();
+            joPrev.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+            joPrev.Add("Id", new OpenHome.Xapp.JsonValueString("PreviousButton"));
+            joPrev.Add("Visible", new OpenHome.Xapp.JsonValueBool(aNextPrevButtonsVisible));
             Send("Render", joPrev);
 
-            JsonObject joUpdate = new JsonObject();
-            joUpdate.Add("Type", new JsonValueString("Control"));
-            joUpdate.Add("Id", new JsonValueString("UpdateButton"));
-            joUpdate.Add("Text", new JsonValueString(aUpdateButtonText));
-            joUpdate.Add("Visible", new JsonValueBool(aUpdateButtonVisible));
+            OpenHome.Xapp.JsonObject joUpdate = new OpenHome.Xapp.JsonObject();
+            joUpdate.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+            joUpdate.Add("Id", new OpenHome.Xapp.JsonValueString("UpdateButton"));
+            joUpdate.Add("Text", new OpenHome.Xapp.JsonValueString(aUpdateButtonText));
+            joUpdate.Add("Visible", new OpenHome.Xapp.JsonValueBool(aUpdateButtonVisible));
             Send("Render", joUpdate);
 
             iUpdateButtonText = aUpdateButtonText;
 
-            JsonObject joUpdateBgd = new JsonObject();
-            joUpdateBgd.Add("Type", new JsonValueString("Control"));
-            joUpdateBgd.Add("Id", new JsonValueString("UpdateBoxFooter"));
-            joUpdateBgd.Add("Visible", new JsonValueBool(aUpdateButtonVisible));
+            OpenHome.Xapp.JsonObject joUpdateBgd = new OpenHome.Xapp.JsonObject();
+            joUpdateBgd.Add("Type", new OpenHome.Xapp.JsonValueString("Control"));
+            joUpdateBgd.Add("Id", new OpenHome.Xapp.JsonValueString("UpdateBoxFooter"));
+            joUpdateBgd.Add("Visible", new OpenHome.Xapp.JsonValueBool(aUpdateButtonVisible));
             Send("Render", joUpdateBgd);
         }
 
         private void UpdateCheckComplete(object obj, EventArgs e) {
-            SetInitialUpdateState();
+            SetInitialUpdateState(iSelectedBox);
         }
 
         private void UpdateCheckError(object obj, EventArgsUpdateError e) {
-            SetInitialUpdateState();
+            SetInitialUpdateState(iSelectedBox);
         }
 
         protected override void OnDeactivated(Session aSession)
         {
+            iSelectedBox.UpdateCheckCompleteEvent -= UpdateCheckComplete;
+            iSelectedBox.UpdateCheckErrorEvent -= UpdateCheckError;
+            iSelectedBox = null;
+
             base.OnDeactivated(aSession);
         }
             
@@ -149,8 +151,9 @@ namespace Linn.Wizard
                         ReprogramDevice(aSession);
                     }
                     else if (iUpdateButtonText == kUpdateButtonCheckForUpdatesAgain) {
-                        iPageControl.SelectedBox.CheckForUpdates();
-                        SetInitialUpdateState();
+                        Box selectedBox = aSession.Model.SelectedBox;
+                        selectedBox.CheckForUpdates();
+                        SetInitialUpdateState(selectedBox);
                     }
                     break;
                 
@@ -164,7 +167,8 @@ namespace Linn.Wizard
 
         private void ReprogramDevice(Session aSession)
         {
-            iPageControl.SelectedBox.UpdateFirmware(this, false);
+            Box selectedBox = aSession.Model.SelectedBox;
+            selectedBox.UpdateFirmware(this, false);
         }
 
         // IUpdateFirmwareHandler interface
@@ -180,18 +184,18 @@ namespace Linn.Wizard
             Send("UpdateProgressText", "0%");
 
             // Set progress bar value
-            JsonObject joUpdateProg = new JsonObject();
-            joUpdateProg.Add("Id", new JsonValueString("UpdateProgressBarFilled"));
-            joUpdateProg.Add("Value", new JsonValueString("0%"));
+            OpenHome.Xapp.JsonObject joUpdateProg = new OpenHome.Xapp.JsonObject();
+            joUpdateProg.Add("Id", new OpenHome.Xapp.JsonValueString("UpdateProgressBarFilled"));
+            joUpdateProg.Add("Value", new OpenHome.Xapp.JsonValueString("0%"));
             Send("UpdateProgress", joUpdateProg);
         }
         public void OverallProgress(int aValue) {
             Send("UpdateProgressText", aValue.ToString() + "%");
 
             // Set progress bar value
-            JsonObject joUpdateProg = new JsonObject();
-            joUpdateProg.Add("Id", new JsonValueString("UpdateProgressBarFilled"));
-            joUpdateProg.Add("Value", new JsonValueString(aValue.ToString() + "%"));
+            OpenHome.Xapp.JsonObject joUpdateProg = new OpenHome.Xapp.JsonObject();
+            joUpdateProg.Add("Id", new OpenHome.Xapp.JsonValueString("UpdateProgressBarFilled"));
+            joUpdateProg.Add("Value", new OpenHome.Xapp.JsonValueString(aValue.ToString() + "%"));
             Send("UpdateProgress", joUpdateProg);
         }
         public void Status(string aMessage) {
@@ -222,5 +226,6 @@ namespace Linn.Wizard
         private const string kUpdateButtonTextTryUpdateAgain = "Try Again";
         private const string kUpdateButtonCheckForUpdatesAgain = "Check Again";
         private string iUpdateButtonText = "";
+        private Box iSelectedBox;
     }
 }

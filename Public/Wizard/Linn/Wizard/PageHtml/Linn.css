@@ -99,7 +99,7 @@ h5
     height:100%;
 }
 
-.background
+#Background
 {
     margin-top:0px;           /* -20px; problem in David's framework causing 20px gap at top if <div id="all"> not first chars in index.xapp */
     
@@ -117,11 +117,6 @@ h5
 	min-width:1440px;
 	min-height:800px;
 	position:absolute;
-}
-
-#Background
-{
-	z-index:-200;
 }
 
 div
@@ -154,7 +149,7 @@ ol, ol li
     color:gray;
 }
 
-.navigation_tab, .navigation_tab_initial, .navigation_tab_initial_main, .navigation_tab_initial_use
+.navigation_tab, .navigation_tab_initial, .navigation_tab_initial_main
 {
     float:left;
     padding-left:10px;
@@ -172,6 +167,7 @@ ol, ol li
 .navigation_tab_initial
 {
     cursor:pointer;
+    cursor:hand;
     border-left:2px solid #a19589;
     background:url(./Resources/Images/Miscellaneous/MainExitButtonRed.png) repeat; 
  	background:rgba(223, 80, 92, 0.8);
@@ -180,14 +176,15 @@ ol, ol li
 {
     background:rgb(244, 186, 181);
 }
-.navigation_tab_initial_use
+div#all.use .navigation_tab_initial
 {
     cursor:pointer;
+    cursor:hand;
     border-left:2px solid #a19589;
     background:url(./Resources/Images/Miscellaneous/UseExitButtonBlue.png) repeat;
     background:rgba(56, 163, 219, 0.8);
 }
-.navigation_tab_initial_use:hover
+div#all.use .navigation_tab_initial:hover
 {
     background:rgb(189, 224, 227);
 }
@@ -196,35 +193,6 @@ ol, ol li
     border-left:2px solid #a19589;
     background:url(./Resources/Images/Miscellaneous/SelectSystemExitButtonPurple.png) repeat;
     background:rgba(181, 102, 162, 0.8)
-}
-
-.progress_step
-{
-    float:left;
-    height:30px;
-    line-height:30px;
-    font-size:13px;
-    list-style-position:outside;
-    list-style-type:none;
-    text-transform:uppercase;
-    color:white;
-    background-color:#c6bfb7; 
-    display:inline;
-    padding:0px 15px 0px 15px;
-    margin:0px;
-    border:0px;
-    width:auto;
-    cursor:default;
-}
-
-.progress_separator
-{
-    float:left;
-    height:30px;
-    width:10px;
-    background-color:#c6bfb7;
-    background-image: url(../Resources/Images/Miscellaneous/Progress.png);    
-    display:inline;
 }
 
 button 
@@ -241,11 +209,13 @@ button
     border-style:none; 
     z-index:220;
     cursor:pointer;
+    cursor:hand;
 }
 
 input
 {
     cursor:pointer;
+    cursor:hand;
     z-index:220;
 }
 
@@ -287,14 +257,19 @@ input
 {
     background-color:White;
     z-index:200;
+    height:488px;
 }
 
 #footer 
 {
-    height:30px;
     background-color:White;
-    padding:22px 20px 23px 20px;
     z-index:200;
+}
+
+#footer-controls
+{
+    height:30px;
+    padding:22px 20px 23px 20px;
 }
 
 
@@ -339,16 +314,11 @@ input
 
 /* +++++++++++++++++++  #main section ++++++++++++++++++ */
 
-
-#Main
-{    
-    height:488px;
-}
 #MainContent
-{    
-    height:inherit;
-    padding:20px; 
+{
+    padding: 20px;
 }
+
 .maintext
 {
     z-index:3;
@@ -409,6 +379,17 @@ input
 {
     max-width:40%;
 }
+#Question
+{
+    position:absolute;
+    top: 460px;
+    right: 0px;
+    width: 600px;
+    padding: 0px 20px 0px 0px;
+    text-align: right;
+    font-size:15px;
+    color:rgb(153, 153, 153);
+}
 #TextList
 {
     padding-left:50px;
@@ -444,20 +425,11 @@ input
 
 #ProgressHeader
 {
+    background-color:White;
     height:30px; 
     padding:20px;
     margin:0px;
     z-index:250;
-}
-#progress_bar
-{
-    float:left;
-    width:80%;
-    height:inherit;    
-    z-index:2;
-    font-size:11px;
-    vertical-align:middle;
-    display:inline;
 }
 
 #TroubleshootButton
@@ -668,49 +640,74 @@ height: 70px;
     left:302px;
     margin-left:30px;
 }
-#PlayButton, #StopButton, #VolumeIncButton, #VolumeDecButton
+
+.audio-button
 {
     position:absolute;
-    top:169px;
     height:30px;
     width:30px;
+}
+
+.audio-button-play
+{
+    background-image:url(../Resources/Images/Miscellaneous/PlayButton.png);
+}
+
+.audio-button-play:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/PlayButtonPressed.png);
+}
+
+.audio-button-stop
+{
+    background-image:url(../Resources/Images/Miscellaneous/StopButton.png);
+}
+
+.audio-button-stop:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/StopButtonPressed.png);
+}
+
+.audio-button-volumeinc
+{
+    background-image:url(../Resources/Images/Miscellaneous/VolumePlusButton.png);
+}
+
+.audio-button-volumeinc:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/VolumePlusButtonPressed.png);
+}
+
+.audio-button-volumedec
+{
+    background-image:url(../Resources/Images/Miscellaneous/VolumeMinusButton.png);
+}
+
+.audio-button-volumedec:hover
+{
+    background-image:url(../Resources/Images/Miscellaneous/VolumeMinusButtonPressed.png);
+}
+
+#PlayButton, #StopButton, #VolumeIncButton, #VolumeDecButton
+{
+    top:169px;
     margin-left:30px;
 }
 #PlayButton
 {
     left:302px;
-    background-image:url(../Resources/Images/Miscellaneous/PlayButton.png);
-}
-#PlayButton:hover
-{
-    background-image:url(../Resources/Images/Miscellaneous/PlayButtonPressed.png);
 }
 #StopButton
 {
     left:362px;
-    background-image:url(../Resources/Images/Miscellaneous/StopButton.png);
-}
-#StopButton:hover
-{
-    background-image:url(../Resources/Images/Miscellaneous/StopButtonPressed.png);
 }
 #VolumeIncButton
 {
     left:482px;
-    background-image:url(../Resources/Images/Miscellaneous/VolumePlusButton.png);
-}
-#VolumeIncButton:hover
-{
-    background-image:url(../Resources/Images/Miscellaneous/VolumePlusButtonPressed.png);
 }
 #VolumeDecButton
 {
     left:422px;
-    background-image:url(../Resources/Images/Miscellaneous/VolumeMinusButton.png);
-}
-#VolumeDecButton:hover
-{
-    background-image:url(../Resources/Images/Miscellaneous/VolumeMinusButtonPressed.png);
 }
 /* Stream <<< */
 
@@ -764,6 +761,7 @@ height: 70px;
 .SupportTextTitle:hover
 {
     cursor: pointer;
+    cursor:hand;
     text-decoration:underline;
 }
 .SupportText
@@ -787,6 +785,7 @@ height: 70px;
 .SupportLinkContainer:hover
 {
     cursor: pointer;
+    cursor:hand;
     background:url(./Resources/Images/Miscellaneous/right-dark.png);
     text-decoration:underline;
 }
@@ -854,6 +853,43 @@ height: 70px;
     text-align:center;
     z-index:9;
 }
+
+#MainPageFooter
+{
+    clear:both;
+    width:1024px;
+    z-index:300;
+    background-color:white;
+    top:-20px;
+}
+
+#MainPageFooter>p
+{
+    height:40px;
+    padding-top:20px;
+    padding-right:10px;
+    z-index:301;
+    text-align:right;
+}
+
+#MainPageFooterLabel
+{
+    vertical-align:top;
+    margin-right:5px;
+    margin-bottom:2px;
+    line-height:15px;
+}
+
+#OptionDataCollection
+{
+    display:inline-block;
+    z-index:302;
+    font-size:10px;
+    width:45px;
+    line-height:15px;
+    height:15px;
+}
+
 /* Main <<< */
 
 /* >>> Help */
@@ -895,6 +931,11 @@ height: 70px;
 .modal_menu_item:hover
 {
     background-color:gray; /* requires correct colour here! */
+}
+.modal_menu_item.selected
+{
+    background-color: #df505c;
+    color: white;
 }
 
 #HelpContent
@@ -1049,262 +1090,54 @@ these containes have a product image that can be swapped out by the port.wizard 
 	position:fixed;
 	top:440px;
 }
-.main .customise-list
+
+
+/* Generic selector page */
+
+#SelectorWrapper
 {
-    position:fixed;
-	top:325px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
-.main .customise-list ul 	{ list-style: none outside none; margin: 0px auto 0; padding: 0; }
-.main .customise-list ul li	{ position: relative; margin-bottom: 1px; width: 480px; display: block; height: 36px;  }
-.main .customise-list ul li span.label	{ color: #a19589; text-decoration: none; line-height: 36px; padding-left: 60px; display: block; }
-.main .customise-list ul li span.options{
-	display: none;
-}
-
-.main .customise-list ul li span.label:hover { color: white; }
-
-.main .customise-list ul li span.label	span.label-user{
-	float:right;
-	width:305px;
-	color:#4C4C4C;
-}
-
-.main .customise-list input.field	{ width: 138px; background: #fff; position: absolute; left: 100px; padding: 4px 10px; border: none 0; margin: 5px 0 0; }
-.main .customise-list ul li .choose-icon { float: right; position: relative; margin: 6px 10px 0 0;  }
-.main .customise-list ul li .choose-icon a.customise-btn	{float: right; background: #000; color: #fff; line-height: 12px; padding: 5px 10px; margin: 1px 0px; font-size: 10px; text-decoration: none; text-transform: uppercase; }
-.main .customise-list ul li .choose-icon a:hover	{ background-color: #EB8784; -moz-transition: none; }
-
-.main .customise-list ul li{
-	background-color: #e2ded5;
-	background-repeat: no-repeat;
-}
-
-.main .customise-list ul li:hover{
-	background-color: #EB8784; color: white;
-	-moz-transition: background-color 0.2s ease-in; -webkit-transition: background-color 0.2s ease-in; 
-	transition:background-color 0.2s ease-in;
-	cursor:pointer;
-}
-.main .customise-list ul li.edited span.label,
-.main .customise-list ul li.edited{
-	color:#4C4C4C;
-}
-
-.main .customise-list ul li.tos			{ background-image: url(../Resources/Images/SourceIcons/TOS.png); background-position: 10px 8px;   }
-.main .customise-list ul li.tos:hover	{ background-position: 10px -32px;}
-
-.main .customise-list ul li.spdif			{ background-image: url(./Resources/Images/SourceIcons/SPDIF.png); background-position: 10px 8px;}
-.main .customise-list ul li.spdif:hover	{ background-position:10px -32px; }
-
-.main .customise-list ul li.anlg			{ background-image: url(./Resources/Images/SourceIcons/ANLG.png); background-position: 10px 8px;  }
-.main .customise-list ul li.anlg:hover	{  background-position: 10px -32px; }
-
-.main .customise-list ul li.hdmi			{ background-image: url(./Resources/Images/SourceIcons/HDMI1.png); background-position: 10px 8px;  }
-.main .customise-list ul li.hdmi:hover	{  background-position: 10px -32px; }
-
-.main .customise-list ul li.customise { background-color: rgb(224, 79, 92); color: white; padding-left: 60px; line-height: 36px; width: 420px; background-position: 10px -32px; }
-
-.main .customise-list ul li.customise:hover	{ background-color: rgb(224, 79, 92); }
-
-/* floaty icon panel*/		
-
-.main .customise-list .panel-icons{
-	width:324px;
-	height:204px;
-	background-image: url(./Resources/Images/SourceIcons/icon-panel.png);
-	background-repeat: no-repeat;
-	background-position: bottom;
-	margin:0;padding:0;
-	display:none;
-	position: absolute;
-	z-index: 2000;
-	top:0px; left:-215px;
-}
-
-.main .customise-list .panel-icons ul{
-	display:block;
-	padding:52px 0 0 20px;
-	margin:0;
-}
-
-.main .customise-list .panel-icons li{
-	float:left;
-	width:32px;
-	height: 32px;
-	margin:0 17px 17px 0;
-	padding:0;
-	text-align: center;
-	list-style: none;
-	background-color:#fff;
-
-}
-
-.main .customise-list .panel-icons li:hover{
-	/*prevent css inheritance*/
-	-moz-transition: none;
-	-webkit-transition: none;
-	transition:none;
-	background-color:#fff;
-}
-
-.main .customise-list .panel-icons li span{
-	display:table-cell;
-	text-align: center;
-	vertical-align: middle;
-	width:32px;
-	height: 32px;
-	border:1px solid #fff;
-	line-height:0;
-}
-
-.main .customise-list .panel-icons li span:hover{
-	cursor: pointer;
-	border:1px solid #000;
-}
-
-.main .customise-list .panel-icons li span img{
-	margin:1px;
-}
-
-
-/* configurable config */
-.customSourceEntry 
+#Selector
 {
-    width:inherit;
-    height:34px;
-    float:right; 
-    display:inline;
-    border-top:1px solid white;
-    background-color: rgb(198, 191, 183);
-    background-position:8px 6px;
-	background-repeat: no-repeat;
-    outline-style:none;  
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
-/*
-.customSourceEntry:hover
+
+.selection-item
 {
-    background-color:rgb(223, 80, 92);
-    z-index:90;
+    margin: 0px;
+    position: absolute;
+    z-index: 5;
+    background-color: rgba(255,255,255,0);
 }
-*/
-#CustomProductImage
+
+.selection-item-overlay
 {
-    margin-top:100px;     
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 6;
 }
-.customSourceImage, #CustomProductImageDefault
+
+.selection-item-clickarea
 {
-    width:0px;     
-    height:0px;
-    display:inline;
-}
-.customSourceIcon 
-{
-    width:30px;     /*need to split on/off icon*/
-    height:30px;
-    display:inline;
-    margin:0px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 7;
+    cursor:pointer;
+    cursor:hand;
 }
 
-.customSourceName 
-{
-    width:140px;
-    display:inline;
-    vertical-align:top;
-    top:10px;
-    margin-left:40px;
-    font-size:12px;
-    line-height:12px;
-    color:White;
-}
-.customSourceNameEdit 
-{
-    width:160px;
-    float:right;
-    display:inline;
-    margin: 4px 4px 4px 0px;
-    padding:4px;
-    overflow:hidden;
-    resize:none;
-    border:0;
-    background-color: white;
-    outline-style:none;  
-    font-style:italic;
-}
-
-.customSourceIconEdit 
-{
-    width:100px;
-    height:20px;
-    float:right;
-    display:inline;
-    margin: 7px 10px 7px 10px;
-    padding:0px;
-    color: white;
-    background-color: black;
-    font-size:10px;
-    line-height:10px;
-}
-
-/* floaty icon panel*/		
-
-.panel-icons{
-	width:324px;
-	height:204px;
-	/*background-image: url(./Resources/Images/SourceIcons/icon-panel.png);*/
-	background-repeat: no-repeat;
-	background-position: bottom;
-	margin:0;padding:0;
-	display:inline;
-	position: absolute;
-	z-index: 2000;
-	top:10px; left:150px;
-}
-
-.panel-icons ul{
-	display:block;
-	padding:52px 0 0 20px;
-	margin:0;
-}
-
-.panel-icons li{
-	float:left;
-	width:32px;
-	height: 32px;
-	margin:0 17px 17px 0;
-	padding:0;
-	text-align: center;
-	list-style: none;
-	background-color:#fff;
-
-}
-
-.panel-icons li:hover{
-	/*prevent css inheritance*/
-	-moz-transition: none;
-	-webkit-transition: none;
-	transition:none;
-	background-color:#fff;
-}
-
-.panel-icons li span{
-	display:table-cell;
-	text-align: center;
-	vertical-align: middle;
-	width:32px;
-	height: 32px;
-	border:1px solid #fff;
-	line-height:0;
-}
-
-.panel-icons li span:hover{
-	cursor: pointer;
-	border:1px solid #000;
-}
-
-.panel-icons li span img{
-	margin:1px;
-}
 
 /* Customise <<< */
 
@@ -1346,9 +1179,13 @@ these containes have a product image that can be swapped out by the port.wizard 
 /* <<<<<<<<<<<<<<<<<<<<<<<< Specials */
 /* +++++++++++++++++++  #footer section ++++++++++++++++++ */
 
-#NextButton, #FinishButton
+#NextButton, #NextButton2, #FinishButton
 {
     float:right;
+}
+#NextButton2
+{
+    margin-right: 10px;
 }
 #PreviousButton 
 {
@@ -1356,12 +1193,1608 @@ these containes have a product image that can be swapped out by the port.wizard 
 }
 
 
-#Rotator
+/* ++++++++++++++++++++++++ Main progress bar ++++++++++++++++++++++++ */
+
+#progress_bar
 {
-    width:76px;
-    height:10px;
-    top:30px;
-    left:474px;
-    position:absolute;
+    float:left;
+    width:80%;
+    height:inherit;    
+    z-index:2;
+    font-size:11px;
+    vertical-align:middle;
+    display:inline;
 }
+
+#progress_bar .progress_step
+{
+    float:left;
+    height:30px;
+    line-height:30px;
+    font-size:13px;
+    list-style-position:outside;
+    list-style-type:none;
+    text-transform:uppercase;
+    color:white;
+    background-color:#c6bfb7; 
+    display:inline;
+    padding:0px 15px 0px 15px;
+    margin:0px;
+    border:0px;
+    width:auto;
+    cursor:default;
+}
+
+#progress_bar .progress_separator
+{
+    float:left;
+    height:30px;
+    width:10px;
+    background-color:#c6bfb7;
+    background-image: url(../Resources/Images/Miscellaneous/Progress.png);    
+    display:inline;
+}
+
+#progress_bar #ProgressSeparator8
+{
+    background-color: white;
+}
+
+div#all.connect #ProgressBar1,
+div#all.audio #ProgressBar1,
+div#all.audio #ProgressBar2,
+div#all.network #ProgressBar1,
+div#all.network #ProgressBar2,
+div#all.network #ProgressBar3,
+div#all.update #ProgressBar1,
+div#all.update #ProgressBar2,
+div#all.update #ProgressBar3,
+div#all.update #ProgressBar4,
+div#all.stream #ProgressBar1,
+div#all.stream #ProgressBar2,
+div#all.stream #ProgressBar3,
+div#all.stream #ProgressBar4,
+div#all.stream #ProgressBar5,
+div#all.customise #ProgressBar1,
+div#all.customise #ProgressBar2,
+div#all.customise #ProgressBar3,
+div#all.customise #ProgressBar4,
+div#all.customise #ProgressBar5,
+div#all.customise #ProgressBar6,
+div#all.use #ProgressBar1,
+div#all.use #ProgressBar2,
+div#all.use #ProgressBar3,
+div#all.use #ProgressBar4,
+div#all.use #ProgressBar5,
+div#all.use #ProgressBar6,
+div#all.use #ProgressBar7
+{
+    color: black;
+}
+
+div#all.unpack #ProgressBar1,
+div#all.unpack #ProgressSeparator1,
+div#all.connect #ProgressSeparator1,
+div#all.connect #ProgressBar2,
+div#all.connect #ProgressSeparator2,
+div#all.audio #ProgressSeparator2,
+div#all.audio #ProgressBar3,
+div#all.audio #ProgressSeparator3,
+div#all.network #ProgressSeparator3,
+div#all.network #ProgressBar4,
+div#all.network #ProgressSeparator4,
+div#all.update #ProgressSeparator4,
+div#all.update #ProgressBar5,
+div#all.update #ProgressSeparator5,
+div#all.stream #ProgressSeparator5,
+div#all.stream #ProgressBar6,
+div#all.stream #ProgressSeparator6,
+div#all.customise #ProgressSeparator6,
+div#all.customise #ProgressBar7,
+div#all.customise #ProgressSeparator7
+{
+    background-color: #df505c;
+}
+
+div#all.unpack #ProgressSeparator1,
+div#all.connect #ProgressSeparator2,
+div#all.audio #ProgressSeparator3,
+div#all.network #ProgressSeparator4,
+div#all.update #ProgressSeparator5,
+div#all.stream #ProgressSeparator6,
+div#all.customise #ProgressSeparator7
+{
+    background-image: url(../Resources/Images/Miscellaneous/ProgressHighlight.png);
+}
+
+div#all.use #ProgressSeparator7,
+div#all.use #ProgressBar8,
+div#all.use #ProgressSeparator8
+{
+    background-color: #38a3db;
+}
+
+div#all.use #ProgressSeparator8
+{
+    background-image: url(../Resources/Images/Miscellaneous/ProgressHighlightEnd.png);
+}
+
+
+/* Bottom progress indicator (dots) */
+
+div#all #Dots
+{
+    position: absolute;
+    display: none;
+    top: 30px;
+}
+
+div#all #Dot1,
+div#all #Dot2,
+div#all #Dot3,
+div#all #Dot4,
+div#all #Dot5,
+div#all #Dot6,
+div#all #Dot7,
+div#all #Dot8,
+div#all #Dot9,
+div#all #Dot10
+{
+    background-image: url(Resources/Images/Miscellaneous/DotGrey.png);
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    display: none;
+    top: 0px;
+}
+
+div#all #Dot1 { left: 0px; }
+div#all #Dot2 { left: 22px; }
+div#all #Dot3 { left: 44px; }
+div#all #Dot4 { left: 66px; }
+div#all #Dot5 { left: 88px; }
+div#all #Dot6 { left: 110px; }
+div#all #Dot7 { left: 132px; }
+div#all #Dot8 { left: 154px; }
+div#all #Dot9 { left: 176px; }
+div#all #Dot10 { left: 198px; }
+
+
+/* Pages that have 2 dots */
+
+div#all.klimax.unpack #Dots,
+div#all.akurate.unpack #Dots,
+div#all.majik.unpack #Dots
+{
+    display: inline;
+    left: 496px;
+}
+
+/* Pages that have 3 dots */
+
+div#all.kiko.unpack #Dots,
+div#all.klimax.connect #Dots,
+div#all.akurate.connect #Dots,
+div#all.majik.connect #Dots
+{
+    display: inline;
+    left: 485px;
+}
+
+/* Pages that have 4 dots */
+
+div#all.kiko.connect #Dots
+{
+    display: inline;
+    left: 474px;
+}
+
+/* Pages that have 5 dots */
+
+div#all.kiko.network #Dots,
+div#all.klimax.network #Dots,
+div#all.akurate.network #Dots,
+div#all.majik.network #Dots
+{
+    display: inline;
+    left: 463px;
+}
+
+/* Pages that have 8 dots */
+
+div#all.klimax.customise #Dots,
+div#all.akurate.customise #Dots,
+div#all.majik.customise #Dots
+{
+    display: inline;
+    left: 430px;
+}
+
+/* Pages that have 9 dots */
+
+div#all.kiko.customise #Dots
+{
+    display: inline;
+    left: 419px;
+}
+
+/* unpack 2 pages */
+div#all.unpack #Dot1,
+div#all.unpack #Dot2,
+/* kiko unpack 3 pages */
+div#all.kiko.unpack #Dot3,
+/* connect 3 pages */
+div#all.connect #Dot1,
+div#all.connect #Dot2,
+div#all.connect #Dot3,
+/* kiko connect 4 pages */
+div#all.kiko.connect #Dot4,
+/* network 5 pages */
+div#all.network #Dot1,
+div#all.network #Dot2,
+div#all.network #Dot3,
+div#all.network #Dot4,
+div#all.network #Dot5,
+/* customise 8 pages */
+div#all.customise #Dot1,
+div#all.customise #Dot2,
+div#all.customise #Dot3,
+div#all.customise #Dot4,
+div#all.customise #Dot5,
+div#all.customise #Dot6,
+div#all.customise #Dot7,
+div#all.customise #Dot8,
+/* kiko customise 9 pages */
+div#all.kiko.customise #Dot9
+{
+    display: inline;
+}
+
+/* unpack 2 pages */
+div#all.unpack.unpack1 #Dot1,
+div#all.unpack.unpack2 #Dot2,
+/* kiko unpack 3 pages */
+div#all.kiko.unpack.unpack3 #Dot3,
+/* connect 3 pages */
+div#all.connect.connect1 #Dot1,
+div#all.connect.connect2 #Dot2,
+div#all.connect.connect3 #Dot3,
+/* kiko connect 4 pages */
+div#all.kiko.connect.connect4 #Dot4,
+/* network 5 pages */
+div#all.network.network1 #Dot1,
+div#all.network.network2 #Dot2,
+div#all.network.network3 #Dot3,
+div#all.network.network4 #Dot4,
+div#all.network.network5 #Dot5,
+/* customise 6 pages - first 6 are the same for all products*/
+div#all.customise.songcast1 #Dot1,
+div#all.customise.sources #Dot2,
+div#all.customise.tv #Dot3,
+div#all.customise.sourcename #Dot4,
+div#all.customise.sourcetype #Dot5,
+div#all.customise.sourceinput #Dot6,
+/* remaining pages for kiko */
+div#all.kiko.customise.sourceicon #Dot7,
+div#all.kiko.customise.sourcetest #Dot8,
+div#all.kiko.customise.playlist #Dot9,
+/* remaining pages for other products */
+div#all.klimax.customise.sourcetest #Dot7,
+div#all.klimax.customise.playlist #Dot8,
+div#all.akurate.customise.sourcetest #Dot7,
+div#all.akurate.customise.playlist #Dot8,
+div#all.majik.customise.sourcetest #Dot7,
+div#all.majik.customise.playlist #Dot8
+{
+    background-image: url(Resources/Images/Miscellaneous/DotBlack.png);
+}
+
+
+/* Generic CSS for customise-songcast1 pages */
+
+div#all.customise.songcast1 #MainImage
+{
+    /*top: -221px;
+    left: -128px;*/
+}
+
+div#all.customise.songcast1 #SpeechBubbleMedium
+{
+    top: 238px;
+    left: 635px;
+    height: 135px;
+}
+
+
+/* Generic CSS for customise-tv pages */
+
+div#all.customise.tv #Div1,
+div#all.customise.tv #Div2,
+div#all.customise.tv #Div3,
+div#all.customise.tv #Div4
+{
+    margin: 0px;
+    position: absolute;
+    background-repeat: no-repeat;
+}
+div#all.customise.tv #Div2
+{
+    background-image: url(Resources/Images/Miscellaneous/HandPoised.png);
+    width: 284px;
+    z-index: 5;
+}
+div#all.klimax.customise.tv #Div3,
+div#all.majik.customise.tv #Div3
+{
+    background-image: url(Resources/Images/Miscellaneous/ConnectorPoisedHdmiUp.png);
+    width: 128px; height: 228px;
+    z-index: 4;
+}
+div#all.kiko.customise.tv #Div3,
+div#all.akurate.customise.tv #Div3
+{
+    background-image: url(Resources/Images/Miscellaneous/ConnectorPoisedHdmiDown.png);
+    width: 106px; height: 190px;
+    z-index: 4;
+}
+div#all.customise.tv #Div4
+{
+    background-image: url(Resources/Images/Miscellaneous/TvBackPanel.jpg);
+    width: 280px;
+    height: 200px;
+}
+
+
+/* Generic CSS for customise-sourcetype pages */
+
+div#all.customise.sourcetype #Div1
+{
+    margin: 0px;
+    position: absolute;
+    top: 143px; left: 450px;
+    width: 125px; height: 125px;
+    background-image: url(Resources/Images/CustomiseSourceType/ProductCircle.png);
+}
+
+div#all.customise.sourcetype #Div2
+{
+    margin: 0px;
+    position: absolute;
+    top: 152px; left: 459px;
+    width: 107px; height: 107px;
+}
+
+div#all.customise.sourcetype .selection-item
+{
+    background-image: url(Resources/Images/CustomiseSourceType/ConnectorCircle.png);
+    background-repeat: no-repeat;
+}
+
+
+/* Majik and Kiko both have 4 options in the customise-sourcetype page */
+
+div#all.majik.customise.sourcetype #SelectionArea0, div#all.kiko.customise.sourcetype #SelectionArea0 { bottom: -423px; left: 192px; width: 252px; height: 222px; background-position: left bottom; }
+div#all.majik.customise.sourcetype #SelectionArea1, div#all.kiko.customise.sourcetype #SelectionArea1 { bottom: -423px; left: 364px; width: 125px; height: 167px; background-position: left bottom; z-index: 6; }
+div#all.majik.customise.sourcetype #SelectionArea2, div#all.kiko.customise.sourcetype #SelectionArea2 { bottom: -423px; left: 534px; width: 125px; height: 167px; background-position: right bottom; z-index: 6; }
+div#all.majik.customise.sourcetype #SelectionArea3, div#all.kiko.customise.sourcetype #SelectionArea3 { bottom: -423px; left: 580px; width: 249px; height: 222px; background-position: right bottom; }
+
+div#all.majik.customise.sourcetype .selection-item-clickarea, div#all.kiko.customise.sourcetype .selection-item-clickarea { width: 125px; height: 125px; }
+div#all.majik.customise.sourcetype #SelectionArea0 .selection-item-clickarea, div#all.kiko.customise.sourcetype #SelectionArea0 .selection-item-clickarea { top: 97px; }
+div#all.majik.customise.sourcetype #SelectionArea1 .selection-item-clickarea, div#all.kiko.customise.sourcetype #SelectionArea1 .selection-item-clickarea { top: 42px; }
+div#all.majik.customise.sourcetype #SelectionArea2 .selection-item-clickarea, div#all.kiko.customise.sourcetype #SelectionArea2 .selection-item-clickarea { top: 42px; }
+div#all.majik.customise.sourcetype #SelectionArea3 .selection-item-clickarea, div#all.kiko.customise.sourcetype #SelectionArea3 .selection-item-clickarea { top: 97px; left: 124px; }
+
+div#all.majik.customise.sourcetype .selection-item-overlay, div#all.kiko.customise.sourcetype .selection-item-overlay { width: 107px; height: 107px; left: 9px; }
+div#all.majik.customise.sourcetype #SelectionArea0 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea0 .selection-item-overlay { top: 106px; }
+div#all.majik.customise.sourcetype #SelectionArea1 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea1 .selection-item-overlay { top: 51px; }
+div#all.majik.customise.sourcetype #SelectionArea2 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea2 .selection-item-overlay { top: 51px; }
+div#all.majik.customise.sourcetype #SelectionArea3 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea3 .selection-item-overlay { top: 106px; left: 133px; }
+
+div#all.majik.customise.sourcetype #SelectionArea0.hover, div#all.kiko.customise.sourcetype #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover1of4.png); }
+div#all.majik.customise.sourcetype #SelectionArea1.hover, div#all.kiko.customise.sourcetype #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover2of4.png); }
+div#all.majik.customise.sourcetype #SelectionArea2.hover, div#all.kiko.customise.sourcetype #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover3of4.png); }
+div#all.majik.customise.sourcetype #SelectionArea3.hover, div#all.kiko.customise.sourcetype #SelectionArea3.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover4of4.png); }
+
+div#all.majik.customise.sourcetype #SelectionArea0.selected, div#all.kiko.customise.sourcetype #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected1of4.png); }
+div#all.majik.customise.sourcetype #SelectionArea1.selected, div#all.kiko.customise.sourcetype #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected2of4.png); }
+div#all.majik.customise.sourcetype #SelectionArea2.selected, div#all.kiko.customise.sourcetype #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected3of4.png); }
+div#all.majik.customise.sourcetype #SelectionArea3.selected, div#all.kiko.customise.sourcetype #SelectionArea3.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected4of4.png); }
+
+div#all.majik.customise.sourcetype #SelectionArea0 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea0 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Hdmi.png); }
+div#all.majik.customise.sourcetype #SelectionArea1 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea1 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Spdif.png); }
+div#all.majik.customise.sourcetype #SelectionArea2 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea2 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Toslink.png); }
+div#all.majik.customise.sourcetype #SelectionArea3 .selection-item-overlay, div#all.kiko.customise.sourcetype #SelectionArea3 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Analog.png); }
+
+
+/* Akurate and Klimax both have 5 options in the customise-sourcetype page */
+
+div#all.akurate.customise.sourcetype #SelectionArea0, div#all.klimax.customise.sourcetype #SelectionArea0 { bottom: -424px; left: 107px; width: 337px; height: 222px; background-position: left bottom; }
+div#all.akurate.customise.sourcetype #SelectionArea1, div#all.klimax.customise.sourcetype #SelectionArea1 { bottom: -422px; left: 280px; width: 172px; height: 188px; background-position: left bottom; z-index: 6; }
+div#all.akurate.customise.sourcetype #SelectionArea2, div#all.klimax.customise.sourcetype #SelectionArea2 { bottom: -424px; left: 451px; width: 125px; height: 151px; background-position: right bottom; z-index: 6; }
+div#all.akurate.customise.sourcetype #SelectionArea3, div#all.klimax.customise.sourcetype #SelectionArea3 { bottom: -422px; left: 573px; width: 171px; height: 188px; background-position: right bottom; z-index: 6; }
+div#all.akurate.customise.sourcetype #SelectionArea4, div#all.klimax.customise.sourcetype #SelectionArea4 { bottom: -424px; left: 581px; width: 335px; height: 222px; background-position: right bottom; }
+
+div#all.akurate.customise.sourcetype .selection-item-clickarea, div#all.klimax.customise.sourcetype .selection-item-clickarea { width: 125px; height: 125px; }
+div#all.akurate.customise.sourcetype #SelectionArea0 .selection-item-clickarea, div#all.klimax.customise.sourcetype #SelectionArea0 .selection-item-clickarea { top: 97px; }
+div#all.akurate.customise.sourcetype #SelectionArea1 .selection-item-clickarea, div#all.klimax.customise.sourcetype #SelectionArea1 .selection-item-clickarea { top: 63px; }
+div#all.akurate.customise.sourcetype #SelectionArea2 .selection-item-clickarea, div#all.klimax.customise.sourcetype #SelectionArea2 .selection-item-clickarea { top: 26px; }
+div#all.akurate.customise.sourcetype #SelectionArea3 .selection-item-clickarea, div#all.klimax.customise.sourcetype #SelectionArea3 .selection-item-clickarea { top: 63px; left: 46px; }
+div#all.akurate.customise.sourcetype #SelectionArea4 .selection-item-clickarea, div#all.klimax.customise.sourcetype #SelectionArea4 .selection-item-clickarea { top: 97px; left: 210px; }
+
+div#all.akurate.customise.sourcetype .selection-item-overlay, div#all.klimax.customise.sourcetype .selection-item-overlay { width: 107px; height: 107px; left: 9px; }
+div#all.akurate.customise.sourcetype #SelectionArea0 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea0 .selection-item-overlay { top: 106px; }
+div#all.akurate.customise.sourcetype #SelectionArea1 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea1 .selection-item-overlay { top: 72px; }
+div#all.akurate.customise.sourcetype #SelectionArea2 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea2 .selection-item-overlay { top: 35px; }
+div#all.akurate.customise.sourcetype #SelectionArea3 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea3 .selection-item-overlay { top: 72px; left: 55px; }
+div#all.akurate.customise.sourcetype #SelectionArea4 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea4 .selection-item-overlay { top: 106px; left: 219px; }
+
+div#all.akurate.customise.sourcetype #SelectionArea0.hover, div#all.klimax.customise.sourcetype #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover1of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea1.hover, div#all.klimax.customise.sourcetype #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover2of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea2.hover, div#all.klimax.customise.sourcetype #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover3of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea3.hover, div#all.klimax.customise.sourcetype #SelectionArea3.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover4of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea4.hover, div#all.klimax.customise.sourcetype #SelectionArea4.hover { background-image: url(Resources/Images/CustomiseSourceType/Hover5of5.png); }
+
+div#all.akurate.customise.sourcetype #SelectionArea0.selected, div#all.klimax.customise.sourcetype #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected1of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea1.selected, div#all.klimax.customise.sourcetype #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected2of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea2.selected, div#all.klimax.customise.sourcetype #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected3of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea3.selected, div#all.klimax.customise.sourcetype #SelectionArea3.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected4of5.png); }
+div#all.akurate.customise.sourcetype #SelectionArea4.selected, div#all.klimax.customise.sourcetype #SelectionArea4.selected { background-image: url(Resources/Images/CustomiseSourceType/Selected5of5.png); }
+
+div#all.akurate.customise.sourcetype #SelectionArea0 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea0 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Hdmi.png); }
+div#all.akurate.customise.sourcetype #SelectionArea1 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea1 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Spdif.png); }
+div#all.akurate.customise.sourcetype #SelectionArea2 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea2 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Toslink.png); }
+div#all.akurate.customise.sourcetype #SelectionArea3 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea3 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Analog.png); }
+div#all.akurate.customise.sourcetype #SelectionArea4 .selection-item-overlay, div#all.klimax.customise.sourcetype #SelectionArea4 .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceType/Balanced.png); }
+
+
+/* Generic CSS for customise-sourceinput pages */
+
+div#all.customise.sourceinput #Div1,
+div#all.customise.sourceinput #Div2,
+div#all.customise.sourceinput #Div3
+{
+    margin: 0px;
+    position: absolute;
+    background-repeat: no-repeat;
+}
+
+
+/* Generic CSS for customise-sourcetest pages */
+
+div#all.customise.sourcetest .sourcetest-item
+{
+    position: absolute;
+    margin: 0;
+    text-align: center;
+}
+
+div#all.customise.sourcetest #SourceTestRings
+{
+    background-image: url(Resources/Images/CustomiseSourceTest/Rings2.png);
+    width: 487px;
+    height: 126px;
+    top: 180px;
+    left: 268px;
+}
+
+div#all.kiko.customise.sourcetest #SourceTestRings
+{
+    background-image: url(Resources/Images/CustomiseSourceTest/Rings3.png);
+}
+
+div#all.customise.sourcetest #SourceTestNameLabel  { width: 126px; top: 136px; left: 90px; }
+div#all.customise.sourcetest #SourceTestInputLabel { width: 126px; top: 136px; left: 270px; }
+div#all.customise.sourcetest #SourceTestIconLabel  { width: 126px; top: 136px; display: none; }
+
+div#all.kiko.customise.sourcetest #SourceTestNameLabel  { left: 0px; }
+div#all.kiko.customise.sourcetest #SourceTestInputLabel { left: 180px; }
+div#all.kiko.customise.sourcetest #SourceTestIconLabel  { left: 361px; display: block; }
+
+div#all.customise.sourcetest #SourceTestNameTextOuter
+{
+    top: 42px;
+    left: 89px;
+    width: 120px;
+    height: 40px;
+    display: table;
+}
+
+div#all.kiko.customise.sourcetest #SourceTestNameTextOuter
+{
+    left: 4px;
+}
+
+div#all.customise.sourcetest #SourceTestNameText
+{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
+    color: #df505c;
+}
+
+div#all.customise.sourcetest #SourceTestInputImg
+{
+    background-image: url(Resources/Images/CustomiseSourceTest/ConnectorIcons.png);
+    top: 28px;
+    left: 294px;
+    width: 71px;
+    height: 71px;
+}
+
+div#all.kiko.customise.sourcetest #SourceTestInputImg
+{
+    left: 209px;
+}
+
+div#all.customise.sourcetest #SourceTestIconImg
+{
+    display: none;
+    background-image: url(Resources/Images/CustomiseSourceIcon/IconsRed.png);
+}
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg
+{
+    display: block;
+    top: 28px;
+    left: 389px;
+    width: 71px;
+    height: 71px;
+}
+
+div#all.customise.sourcetest #SourceTestStartButton,
+div#all.customise.sourcetest #SourceTestStopButton,
+div#all.customise.sourcetest #SourceTestVolumeDecButton,
+div#all.customise.sourcetest #SourceTestVolumeIncButton
+{
+    background-image: url(Resources/Images/CustomiseSourceTest/Buttons.png);
+    width: 39px; height: 39px;
+    top: 384px;
+}
+
+div#all.customise.sourcetest #SourceTestStartButton
+{
+    width: 109px;
+    left: 382px;
+    background-position: 0px -46px;
+}
+div#all.customise.sourcetest #SourceTestStartButton.enabled { background-position: 0px 0px; }
+
+div#all.customise.sourcetest #SourceTestStopButton
+{
+    left: 503px;
+    background-position: -121px -46px;
+}
+div#all.customise.sourcetest #SourceTestStopButton.enabled { background-position: -121px 0px; }
+
+div#all.customise.sourcetest #SourceTestVolumeDecButton
+{
+    left: 553px;
+    background-position: -171px -46px;
+}
+div#all.customise.sourcetest #SourceTestVolumeDecButton.enabled { background-position: -171px 0px; }
+
+div#all.customise.sourcetest #SourceTestVolumeIncButton
+{
+    left: 603px;
+    background-position: -221px -46px;
+}
+div#all.customise.sourcetest #SourceTestVolumeIncButton.enabled { background-position: -221px 0px; }
+
+div#all.customise.sourcetest #SourceTestInputImg.HDMI1,
+div#all.customise.sourcetest #SourceTestInputImg.HDMI2,
+div#all.customise.sourcetest #SourceTestInputImg.HDMI3,
+div#all.customise.sourcetest #SourceTestInputImg.HDMI4
+{
+    background-position: 0px 0px;
+}
+
+div#all.customise.sourcetest #SourceTestInputImg.SPDIF,
+div#all.customise.sourcetest #SourceTestInputImg.SPDIF1,
+div#all.customise.sourcetest #SourceTestInputImg.SPDIF2,
+div#all.customise.sourcetest #SourceTestInputImg.SPDIF3
+{
+    background-position: -142px 0px;
+}
+
+div#all.customise.sourcetest #SourceTestInputImg.TOSLINK,
+div#all.customise.sourcetest #SourceTestInputImg.TOSLINK1,
+div#all.customise.sourcetest #SourceTestInputImg.TOSLINK2,
+div#all.customise.sourcetest #SourceTestInputImg.TOSLINK3
+{
+    background-position: -71px 0px;
+}
+
+div#all.customise.sourcetest #SourceTestInputImg.Analog,
+div#all.customise.sourcetest #SourceTestInputImg.Analog1,
+div#all.customise.sourcetest #SourceTestInputImg.Analog2,
+div#all.customise.sourcetest #SourceTestInputImg.Analog3,
+div#all.customise.sourcetest #SourceTestInputImg.Phono
+{
+    background-position: -213px 0px;
+}
+
+div#all.customise.sourcetest #SourceTestInputImg.Balanced
+{
+    background-position: -284px 0px;
+}
+
+
+/* Generic CSS for customise-playlist pages */
+
+div#all.customise.playlist #MainImage
+{
+    /*top: -221px;
+    left: -128px;*/
+}
+
+div#all.customise.playlist #SpeechBubbleMedium
+{
+    top: 78px;
+    left: 720px;
+    height: 135px;
+}
+
+
+/* Generic CSS for the final use page */
+
+div#all.use #SummarySpeakers
+{
+    position: absolute;
+    top: 133px; left: 0px;
+    width: 248px; height: 455px;
+    background-image: url(Resources/Images/Miscellaneous/Speakers.png);
+}
+
+div#all.use .cross-tick
+{
+    position: absolute;
+    width: 60px; height: 61px;
+    background-image: url(Resources/Images/Miscellaneous/Cross.png);
+}
+
+div#all.use .summary-title
+{
+    position: absolute;
+    top: 20px; left: 30px;
+    width: 500px;
+}
+
+div#all.use .summary-text
+{
+    position: absolute;
+    top: 40px; left: 30px;
+    width: 500px;
+    text-align: justify;
+}
+
+div#all.use .summary-button-left,
+div#all.use .summary-button-right
+{
+    background-color: #38a3db;
+    text-transform: uppercase;
+    padding: 4px 10px 5px 10px;
+    font-size: 12px; 
+    z-index:220;
+    cursor:pointer;
+    cursor:hand;
+    width: 98px;
+}
+
+div#all.use .summary-button-left:hover,
+div#all.use .summary-button-right:hover
+{
+    background-color: rgb(189, 224, 227);
+}
+
+div#all.use .summary-button-left a,
+div#all.use .summary-button-right a
+{
+    color: White;
+    text-decoration: none;
+}
+
+div#all.use .summary-button-left
+{
+    position: absolute;
+    margin: 0;
+    top: 90px;
+    left: 30px;
+}
+
+div#all.use .summary-item.yes .cross-tick
+{
+    background-image: url(Resources/Images/Miscellaneous/Tick.png);
+}
+
+div#all.use .summary-item.no .summary-text.no,
+div#all.use .summary-item.yes .summary-text.yes,
+div#all.use .summary-item.yes .summary-button-left
+{
+    display: inline;
+}
+
+div#all.use .summary-item.yes .summary-text.no,
+div#all.use .summary-item.no .summary-text.yes,
+div#all.use .summary-item.no .summary-button-left
+{
+    display: none;
+}
+
+div#all.use #SummarySongcast
+{
+    position: absolute;
+    top: 35px; left: 472px;
+}
+
+div#all.use #SummarySources
+{
+    position: absolute;
+    top: 185px; left: 472px;
+}
+
+div#all.use #SummaryPlaylist
+{
+    position: absolute;
+    top: 335px; left: 472px;
+}
+
+div#all.use #SummarySpeechBubble
+{
+    position: absolute;
+    top: 214px;
+    left: 51px;
+    width: 285px;
+    height: 150px;
+}
+
+div#all.use #SummarySpeechBubbleHeader
+{
+    margin-bottom: 10px;
+}
+
+div#all.use #SummarySpeechBubbleButton
+{
+    margin: 17px 0 0 0;
+}
+
+div#all.use .speech_bubble_tail
+{
+    border-right: 0;
+    border-left: 70px solid transparent;
+    float: left;
+}
+
+
+/* -----------------------------------------------------------------------------------------------------
+   -----------------------------------------------------------------------------------------------------
+   Page specific CSS definitions from here on
+   -----------------------------------------------------------------------------------------------------
+   ----------------------------------------------------------------------------------------------------- */
+
+
+/* Kiko Customise Tv page */
+
+div#all.kiko.customise.tv #Div1
+{
+    background-image: url(Resources/Images/KikoDsm/BackPanel.png);
+    width: 624px;
+    height: 233px;
+    top: 188px;
+    left: 400px;
+}
+div#all.kiko.customise.tv #Div2
+{
+    height: 161px;
+    top: 327px;
+    left: 603px;
+}
+div#all.kiko.customise.tv #Div3
+{
+    top: 313px;
+    left: 674px;
+}
+div#all.kiko.customise.tv #Div4
+{
+    top: 178px;
+    left: 20px;
+}
+div#all.kiko.customise.tv #MainTextCalloutLargeMultiLine
+{
+    top: 378px;
+    left: 20px;
+}
+
+
+/* Kiko Customise Source Type page */
+
+div#all.kiko.customise.sourcetype #Div2 { background-image: url(Resources/Images/CustomiseSourceType/Kiko.png); }
+
+
+/* Kiko Customise Source Input pages */
+
+div#all.kiko.customise.sourceinput #Div1
+{
+    background-image: url(Resources/Images/KikoDsm/BackPanel.png);
+    width: 785px;
+    height: 188px;
+    top: 205px;
+    left: 139px;
+}
+
+div#all.kiko.customise.sourceinput #Div2,
+div#all.kiko.customise.sourceinput #Div3
+{
+    display: none;
+}
+
+
+
+/* Kiko Customise Source Input HDMI page */
+
+div#all.kiko.customise.sourceinput.hdmi .selection-item { width: 70px; height: 135px; }
+div#all.kiko.customise.sourceinput.hdmi .selection-item-overlay { top: 90px; left: 15px; width: 42px; height: 19px; }
+div#all.kiko.customise.sourceinput.hdmi .selection-item-clickarea { top: 66px; left: 1px; width: 68px; height: 68px; }
+
+div#all.kiko.customise.sourceinput.hdmi .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconHdmi.png); }
+div#all.kiko.customise.sourceinput.hdmi .selection-item.hover .selection-item-overlay,
+div#all.kiko.customise.sourceinput.hdmi .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconHdmiHighlighted.png); }
+
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea0 { top: 340px; left: 467px; background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/DefaultHdmi1.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/HoverHdmi1.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/SelectedHdmi1.png); }
+
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea1 { height: 139px; top: 340px; left: 560px; background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/DefaultHdmi2.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/HoverHdmi2.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/SelectedHdmi2.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea1 .selection-item-overlay { top: 94px; }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea1 .selection-item-clickarea { top: 70px; }
+
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea2 { top: 340px; left: 653px; background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/DefaultHdmi3.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/HoverHdmi3.png); }
+div#all.kiko.customise.sourceinput.hdmi #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/SelectedHdmi3.png); }
+
+
+/* Kiko Customise Source Input SPDIF page */
+
+div#all.kiko.customise.sourceinput.spdif .selection-item { width: 70px; height: 140px; }
+div#all.kiko.customise.sourceinput.spdif .selection-item-overlay { top: 19px; left: 18px; width: 35px; height: 34px; }
+div#all.kiko.customise.sourceinput.spdif .selection-item-clickarea { top: 1px; left: 1px; width: 68px; height: 68px; }
+
+div#all.kiko.customise.sourceinput.spdif .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconSpdif.png); }
+div#all.kiko.customise.sourceinput.spdif .selection-item.hover .selection-item-overlay,
+div#all.kiko.customise.sourceinput.spdif .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconSpdifHighlighted.png); }
+
+div#all.kiko.customise.sourceinput.spdif #SelectionArea0 { top: 139px; left: 507px; background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/DefaultSpdif1.png); }
+div#all.kiko.customise.sourceinput.spdif #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/HoverSpdif1.png); }
+div#all.kiko.customise.sourceinput.spdif #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/SelectedSpdif1.png); }
+
+
+/* Kiko Customise Source Input TOSLINK page */
+
+div#all.kiko.customise.sourceinput.toslink .selection-item { width: 79px; height: 129px; }
+div#all.kiko.customise.sourceinput.toslink .selection-item-overlay { top: 19px; left: 18px; width: 34px; height: 33px; }
+div#all.kiko.customise.sourceinput.toslink .selection-item-clickarea { top: 1px; left: 1px; width: 68px; height: 68px; }
+
+div#all.kiko.customise.sourceinput.toslink .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconToslink.png); }
+div#all.kiko.customise.sourceinput.toslink .selection-item.hover .selection-item-overlay,
+div#all.kiko.customise.sourceinput.toslink .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconToslinkHighlighted.png); }
+
+div#all.kiko.customise.sourceinput.toslink #SelectionArea0 { top: 148px; left: 423px; background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/DefaultToslink1.png); }
+div#all.kiko.customise.sourceinput.toslink #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/HoverToslink1.png); }
+div#all.kiko.customise.sourceinput.toslink #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/SelectedToslink1.png); }
+
+
+/* Kiko Customise Source Input Analog page */
+
+div#all.kiko.customise.sourceinput.analog .selection-item { width: 72px; height: 133px; }
+div#all.kiko.customise.sourceinput.analog .selection-item-overlay { top: 27px; left: 20px; width: 36px; height: 17px; }
+div#all.kiko.customise.sourceinput.analog .selection-item-clickarea { top: 1px; left: 3px; width: 68px; height: 68px; }
+
+div#all.kiko.customise.sourceinput.analog .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconAnalog.png); }
+div#all.kiko.customise.sourceinput.analog .selection-item.hover .selection-item-overlay,
+div#all.kiko.customise.sourceinput.analog .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/IconAnalogHighlighted.png); }
+
+div#all.kiko.customise.sourceinput.analog #SelectionArea0 { top: 145px; left: 597px; background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/DefaultAnalog1.png); }
+div#all.kiko.customise.sourceinput.analog #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/HoverAnalog1.png); }
+div#all.kiko.customise.sourceinput.analog #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KikoDsm/SelectedAnalog1.png); }
+
+
+/* Kiko Customise Icon definintions for use in the Source Icon and Source Test pages */
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Analog,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Analog #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Analog { background-position: 0px 0px; } /* placeholder use hdmi */
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Cable,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Cable #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Cable { background-position: -426px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Computer,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Computer #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Computer { background-position: -497px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-DiscPlayer,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-DiscPlayer #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-DiscPlayer { background-position: -213px 0px; }
+
+/*div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-FrontAux,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-FrontAux #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-FrontAux { background-position: 0px 0px; }*/
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-GamesConsole,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-GamesConsole #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-GamesConsole { background-position: -284px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-HDMI1,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-HDMI1 #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-HDMI1 { background-position: 0px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-HDMI2,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-HDMI2 #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-HDMI2 { background-position: 0px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-HDMI3,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-HDMI3 #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-HDMI3 { background-position: 0px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-iPadTablet,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-iPadTablet #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-iPadTablet { background-position: -426px -71px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-iPhoneSmartphone,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-iPhoneSmartphone #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-iPhoneSmartphone { background-position: -355px -71px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-iPodMP3Player,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-iPodMP3Player #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-iPodMP3Player { background-position: -142px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Movies,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Movies #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Movies { background-position: -284px -71px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Music,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Music #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Music { background-position: -213px -71px; }
+
+/*div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-NetAux,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-NetAux #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-NetAux { background-position: 0px 0px; }*/
+
+/*div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Playlist,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Playlist #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Playlist { background-position: 0px 0px; }*/
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Playstation,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Playstation #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Playstation { background-position: -71px -71px; }
+
+/*div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Radio,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Radio #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Radio { background-position: 0px 0px; }*/
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Satellite,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Satellite #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Satellite { background-position: -71px 0px; }
+
+/*div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Songcast,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Songcast #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Songcast { background-position: 0px 0px; }*/
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-SPDIF,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-SPDIF #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-SPDIF { background-position: 0px 0px; }  /* placeholder use hdmi */
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-TOSLINK,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-TOSLINK #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-TOSLINK { background-position: 0px 0px; }    /* placeholder use hdmi */
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Turntable,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Turntable #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Turntable { background-position: -355px 0px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-TV,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-TV #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-TV { background-position: -497px -71px; }
+
+/*div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-UPnPAV,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-UPnPAV #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-UPnPAV { background-position: 0px 0px; }*/
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-Wii,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-Wii #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-Wii { background-position: -142px -71px; }
+
+div#all.kiko.customise.sourcetest #SourceTestIconImg.source-icon-XBOX,
+div#all.kiko.customise.sourceicon #SelectorWrapper.source-icon-XBOX #Div2,
+div#all.kiko.customise.sourceicon .selection-item.source-icon-XBOX { background-position: 0px -71px; }
+
+
+/* Kiko Customise Source Icon page */
+
+div#all.kiko.customise.sourceicon .selection-item { width: 71px; height: 71px; background-image: url(Resources/Images/CustomiseSourceIcon/IconsGrey.png); }
+div#all.kiko.customise.sourceicon .selection-item.hover,
+div#all.kiko.customise.sourceicon .selection-item.selected { width: 71px; height: 71px; background-image: url(Resources/Images/CustomiseSourceIcon/IconsRed.png); }
+
+div#all.kiko.customise.sourceicon #Div1
+{
+    margin: 0px;
+    position: absolute;
+    top: 25px; left: 497px;
+    width: 527px; height: 203px;
+    background-image: url(Resources/Images/CustomiseSourceIcon/Kiko.png);
+}
+
+div#all.kiko.customise.sourceicon #Div2
+{
+    margin: 0px;
+    position: absolute;
+    top: 92px; left: 661px;
+    width: 71px; height: 71px;
+    background-image: url(Resources/Images/CustomiseSourceIcon/IconsBlue.png);
+}
+
+div#all.kiko.customise.sourceicon #Div3
+{
+    margin: 0px;
+    position: absolute;
+    top: 190px; left: 44px;
+    width: 110px;
+    text-align: center;
+    color: rgb(153, 153, 153);
+}
+
+/* The sources that can be configured for the kiko all have 16 allowed icons */
+
+div#all.kiko.customise.sourceicon #SelectionArea0 { top: 270px; left: 63px; }
+div#all.kiko.customise.sourceicon #SelectionArea1 { top: 270px; left: 181px; }
+div#all.kiko.customise.sourceicon #SelectionArea2 { top: 270px; left: 299px; }
+div#all.kiko.customise.sourceicon #SelectionArea3 { top: 270px; left: 417px; }
+div#all.kiko.customise.sourceicon #SelectionArea4 { top: 270px; left: 535px; }
+div#all.kiko.customise.sourceicon #SelectionArea5 { top: 270px; left: 653px; }
+div#all.kiko.customise.sourceicon #SelectionArea6 { top: 270px; left: 771px; }
+div#all.kiko.customise.sourceicon #SelectionArea7 { top: 270px; left: 889px; }
+
+div#all.kiko.customise.sourceicon #SelectionArea8 { top: 380px; left: 63px; }
+div#all.kiko.customise.sourceicon #SelectionArea9 { top: 380px; left: 181px; }
+div#all.kiko.customise.sourceicon #SelectionArea10 { top: 380px; left: 299px; }
+div#all.kiko.customise.sourceicon #SelectionArea11 { top: 380px; left: 417px; }
+div#all.kiko.customise.sourceicon #SelectionArea12 { top: 380px; left: 535px; }
+div#all.kiko.customise.sourceicon #SelectionArea13 { top: 380px; left: 653px; }
+div#all.kiko.customise.sourceicon #SelectionArea14 { top: 380px; left: 771px; }
+div#all.kiko.customise.sourceicon #SelectionArea15 { top: 380px; left: 889px; }
+
+div#all.kiko.customise.sourceicon .selection-item-overlay { top: -27px; left: -27px; width: 125px; height: 125px; }
+div#all.kiko.customise.sourceicon .selection-item.selected .selection-item-overlay
+{
+    background-image: url(Resources/Images/CustomiseSourceIcon/Highlight.png);
+}
+
+
+/* Klimax Customise Tv page */
+
+div#all.klimax.customise.tv #Div1
+{
+    background-image: url(Resources/Images/KlimaxDsm/BackPanel.png);
+    width: 600px;
+    height: 197px;
+    top: 210px;
+    left: 0px;
+    background-position: -400px 0px;
+}
+div#all.klimax.customise.tv #Div2
+{
+    height: 150px;
+    top: 338px;
+    left: 243px;
+}
+div#all.klimax.customise.tv #Div3
+{
+    top: 315px;
+    left: 301px;
+}
+div#all.klimax.customise.tv #Div4
+{
+    top: 75px;
+    left: 724px;
+}
+div#all.klimax.customise.tv #MainTextCalloutLargeMultiLine
+{
+    top: 275px;
+    left: 724px;
+}
+
+
+/* Klimax Customise Source Type page */
+
+div#all.klimax.customise.sourcetype #Div2 { background-image: url(Resources/Images/CustomiseSourceType/Klimax.png); }
+
+
+/* Klimax Customise Source Input pages */
+
+div#all.klimax.customise.sourceinput #Div1
+{
+    background-image: url(Resources/Images/KlimaxDsm/BackPanel.png);
+    width: 997px;
+    height: 197px;
+    top: 205px;
+    left: 13px;
+}
+
+div#all.klimax.customise.sourceinput #Div2,
+div#all.klimax.customise.sourceinput #Div3
+{
+    display: none;
+}
+
+
+/* Klimax Customise Source Input HDMI page */
+
+div#all.klimax.customise.sourceinput.hdmi .selection-item { width: 70px; height: 135px; }
+div#all.klimax.customise.sourceinput.hdmi .selection-item-overlay { top: 90px; left: 15px; width: 42px; height: 19px; }
+div#all.klimax.customise.sourceinput.hdmi .selection-item-clickarea { top: 66px; left: 1px; width: 68px; height: 68px; }
+
+div#all.klimax.customise.sourceinput.hdmi .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconHdmi.png); }
+div#all.klimax.customise.sourceinput.hdmi .selection-item.hover .selection-item-overlay,
+div#all.klimax.customise.sourceinput.hdmi .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconHdmiHighlighted.png); }
+
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea0 { top: 321px; left: 528px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultHdmi1.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverHdmi1.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedHdmi1.png); }
+
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea1 { height: 139px; top: 321px; left: 621px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultHdmi2.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverHdmi2.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedHdmi2.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea1 .selection-item-overlay { top: 94px; }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea1 .selection-item-clickarea { top: 70px; }
+
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea2 { top: 321px; left: 714px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultHdmi3.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverHdmi3.png); }
+div#all.klimax.customise.sourceinput.hdmi #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedHdmi3.png); }
+
+
+/* Klimax Customise Source Input SPDIF page */
+
+div#all.klimax.customise.sourceinput.spdif .selection-item { width: 70px; height: 135px; }
+div#all.klimax.customise.sourceinput.spdif .selection-item-overlay { top: 19px; left: 18px; width: 35px; height: 34px; }
+div#all.klimax.customise.sourceinput.spdif .selection-item-clickarea { top: 1px; left: 1px; width: 68px; height: 68px; }
+
+div#all.klimax.customise.sourceinput.spdif .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconSpdif.png); }
+div#all.klimax.customise.sourceinput.spdif .selection-item.hover .selection-item-overlay,
+div#all.klimax.customise.sourceinput.spdif .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconSpdifHighlighted.png); }
+
+div#all.klimax.customise.sourceinput.spdif #SelectionArea0 { top: 127px; left: 504px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultSpdif1.png); }
+div#all.klimax.customise.sourceinput.spdif #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverSpdif1.png); }
+div#all.klimax.customise.sourceinput.spdif #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedSpdif1.png); }
+
+div#all.klimax.customise.sourceinput.spdif #SelectionArea1 { top: 127px; left: 597px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultSpdif2.png); }
+div#all.klimax.customise.sourceinput.spdif #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverSpdif2.png); }
+div#all.klimax.customise.sourceinput.spdif #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedSpdif2.png); }
+
+
+/* Klimax Customise Source Input TOSLINK page */
+
+div#all.klimax.customise.sourceinput.toslink .selection-item { width: 70px; height: 135px; }
+div#all.klimax.customise.sourceinput.toslink .selection-item-overlay { top: 19px; left: 18px; width: 34px; height: 33px; }
+div#all.klimax.customise.sourceinput.toslink .selection-item-clickarea { top: 1px; left: 1px; width: 68px; height: 68px; }
+
+div#all.klimax.customise.sourceinput.toslink .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconToslink.png); }
+div#all.klimax.customise.sourceinput.toslink .selection-item.hover .selection-item-overlay,
+div#all.klimax.customise.sourceinput.toslink .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconToslinkHighlighted.png); }
+
+div#all.klimax.customise.sourceinput.toslink #SelectionArea0 { top: 134px; left: 668px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultToslink1.png); }
+div#all.klimax.customise.sourceinput.toslink #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverToslink1.png); }
+div#all.klimax.customise.sourceinput.toslink #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedToslink1.png); }
+
+div#all.klimax.customise.sourceinput.toslink #SelectionArea1 { top: 134px; left: 749px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultToslink2.png); }
+div#all.klimax.customise.sourceinput.toslink #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverToslink2.png); }
+div#all.klimax.customise.sourceinput.toslink #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedToslink2.png); }
+
+
+/* Klimax Customise Source Input Balanced page */
+
+div#all.klimax.customise.sourceinput.balanced .selection-item { width: 74px; height: 182px; }
+div#all.klimax.customise.sourceinput.balanced .selection-item-overlay { top: 137px; left: 13px; width: 45px; height: 21px; }
+div#all.klimax.customise.sourceinput.balanced .selection-item-clickarea { top: 113px; left: 1px; width: 68px; height: 68px; }
+
+div#all.klimax.customise.sourceinput.balanced .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconBalanced.png); }
+div#all.klimax.customise.sourceinput.balanced .selection-item.hover .selection-item-overlay,
+div#all.klimax.customise.sourceinput.balanced .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/IconBalancedHighlighted.png); }
+
+div#all.klimax.customise.sourceinput.balanced #SelectionArea0 { top: 288px; left: 367px; background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/DefaultBalanced1.png); }
+div#all.klimax.customise.sourceinput.balanced #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/HoverBalanced1.png); }
+div#all.klimax.customise.sourceinput.balanced #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/KlimaxDsm/SelectedBalanced1.png); }
+
+
+/* Akurate Customise Tv page */
+
+div#all.akurate.customise.tv #Div1
+{
+    background-image: url(Resources/Images/AkurateDsm/BackPanel.png);
+    background-size: cover;
+    width: 618px;
+    height: 313px;
+    top: 146px;
+    left: 406px;
+}
+div#all.akurate.customise.tv #Div2
+{
+    height: 220px;
+    top: 268px;
+    left: 551px;
+}
+div#all.akurate.customise.tv #Div3
+{
+    top: 253px;
+    left: 622px;
+}
+div#all.akurate.customise.tv #Div4
+{
+    top: 188px;
+    left: 20px;
+}
+div#all.akurate.customise.tv #MainTextCalloutLargeMultiLine
+{
+    top: 388px;
+    left: 20px;
+}
+
+
+/* Akurate Customise Source Type page */
+
+div#all.akurate.customise.sourcetype #Div2 { background-image: url(Resources/Images/CustomiseSourceType/Akurate.png); }
+
+
+/* Akurate Customise Source Input pages */
+
+div#all.akurate.customise.sourceinput #Div1
+{
+    background-image: url(Resources/Images/AkurateDsm/BackPanel.png);
+    width: 946px;
+    height: 262px;
+    top: 160px;
+    left: 37px;
+}
+
+div#all.akurate.customise.sourceinput #Div2,
+div#all.akurate.customise.sourceinput #Div3
+{
+    display: none;
+}
+
+
+/* Akurate Customise Source Input HDMI page */
+
+div#all.akurate.customise.sourceinput.hdmi .selection-item { width: 78px; height: 234px; }
+div#all.akurate.customise.sourceinput.hdmi .selection-item-overlay { width: 42px; height: 19px; }
+div#all.akurate.customise.sourceinput.hdmi .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.akurate.customise.sourceinput.hdmi .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconHdmi.png); }
+div#all.akurate.customise.sourceinput.hdmi .selection-item.hover .selection-item-overlay,
+div#all.akurate.customise.sourceinput.hdmi .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconHdmiHighlighted.png); }
+
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea0 { top: 252px; left: 241px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultHdmi1.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverHdmi1.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedHdmi1.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea0 .selection-item-overlay { top: 171px; left: 14px; }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea0 .selection-item-clickarea { top: 146px; left: 1px; }
+
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea1 { top: 252px; left: 318px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultHdmi2.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverHdmi2.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedHdmi2.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea1 .selection-item-overlay { top: 190px; left: 14px; }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea1 .selection-item-clickarea { top: 165px; left: 1px; }
+
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea2 { top: 252px; left: 398px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultHdmi3.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverHdmi3.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedHdmi3.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea2 .selection-item-overlay { top: 190px; left: 14px; }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea2 .selection-item-clickarea { top: 165px; left: 1px; }
+
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea3 { top: 252px; left: 473px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultHdmi4.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea3.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverHdmi4.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea3.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedHdmi4.png); }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea3 .selection-item-overlay { top: 174px; left: 17px; }
+div#all.akurate.customise.sourceinput.hdmi #SelectionArea3 .selection-item-clickarea { top: 149px; left: 3px; }
+
+
+/* Akurate Customise Source Input SPDIF page */
+
+div#all.akurate.customise.sourceinput.spdif .selection-item { width: 77px; height: 160px; }
+div#all.akurate.customise.sourceinput.spdif .selection-item-overlay { width: 35px; height: 34px; }
+div#all.akurate.customise.sourceinput.spdif .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.akurate.customise.sourceinput.spdif .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconSpdif.png); }
+div#all.akurate.customise.sourceinput.spdif .selection-item.hover .selection-item-overlay,
+div#all.akurate.customise.sourceinput.spdif .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconSpdifHighlighted.png); }
+
+div#all.akurate.customise.sourceinput.spdif #SelectionArea0 { top: 86px; left: 623px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultSpdif1.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverSpdif1.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedSpdif1.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea0 .selection-item-overlay { top: 38px; left: 18px; }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea0 .selection-item-clickarea { top: 21px; left: 1px; }
+
+div#all.akurate.customise.sourceinput.spdif #SelectionArea1 { top: 85px; left: 701px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultSpdif2.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverSpdif2.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedSpdif2.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea1 .selection-item-overlay { top: 18px; left: 18px; }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea1 .selection-item-clickarea { top: 1px; left: 1px; }
+
+div#all.akurate.customise.sourceinput.spdif #SelectionArea2 { top: 86px; left: 767px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultSpdif3.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverSpdif3.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedSpdif3.png); }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea2 .selection-item-overlay { top: 38px; left: 25px; }
+div#all.akurate.customise.sourceinput.spdif #SelectionArea2 .selection-item-clickarea { top: 21px; left: 8px; }
+
+
+/* Akurate Customise Source Input TOSLINK page */
+
+div#all.akurate.customise.sourceinput.toslink .selection-item { width: 78px; height: 157px; }
+div#all.akurate.customise.sourceinput.toslink .selection-item-overlay { width: 34px; height: 33px; }
+div#all.akurate.customise.sourceinput.toslink .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.akurate.customise.sourceinput.toslink .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconToslink.png); }
+div#all.akurate.customise.sourceinput.toslink .selection-item.hover .selection-item-overlay,
+div#all.akurate.customise.sourceinput.toslink .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconToslinkHighlighted.png); }
+
+div#all.akurate.customise.sourceinput.toslink #SelectionArea0 { top: 90px; left: 484px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultToslink1.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverToslink1.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedToslink1.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea0 .selection-item-overlay { top: 40px; left: 18px; }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea0 .selection-item-clickarea { top: 22px; left: 2px; }
+
+div#all.akurate.customise.sourceinput.toslink #SelectionArea1 { top: 89px; left: 555px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultToslink2.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverToslink2.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedToslink2.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea1 .selection-item-overlay { top: 19px; left: 22px; }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea1 .selection-item-clickarea { top: 1px; left: 5px; }
+
+div#all.akurate.customise.sourceinput.toslink #SelectionArea2 { top: 90px; left: 623px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultToslink3.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverToslink3.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedToslink3.png); }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea2 .selection-item-overlay { top: 40px; left: 26px; }
+div#all.akurate.customise.sourceinput.toslink #SelectionArea2 .selection-item-clickarea { top: 21px; left: 8px; }
+
+
+/* Akurate Customise Source Input Analog page */
+
+div#all.akurate.customise.sourceinput.analog .selection-item { width: 70px; height: 158px; }
+div#all.akurate.customise.sourceinput.analog .selection-item-overlay { width: 36px; height: 17px; }
+div#all.akurate.customise.sourceinput.analog .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.akurate.customise.sourceinput.analog .selection-item .selection-item-overlay
+{
+    background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconAnalog.png);
+    transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+}
+div#all.akurate.customise.sourceinput.analog .selection-item.hover .selection-item-overlay,
+div#all.akurate.customise.sourceinput.analog .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconAnalogHighlighted.png); }
+
+div#all.akurate.customise.sourceinput.analog #SelectionArea0 { top: 301px; left: 567px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultAnalog1.png); }
+div#all.akurate.customise.sourceinput.analog #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverAnalog1.png); }
+div#all.akurate.customise.sourceinput.analog #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedAnalog1.png); }
+div#all.akurate.customise.sourceinput.analog #SelectionArea0 .selection-item-overlay { top: 116px; left: 18px; }
+div#all.akurate.customise.sourceinput.analog #SelectionArea0 .selection-item-clickarea { top: 90px; left: 1px; }
+
+div#all.akurate.customise.sourceinput.analog #SelectionArea1 { top: 301px; left: 645px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultAnalog2.png); }
+div#all.akurate.customise.sourceinput.analog #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverAnalog2.png); }
+div#all.akurate.customise.sourceinput.analog #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedAnalog2.png); }
+div#all.akurate.customise.sourceinput.analog #SelectionArea1 .selection-item-overlay { top: 116px; left: 18px; }
+div#all.akurate.customise.sourceinput.analog #SelectionArea1 .selection-item-clickarea { top: 90px; left: 1px; }
+
+
+/* Akurate Customise Source Input Balanced page */
+
+div#all.akurate.customise.sourceinput.balanced .selection-item { width: 70px; height: 159px; }
+div#all.akurate.customise.sourceinput.balanced .selection-item-overlay { width: 36px; height: 17px; }
+div#all.akurate.customise.sourceinput.balanced .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.akurate.customise.sourceinput.balanced .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconBalanced.png); }
+div#all.akurate.customise.sourceinput.balanced .selection-item.hover .selection-item-overlay,
+div#all.akurate.customise.sourceinput.balanced .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/IconBalancedHighlighted.png); }
+
+div#all.akurate.customise.sourceinput.balanced #SelectionArea0 { top: 302px; left: 513px; background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/DefaultBalanced1.png); }
+div#all.akurate.customise.sourceinput.balanced #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/HoverBalanced1.png); }
+div#all.akurate.customise.sourceinput.balanced #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/AkurateDsm/SelectedBalanced1.png); }
+div#all.akurate.customise.sourceinput.balanced #SelectionArea0 .selection-item-overlay { top: 117px; left: 18px; }
+div#all.akurate.customise.sourceinput.balanced #SelectionArea0 .selection-item-clickarea { top: 91px; left: 1px; }
+
+
+/* Majik Customise Tv page */
+
+div#all.majik.customise.tv #Div1
+{
+    background-image: url(Resources/Images/MajikDsm/BackPanel.png);
+    width: 624px;
+    height: 258px;
+    top: 205px;
+    left: 0px;
+    background-position: -340px 0px;
+}
+div#all.majik.customise.tv #Div2
+{
+    height: 242px;
+    top: 246px;
+    left: 66px;
+}
+div#all.majik.customise.tv #Div3
+{
+    top: 230px;
+    left: 123px;
+}
+div#all.majik.customise.tv #Div4
+{
+    top: 75px;
+    left: 724px;
+}
+div#all.majik.customise.tv #MainTextCalloutLargeMultiLine
+{
+    top: 275px;
+    left: 724px;
+}
+
+
+/* Majik Customise Source Type page */
+
+div#all.majik.customise.sourcetype #Div2 { background-image: url(Resources/Images/CustomiseSourceType/Majik.png); }
+
+
+/* Majik Customise Source Input pages */
+
+div#all.majik.customise.sourceinput #Div1
+{
+    background-image: url(Resources/Images/MajikDsm/BackPanel.png);
+    width: 937px;
+    height: 233px;
+    top: 170px;
+    left: 43px;
+}
+
+div#all.majik.customise.sourceinput #Div2,
+div#all.majik.customise.sourceinput #Div3
+{
+    display: none;
+}
+
+
+/* Majik Customise Source Input HDMI page */
+
+div#all.majik.customise.sourceinput.hdmi .selection-item { width: 82px; height: 255px; }
+div#all.majik.customise.sourceinput.hdmi .selection-item-overlay { width: 42px; height: 19px; }
+div#all.majik.customise.sourceinput.hdmi .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.majik.customise.sourceinput.hdmi .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconHdmi.png); }
+div#all.majik.customise.sourceinput.hdmi .selection-item.hover .selection-item-overlay,
+div#all.majik.customise.sourceinput.hdmi .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconHdmiHighlighted.png); }
+
+div#all.majik.customise.sourceinput.hdmi #SelectionArea0 { top: 210px; left: 269px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultHdmi1.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverHdmi1.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedHdmi1.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea0 .selection-item-overlay { top: 191px; left: 14px; }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea0 .selection-item-clickarea { top: 167px; left: 1px; }
+
+div#all.majik.customise.sourceinput.hdmi #SelectionArea1 { top: 210px; left: 346px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultHdmi2.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverHdmi2.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedHdmi2.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea1 .selection-item-overlay { top: 211px; left: 20px; }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea1 .selection-item-clickarea { top: 186px; left: 7px; }
+
+div#all.majik.customise.sourceinput.hdmi #SelectionArea2 { top: 210px; left: 425px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultHdmi3.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverHdmi3.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedHdmi3.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea2 .selection-item-overlay { top: 211px; left: 21px; }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea2 .selection-item-clickarea { top: 186px; left: 7px; }
+
+div#all.majik.customise.sourceinput.hdmi #SelectionArea3 { top: 210px; left: 506px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultHdmi4.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea3.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverHdmi4.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea3.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedHdmi4.png); }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea3 .selection-item-overlay { top: 191px; left: 21px; }
+div#all.majik.customise.sourceinput.hdmi #SelectionArea3 .selection-item-clickarea { top: 166px; left: 7px; }
+
+
+/* Majik Customise Source Input SPDIF page */
+
+div#all.majik.customise.sourceinput.spdif .selection-item { width: 77px; height: 160px; }
+div#all.majik.customise.sourceinput.spdif .selection-item-overlay { width: 35px; height: 34px; }
+div#all.majik.customise.sourceinput.spdif .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.majik.customise.sourceinput.spdif .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconSpdif.png); }
+div#all.majik.customise.sourceinput.spdif .selection-item.hover .selection-item-overlay,
+div#all.majik.customise.sourceinput.spdif .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconSpdifHighlighted.png); }
+
+div#all.majik.customise.sourceinput.spdif #SelectionArea0 { top: 66px; left: 581px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultSpdif1.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverSpdif1.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedSpdif1.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea0 .selection-item-overlay { top: 38px; left: 18px; }
+div#all.majik.customise.sourceinput.spdif #SelectionArea0 .selection-item-clickarea { top: 21px; left: 1px; }
+
+div#all.majik.customise.sourceinput.spdif #SelectionArea1 { top: 65px; left: 655px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultSpdif2.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverSpdif2.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedSpdif2.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea1 .selection-item-overlay { top: 18px; left: 21px; }
+div#all.majik.customise.sourceinput.spdif #SelectionArea1 .selection-item-clickarea { top: 1px; left: 4px; }
+
+div#all.majik.customise.sourceinput.spdif #SelectionArea2 { top: 66px; left: 727px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultSpdif3.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverSpdif3.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedSpdif3.png); }
+div#all.majik.customise.sourceinput.spdif #SelectionArea2 .selection-item-overlay { top: 38px; left: 25px; }
+div#all.majik.customise.sourceinput.spdif #SelectionArea2 .selection-item-clickarea { top: 21px; left: 8px; }
+
+
+/* Majik Customise Source Input TOSLINK page */
+
+div#all.majik.customise.sourceinput.toslink .selection-item { width: 78px; height: 157px; }
+div#all.majik.customise.sourceinput.toslink .selection-item-overlay { width: 34px; height: 33px; }
+div#all.majik.customise.sourceinput.toslink .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.majik.customise.sourceinput.toslink .selection-item .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconToslink.png); }
+div#all.majik.customise.sourceinput.toslink .selection-item.hover .selection-item-overlay,
+div#all.majik.customise.sourceinput.toslink .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconToslinkHighlighted.png); }
+
+div#all.majik.customise.sourceinput.toslink #SelectionArea0 { top: 62px; left: 728px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultToslink1.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverToslink1.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedToslink1.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea0 .selection-item-overlay { top: 40px; left: 19px; }
+div#all.majik.customise.sourceinput.toslink #SelectionArea0 .selection-item-clickarea { top: 22px; left: 1px; }
+
+div#all.majik.customise.sourceinput.toslink #SelectionArea1 { top: 61px; left: 801px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultToslink2.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverToslink2.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedToslink2.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea1 .selection-item-overlay { top: 19px; left: 22px; }
+div#all.majik.customise.sourceinput.toslink #SelectionArea1 .selection-item-clickarea { top: 1px; left: 5px; }
+
+div#all.majik.customise.sourceinput.toslink #SelectionArea2 { top: 62px; left: 870px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultToslink3.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverToslink3.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedToslink3.png); }
+div#all.majik.customise.sourceinput.toslink #SelectionArea2 .selection-item-overlay { top: 40px; left: 26px; }
+div#all.majik.customise.sourceinput.toslink #SelectionArea2 .selection-item-clickarea { top: 21px; left: 8px; }
+
+
+/* Majik Customise Source Input Analog page */
+
+div#all.majik.customise.sourceinput.analog .selection-item { width: 102px; height: 159px; }
+div#all.majik.customise.sourceinput.analog .selection-item-overlay { width: 36px; height: 17px; }
+div#all.majik.customise.sourceinput.analog .selection-item-clickarea { width: 68px; height: 68px; }
+
+div#all.majik.customise.sourceinput.analog .selection-item .selection-item-overlay
+{
+    background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconAnalog.png);
+    transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform:rotate(90deg);
+}
+div#all.majik.customise.sourceinput.analog .selection-item.hover .selection-item-overlay,
+div#all.majik.customise.sourceinput.analog .selection-item.selected .selection-item-overlay { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/IconAnalogHighlighted.png); }
+
+div#all.majik.customise.sourceinput.analog #SelectionArea0 { top: 293px; left: 410px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultAnalog1.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea0.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverAnalog1.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea0.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedAnalog1.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea0 .selection-item-overlay { top: 99px; left: 17px; }
+div#all.majik.customise.sourceinput.analog #SelectionArea0 .selection-item-clickarea { top: 72px; left: 1px; }
+
+div#all.majik.customise.sourceinput.analog #SelectionArea1 { top: 292px; left: 469px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultAnalog2.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea1.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverAnalog2.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea1.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedAnalog2.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea1 .selection-item-overlay { top: 117px; left: 33px; }
+div#all.majik.customise.sourceinput.analog #SelectionArea1 .selection-item-clickarea { top: 90px; left: 17px; }
+
+div#all.majik.customise.sourceinput.analog #SelectionArea2 { top: 292px; left: 548px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultAnalog3.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea2.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverAnalog3.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea2.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedAnalog3.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea2 .selection-item-overlay { top: 117px; left: 33px; }
+div#all.majik.customise.sourceinput.analog #SelectionArea2 .selection-item-clickarea { top: 90px; left: 17px; }
+
+div#all.majik.customise.sourceinput.analog #SelectionArea3 { top: 293px; left: 611px; background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/DefaultAnalog4.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea3.hover { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/HoverAnalog4.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea3.selected { background-image: url(Resources/Images/CustomiseSourceInput/MajikDsm/SelectedAnalog4.png); }
+div#all.majik.customise.sourceinput.analog #SelectionArea3 .selection-item-overlay { top: 99px; left: 47px; }
+div#all.majik.customise.sourceinput.analog #SelectionArea3 .selection-item-clickarea { top: 72px; left: 30px; }
+
 

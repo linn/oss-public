@@ -10,118 +10,11 @@ namespace Linn.Topology
 {
     public class ModelSourceMediaRendererDs : ModelSourceMediaRenderer
     {
-        internal class IdArrayMetadataCollector
-        {
-            public IdArrayMetadataCollector(ServicePlaylist aServicePlaylist)
-            {
-                iIdList = string.Empty;
-                iServicePlaylist = aServicePlaylist;
-            }
-
-            public void ClearIds()
-            {
-                iIdList = string.Empty;
-                iCount = 0;
-            }
-
-            public void AddId(uint aId)
-            {
-                iIdList += ((iIdList.Length > 0) ? " " : "") + aId.ToString();
-                ++iCount;
-            }
-
-            public IList<MrItem> Process()
-            {
-                return Process(false);
-            }
-
-            public IList<MrItem> Process(bool aForce)
-            {
-                if ((iCount + 1) > kCountPerCall || (aForce && iCount > 0))
-                {
-                    Trace.WriteLine(Trace.kMediaRenderer, "IdArrayMetadataCollector.Process: iCount=" + iCount + ", aForce=" + aForce);
-                    string result = iServicePlaylist.ReadListSync(iIdList);
-
-                    ClearIds();
-
-                    return ParseMetadataXml(result);
-                }
-
-                return null;
-            }
-
-            private IList<MrItem> ParseMetadataXml(string aXml)
-            {
-                List<MrItem> list = new List<MrItem>();
-
-                if (aXml != null)
-                {
-                    try
-                    {
-                        XmlDocument document = new XmlDocument();
-                        document.LoadXml(aXml);
-
-                        foreach (XmlNode n in document.SelectNodes("/TrackList/Entry"))
-                        {
-                            uint id = uint.Parse(n["Id"].InnerText);
-                            string uri = n["Uri"].InnerText;
-                            string metadata = n["Metadata"].InnerText;
-                            DidlLite didl = null;
-                            try
-                            {
-                                didl = new DidlLite(metadata);
-                                if (didl.Count == 0)
-                                {
-                                    UserLog.WriteLine(string.Format("Empty DidlLite created from metadata '{0}'", metadata));
-                                    item item = new item();
-                                    item.Title = uri;
-
-                                    didl.Add(item);
-                                }
-                            }
-                            catch (XmlException)
-                            {
-                                didl = new DidlLite();
-
-                                item item = new item();
-                                item.Title = uri;
-
-                                didl.Add(item);
-                            }
-                            list.Add(new MrItem(id, uri, didl));
-                        }
-                    }
-                    catch (XmlException e)
-                    {
-                        Trace.WriteLine(Trace.kTopology, "IdArrayMetadataCollector.ParseMetadataXml: " + e.Message);
-                    }
-                    catch (FormatException) { }
-                }
-
-                return list;
-            }
-
-            private const uint kCountPerCall = 100;
-
-            private string iIdList;
-            private uint iCount;
-            private ServicePlaylist iServicePlaylist;
-        }
-
+        
         public ModelSourceMediaRendererDs(Source aSource)
         {
-            DidlLite didl = new DidlLite();
-            audioItem itemAudio = new audioItem();
-            itemAudio.Title = "Unknown";
-            didl.Add(itemAudio);
-            kUnknownPlaylistItem = new MrItem(0, null, didl);
-
+            
             iSource = aSource;
-            iMutex = new Mutex(false);
-            iIds = new List<uint>();
-            iCacheMetadata = new Dictionary<uint, MrItem>();
-            iCacheUsage = new List<uint>();
-            iEventIdArray = new ManualResetEvent(false);
             iInserting = false;
 
             try
@@ -145,7 +38,7 @@ namespace Linn.Topology
             iActionSetRepeat = iServicePlaylist.CreateAsyncActionSetRepeat();
             iActionSetShuffle = iServicePlaylist.CreateAsyncActionSetShuffle();
 
-            iMetadataCollector = new IdArrayMetadataCollector(iServicePlaylist);
+            iIdArray = new ModelIdArray(new PlaylistIdArray(iServicePlaylist));
         }
 
         public override resource BestSupportedResource(upnpObject aObject)
@@ -155,50 +48,32 @@ namespace Linn.Topology
 
         public override void Open()
         {
-            Assert.Check(iThreadIdArray == null);
-
+            iIdArray.EventIdArrayChanged += EventIdArrayChanged;
+            iIdArray.Open();
             iTrackIndex = -1;
             iTrackPlaylistItem = null;
             iInserting = false;
 
-            iAbortThread = false;
-            iRecollectMetadata = false;
-            iThreadIdArray = new Thread(ProcessEventIdArray);
-            iThreadIdArray.Name = "ProcessEventIdArray{" + iSource.ToString() + "}";
-            iThreadIdArray.IsBackground = true;
-            iThreadIdArray.Start();
-
             iServicePlaylist.EventStateTransportState += EventStateTransportStateResponse;
             iServicePlaylist.EventStateId += EventStateTrackIdResponse;
-            iServicePlaylist.EventStateIdArray += EventStateIdArrayResponse;
             iServicePlaylist.EventStateRepeat += EventStateRepeatResponse;
             iServicePlaylist.EventStateShuffle += EventStateShuffleResponse;
             iServicePlaylist.EventSubscriptionError += EventSubscriptionErrorHandler;
+            iServicePlaylist.EventStateIdArray += EventStateIdArrayResponse;
             iServicePlaylist.EventInitial += EventInitialResponsePlaylist;
         }
 
         public override void Close()
         {
+            iIdArray.EventIdArrayChanged -= EventIdArrayChanged;
+            iIdArray.Close();
             iServicePlaylist.EventStateTransportState -= EventStateTransportStateResponse;
             iServicePlaylist.EventStateId -= EventStateTrackIdResponse;
-            iServicePlaylist.EventStateIdArray -= EventStateIdArrayResponse;
             iServicePlaylist.EventStateRepeat -= EventStateRepeatResponse;
             iServicePlaylist.EventStateShuffle -= EventStateShuffleResponse;
             iServicePlaylist.EventSubscriptionError -= EventSubscriptionErrorHandler;
+            iServicePlaylist.EventStateIdArray -= EventStateIdArrayResponse;
             iServicePlaylist.EventInitial -= EventInitialResponsePlaylist;
-
-            try
-            {
-                Lock();
-                iAbortThread = true;
-                iEventIdArray.Set();
-            }
-            finally
-            {
-                Unlock();
-            }
-            iThreadIdArray.Join();
-            iThreadIdArray = null;
         }
 
         public override Source Source
@@ -214,6 +89,23 @@ namespace Linn.Topology
             get
             {
                 return (iSource.FullName);
+            }
+        }
+
+        private void EventIdArrayChanged(object sender, EventArgs e)
+        {
+            Trace.WriteLine(Trace.kTopology, "ModelSourceMediaRendererDs.EventIdArrayChanged");
+
+            UpdateTrack();
+
+            if (EventPlaylistChanged != null)
+            {
+                EventPlaylistChanged(this, EventArgs.Empty);
+            }
+
+            if (EventTrackChanged != null)
+            {
+                EventTrackChanged(this, EventArgs.Empty);
             }
         }
 
@@ -335,12 +227,12 @@ namespace Linn.Topology
 
         public override void Lock()
         {
-            iMutex.WaitOne();
+            iIdArray.Lock();
         }
 
         public override void Unlock()
         {
-            iMutex.ReleaseMutex();
+            iIdArray.Unlock();
         }
 
         public override uint PlayNow(DidlLite aDidlLite)
@@ -350,9 +242,9 @@ namespace Linn.Topology
             {
                 Lock();
 
-                if (iIds.Count > 0)
+                if (iIdArray.IdArray.Count > 0)
                 {
-                    id = iIds[iIds.Count - 1];
+                    id = iIdArray.IdArray[iIdArray.IdArray.Count - 1];
                 }
             }
             finally
@@ -371,7 +263,7 @@ namespace Linn.Topology
                 Lock();
                 if (iTrackIndex != -1)
                 {
-                    id = iIds[iTrackIndex];
+                    id = iIdArray.IdArray[iTrackIndex];
                 }
             }
             finally
@@ -388,9 +280,9 @@ namespace Linn.Topology
             try
             {
                 Lock();
-                if (iIds.Count > 0)
+                if (iIdArray.IdArray.Count > 0)
                 {
-                    id = iIds[iIds.Count - 1];
+                    id = iIdArray.IdArray[iIdArray.IdArray.Count - 1];
                 }
             }
             finally
@@ -408,12 +300,7 @@ namespace Linn.Topology
             {
                 Lock();
 
-                uint id = iIds[(int)aIndex];
-
-                if (!iCacheMetadata.TryGetValue(id, out item))
-                {
-                    item = kUnknownPlaylistItem;
-                }
+                item = iIdArray.AtIndex(aIndex);
             }
             finally
             {
@@ -434,18 +321,18 @@ namespace Linn.Topology
                 {
                     Lock();
 
-                    int index = iIds.IndexOf(afterId);
-
-                    Unlock();
+                    int index = iIdArray.IdArray.IndexOf(afterId);
 
                     if (index > 0)
                     {
-                        afterId = iIds[index - 1];
+                        afterId = iIdArray.IdArray[index - 1];
                     }
                     else
                     {
                         afterId = 0;
                     }
+
+                    Unlock();
                 }
                 foreach (MrItem i in aPlaylistItems)
                 {
@@ -499,14 +386,13 @@ namespace Linn.Topology
                 {
                     iInserting = true;
 
-                    Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.PlaylistInsert: aInsertAfterId=" + aInsertAfterId + ", iPlaylistIds.Count=" + iIds.Count);
+                    Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.PlaylistInsert: aInsertAfterId=" + aInsertAfterId + ", iPlaylistIds.Count=" + iIdArray.IdArray.Count);
 
                     uint id = aInsertAfterId;
-                    uint startIndex = 0;
                     uint index = 0;
                     if (aInsertAfterId > 0)
                     {
-                        index = (uint)(iIds.IndexOf(aInsertAfterId) + 1);
+                        index = (uint)(iIdArray.IdArray.IndexOf(aInsertAfterId) + 1);
                     }
 
                     Unlock();
@@ -537,26 +423,8 @@ namespace Linn.Topology
                                     }
                                 }
 
-                                Lock();
-                                locked = true;
-
-                                if (startIndex + i <= iIds.Count)
-                                {
-                                    iIds.Insert((int)(startIndex + index), newId);
-                                }
-
-                                if (!iCacheMetadata.ContainsKey(newId))
-                                {
-                                    iCacheMetadata.Add(newId, new MrItem(newId, uri, didl));
-
-                                    RemoveStaleCacheItems();
-
-                                    iCacheUsage.Remove(newId);
-                                    iCacheUsage.Add(newId);
-                                }
-
-                                Unlock();
-                                locked = false;
+                                // cache the item to save re-downloading it
+                                iIdArray.AddToCache(newId, new MrItem(newId, uri, didl));
 
                                 id = newId;
                                 ++index;
@@ -609,7 +477,7 @@ namespace Linn.Topology
         {
             foreach (MrItem i in aPlaylistItems)
             {
-                if (i != kUnknownPlaylistItem)
+                if (i != PlaylistIdArray.kEmptyItem)
                 {
                     iActionDelete.DeleteIdBegin(i.Id);
                 }
@@ -636,12 +504,11 @@ namespace Linn.Topology
             return result;
         }
 
-        // You should use Lock() before calling this method
         public override uint PlaylistTrackCount
         {
             get
             {
-                return (uint)iIds.Count;
+                return (uint)iIdArray.IdArray.Count;
             }
         }
 
@@ -684,24 +551,14 @@ namespace Linn.Topology
             }
         }
 
-        private class FindTrackIndexPredicate
-        {
-            public FindTrackIndexPredicate(uint aTrackId)
-            {
-                iTrackId = aTrackId;
-            }
-
-            public bool FindTrackIndex(uint aId)
-            {
-                return aId == iTrackId;
-            }
-
-            private uint iTrackId;
-        }
-
         private void EventStateTrackIdResponse(object sender, EventArgs e)
         {
             UpdateTrack();
+        }
+
+        private void EventStateIdArrayResponse(object sender, EventArgs e)
+        {
+            iIdArray.SetIdArray(ByteArray.Unpack(iServicePlaylist.IdArray));
         }
 
         private void UpdateTrack()
@@ -713,16 +570,13 @@ namespace Linn.Topology
                 locked = true;
 
                 uint trackId = iServicePlaylist.Id;
-                iTrackIndex = iIds.FindIndex(new FindTrackIndexPredicate(trackId).FindTrackIndex);
-                MrItem item;
-                if (!iCacheMetadata.TryGetValue(trackId, out item))
-                {
-                    item = null;
-                }
+                iTrackIndex = iIdArray.Index(trackId);
+
+                MrItem item = iIdArray.AtIndex((uint)iTrackIndex);
 
                 if (iTrackPlaylistItem == null || item != iTrackPlaylistItem)
                 {
-                    Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.UpdateTrack: iTrackIndex=" + iTrackIndex + ", iPlaylistIds.Count=" + iIds.Count + ", trackId=" + trackId);
+                    Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.UpdateTrack: iTrackIndex=" + iTrackIndex + ", iPlaylistIds.Count=" + iIdArray.IdArray.Count + ", trackId=" + trackId);
                     iTrackPlaylistItem = item;
 
                     Unlock();
@@ -748,253 +602,6 @@ namespace Linn.Topology
             }
         }
 
-        private void EventStateIdArrayResponse(object sender, EventArgs e)
-        {
-            try
-            {
-                Lock();
-
-                iRecollectMetadata = true;
-                iEventIdArray.Set();
-            }
-            finally
-            {
-                Unlock();
-            }
-        }
-
-        private void ProcessEventIdArray()
-        {
-            while (!iAbortThread)
-            {
-                iEventIdArray.WaitOne();
-                bool locked = false;
-                try
-                {
-                    Lock();
-                    locked = true;
-
-                    iRecollectMetadata = false;
-
-                    Unlock();
-                    locked = false;
-
-                    if (!iAbortThread)
-                    {
-                        UpdateMetadata();
-                    }
-
-                    Lock();
-                    locked = true;
-
-                    if (!iRecollectMetadata)
-                    {
-                        iEventIdArray.Reset();
-                    }
-
-                    Unlock();
-                    locked = false;
-
-                    // signal track index update
-                    //EventStateTrackIdResponse(this, EventArgs.Empty);
-                }
-                catch (ServiceException e) // do nothing with exception, topology will clean this source up
-                {
-                    Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.ProcessEventIdArray: " + e.Message);
-                }
-                finally
-                {
-                    if (locked)
-                    {
-                        Unlock();
-                    }
-                }
-            }
-
-            Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.ProcessEventIdArray: Aborted");
-        }
-
-        private void UpdateMetadata()
-        {
-            byte[] idArray = iServicePlaylist.IdArray;
-
-            iMetadataCollector.ClearIds();
-
-            IList<MrItem> list;
-            List<uint> playlistIds = new List<uint>();
-            int j = 0;
-            // unpack id array into list of ids
-            for (int i = 0; i < idArray.Length; i += 4, ++j)
-            {
-                if (iRecollectMetadata || iAbortThread)
-                {
-                    return;
-                }
-
-                uint value = Linn.BigEndianConverter.BigEndianToUint32(idArray, i);
-
-                playlistIds.Add(value);
-
-                ItemById(value);
-
-                try
-                {
-                    list = iMetadataCollector.Process();
-                    if (list != null)
-                    {
-                        UpdateCache(list);
-                    }
-                }
-                catch (System.Net.WebException) { }
-
-                Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.UpdateMetadata: idArray[" + j + "]=" + value);
-            }
-
-            try
-            {
-                list = iMetadataCollector.Process(true);
-                if (list != null)
-                {
-                    UpdateCache(list);
-                }
-            }
-            catch (System.Net.WebException) { }
-
-            try
-            {
-                Lock();
-
-                iIds = playlistIds;
-                UpdateTrack();
-            }
-            finally
-            {
-                Unlock();
-            }
-
-            if (iRecollectMetadata || iAbortThread)
-            {
-                return;
-            }
-
-            if (EventPlaylistChanged != null)
-            {
-                EventPlaylistChanged(this, EventArgs.Empty);
-            }
-
-            if (EventTrackChanged != null)
-            {
-                EventTrackChanged(this, EventArgs.Empty);
-            }
-        }
-
-        private MrItem ItemById(uint aId)
-        {
-            try
-            {
-                Lock();
-
-                MrItem value;
-                if (iCacheMetadata.TryGetValue(aId, out value))
-                {
-                    Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.ItemById: Reading " + aId + " from cache");
-                    return value;
-                }
-                else
-                {
-                    iMetadataCollector.AddId(aId);
-                    return null;
-                }
-            }
-            finally
-            {
-                Unlock();
-            }
-
-            /*Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.ItemById: Reading " + aId + " from DS");
-
-            string uri;
-            string metadata;
-            iServicePlaylist.ReadSync(aId, out uri, out metadata);
-
-            try
-            {
-                value = new Pair<string, DidlLite>(uri, new DidlLite(metadata));
-            }
-            catch (XmlException e)
-            {
-                Console.WriteLine(e.Message);
-                DidlLite didl = new DidlLite();
-                
-                item item = new item();
-                item.Title = uri;
-                
-                didl.Add(item);
-
-                value = new Pair<string, DidlLite>(uri, didl);
-            }
-
-            Lock();
-
-            try
-            {
-                iCacheMetadata.Add(aId, value);
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message + ", aId=" + aId);
-            }
-
-            Unlock();
-
-            return value;*/
-        }
-
-        private void UpdateCache(IList<MrItem> aPlaylistItems)
-        {
-            foreach (MrItem item in aPlaylistItems)
-            {
-                try
-                {
-                    Lock();
-
-                    try
-                    {
-                        iCacheMetadata.Add(item.Id, item);
-                    }
-                    catch (ArgumentException e)
-                    {
-                        Console.WriteLine(e.Message + ", entry.Id=" + item.Id);
-                    }
-
-                    RemoveStaleCacheItems();
-
-                    // refresh metadata usage
-                    iCacheUsage.Remove(item.Id);
-                    iCacheUsage.Add(item.Id);
-                }
-                finally
-                {
-                    Unlock();
-                }
-            }
-        }
-        private void RemoveStaleCacheItems()
-        {
-            // remove stale items from cache
-            if (iCacheMetadata.Count > kMaxCacheSize)
-            {
-                uint idToRemove = iCacheUsage[0];
-                iCacheMetadata.Remove(idToRemove);
-                iCacheUsage.RemoveAt(0);
-
-                Trace.WriteLine(Trace.kMediaRenderer, "ModelSourceMediaRendererDs.RemoveStaleCacheItems: Removed id " + idToRemove);
-            }
-
-            Assert.Check(iCacheUsage.Count <= kMaxCacheSize);
-            Assert.Check(iCacheMetadata.Count <= kMaxCacheSize);
-        }
-
         private void EventStateRepeatResponse(object sender, EventArgs e)
         {
             if (EventRepeatChanged != null)
@@ -1016,7 +623,6 @@ namespace Linn.Topology
             OnEventSubscriptionError();
         }
 
-        private readonly MrItem kUnknownPlaylistItem;
         private const uint kMaxCacheSize = 1000;
 
         private Source iSource;
@@ -1039,17 +645,99 @@ namespace Linn.Topology
         private ServicePlaylist.AsyncActionSeekIndex iActionSeekIndex;
 
         private bool iInserting;
+        private ModelIdArray iIdArray;
+    }
 
-        private Mutex iMutex;
-        private bool iAbortThread;
-        private bool iRecollectMetadata;
-        private Thread iThreadIdArray;
-        private ManualResetEvent iEventIdArray;
+    public class PlaylistIdArray : IIdArray
+    {
+        public PlaylistIdArray(ServicePlaylist aServicePlaylist)
+        {
+            iServicePlaylist = aServicePlaylist;
+            iServicePlaylist.EventStateIdArray += EventStateIdArrayResponse;
+        }
 
-        private IdArrayMetadataCollector iMetadataCollector;
-        private List<uint> iIds;
-        private Dictionary<uint, MrItem> iCacheMetadata;
-        private List<uint> iCacheUsage;
+        public string Read(uint aId)
+        {
+            return ReadList(aId.ToString());
+        }
+
+        public string ReadList(string aIdList)
+        {
+            return iServicePlaylist.ReadListSync(aIdList);
+        }
+
+        public MrItem Default
+        {
+            get
+            {
+                return kEmptyItem;
+            }
+        }
+
+        public IList<MrItem> ParseMetadataXml(string aXml)
+        {
+            List<MrItem> list = new List<MrItem>();
+
+            if (aXml != null)
+            {
+                try
+                {
+                    XmlDocument document = new XmlDocument();
+                    document.LoadXml(aXml);
+
+                    foreach (XmlNode n in document.SelectNodes("/TrackList/Entry"))
+                    {
+                        uint id = uint.Parse(n["Id"].InnerText);
+                        string uri = n["Uri"].InnerText;
+                        string metadata = n["Metadata"].InnerText;
+                        DidlLite didl = null;
+                        try
+                        {
+                            didl = new DidlLite(metadata);
+                            if (didl.Count == 0)
+                            {
+                                UserLog.WriteLine(string.Format("Empty DidlLite created from metadata '{0}'", metadata));
+                                item item = new item();
+                                item.Title = uri;
+
+                                didl.Add(item);
+                            }
+                        }
+                        catch (XmlException)
+                        {
+                            didl = new DidlLite();
+
+                            item item = new item();
+                            item.Title = uri;
+
+                            didl.Add(item);
+                        }
+                        list.Add(new MrItem(id, uri, didl));
+                    }
+                }
+                catch (XmlException e)
+                {
+                    Trace.WriteLine(Trace.kTopology, "IdArrayMetadataCollector.ParseMetadataXml: " + e.Message);
+                }
+                catch (FormatException) { }
+            }
+
+            return list;
+        }
+
+        public event EventHandler<EventArgs> EventIdArray;
+
+        private void EventStateIdArrayResponse(object sender, EventArgs e)
+        {
+            if (EventIdArray != null)
+            {
+                EventIdArray(this, EventArgs.Empty);
+            }
+        }
+
+        public static readonly MrItem kEmptyItem = new MrItem(0, null, new DidlLite("<DidlLite xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\" xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\"><item><dc:title>Empty</dc:title><upnp:class>object.item.audioItem</upnp:class></item></DidlLite>"));
+
+        private ServicePlaylist iServicePlaylist;
     }
 
 } // Linn.Topology

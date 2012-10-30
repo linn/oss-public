@@ -557,27 +557,7 @@ namespace Linn.ProductSupport
                 aUrl = updateInfo.Url;
             }
 
-            UpdateCheck.VariantInfo variantInfo = null;
-            UpdateCheck.VariantInfo variantInfoTemp = null;
-            foreach (string board in aBoardNumber) {
-                if (iVariantInfo.TryGetValue(board, out variantInfoTemp)) {
-                    // can't just break when we find the first match as this wouldn't work for Renew DS (it would match as a Klimax DS first)
-                    variantInfo = iVariantInfo[board];
-                }
-            }
-
-            if (variantInfo != null) {
-                if (variantInfo.BasePcas != null) {
-                    foreach (string board in aBoardNumber) {
-                        if (board == variantInfo.BasePcas) {
-                            aVariant = variantInfo.Name;
-                        }
-                    }
-                }
-                else {
-                    aVariant = variantInfo.Name;
-                }
-            }
+            aVariant = GetDeviceVariant(aBoardNumber);
 
             if (aModel != null) {
                 XmlDocument document = new XmlDocument();
@@ -597,6 +577,46 @@ namespace Linn.ProductSupport
                 aReleaseNotesHtml += "</body></html>";
                 aReleaseNotesHtml = aReleaseNotesHtml.Replace("<br><br>", "<br>");
             }
+        }
+
+        private string GetDeviceVariant(string[] aBoardNumber)
+        {
+            VariantInfo result = null;
+            string variantName = string.Empty;
+
+            foreach (VariantInfo i in iVariantInfo)
+            {
+                foreach (string s in aBoardNumber)
+                {
+                    if (i.Pcas == s)
+                    {
+                        // can't just break when we find the first match as this wouldn't work for Renew products (it would match the base product first)
+                        result = i;
+                    }
+                }
+
+                if (result != null)
+                {
+                    if(string.IsNullOrEmpty(result.BasePcas))
+                    {
+                        // Pcas match found, can't exit here as it may be a Renew
+                        variantName = result.Name;
+                    }
+                    else
+                    {
+                        foreach (string s in aBoardNumber)
+                        {
+                            if (i.BasePcas == s)
+                            {
+                                // Pcas match found and BasePcas match found = gauranteed to be a Renew product (so exit here)
+                                return result.Name;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return variantName;
         }
 
         internal class UpdateInfo
@@ -725,12 +745,7 @@ namespace Linn.ProductSupport
                     }
                     string name = n["linn:name"].InnerText;
                     VariantInfo variantInfo = new VariantInfo(pcas, basepcas, name);
-                    if (iVariantInfo.ContainsKey(pcas)) {
-                        iVariantInfo[pcas] = variantInfo;
-                    }
-                    else {
-                        iVariantInfo.Add(pcas, variantInfo);
-                    }
+                    iVariantInfo.Add(variantInfo);
                 }
 
                 // get release notes
@@ -793,7 +808,7 @@ namespace Linn.ProductSupport
 
         private SortedList<string, UpdateInfo> iUpdateInfo = new SortedList<string, UpdateInfo>(); // key = model
         private SortedList<string, UpdateInfo> iUpdateInfoProxy = new SortedList<string, UpdateInfo>(); // key = model
-        private SortedList<string, VariantInfo> iVariantInfo = new SortedList<string, VariantInfo>(); // key = pcas number
+        private List<VariantInfo> iVariantInfo = new List<VariantInfo>(); // key = pcas number
         private string iReleaseNotesXml = null;
         private Mutex iMutex = new Mutex();
     }

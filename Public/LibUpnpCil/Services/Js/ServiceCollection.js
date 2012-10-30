@@ -7,15 +7,15 @@ ServiceCollection.kDefaultPollTimeSeconds = 5;
 
 ServiceCollection.prototype.Start = function(){
 	var thisObj = this;
-	this.iCallbackTimer = new PeriodicalExecuter(function() { thisObj.GetChanges(); } , this.iPollTimeSeconds);
+    this.iRunning = true;
+    if (!this.iCallbackTimer){
+        this.iCallbackTimer = setInterval(function() { if (thisObj.iRunning) { thisObj.GetChanges(); } } , this.iPollTimeSeconds * 1000);
+    }
 	this.GetChanges();
 }
 
 ServiceCollection.prototype.Stop = function(){
-	if (this.iCallbackTimer){
-		this.iCallbackTimer.stop();
-		this.iCallbackTimer = null;		
-	}
+    this.iRunning = false;
 }
 
 ServiceCollection.prototype.AddService = function(aService){

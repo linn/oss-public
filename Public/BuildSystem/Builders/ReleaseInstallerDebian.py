@@ -69,11 +69,12 @@ def ReleaseInstallerDebian(target, source, **kw):
     desktop = env.Command(product.lower() + ".desktop", launchfile, make_desktop)
     
     architecture = kw.get('ARCHITECTURE', 'all')
+    packagepath = os.path.join(architecture, 'DebianPackage')
     version = kw.get('VERSION', {})
     if (kw.get('TYPE', {}) == 'development' or kw.get('TYPE', {}) == 'nightly') and env.subst('$svn_rev') != "0":
         version = '0.%s.0' % env.subst('$svn_rev')
         
-    control = env.DpkgControl('DebianPackage/DEBIAN/control', sourceAll + script,
+    control = env.DpkgControl(os.path.join(packagepath, 'DEBIAN/control'), sourceAll + script,
                               MAINTAINER   = kw.get('MAINTAINER', {}),
                               ARCHITECTURE = architecture,
                               DEPENDENCIES = kw.get('DEPENDECIES', {}),
@@ -85,10 +86,13 @@ def ReleaseInstallerDebian(target, source, **kw):
     release = env.DpkgDeb(source, control)
     installed = env.Install(target, release)
 
-    f = env.Command(os.path.join('DebianPackage/usr/bin', product), script, [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0755)])
+    f = env.Command(os.path.join(os.path.join(packagepath, 'usr/bin'), product), script, [Copy('$TARGET', '$SOURCE'), Chmod('$TARGET', 0755)])
     env.Depends(control, f)
     
-    f = env.Command(os.path.join('DebianPackage/usr/share/applications', desktop[0].name), desktop, Copy('$TARGET', '$SOURCE'))
+    f = env.Command(os.path.join(os.path.join(packagepath, 'usr/share/applications'), desktop[0].name), desktop, Copy('$TARGET', '$SOURCE'))
+    env.Depends(control, f)
+    
+    f = env.Command(os.path.join(packagepath, 'usr/share/doc/' + product + '/copyright'), kw.get('COPYRIGHT', '$variant_dir/share/Linn/Core/copyright'), Copy('$TARGET', '$SOURCE'))
     env.Depends(control, f)
     
     def make_menu(target, source, env):
@@ -96,19 +100,19 @@ def ReleaseInstallerDebian(target, source, **kw):
         f.write(MENU_TEMPLATE % (product.lower(), source[0].name, os.path.split(kw.get('ICON', ''))[1], product))
         f.close()
         
-    menu = env.Command(os.path.join('DebianPackage/usr/share/menu', product.lower()), f, make_menu)
+    menu = env.Command(os.path.join(os.path.join(packagepath, 'usr/share/menu'), product.lower()), f, make_menu)
     env.Depends(control, menu)
     
     for (dest, sourceForDest) in files.items() + dirs.items():
         for src in sourceForDest:
             # Copy from the the source tree.
-            f = env.Command(os.path.join(os.path.join('DebianPackage', dest), src.name), src, Copy('$TARGET', '$SOURCE'))
+            f = env.Command(os.path.join(os.path.join(packagepath, dest), src.name), src, Copy('$TARGET', '$SOURCE'))
             # The .deb package will depend on this file
             env.Depends(release, f)
             # The control file also depends on each source because we'd like
             # to know the total installed size of the package
             env.Depends(control, f)
-        f = env.Install('DebianPackage/usr/share/pixmaps', kw.get('ICON', ''))
+        f = env.Install(os.path.join(packagepath, 'usr/share/pixmaps'), kw.get('ICON', ''))
         env.Depends(control, f)
     
     env.Alias(source, installed)

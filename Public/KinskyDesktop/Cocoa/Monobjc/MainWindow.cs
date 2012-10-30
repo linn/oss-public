@@ -70,7 +70,11 @@ namespace KinskyDesktop
             Window.Delegate = this;
 
             TopViewTrack.ImageViewArtwork.EventClick += ButtonNowPlayingEnterClicked;
-            WindowNowPlaying.ImageArtwork.EventClick += ButtonNowPlayingExitClicked;
+
+            WindowBorderless nowPlaying = WindowNowPlaying.Window as WindowBorderless;
+            nowPlaying.EventMouseDown += WindowNowPlayingMouseDown;
+            nowPlaying.EventMouseDragged += WindowNowPlayingMouseDragged;
+            nowPlaying.EventMouseUp += WindowNowPlayingMouseUp;
 
             // create animations
             iAnimKompactMode = NSViewAnimationHelper.Create();
@@ -95,8 +99,12 @@ namespace KinskyDesktop
             iModel.EventSavePlaylist -= SavePlaylistHandler;
             iModel.EventUpdateFound -= AutoUpdateFound;
 
+            WindowBorderless nowPlaying = WindowNowPlaying.Window as WindowBorderless;
+            nowPlaying.EventMouseDown -= WindowNowPlayingMouseDown;
+            nowPlaying.EventMouseDragged -= WindowNowPlayingMouseDragged;
+            nowPlaying.EventMouseUp -= WindowNowPlayingMouseUp;
+            
             TopViewTrack.ImageViewArtwork.EventClick -= ButtonNowPlayingEnterClicked;
-            WindowNowPlaying.ImageArtwork.EventClick -= ButtonNowPlayingExitClicked;
 
             iController = null;
 
@@ -213,6 +221,7 @@ namespace KinskyDesktop
             set
             {
                 Window.SetFrameDisplay(value.ToNSRect(), true);
+                WindowNowPlaying.UpdateFrame(value.ToNSRect());
             }
         }
 
@@ -330,11 +339,29 @@ namespace KinskyDesktop
             iController.ButtonNowPlayingEnterClicked();
         }
 
-        private void ButtonNowPlayingExitClicked(NSEvent aEvent)
+        private void WindowNowPlayingMouseDown(NSEvent aEvent)
         {
-            iController.ButtonNowPlayingExitClicked();
-        }
+            iWindowNowPlayingDragged = false;
 
+            iController.MouseDown(new Point(NSEvent.MouseLocation));
+        }
+        
+        private void WindowNowPlayingMouseDragged(NSEvent aEvent)
+        {
+            iWindowNowPlayingDragged = true;
+
+            iController.MouseDragged(new Point(NSEvent.MouseLocation));
+        }
+        
+        private void WindowNowPlayingMouseUp(NSEvent aEvent)
+        {
+            if (!iWindowNowPlayingDragged)
+            {
+                iController.ButtonNowPlayingExitClicked();
+            }
+
+            iController.MouseUp(new Point(NSEvent.MouseLocation));
+        }        
 
         [ObjectiveCField]
         public WindowMain Window;
@@ -399,6 +426,7 @@ namespace KinskyDesktop
         private ModelMain iModel;
         private ControllerMainWindow iController;
         private NSViewAnimation iAnimKompactMode;
+        private bool iWindowNowPlayingDragged;
     }
 
 
@@ -1425,7 +1453,7 @@ namespace KinskyDesktop
             }
             else if (identifier.Compare(kKeyTitle) == NSComparisonResult.NSOrderedSame)
             {
-                return NSString.StringWithUTF8String(DidlLiteAdapter.Title(iModel.Senders[aRowIndex].Metadata[0]));
+                return NSString.StringWithUTF8String(iModel.Senders[aRowIndex].FullName);
             }
             else
             {
@@ -4219,6 +4247,11 @@ namespace KinskyDesktop
             Window.Animator.SetFrameDisplay(finalRect, true);
 
             NSAnimationContext.EndGrouping();
+        }
+
+        public void UpdateFrame(NSRect aRect)
+        {
+            Window.SetFrameDisplay(aRect.InsetRect(5, 5), true);
         }
 
         public void Hide()

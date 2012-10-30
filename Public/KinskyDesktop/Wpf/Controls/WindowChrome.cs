@@ -162,7 +162,7 @@ namespace KinskyDesktopWpf
 
         private EResizeMode GetResizeMode(Point aPoint, Window aWindow)
         {
-            if (aWindow.ResizeMode == ResizeMode.NoResize)
+            if (aWindow.ResizeMode == ResizeMode.NoResize || aWindow.WindowState == WindowState.Maximized)
             {
                 return EResizeMode.NONE;
             }

@@ -112,6 +112,7 @@ namespace Linn.Songcast
         private void StatusItemClicked(NSObject aSender)
         {
             if (iMainWindow.Window.IsVisible) {
+                iXappController.MainPage.TrackPageVisibilityChange(false);
                 // the window is already visible - another click hides it
                 iMainWindow.Window.OrderOut(this);
                 return;
@@ -152,10 +153,16 @@ namespace Linn.Songcast
             // show the window
             iMainWindow.ShowWindow(this);
             iMainWindow.Window.MakeKeyAndOrderFront(this);
+            iXappController.MainPage.TrackPageVisibilityChange(true);
         }
         
         private void MainWindowDidResignKey(object sender, EventArgs e)
         {
+            // ensure iXappController has properly loaded in case window is resigned immediately
+            if (iXappController != null && iXappController.MainPage != null)
+            {
+                iXappController.MainPage.TrackPageVisibilityChange(false);
+            }
             iMainWindow.Window.OrderOut(this);
         }
         

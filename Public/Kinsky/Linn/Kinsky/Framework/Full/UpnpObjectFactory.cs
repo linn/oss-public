@@ -9,6 +9,15 @@ namespace Linn.Kinsky
 {
     public class UpnpObjectFactory
     {
+        static UpnpObjectFactory()
+        {
+            // register aiff file extension for aiff files as taglib expects aif (ticket #1008)
+            if (!TagLib.FileTypes.AvailableTypes.ContainsKey("taglib/aiff"))
+            {
+                TagLib.FileTypes.AvailableTypes.Add("taglib/aiff", typeof(TagLib.Aiff.File));
+            }
+        }
+
         public static storageFolder Create(DirectoryInfo aInfo, string aArtworkUri)
         {
             storageFolder folder = new storageFolderLocal(aInfo);
@@ -157,7 +166,7 @@ namespace Linn.Kinsky
 
                         resource.ProtocolInfo = string.Format("http-get:*:{0}:*", f.MimeType.Replace("taglib", "audio"));
                         resource.ProtocolInfo = resource.ProtocolInfo.Replace("flac", "x-flac");
-                        resource.ProtocolInfo = resource.ProtocolInfo.Replace("aif", "aiff");
+                        resource.ProtocolInfo = resource.ProtocolInfo.Replace("aif:", "aiff:");
                         resource.ProtocolInfo = resource.ProtocolInfo.Replace("wma", "x-ms-wma");
                         resource.ProtocolInfo = resource.ProtocolInfo.Replace("asf", "x-ms-asf");
                         resource.ProtocolInfo = resource.ProtocolInfo.Replace("mp3", "mpeg");

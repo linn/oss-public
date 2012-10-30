@@ -1,0 +1,25 @@
+<Release rel="Konfig" relNum="4.1.1" compat="Davaar.1">
+    <Macros
+        REPOS_OSS="http://oss.linn.co.uk/repos/Main"
+        OPTS_OSS="hardware=${TARGET} variant=release dflVarDirs"
+    />
+    <!-- all source code required to build this component;
+         ordered from top-level to most fundamental low-level dependency -->
+    <Source build="1" dir="Konfig" url="${REPOS_OSS}/Konfig" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Widgets" url="${REPOS_OSS}/Widgets" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="ProductSupport" url="${REPOS_OSS}/ProductSupport" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Kinsky" url="${REPOS_OSS}/Kinsky" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Topology" url="${REPOS_OSS}/LibUpnpCil/Topology" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/DidlLite" url="${REPOS_OSS}/LibUpnpCil/DidlLite" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Services" url="${REPOS_OSS}/LibUpnpCil/Services" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Control" url="${REPOS_OSS}/LibUpnpCil/Control" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/SysLib" url="${REPOS_OSS}/LibUpnpCil/SysLib" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Toolkit" url="${REPOS_OSS}/LibUpnpCil/Toolkit" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="LibUpnpCil/Core" url="${REPOS_OSS}/LibUpnpCil/Core" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Kodegen" url="${REPOS_OSS}/Kodegen" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Layouts" url="${REPOS_OSS}/Layouts" rev="XXX" opts="Kinsky ${OPTS_OSS}"/>
+    <Source build="1" dir="Xml" url="${REPOS_OSS}/Xml" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="External" url="${REPOS_OSS}/External" rev="XXX" opts="${OPTS_OSS}"/>
+    <Source build="1" dir="Docs" url="${REPOS_OSS}/Docs" rev="XXX" opts="${OPTS_OSS}"/>  
+    <Source build="0" dir="BuildSystem" url="${REPOS_OSS}/BuildSystem" rev="XXX"/>
+</Release>

@@ -1,0 +1,51 @@
+<div id="body" class="img-wrapper background">
+    <script src="Widgets/Common/Common.js" type="text/javascript"></script>
+    <script src="javascript/badger.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        linnSetUnselectable($('#body'));
+        
+        var kOnlineHelp = 'http://docs.linn.co.uk/wiki/index.php/Konfig_Manual';
+    </script>
+    
+    <script type="text/javascript">
+        function onUpdateBadges(json) {
+            if(json.NumSoftwareUpdates > 0) {
+                $('#tabSoftwareUpdate').badger(json.NumSoftwareUpdates.toString());
+            } else {
+                $('#tabSoftwareUpdate').badger('');
+            }
+            
+            if(json.NumDiagnostics > 0) {
+                $('#tabDiagnostics').badger(json.NumDiagnostics.toString());
+            } else {
+                $('#tabDiagnostics').badger('');
+            }
+        }
+        
+        function onNavigationItemClicked(page) {
+            xappSend('Open', page);
+        }
+        
+        function onActivated(json) {
+            $('#title').text(json.Title);
+            $('#version').text(json.Version);
+            $('#copyright').text(json.Copyright);
+            $('#company').text(json.Company);
+        }
+    </script>
+
+    <page-frag frag="fragments/header.frag" />
+    
+    <div class="bodyContainer">
+        <div id="aboutContainer">
+            <img id="logo" src="../images/logo.png" />
+            <div id="title" class="text text-padding"></div>
+            <div id="version" class="text text-padding"></div>
+            <div id="copyright" class="text text-padding"></div>
+            <div id="company" class="text text-padding"></div>
+            <br>
+            <div><a target="_self" onclick="trackEvent('OpenBrowser', kOnlineHelp);xappSend('OpenBrowser', kOnlineHelp);">Online Help</a></div>
+        </div>
+    </div>
+</div>

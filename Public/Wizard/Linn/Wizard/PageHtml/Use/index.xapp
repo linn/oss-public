@@ -1,151 +1,66 @@
 <div id="all">
 <!-- Use -->
-<!-- >>>>>>> THIS SECTION IS UNIFORM FOR ALL PAGES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+  <page-frag frag="PageFragments/top.frag"/>
+  <script src="use.js" type="text/javascript"></script>
 
-  <script src="../Linn.js" type="text/javascript"></script>
+  <div id="pagesection">
+    <page-frag frag="PageFragments/header.frag"/>
+    <page-frag frag="PageFragments/breadcrumb.frag"/>
 
-  <div id="Background" class="background" style="background-image: url(../Resources/Images/Miscellaneous/UseBackground.png)"></div>
-  <div id="navigation_background"></div>
-
-  <div id="pagesection"> 
-    <div id="header" class="section">
-      <div id="navigation_bar">
-        <ul>
-          <li class="navigation_tab_initial_use" id="NavTab1" type="button" onclick="gotoPage('Main');"></li>
-          <li class="navigation_tab" id="NavTab2" type="button" style="visibility:hidden"></li>
-        </ul>
-      </div>
-      <div>
-        <a target="_blank" href="http://www.linn.co.uk/">
-          <img id="LinnWebLink" src="../Resources/Images/Miscellaneous/Logo.png"/>
-        </a>    
-        <img id="just_listen" src="../Resources/Images/Miscellaneous/JustListen.png"/>
-      </div>
-    </div>
-    
-<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
-
-    
-    
-<!-- >>>>>>> THIS SECTION IS UNIFORM FOR MOST PAGES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
-    
     <div id="main" class="section">
-      <div id="ProgressHeader">
-        <div id="progress_bar">
-          <ul>
-            <li class="progress_step" id="ProgressBar1"></li>
-            <div class="progress_separator" id="ProgressSeparator1"></div>
-            <li class="progress_step" id="ProgressBar2"></li>
-            <div class="progress_separator" id="ProgressSeparator2"></div>
-            <li class="progress_step" id="ProgressBar3"></li>
-            <div class="progress_separator" id="ProgressSeparator3"></div>
-            <li class="progress_step" id="ProgressBar4"></li>
-            <div class="progress_separator" id="ProgressSeparator4"></div>
-            <li class="progress_step" id="ProgressBar5"></li>
-            <div class="progress_separator" id="ProgressSeparator5"></div>
-            <li class="progress_step" id="ProgressBar6"></li>
-            <div class="progress_separator" id="ProgressSeparator6"></div>
-            <li class="progress_step" id="ProgressBar7"></li>
-            <div class="progress_separator" id="ProgressSeparator7"></div>
-            <li class="progress_step" id="ProgressBar8"></li>
-            <div class="progress_separator" id="ProgressSeparator8"></div>
-          </ul>
-        </div>      
-        <button class="dark_button" id="TroubleshootButton" style="visibility:hidden" onclick="genericClick(this);" ></button>
-      </div>
-      <div class="horiz_separator"></div>
- 
+        <div id="MainContent">
 
-      
-<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
-
-
-
-
-      <div id ="Main">
-        <div id ="MainContent">
-          <img class="mainimage" id="MainImage" style="visibility:hidden"></img>
           <div id="title_bar">
             <h3 class="title" id="Title"></h3>
           </div>
-          
-          <div class="speech_bubble" id="SpeechBubbleLarge" style="visibility:hidden">
-            <div class="speech_bubble_box_large">
-              <h4 class="speech_bubble_header" id="SpeechBubbleHeaderL"></h4>
-                <p class="speech_bubble_item" id="SpeechBubbleL1" style="visibility:hidden" ></p>
-                <button class="dark_button" id="LaunchSupportSiteButton" style="visibility:hidden" onclick="linkClicked('http://www.linn.co.uk/support/using-your-system');" ></button>
-            </div>
-            <div class="speech_bubble_tail_large"></div>
+          <p class="maintext" id="MainTextTL"></p>
+
+          <div class="summary-item" id="SummarySongcast">
+            <div class="cross-tick" id="SummarySongcastCrossTick"/>
+            <h4 class="summary-title" id="SummarySongcastTitle"/>
+            <div class="summary-text yes" id="SummarySongcastTextY"/>
+            <div class="summary-text no" id="SummarySongcastTextN"/>
+            <div class="summary-button-left" id="SummarySongcastButton"/>
           </div>
 
-          <div id="Support">
-            <p class="maintext" id="SupportTextMainTitle"></p>
-            <div id="SupportHorizontalLine"></div>
-            <div class="SupportEntryL">
-              <p class="SupportTextTitle" id="SupportTextEntry1Title" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/play-music-wirelessly');"></p>
-              <p class="SupportText" id="SupportTextEntry1"></p>
-              <div class="SupportLinkContainer" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/play-music-wirelessly');">
-                <a class="SupportLink" id="SupportLink1" target="_self" href="#" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/play-music-wirelessly');"></a>
-              </div>
-            </div>
-            <div class="SupportEntryL">
-              <p class="SupportTextTitle" id="SupportTextEntry2Title" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/connect-other-hardware-to-your-system');"></p>
-              <p class="SupportText" id="SupportTextEntry2"></p>
-              <div class="SupportLinkContainer" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/connect-other-hardware-to-your-system');">
-                <a class="SupportLink" id="SupportLink2" target="_self" href="#" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/connect-other-hardware-to-your-system');"></a>
-              </div>
-            </div>
-            <div class="SupportEntryL">
-              <p class="SupportTextTitle" id="SupportTextEntry3Title" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/music-in-any-room');"></p>
-              <p class="SupportText" id="SupportTextEntry3"></p>
-              <div class="SupportLinkContainer" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/music-in-any-room');">
-                <a class="SupportLink" id="SupportLink3" target="_self" href="#" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/music-in-any-room');"></a>
-              </div>
-            </div>
-            <div class="SupportEntryR">
-              <p class="SupportTextTitle" id="SupportTextEntry4Title" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/stream-online-music-and-movies');"></p>
-              <p class="SupportText" id="SupportTextEntry4"></p>
-              <div class="SupportLinkContainer" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/stream-online-music-and-movies');">
-                <a class="SupportLink" id="SupportLink4" target="_self" href="#" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/stream-online-music-and-movies');"></a>
-              </div>
-            </div>
-            <div class="SupportEntryR">
-              <p class="SupportTextTitle" id="SupportTextEntry5Title" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/get-away-from-the-computer');"></p>
-              <p class="SupportText" id="SupportTextEntry5"></p>
-              <div class="SupportLinkContainer" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/get-away-from-the-computer');">
-                <a class="SupportLink" id="SupportLink5" target="_self" href="#" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/get-away-from-the-computer');"></a>
-              </div>
-            </div>
-            <div class="SupportEntryR">
-              <p class="SupportTextTitle" id="SupportTextEntry6Title" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/higher-quality-music');"></p>
-              <p class="SupportText" id="SupportTextEntry6"></p>
-              <div class="SupportLinkContainer" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/higher-quality-music');">
-                <a class="SupportLink" id="SupportLink6" target="_self" href="#" onClick="linkClicked('http://www.linn.co.uk/support/using-your-system/higher-quality-music');"></a>
-              </div>
-            </div>
+          <div class="summary-item" id="SummarySources">
+            <div class="cross-tick" id="SummarySourcesCrossTick"/>
+            <h4 class="summary-title" id="SummarySourcesTitle"/>
+            <div class="summary-text yes" id="SummarySourcesTextY"/>
+            <div class="summary-text no" id="SummarySourcesTextN"/>
+            <div class="summary-button-left" id="SummarySourcesButton"/>
           </div>
-          
+
+          <div class="summary-item" id="SummaryPlaylist">
+            <div class="cross-tick" id="SummaryPlaylistCrossTick"/>
+            <h4 class="summary-title" id="SummaryPlaylistTitle"/>
+            <div class="summary-text yes" id="SummaryPlaylistTextY"/>
+            <div class="summary-text no" id="SummaryPlaylistTextN"/>
+            <div class="summary-button-left" id="SummaryPlaylistButton"/>
+          </div>
+
+          <div id="SummarySpeakers"/>
+
+          <div class="speech_bubble" id="SummarySpeechBubble">
+            <div class="speech_bubble_box">
+              <h4 class="speech_bubble_header" id="SummarySpeechBubbleHeader"></h4>
+              <div id="SummarySpeechBubbleText"></div>
+              <div class="summary-button-right" id="SummarySpeechBubbleButton"/>
+            </div>
+            <div class="speech_bubble_tail"></div>
+          </div>
+
         </div>
-      </div>
-
-
-
-
-<!-- >>>>>>> THIS SECTION IS UNIFORM FOR ALL PAGES EXCEPT MAIN >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
-
-      <div class="horiz_separator"></div>
     </div>
-  
+
+    <!-- This footer section is a copy of the footer.frag but has slight amendments for this page -->
     <div id="footer" class="section">
-      <button class="light_button" id="PreviousButton" style="visibility:hidden" onclick="action('PreviousPage');" ></button>
-      <button class="dark_button" id="FinishButton" style="visibility:hidden" onclick="action('CloseApplication');" ></button>
-      <img id="Rotator" style="visibility:hidden"/>        
+      <div class="horiz_separator"/>
+      <div id="footer-controls">
+        <button class="light_button" id="PreviousButton" style="visibility:hidden" onclick="action('PreviousPage');"/>
+        <button class="dark_button" id="FinishButton" style="visibility:hidden" onclick="action('CloseApplication');"/>
+      </div>
     </div>
+    <!-- end footer -->
   </div>
-
-<!-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  -->
-
-
-
-  
 </div>

@@ -34,7 +34,8 @@ namespace KinskyDesktopWpf
         private DropConverter iDropConverter;
         public event EventHandler<PlaylistSelectionEventArgs> PlaylistSelectionChanged;
         public event EventHandler<PlaylistSelectionEventArgs> EventPlaylistItemNavigationClick;
-        public event EventHandler<PlaylistDropEventArgs> PlaylistItemDropped;
+        public event EventHandler<PlaylistDropEventArgs> PlaylistItemsAdded;
+        public event EventHandler<PlaylistDropEventArgs> PlaylistItemsMoved;
         public event EventHandler<PlaylistDeleteEventArgs> PlaylistItemsDeleted;
         public event EventHandler<PlaylistMoveEventArgs> PlaylistMoveUp;
         public event EventHandler<PlaylistMoveEventArgs> PlaylistMoveDown;
@@ -84,12 +85,20 @@ namespace KinskyDesktopWpf
                 dropIndex = top ? 0 : (lstPlaylist.Items[lstPlaylist.Items.Count - 1] as PlaylistListItem).Position + 1;
             }
             MediaProviderDraggable draggable = iDropConverter.Convert(e.DragEventArgs.Data);
-            if (draggable != null && PlaylistItemDropped != null)
+            PlaylistDropEventArgs eventArgs = new PlaylistDropEventArgs();
+            eventArgs.Data = draggable;
+            eventArgs.DropIndex = dropIndex;
+
+            if (draggable != null && draggable.DragSource == this && PlaylistItemsMoved != null)
             {
-                PlaylistDropEventArgs eventArgs = new PlaylistDropEventArgs();
-                eventArgs.Data = draggable;
-                eventArgs.DropIndex = dropIndex;
-                PlaylistItemDropped(this, eventArgs);
+                PlaylistItemsMoved(this, eventArgs);
+            }
+            else
+            {
+                if (draggable != null && PlaylistItemsAdded != null)
+                {
+                    PlaylistItemsAdded(this, eventArgs);
+                }
             }
         }
 
@@ -376,8 +385,7 @@ namespace KinskyDesktopWpf
                 Image img = new Image();
                 img.Height = DragHelper.kDefaultVisualHeight;
                 img.SetValue(Image.SourceProperty, StaticImages.ImageSourceIconLoading);
-                App app = (Application.Current as App);
-                app.ImageCache.Load(app.IconResolver.Resolve(dragItem.WrappedItem), (s) =>
+                KinskyDesktop.Instance.ImageCache.Load(KinskyDesktop.Instance.IconResolver.Resolve(dragItem.WrappedItem), (s) =>
                             {
                                 this.Dispatcher.BeginInvoke((Action)(() =>
                                 {

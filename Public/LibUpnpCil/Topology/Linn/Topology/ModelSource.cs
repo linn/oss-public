@@ -91,6 +91,7 @@ namespace Linn.Topology
             iMimeTypeAliases.Add("audio/mp4", new List<string>(new string[] { "audio/x-m4a" }));
             iMimeTypeAliases.Add("audio/x-flac", new List<string>(new string[] { "audio/flac" }));
             iMimeTypeAliases.Add("audio/flac", new List<string>(new string[] { "audio/x-flac" }));
+            iMimeTypeAliases.Add("audio/x-m4a-lossless", new List<string>(new string[] { "audio/mp4" }));
         }
 
         public abstract void Open();

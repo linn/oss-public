@@ -26,7 +26,7 @@ function linnRockerInit()
 
         rocker.on('mousedown', function(e)
         {
-            root = $('#' + this['id']);
+            var root = $('#' + this['id']);
             if (!root.hasClass('disabled'))
             {
                 currentData = new linnRockerData(root);
@@ -114,11 +114,14 @@ function linnRockerSetProgress(rocker, value, maxValue)
     var lbar = $('#' + rocker.attr('id') + ' div.progressbar div.l-bar');
     var rbar = $('#' + rocker.attr('id') + ' div.progressbar div.r-bar');
 
-    var size = progressbar.css('height');
-    var halfsize = (parseInt(size, 10) / 2) + 'px';
+    var size = progressbar.height();
+    var halfsize = (size / 2) + 'px';
 
-    lbar.css({ 'clip': 'rect(0px, ' + halfsize + ', ' + size + ', 0px)' });
-    rbar.css({ 'clip': 'rect(0px, ' + size + ', ' + size + ', ' + halfsize + ')' });
+    // if we are not IE 7/8 we use images instead so no clipping is needed
+    if (typeof String.prototype.trim == 'function') {
+        lbar.css({ 'clip': 'rect(0px, ' + halfsize + ', ' + size + 'px, 0px)' });
+        rbar.css({ 'clip': 'rect(0px, ' + size + 'px, ' + size + 'px, ' + halfsize + ')' });
+    }
 
     var ratio = value / maxValue;
     var v = ratio * 360;
@@ -126,17 +129,32 @@ function linnRockerSetProgress(rocker, value, maxValue)
     if (v >= 0 && v <= 180)
     {
         var a = -1 * (180 - v);
-        progressbar.css({ 'clip': 'rect(0px, ' + halfsize + ', ' + size + ', 0px)' });
+        progressbar.css({ 'clip': 'rect(0px, ' + halfsize + ', ' + size + 'px, 0px)' });
         lbar.css({ '-webkit-transform': 'rotate(' + a + 'deg)' });
         lbar.css({ '-moz-transform': 'rotate(' + a + 'deg)' });
         lbar.css({ '-o-transform': 'rotate(' + a + 'deg)' });
         lbar.css({ '-ms-transform': 'rotate(' + a + 'deg)' });
         lbar.css({ 'transform': 'rotate(' + a + 'deg)' });
-        rbar.css({ 'display': 'none'});
+        rbar.css({ 'display': 'none' });
+
+        // if we are IE 7/8
+        if (typeof String.prototype.trim != 'function') {
+            progressbar.css({ 'clip': 'rect(0px ' + halfsize + ' ' + size + 'px 0px)' });
+
+            var r = a * (Math.PI / 180);
+            var costheta = Math.cos(r);
+            var sintheta = Math.sin(r);
+            lbar.css({ 'filter': 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', sizingMethod=\'auto expand\')' });
+            lbar.css({ '-ms-filter': 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', sizingMethod=\'auto expand\')' });
+            var top = (size - lbar.height()) / 2;
+            var left = (size - lbar.width()) / 2;
+            lbar.css({ 'top': top + 'px' });
+            lbar.css({ 'left': left + 'px' });
+        }
     }
     else if(v > 180 && v <= 360)
     {
-        progressbar.css({ 'clip': 'rect(0px, ' + size + ', ' + size + ', 0px)' });
+        progressbar.css({ 'clip': 'rect(0px, ' + size + 'px, ' + size + 'px, 0px)' });
         lbar.css({ '-webkit-transform': 'rotate(0deg)' });
         lbar.css({ '-moz-transform': 'rotate(0deg)' });
         lbar.css({ '-o-transform': 'rotate(0deg)' });
@@ -148,6 +166,28 @@ function linnRockerSetProgress(rocker, value, maxValue)
         rbar.css({ '-ms-transform': 'rotate(' + v + 'deg)' });
         rbar.css({ 'transform': 'rotate(' + v + 'deg)' });
         rbar.css({ 'display': 'block' });
+
+        // if we are IE 7/8
+        if (typeof String.prototype.trim != 'function') {
+            progressbar.css({ 'clip': 'rect(0px ' + size + 'px ' + size + 'px 0px)' });
+
+            lbar.css({ 'filter': 'progid:DXImageTransform.Microsoft.Matrix(M11=1, M12=0, M21=0, M22=1, sizingMethod=\'auto expand\')' });
+            lbar.css({ '-ms-filter': 'progid:DXImageTransform.Microsoft.Matrix(M11=1, M12=0, M21=0, M22=1, sizingMethod=\'auto expand\')' });
+            var top = (size - lbar.height()) / 2;
+            var left = (size - lbar.width()) / 2;
+            lbar.css({ 'top': top + 'px' });
+            lbar.css({ 'left': left + 'px' });
+
+            var r = v * (Math.PI / 180);
+            var costheta = Math.cos(r);
+            var sintheta = Math.sin(r);
+            rbar.css({ 'filter': 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', sizingMethod=\'auto expand\')' });
+            rbar.css({ '-ms-filter': 'progid:DXImageTransform.Microsoft.Matrix(M11=' + costheta + ', M12=' + -sintheta + ', M21=' + sintheta + ', M22=' + costheta + ', sizingMethod=\'auto expand\')' });
+            top = (size - rbar.height()) / 2;
+            left = (size - rbar.width()) / 2;
+            rbar.css({ 'top': top + 'px' });
+            rbar.css({ 'left': left + 'px' });
+        }
     }
 }
 
@@ -162,8 +202,10 @@ function linnRockerData(target)
     this.kAutoRepeatInterval = 0.1;
     
     this.target = target;
-    
+
     // define some metrics specific to this instance
+    this.width = this.target.width();
+    this.height = this.target.height();
     this.centreX = this.target.offset().left + (this.target.width() / 2);
     this.centreY = this.target.offset().top + (this.target.height() / 2);
     this.outerRadius2 = this.centreX - this.target.offset().left;

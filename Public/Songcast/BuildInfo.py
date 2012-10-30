@@ -1,4 +1,4 @@
 
-kBuildVersion = '4.2.7'
+kBuildVersion = '4.3.2'
 kBuildType = 'development'
 

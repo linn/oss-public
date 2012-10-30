@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{03DCC765-A689-4223-A98D-2386C915E301}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Linn.Konfig</RootNamespace>
+    <AssemblyName>Konfig</AssemblyName>
+    <BaseDirectory>..\..\Konfig</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <IntermediateOutputPath>..\..\build\IosSim\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\IosSim\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchProfiling>True</MtouchProfiling>
+    <MtouchLink>None</MtouchLink>
+    <MtouchArch>ARMv7</MtouchArch>
+    <CrashReportingApiKey />
+    <MtouchI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <IntermediateOutputPath>..\..\build\IosSim\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\IosSim\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <IntermediateOutputPath>..\..\build\Ios\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Ios\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>True</MtouchDebug>
+    <MtouchProfiling>True</MtouchProfiling>
+    <MtouchArch>ARMv7</MtouchArch>
+    <IpaPackageName />
+    <MtouchI18n />
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir}/OpenHome/Ios -lohNetCore -force_load ${ProjectDir}/OpenHome/Ios/libohNetCore.a"</MtouchExtraArgs>
+    <CrashReportingApiKey />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <IntermediateOutputPath>..\..\build\Ios\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Ios\release\bin\</OutputPath>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir}/OpenHome/Ios -lohNetCore -force_load ${ProjectDir}/OpenHome/Ios/libohNetCore.a"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <IntermediateOutputPath>..\..\build\Adhoc\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\Adhoc\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <BuildIpa>True</BuildIpa>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir}/OpenHome/Ios -lohNetCore -force_load ${ProjectDir}/OpenHome/Ios/libohNetCore.a"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchI18n />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <IntermediateOutputPath>..\..\build\AppStore\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\AppStore\release\bin\</OutputPath>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <MtouchExtraArgs>-cxx -gcc_flags "-L${ProjectDir}/OpenHome/Ios -lohNetCore -force_load ${ProjectDir}/OpenHome/Ios/libohNetCore.a"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchI18n />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="CpLinnCoUkDiagnostics1.net">
+      <HintPath>..\..\Konfig\OpenHome\Ios\CpLinnCoUkDiagnostics1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="CpAvOpenhomeOrgProduct1.net">
+      <HintPath>..\..\Konfig\OpenHome\Ios\CpAvOpenhomeOrgProduct1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="CpLinnCoUkVolkano1.net">
+      <HintPath>..\..\Konfig\OpenHome\Ios\CpLinnCoUkVolkano1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ohNet.net">
+      <HintPath>..\..\Konfig\OpenHome\Ios\ohNet.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXapp">
+      <HintPath>..\..\Konfig\OpenHome\Ios\ohXapp.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXappViewer">
+      <HintPath>..\..\Konfig\OpenHome\Ios\ohXappViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXen">
+      <HintPath>..\..\Konfig\OpenHome\Ios\ohXen.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\..\Konfig\Linn\Konfig\Ios\Info.plist">
+      <Link>Info.plist</Link>
+    </None>
+    <None Include="..\..\Konfig\OpenHome\Ios\libohNetCore.a">
+      <Link>libohNetCore.a</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\IconIpad.png">
+      <Link>Resources\IconIpad.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\IconIpad3.png">
+      <Link>Resources\IconIpad3.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\IconSpotlightIpad.png">
+      <Link>Resources\IconSpotlightIpad.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\IconSpotlightIpad3.png">
+      <Link>Resources\IconSpotlightIpad3.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\advanced\index.css">
+      <Link>presentation\advanced\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\advanced\index.xapp">
+      <Link>presentation\advanced\index.xapp</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Linn\" />
+    <Folder Include="Properties\" />
+    <Folder Include="presentation\" />
+    <Folder Include="..\..\Konfig\presentation\css\" />
+    <Folder Include="..\..\Konfig\presentation\fragments\" />
+    <Folder Include="..\..\Konfig\presentation\javascript\" />
+    <Folder Include="..\..\Konfig\presentation\Widgets\" />
+    <Folder Include="..\..\Konfig\Resources\" />
+    <Folder Include="..\..\Konfig\presentation\advanced\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceDiagnosticsList.cs">
+      <Link>Linn\Konfig\CpDeviceDiagnosticsList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceDiagnosticsReportList.cs">
+      <Link>Linn\Konfig\CpDeviceDiagnosticsReportList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceRecogniserList.cs">
+      <Link>Linn\Konfig\CpDeviceRecogniserList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceReprogramList.cs">
+      <Link>Linn\Konfig\CpDeviceReprogramList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceUpdateList.cs">
+      <Link>Linn\Konfig\CpDeviceUpdateList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\FirmwareCache.cs">
+      <Link>Linn\Konfig\FirmwareCache.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Model.cs">
+      <Link>Linn\Konfig\Model.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Preferences.cs">
+      <Link>Linn\Konfig\Preferences.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\VersionInfoReader.cs">
+      <Link>Linn\Konfig\VersionInfoReader.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Ios\AppDelegate.cs">
+      <Link>Linn\Konfig\Ios\AppDelegate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Ios\KonfigViewController.cs">
+      <Link>Linn\Konfig\Ios\KonfigViewController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Ios\KonfigViewController.designer.cs">
+      <Link>Linn\Konfig\Ios\KonfigViewController.designer.cs</Link>
+      <DependentUpon>KonfigViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Ios\Main.cs">
+      <Link>Linn\Konfig\Ios\Main.cs</Link>
+    </Compile>
+    <Compile Include="..\..\build\share\Konfig\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\XappController.cs">
+      <Link>Linn\Konfig\XappController.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\XappView.cs">
+      <Link>Linn\XappView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceAdvancedList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceFacDefList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\FlashSupport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\Konfig\Linn\Konfig\Ios\KonfigViewController.xib">
+      <Link>Linn\Konfig\Ios\KonfigViewController.xib</Link>
+    </InterfaceDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\FallbackIcon.png">
+      <Link>presentation\images\FallbackIcon.png</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\just-listen.png">
+      <Link>presentation\images\just-listen.png</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\linn-logo.png">
+      <Link>presentation\images\linn-logo.png</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\logo.png">
+      <Link>presentation\images\logo.png</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\main-nav-spacer.png">
+      <Link>presentation\images\main-nav-spacer.png</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\about\index.css">
+      <Link>presentation\about\index.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\about\index.xapp">
+      <Link>presentation\about\index.xapp</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\badger.css">
+      <Link>presentation\css\badger.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\global.css">
+      <Link>presentation\css\global.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\jquery.select.css">
+      <Link>presentation\css\jquery.select.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\diagnostics\index.css">
+      <Link>presentation\diagnostics\index.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\diagnostics\index.xapp">
+      <Link>presentation\diagnostics\index.xapp</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\fragments\header.frag">
+      <Link>presentation\fragments\header.frag</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\badger.js">
+      <Link>presentation\javascript\badger.js</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\jquery.select.js">
+      <Link>presentation\javascript\jquery.select.js</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\jquery.tmpl.min.js">
+      <Link>presentation\javascript\jquery.tmpl.min.js</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\select-arrow.gif">
+      <Link>presentation\images\select-arrow.gif</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\main\index.css">
+      <Link>presentation\main\index.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\main\index.xapp">
+      <Link>presentation\main\index.xapp</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\settings\index.css">
+      <Link>presentation\settings\index.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\settings\index.xapp">
+      <Link>presentation\settings\index.xapp</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\update\index.css">
+      <Link>presentation\update\index.css</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\update\index.xapp">
+      <Link>presentation\update\index.xapp</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Common\Common.css">
+      <Link>presentation\Widgets\Common\Common.css</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Common\Common.js">
+      <Link>presentation\Widgets\Common\Common.js</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Fonts\effra-webfont.eot">
+      <Link>presentation\Widgets\Fonts\effra-webfont.eot</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Fonts\effra-webfont.woff">
+      <Link>presentation\Widgets\Fonts\effra-webfont.woff</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\background.jpg">
+      <Link>presentation\images\background.jpg</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\navigation-background.png">
+      <Link>presentation\images\navigation-background.png</Link>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\subnavigation-background.png">
+      <Link>presentation\images\subnavigation-background.png</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssProductSupportIos\OssProductSupportIos.csproj">
+      <Project>{6764092D-CCFB-4286-8314-412636D7065B}</Project>
+      <Name>OssProductSupportIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssCoreIos\OssCoreIos.csproj">
+      <Project>{FADD2631-1259-4A92-B87F-69A4364AE7B6}</Project>
+      <Name>OssCoreIos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitIos\OssToolkitIos.csproj">
+      <Project>{CE61C5CB-180B-44A2-831C-E15889B61196}</Project>
+      <Name>OssToolkitIos</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

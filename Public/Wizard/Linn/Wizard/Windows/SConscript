@@ -17,19 +17,19 @@ installerResources = _default_env.Install('$variant_dir/share/Linn/Wizard', file
 files = Split("""
     ../BasePage.cs
     ../Component.cs
-    ../CustomisePage.cs
     ../DiscoveryPage.cs
     ../HelpPage.cs
-    ../MainPage.cs
+    ../Model.cs
     ../Network.cs
     ../PageControl.cs
+    ../PageDefinitions.cs
+    ../PageView.cs
     ../ReprogramPage.cs
     ../StandardPage.cs
     ../StreamPage.cs
-    ../UsePage.cs
+    ../WizardPage.cs
     Properties/Resources.resx
     Properties/Resources.Designer.cs
-    
     App.xaml
     App.xaml.cs
     MainWindow.xaml
@@ -88,6 +88,7 @@ instRes.append(File(_default_env.subst('$variant_dir/share/Linn/ProductSupport/A
 instRes.append(File(_default_env.subst('$variant_dir/share/Linn/ProductSupport/Folder.jpg')))
 instRes.append(File(_default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll')))
 instRes.append(File(_default_env.subst('$install_dir/lib/taglib-sharp.dll')))
+instRes += _default_env.RecursiveInstall('$install_dir/bin/Wizard/PageHtml/Widgets/ToggleButton', '$hardware_dir/share/Linn/Resources/Widgets/ToggleButton')
 
 # build the assembly
     
@@ -108,7 +109,8 @@ msproj = _default_env.MSBuildFileGenerator('Wizard', files + appAssemblyInfo,
                                            TARGETFRAMEWORKVERSION='4.0')
 
 # ensure that the referenced assemblies get installed before the assembly is built
-Depends(msproj, instOhLibs+instLinnLibs+instRes+instRes2)
+_default_env.Depends(msproj, instOhLibs+instLinnLibs+instRes+instRes2)
+_default_env.Depends(msproj, _default_env.Alias('OpenHomeLib'))
 
 appTemp = _default_env.MSBuildExeBuilder('Wizard', msproj, CLILIBS=sysCliLibs+ohCliLibs+linnCliLibs)
 appTemp = _default_env.Install('$install_dir/bin/Wizard', appTemp)
@@ -128,7 +130,7 @@ if _default_env['installers'] and _default_env['hardware'] == 'Windows':
                                                     RESOURCES    = {'icon'    : _default_env.subst('$variant_dir/share/Linn/Wizard/Icon.ico'),
                                                                     'header'  : _default_env.subst('$variant_dir/share/Linn/Wizard/header.bmp'),
                                                                     'finish'  : _default_env.subst('$variant_dir/share/Linn/Wizard/finish.bmp'),
-                                                                    'license' : _default_env.subst('$variant_dir/share/Linn/Core/license.txt')},
+                                                                    'license' : _default_env.subst('$variant_dir/share/Linn/Core/license-cookies.txt')},
                                                     PRODUCT      = 'Wizard',
                                                     VERSION      = kBuildInfo['BUILD_INFO_VERSION'],
                                                     CERT         = '',

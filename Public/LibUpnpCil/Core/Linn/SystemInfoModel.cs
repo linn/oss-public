@@ -24,10 +24,8 @@ namespace Linn
         {
             switch (aPlatformID)
             {
-#if !PocketPC
                 case PlatformID.MacOSX:
                     return PlatformId.MacOSX;
-#endif
                 case PlatformID.Unix:
                     return PlatformId.Unix;
                 case PlatformID.Win32NT:

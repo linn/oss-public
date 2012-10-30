@@ -55,10 +55,7 @@ lib += _default_env.Install("$install_dir/bin/Test", "Monobjc.WebKit.dll")
 
 # ICSharpCode.SharpZipLib
 
-if _default_env['hardware'] == 'PocketPc':
-    file = "Framework/Compact/ICSharpCode.SharpZipLib.dll"
-else:
-    file = "Framework/Full/ICSharpCode.SharpZipLib.dll"
+file = "Framework/Full/ICSharpCode.SharpZipLib.dll"
 
 lib += _default_env.Install("$install_dir/lib", file)
 lib += _default_env.Install("$install_dir/bin", file)

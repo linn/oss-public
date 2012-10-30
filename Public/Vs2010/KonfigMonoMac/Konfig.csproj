@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BD592C13-B7E0-406A-A134-CC149010E534}</ProjectGuid>
+    <ProjectTypeGuids>{948B3504-5B70-4649-8FE4-BDE1FB46EC69};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Linn.Konfig</RootNamespace>
+    <AssemblyName>Konfig</AssemblyName>
+    <BaseDirectory>..\..\Konfig</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\debug\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\debug\bin\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp &quot;../LibUpnpCil/Toolkit/obj/MacOsX Debug/nibs/UpdateWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../LibUpnpCil/Toolkit/obj/MacOsX Debug/nibs/CrashLogDumperWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/Linn/Konfig/Resources/presentation ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="mkdir -p ${TargetDir}/${ProjectName}.app/Contents/Resources/presentation/Widgets" />
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/../Widgets/Common ${TargetDir}/${ProjectName}.app/Contents/Resources/presentation/Widgets/Common" />
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/../Widgets/Fonts ${TargetDir}/${ProjectName}.app/Contents/Resources/presentation/Widgets/Fonts" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <IntermediateOutputPath>..\..\build\MacOsX\release\$(AssemblyName)</IntermediateOutputPath>
+    <OutputPath>..\..\install\MacOsX\release\bin\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <LinkMode>Full</LinkMode>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <ConsolePause>false</ConsolePause>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <CodeSigningKey>Mac Developer</CodeSigningKey>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp &quot;../LibUpnpCil/Toolkit/obj/MacOsX Release/nibs/UpdateWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp &quot;../LibUpnpCil/Toolkit/obj/MacOsX Release/nibs/CrashLogDumperWindow.nib&quot; ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/Linn/Konfig/Resources/presentation ${TargetDir}/${ProjectName}.app/Contents/Resources/" />
+        <Command type="AfterBuild" command="mkdir -p ${TargetDir}/${ProjectName}.app/Contents/Resources/presentation/Widgets" />
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/../Widgets/Common ${TargetDir}/${ProjectName}.app/Contents/Resources/presentation/Widgets/Common" />
+        <Command type="AfterBuild" command="cp -R ${ProjectDir}/../Widgets/Fonts ${TargetDir}/${ProjectName}.app/Contents/Resources/presentation/Widgets/Fonts" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="MonoMac" />
+    <Reference Include="ohNet.net">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\ohNet.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXapp">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\ohXapp.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXappViewer">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\ohXappViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="ohXen">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\ohXen.dll</HintPath>
+    </Reference>
+    <Reference Include="CpAvOpenhomeOrgProduct1.net">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\CpAvOpenhomeOrgProduct1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="CpLinnCoUkVolkano1.net">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\CpLinnCoUkVolkano1.net.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\External\Framework\Full\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="CpLinnCoUkDiagnostics1.net">
+      <HintPath>..\..\Konfig\OpenHome\MacOsX\CpLinnCoUkDiagnostics1.net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Mono\MonoMac\v0.0\Mono.MonoMac.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\Konfig\Linn\Konfig\MacOsX\Main.cs">
+      <Link>Linn\Konfig\MacOsX\Main.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\MacOsX\AppDelegate.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\MacOsX\AppDelegate.designer.cs">
+      <DependentUpon>AppDelegate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\MacOsX\MainWindow.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\MacOsX\MainWindow.designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\MacOsX\MainWindowController.cs" />
+    <Compile Include="..\..\build\share\Konfig\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Konfig\Linn\Konfig\Model.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceRecogniserList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceReprogramList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceUpdateList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\VersionInfoReader.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\FirmwareCache.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceDiagnosticsList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceDiagnosticsReportList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\Preferences.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\XappController.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\SettingsPageAdvanced.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\XappView.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceAdvancedList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\CpDeviceFacDefList.cs" />
+    <Compile Include="..\..\Konfig\Linn\Konfig\FlashSupport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OssCore\OssCore.csproj">
+      <Project>{ED80C071-32F7-4B26-B271-52A163AFB43D}</Project>
+      <Name>OssCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssToolkitMonoMac\OssToolkitMonoMac.csproj">
+      <Project>{22C47B98-D0D0-4B8E-A98D-F4371733E14A}</Project>
+      <Name>OssToolkitMonoMac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OssProductSupport\OssProductSupport.csproj">
+      <Project>{A5DF2109-5A06-4A92-ACFF-4CF9A066D461}</Project>
+      <Name>OssProductSupport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Konfig\Linn\Konfig\MacOsX\Info.plist">
+      <Link>Info.plist</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\main\index.css">
+      <Link>presentation\main\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\main\index.xapp">
+      <Link>presentation\main\index.xapp</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\about\index.css">
+      <Link>presentation\about\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\about\index.xapp">
+      <Link>presentation\about\index.xapp</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\settings\index.css">
+      <Link>presentation\settings\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\settings\index.xapp">
+      <Link>presentation\settings\index.xapp</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\update\index.css">
+      <Link>presentation\update\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\update\index.xapp">
+      <Link>presentation\update\index.xapp</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\logo.png">
+      <Link>presentation\images\logo.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\select-arrow.gif">
+      <Link>presentation\images\select-arrow.gif</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\FallbackIcon.png">
+      <Link>presentation\images\FallbackIcon.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\diagnostics\index.css">
+      <Link>presentation\diagnostics\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\diagnostics\index.xapp">
+      <Link>presentation\diagnostics\index.xapp</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\just-listen.png">
+      <Link>presentation\images\just-listen.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\linn-logo.png">
+      <Link>presentation\images\linn-logo.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\main-nav-spacer.png">
+      <Link>presentation\images\main-nav-spacer.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\subnavigation-background.png">
+      <Link>presentation\images\subnavigation-background.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\images\navigation-background.png">
+      <Link>presentation\images\navigation-background.png</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\badger.css">
+      <Link>presentation\css\badger.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\global.css">
+      <Link>presentation\css\global.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\css\jquery.select.css">
+      <Link>presentation\css\jquery.select.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\fragments\header.frag">
+      <Link>presentation\fragments\header.frag</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\badger.js">
+      <Link>presentation\javascript\badger.js</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\jquery.select.js">
+      <Link>presentation\javascript\jquery.select.js</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\javascript\jquery.tmpl.min.js">
+      <Link>presentation\javascript\jquery.tmpl.min.js</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\advanced\index.css">
+      <Link>presentation\advanced\index.css</Link>
+    </None>
+    <None Include="..\..\Konfig\Linn\Konfig\Resources\presentation\advanced\index.xapp">
+      <Link>presentation\advanced\index.xapp</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="..\..\Konfig\Linn\Konfig\MacOsX\MainMenu.xib" />
+    <InterfaceDefinition Include="..\..\Konfig\Linn\Konfig\MacOsX\MainWindow.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="..\..\Konfig\Properties\" />
+    <Folder Include="..\..\Konfig\presentation\" />
+    <Folder Include="..\..\Konfig\presentation\images\" />
+    <Folder Include="..\..\Konfig\presentation\diagnostics\" />
+    <Folder Include="..\..\Konfig\presentation\css\" />
+    <Folder Include="..\..\Konfig\presentation\fragments\" />
+    <Folder Include="..\..\Konfig\presentation\javascript\" />
+    <Folder Include="..\..\Konfig\presentation\advanced\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Konfig\OpenHome\MacOsX\libohNet.dylib">
+      <Link>libohNet.dylib</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Konfig\Linn\Konfig\Resources\IconLarge.png">
+      <Link>IconLarge.png</Link>
+    </Content>
+  </ItemGroup>
+</Project>

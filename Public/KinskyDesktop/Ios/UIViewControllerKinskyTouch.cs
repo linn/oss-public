@@ -60,11 +60,17 @@ namespace KinskyTouch
             base.ViewDidDisappear(animated);
             navigationController.ViewDidDisappear(animated);
         }
-		
-        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation aToInterfaceOrientation)
-		{
-			return true;
-		}
+
+        [Obsolete]
+        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
+        {
+            return true;
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.All;
+        }
 
         public override void DidRotate(UIInterfaceOrientation aFromInterfaceOrientation)
         {
@@ -193,10 +199,11 @@ namespace KinskyTouch
             navigationControllerBrowser.ViewDidDisappear(animated);
             navigationControllerRoomSource.ViewDidDisappear(animated);
         }
-        
-        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation aToInterfaceOrientation)
+
+        [Obsolete]
+        public override bool ShouldAutorotateToInterfaceOrientation(UIInterfaceOrientation toInterfaceOrientation)
         {
-            if(aToInterfaceOrientation == UIInterfaceOrientation.Portrait)
+            if(toInterfaceOrientation == UIInterfaceOrientation.Portrait)
             {
                 return true;
             }
@@ -204,6 +211,11 @@ namespace KinskyTouch
             {
                 return false;
             }
+        }
+
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations ()
+        {
+            return UIInterfaceOrientationMask.Portrait;
         }
 
         public override void AwakeFromNib()

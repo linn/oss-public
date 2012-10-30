@@ -166,9 +166,7 @@ namespace Linn
   
                 WebRequest request = WebRequest.Create(uri);
                 HttpWebRequest webRequest = (HttpWebRequest)request;
-#if !PocketPC
                 webRequest.ServicePoint.Expect100Continue = false;
-#endif          
                 webRequest.AllowWriteStreamBuffering = true;
                 request.Credentials = CredentialCache.DefaultCredentials;
                 request.Method = "POST";

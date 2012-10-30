@@ -22,12 +22,12 @@ namespace OssToolkitDroid
 
         public void Write(string aMessage)
         {
-            Android.Util.Log.Info("USERLOG", aMessage);
+            Android.Util.Log.Info("USERLOG", string.Format("{0} - {1}", DateTime.Now, aMessage));
         }
 
         public void WriteLine(string aMessage)
         {
-            Android.Util.Log.Info("USERLOG", aMessage);
+            Android.Util.Log.Info("USERLOG", string.Format("{0} - {1}", DateTime.Now, aMessage));
         }
 
         #endregion

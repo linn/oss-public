@@ -13,9 +13,10 @@ using System.Collections.Generic;
 using OssToolkitDroid;
 using Android.Runtime;
 
+[assembly: Application(Icon="@drawable/icon", Label="Linn Topology", Name="linntopologydroid.Stack")]
+
 namespace LinnTopologyDroid
 {
-    [Application(Icon="@drawable/icon", Label="Linn Topology")]
     public class Stack : ApplicationDroid, IStack
     {
 
@@ -75,8 +76,7 @@ namespace LinnTopologyDroid
             iHelper = new Helper(new string[0] { });
             OptionPageCrashDumper optionCrashDumper = new OptionPageCrashDumper("Crash Logs");
             iHelper.AddOptionPage(optionCrashDumper);
-            iWifiListener = new WifiListener(iHelper);
-            RegisterReceiver(iWifiListener, new IntentFilter(Android.Net.Wifi.WifiManager.NetworkStateChangedAction));
+            iWifiListener = new WifiListener(this, iHelper);
             iWifiListener.Refresh(this.ApplicationContext);
 
             iHelper.ProcessOptionsFileAndCommandLine();
@@ -127,7 +127,8 @@ namespace LinnTopologyDroid
             iRescanTimer.Dispose();
             iWifiLock.Release();
             iMulticastLock.Release();
-            UnregisterReceiver(iWifiListener);
+            iWifiListener.Dispose();
+            iWifiListener = null;
             iHouse.EventRoomAdded -= RoomAdded;
             iHouse.EventRoomRemoved -= RoomRemoved;
             iLibrary.EventMediaServerAdded -= LibraryAdded;

@@ -1,3 +1,19 @@
+function onBoxTrackingData(json){
+    if (json.Models){
+        var total = 0;
+        for(var i=0;i<json.Models.length;i++){
+            trackEvent("Discovery.Models", json.Models[i].Name, "", json.Models[i].Value);
+            total+=json.Models[i].Value;
+        }
+        trackEvent("Discovery.TotalDevices", "DeviceCount", "", total);
+    }
+    if (json.Versions){
+        for(var i=0;i<json.Versions.length;i++){
+            trackEvent("Discovery.Versions", json.Versions[i].Name, "", json.Versions[i].Value);
+        }
+    }
+}
+
 function onDoneButtonClick() {
     var sel = document.getElementById("ListBox");
     if (sel.selectedIndex > 0) {
@@ -7,7 +23,8 @@ function onDoneButtonClick() {
 }
 
 function onRefreshButtonClick() {
-    xappSend('Refresh', '');
+    trackEvent("Discovery", "Rescan", "");
+    xappSend('Refresh', '');    
 }
 
 function onPageUpButtonClick() {
@@ -64,10 +81,6 @@ function onSelectionReplace(json) {
         // find matching entry... require old and new values in json !!!!
 
     }
-}
-
-function onTitle(json) {
-    $("#Title").html(json.Value);
 }
 
 function onMainText(json) {

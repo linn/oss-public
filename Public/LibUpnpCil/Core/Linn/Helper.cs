@@ -426,6 +426,14 @@ namespace Linn
             get { return iAssemblyAttributes.InformationalVersion; }
         }
 
+        public EBuildType BuildType
+        {
+            get
+            {
+                return iAssemblyAttributes.BuildType;
+            }
+        }
+
         public DirectoryInfo DataPath
         {
             get { return iDataPath; }

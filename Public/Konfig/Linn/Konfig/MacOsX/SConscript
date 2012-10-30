@@ -1,0 +1,138 @@
+Import('_default_env kBuildInfo appAssemblyInfo')
+
+files = Split("""
+    ../Resources/Icon.icns
+""")
+installerRes = _default_env.Install('$variant_dir/share/Linn/Konfig', files)
+
+
+files = Split("""
+    AppDelegate.cs
+    AppDelegate.designer.cs
+    Main.cs
+    MainWindow.cs
+    MainWindow.designer.cs
+    MainWindowController.cs
+    ../CpDeviceAdvancedList.cs
+    ../CpDeviceDiagnosticsList.cs
+    ../CpDeviceDiagnosticsReportList.cs
+    ../CpDeviceFacDefList.cs
+    ../CpDeviceRecogniserList.cs
+    ../CpDeviceReprogramList.cs
+    ../CpDeviceUpdateList.cs
+    ../FirmwareCache.cs
+    ../FlashSupport.cs
+    ../Model.cs
+    ../Preferences.cs
+    ../SettingsPageAdvanced.cs
+    ../VersionInfoReader.cs
+    ../XappController.cs
+    ../XappView.cs
+""")
+
+linkCliLibs = Split("""
+    ICSharpCode.SharpZipLib
+    taglib-sharp
+    MonoMac
+    XmlLayout
+    XmlRom
+    XmlRomCollection
+    XmlTags
+    OssCore
+    OssSysLib
+    OssControl
+    OssServices
+    OssDidlLite
+    OssTopology
+    OssToolkitMonoMac
+    OssProductSupport
+    OssKinsky
+    ohXapp
+    ohXappViewer
+    ohXen
+    ohNet.net
+    CpLinnCoUkDiagnostics1.net
+    CpLinnCoUkVolkano1.net
+    CpAvOpenhomeOrgProduct1.net
+""")
+
+target = 'winexe'
+if _default_env['variant'] == 'debug' or _default_env['variant'] == 'trace':
+    target = 'exe'
+
+progAssembly = _default_env.CliProgram('Konfig', files + appAssemblyInfo, CSCTARGET=target, CLILIBS=linkCliLibs, TARGETFRAMEWORKVERSION='4.0')
+_default_env.Depends(progAssembly, installerRes)
+_default_env.Depends(appAssemblyInfo, _default_env.Alias('OpenHomeLib'))
+
+# build the nib files
+
+nibs = _default_env.IbTool('MainMenu.nib', 'MainMenu.xib')
+nibs += _default_env.IbTool('MainWindow.nib', 'MainWindow.xib')
+nibs.append(File(_default_env.subst('$install_dir/bin/CrashLogDumperWindow.nib')))
+nibs.append(File(_default_env.subst('$install_dir/bin/UpdateWindow.nib')))
+_default_env.Depends(progAssembly, nibs)
+
+# build a list of all required assembly files
+reqAssemblies = []
+reqAssemblies.extend(linkCliLibs)
+
+exeResources = { '' : [ File(_default_env.subst('$install_dir/bin/Reprog.exe')), File(_default_env.subst('$install_dir/bin/FacDef.exe')) ] }
+
+
+# create list of native libraries
+nativeLibs = [ File('../../../OpenHome/MacOsX/libohNet.dylib') ]
+
+
+# build everything that needs to go in the "Resource" folder
+rootResources = Split("""
+    ../Resources/IconLarge.png
+    ../Resources/presentation
+""")
+rootResources = [File(f) for f in rootResources];
+
+widgetResources = Split("""
+    $hardware_dir/share/Linn/Resources/Widgets/Common
+    $hardware_dir/share/Linn/Resources/Widgets/Fonts
+""")
+widgetResources = [_default_env.Dir(d) for d in widgetResources]
+
+resources = { '' : rootResources,
+              'presentation/Widgets' : widgetResources }
+
+
+# create the dictionary of changes to the Info.plist that will be merged with the default values in the mmp builder
+infoPlist = {
+    'NSMainNibFile' : 'MainMenu',
+    'NSPrincipalClass' : 'NSApplication'
+}
+
+
+# build the Mac OSX .app bundle and .pkg installer and install them
+pkg = _default_env.ReleaseInstallerMacOsXWithMono('InstallerKonfig', progAssembly,
+                    APPNAME = 'Konfig',
+                    APPINSTFOLDER = '$install_dir/bin',
+                    PKGINSTFOLDER = '$install_dir/share/Konfig',
+                    APPCERT = '"Developer ID Application: Linn Products Ltd"',
+                    PKGCERT = '"Developer ID Installer: Linn Products Ltd"',
+                    CLILIBS = reqAssemblies,
+                    NATIVELIBS = nativeLibs,
+                    NIBS = nibs,
+                    RESOURCES = resources,
+                    EXERESOURCES = exeResources,
+                    OTHERRESOURCES = [],
+                    ICON = '$variant_dir/share/Linn/Konfig/Icon.icns',
+                    INFOPLIST = infoPlist,
+                    VERSION = kBuildInfo['BUILD_INFO_VERSION'],
+                    INSTALLERRESOURCES = {'LICENSEFILE': _default_env.subst('$variant_dir/share/Linn/Core/license-cookies.txt')})
+
+
+# create the auto update dll
+
+resources = [ (_default_env.subst('$install_dir/share/Konfig/InstallerKonfig.pkg'), 'InstallerKonfig.pkg') ]
+updater = _default_env.CliLibrary('UpdaterKonfig_osx', 'Installer/Updater.cs', CLIRESOURCES=resources)
+pkg += _default_env.Install('$install_dir/share/Konfig', updater)
+
+
+Alias('Lib', pkg)
+
+

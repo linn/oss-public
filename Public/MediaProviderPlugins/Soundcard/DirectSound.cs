@@ -545,11 +545,7 @@ namespace OssKinskyMppSoundcard
             {
                 iListener = new TcpListener(aInterface, kPort);
                 iListener.Server.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
-#if PocketPC
-                iListener.Start();
-#else
                 iListener.Start(kListenSlots);
-#endif
                 iThread.Start();
             }
             catch (SocketException e)

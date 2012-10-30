@@ -34,9 +34,7 @@ namespace KinskyDesktop.Widgets
 
             InitializeComponent();
 
-#if !PocketPC
             DoubleBuffered = true;
-#endif
 
             iHighlightColour = ForeColor;
             iForeColourBright = ForeColor;
@@ -232,10 +230,8 @@ namespace KinskyDesktop.Widgets
                 StringFormat format = new StringFormat();
                 format.Alignment = StringAlignment.Center;
                 format.LineAlignment = StringAlignment.Center;
-#if !PocketPC
                 format.Trimming = StringTrimming.EllipsisCharacter;
                 format.FormatFlags = StringFormatFlags.DirectionVertical;
-#endif
 
                 if (iMouseOverPage == page)
                 {

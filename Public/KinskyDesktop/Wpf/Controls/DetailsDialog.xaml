@@ -12,7 +12,6 @@
     Background="Transparent" 
     AllowsTransparency="True"
     Cursor="{DynamicResource Cursor}"
-    SizeChanged="Window_SizeChanged"
 >
     <Window.Resources>
 

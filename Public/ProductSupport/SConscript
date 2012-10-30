@@ -24,6 +24,7 @@ tagsXmlTarget = _default_env.Install(resDir, tagsXml)
 AlwaysBuild(tagsXml)
 NoCache(tagsXml)
 Alias('Lib', tagsXmlTarget)
+Alias('Tags', tagsXmlTarget)
 
 # create TagsKodgen.cs from Tags.xml
 
@@ -71,7 +72,7 @@ files += Split("""
 
 res = _default_env.Resgen('Linn.ProductSupport.Properties.Resources.resources', 'Properties/Resources.resx')
 
-clilibs = ['mscorlib', 'System', 'System.Xml', 'System.ComponentModel.DataAnnotations', 'OssCore', 'OssControl', 'OssServices', 'OssDidlLite', 'OssKinsky', 'XmlLayout', 'XmlRom', 'XmlRomCollection', 'XmlTags', _default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll'), 'taglib-sharp']
+clilibs = ['mscorlib', 'System', 'System.Xml', 'OssCore', 'OssControl', 'OssServices', 'OssDidlLite', 'OssKinsky', 'XmlLayout', 'XmlRom', 'XmlRomCollection', 'XmlTags', _default_env.subst('$install_dir/lib/ICSharpCode.SharpZipLib.dll'), 'taglib-sharp']
 
 if _default_env['hardware'] != 'Android':
     lib = _default_env.CliLibrary('OssProductSupport', files, CLILIBS=clilibs, CLIRESOURCES=res, TARGETFRAMEWORKVERSION='4.0')
@@ -81,9 +82,14 @@ else:
     
 Alias('Lib', lib)
 
-#prog = _default_env.CliProgram('Test/TestTicketing', 'Linn/ProductSupport/Ticketing/Test/Program.cs', CLILIBS=['mscorlib', 'System', 'OssProductSupport'])
+prog  = _default_env.CliProgram('Reprog', 'Reprog/Reprog.cs', CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssProductSupport'], TARGETFRAMEWORKVERSION='4.0')
+prog += _default_env.CliProgram('FacDef', 'FacDef/FacDef.cs', CLILIBS=['mscorlib', 'System', 'OssCore', 'OssControl', 'OssServices', 'OssProductSupport'], TARGETFRAMEWORKVERSION='4.0')
 
-#Alias('Test', prog)
+Alias('Lib', prog)
+
+#test = _default_env.CliProgram('Test/TestTicketing', 'Linn/ProductSupport/Ticketing/Test/Program.cs', CLILIBS=['mscorlib', 'System', 'OssProductSupport'])
+
+#Alias('Test', test)
 
 docs = _default_env.Doxygen('$hardware_dir/share/Docs/Tar/ProductSupport.tar', files, DOXYCLEANOUTPUTDIR='$hardware_dir/share/Docs/ProductSupport', DOXYGENNAMESPACE='OssProductSupport')
 

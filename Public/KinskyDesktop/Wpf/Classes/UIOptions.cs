@@ -1,6 +1,10 @@
 using System.Windows;
 using Linn;
 using System.IO;
+using System.Xml;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 namespace KinskyDesktopWpf
 {
     public class UiOptions
@@ -11,8 +15,6 @@ namespace KinskyDesktopWpf
             iWindowHeight = new OptionDouble("windowheight", "WindowHeight", "", 600);
             iWindowLocationX = new OptionDouble("windowx", "WindowLocationX", "", -1);
             iWindowLocationY = new OptionDouble("windowy", "WindowLocationY", "", -1);
-            iDetailsWindowWidth = new OptionDouble("detailswindowwidth", "DetailsWindowWidth", "", 320);
-            iDetailsWindowHeight = new OptionDouble("detailswindowheight", "DetailsWindowHeight", "", 450);
 
             iBrowserSplitterLocationLeft = new OptionInt("browsersplitterleft", "BrowserSplitterLocationLeft", "", 652);
             iBrowserSplitterLocationRight = new OptionInt("browsersplitterright", "BrowserSplitterLocationRight", "", 404);
@@ -22,10 +24,10 @@ namespace KinskyDesktopWpf
             iContainerViewSizeThumbsView = new OptionDouble("containerviewsizethumbs", "ContainerViewSizeThumbs", "", 150);
             iContainerViewSizeListView = new OptionDouble("containerviewsizelist", "ContainerViewSizeList", "", 100);
 
+            iOptionDialogSettings = new OptionDialogSettings();
+
             aHelper.AddOption(iWindowWidth);
             aHelper.AddOption(iWindowHeight);
-            aHelper.AddOption(iDetailsWindowWidth);
-            aHelper.AddOption(iDetailsWindowHeight);
             aHelper.AddOption(iWindowLocationX);
             aHelper.AddOption(iWindowLocationY);
             aHelper.AddOption(iBrowserSplitterLocationLeft);
@@ -35,18 +37,14 @@ namespace KinskyDesktopWpf
             aHelper.AddOption(iContainerView);
             aHelper.AddOption(iContainerViewSizeThumbsView);
             aHelper.AddOption(iContainerViewSizeListView);
+            aHelper.AddOption(iOptionDialogSettings);
         }
 
-        public Size DetailsWindowSize
+        public OptionDialogSettings DialogSettings
         {
             get
             {
-                return new Size(iDetailsWindowWidth.Native, iDetailsWindowHeight.Native);
-            }
-            set
-            {
-                iDetailsWindowWidth.Native = value.Width;
-                iDetailsWindowHeight.Native = value.Height;
+                return iOptionDialogSettings;
             }
         }
 
@@ -162,8 +160,6 @@ namespace KinskyDesktopWpf
 
         private OptionDouble iWindowWidth;
         private OptionDouble iWindowHeight;
-        private OptionDouble iDetailsWindowWidth;
-        private OptionDouble iDetailsWindowHeight;
         private OptionDouble iWindowLocationX;
         private OptionDouble iWindowLocationY;
         private OptionInt iBrowserSplitterLocationLeft;
@@ -173,5 +169,186 @@ namespace KinskyDesktopWpf
         private OptionUint iContainerView;
         private OptionDouble iContainerViewSizeThumbsView;
         private OptionDouble iContainerViewSizeListView;
+        private OptionDialogSettings iOptionDialogSettings;
+    }
+
+    public class OptionDialogSettings : OptionString
+    {
+        private Dictionary<Window, DialogSettings> iSettingsLookup;
+        private XmlDocument iSettingsXml;
+        private System.Threading.Timer iSaveTimer;
+        private static int kSaveTimeoutMilliseconds = 100;
+        private object iLock = new object();
+
+        public OptionDialogSettings()
+            : base("DialogSettings", "DialogSettings", "Position and size settings for dialogs.", "<dialogSettings/>")
+        {
+            iSettingsLookup = new Dictionary<Window, DialogSettings>();
+            iSettingsXml = new XmlDocument();
+            iSettingsXml.LoadXml(this.Value);
+            iSaveTimer = new System.Threading.Timer(SaveTimerElapsed);
+            iSaveTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        public override bool Set(string aValue)
+        {
+            lock (iLock)
+            {
+                iSettingsXml.LoadXml(aValue);
+                return base.Set(aValue);
+            }
+        }
+
+        public void Register(Window aDialog, string aName)
+        {
+            lock (iLock)
+            {
+                iSettingsLookup.Add(aDialog, LoadSettings(aName, aDialog));
+                aDialog.Closed += ClosedHandler;
+                aDialog.SizeChanged += SizeChangedHandler;
+                aDialog.LocationChanged += LocationChangedHandler;
+            }
+        }
+
+        private void ClosedHandler(object sender, EventArgs e)
+        {
+            lock (iLock)
+            {
+                Window dialog = sender as Window;
+                DialogUpdated(dialog);
+                dialog.Closed -= ClosedHandler;
+                dialog.SizeChanged -= SizeChangedHandler;
+                dialog.LocationChanged -= LocationChangedHandler;
+                iSettingsLookup.Remove(dialog);
+            }
+        }
+
+        private void SizeChangedHandler(object sender, SizeChangedEventArgs e)
+        {
+            DialogUpdated(sender as Window);
+        }
+
+        private void LocationChangedHandler(object sender, EventArgs e)
+        {
+            DialogUpdated(sender as Window);
+        }
+
+        private DialogSettings LoadSettings(string aName, Window aDialog)
+        {
+            lock (iLock)
+            {
+                string xPath = string.Format("//dialog[@name='{0}']", aName);
+                XmlElement settingsElem = iSettingsXml.SelectSingleNode(xPath) as XmlElement;
+                DialogSettings settings;
+                if (settingsElem != null)
+                {
+                    settings = new DialogSettings(settingsElem);
+                    settings.Apply(aDialog);
+                }
+                else
+                {
+                    settings = new DialogSettings(aDialog, aName);
+                    SaveSettings(settings);
+                }
+                return settings;
+            }
+        }
+
+        private void SaveSettings(DialogSettings aSettings)
+        {
+            lock (iLock)
+            {
+                string xPath = string.Format("//dialog[@name='{0}']", aSettings.Name);
+                XmlElement existing = iSettingsXml.SelectSingleNode(xPath) as XmlElement;
+                if (existing == null)
+                {
+                    existing = aSettings.Create(iSettingsXml);
+                    iSettingsXml.DocumentElement.AppendChild(existing);
+                }
+                aSettings.Save(existing);
+                iSaveTimer.Change(kSaveTimeoutMilliseconds, Timeout.Infinite);
+            }
+        }
+
+        private void SaveTimerElapsed(object aState)
+        {
+            lock (iLock)
+            {
+                base.Update(iSettingsXml.OuterXml);
+                iSaveTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
+        }
+
+        private void DialogUpdated(Window aDialog)
+        {
+            lock (iLock)
+            {
+                DialogSettings settings = iSettingsLookup[aDialog];
+                Assert.Check(settings != null);
+                settings.Update(aDialog);
+                SaveSettings(settings);
+            }
+        }
+
+        private class DialogSettings
+        {
+            public DialogSettings(Window aDialog, string aName)
+            {
+                Name = aName;
+                Update(aDialog);
+            }
+
+            public DialogSettings(XmlElement aSettings)
+            {
+                Name = aSettings.Attributes["name"].Value;
+                Size = new Size(Double.Parse(aSettings.Attributes["width"].Value),
+                                Double.Parse(aSettings.Attributes["height"].Value));
+                Top = Double.Parse(aSettings.Attributes["top"].Value);
+                Left = Double.Parse(aSettings.Attributes["left"].Value);
+            }
+
+            public XmlElement Create(XmlDocument aXmlDocument)
+            {
+                XmlElement elem = aXmlDocument.CreateElement("dialog");
+                return elem;
+            }
+
+            public void Save(XmlElement aElement)
+            {
+                aElement.Attributes.RemoveAll();
+                AppendAttribute(aElement, "name", Name);
+                AppendAttribute(aElement, "width", Size.Width.ToString());
+                AppendAttribute(aElement, "height", Size.Height.ToString());
+                AppendAttribute(aElement, "top", Top.ToString());
+                AppendAttribute(aElement, "left", Left.ToString());
+            }
+
+            public void Update(Window aDialog)
+            {
+                Size = new Size(aDialog.Width, aDialog.Height);
+                Top = aDialog.Top;
+                Left = aDialog.Left;
+            }
+
+            public void Apply(Window aDialog)
+            {
+                aDialog.Left = Left;
+                aDialog.Top = Top;
+                aDialog.Width = Size.Width;
+                aDialog.Height = Size.Height;
+            }
+
+            private void AppendAttribute(XmlElement aElement, string aName, string aValue)
+            {
+                XmlAttribute attr = aElement.OwnerDocument.CreateAttribute(aName);
+                attr.Value = aValue;
+                aElement.Attributes.Append(attr);
+            }
+
+            public Size Size { get; private set; }
+            public string Name { get; private set; }
+            public Double Top { get; private set; }
+            public Double Left { get; private set; }
+        }
     }
 }

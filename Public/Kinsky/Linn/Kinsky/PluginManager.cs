@@ -55,12 +55,10 @@ namespace Linn.Kinsky
             try
             {
                 Assembly assembly = Assembly.LoadFrom(iFilename);
-#if !PocketPC
                 if (assembly.Location != iFilename)
                 {
                     throw new PluginManager.NotMediaProviderPluginException(iFilename);
                 }
-#endif
                 object[] attributes = assembly.GetCustomAttributes(typeof(ContentDirectoryFactoryTypeAttribute), false);
                 if(attributes.Length > 0)
                 {
@@ -156,11 +154,14 @@ namespace Linn.Kinsky
                 try
                 {
                     string[] dirs = Directory.GetDirectories(aPath);
-                    foreach (string d in dirs)
+                    if (dirs != null) //android!
                     {
-                        files.AddRange(GetFilesRecursive(d, aExtension));
+                        foreach (string d in dirs)
+                        {
+                            files.AddRange(GetFilesRecursive(d, aExtension));
+                        }
+                        files.AddRange(Directory.GetFiles(aPath, aExtension));
                     }
-                    files.AddRange(Directory.GetFiles(aPath, aExtension));
                 }
                 catch (DirectoryNotFoundException)
                 {

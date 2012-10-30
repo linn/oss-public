@@ -302,13 +302,20 @@ namespace Linn.ProductSupport.Diagnostics
 
             while (true)
             {
-                int bytes = iRxSock.Receive(rxData);
-                string rxMessage = Encoding.ASCII.GetString(rxData.Slice(0, bytes));
-                if (rxMessage == kStopRx)
+                try
+                {
+                    int bytes = iRxSock.Receive(rxData);
+                    string rxMessage = Encoding.ASCII.GetString(rxData.Slice(0, bytes));
+                    if (rxMessage == kStopRx)
+                    {
+                        break;
+                    }
+                    iRxCallback(rxMessage);
+                }
+                catch
                 {
                     break;
                 }
-                iRxCallback(rxMessage);
             }
         }
 
@@ -436,24 +443,31 @@ namespace Linn.ProductSupport.Diagnostics
 
             while (true)
             {
-                int bytes = iRxSock.ReceiveFrom(rxData, ref remoteEp);
-                IPEndPoint ep = (IPEndPoint)remoteEp;
-
-                if (ep.Address.Equals(((IPEndPoint)(iRxSock.LocalEndPoint)).Address))
+                try
                 {
-                    if (Encoding.ASCII.GetString(rxData.Slice(0, bytes)) == kStopRx)
+                    int bytes = iRxSock.ReceiveFrom(rxData, ref remoteEp);
+                    IPEndPoint ep = (IPEndPoint)remoteEp;
+
+                    if (ep.Address.Equals(((IPEndPoint)(iRxSock.LocalEndPoint)).Address))
                     {
-                        break;
+                        if (Encoding.ASCII.GetString(rxData.Slice(0, bytes)) == kStopRx)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (ep.Address.ToString().Equals(iRemoteAddr))
+                    {
+                        string rxMessage = Encoding.ASCII.GetString(rxData.Slice(0, bytes));
+                        if (bytes > 2)
+                        {
+                            iRxCallback(rxMessage);
+                        }
                     }
                 }
-
-                if (ep.Address.ToString().Equals(iRemoteAddr))
+                catch
                 {
-                    string rxMessage = Encoding.ASCII.GetString(rxData.Slice(0, bytes));
-                    if (bytes > 2)
-                    {
-                        iRxCallback(rxMessage);
-                    }
+                    break;
                 }
             }
         }

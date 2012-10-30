@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CFBundleIdentifier</key>
-	<string>uk.co.linn.songcast</string>
-	<key>IFPkgFlagDefaultLocation</key>
-	<string>/</string>
-	<key>IFPkgFlagRelocatable</key>
-	<false/>
-	<key>IFPkgFlagRestartAction</key>
-	<string>RequiredRestart</string>
-    <key>IFPkgFlagAllowBackRev</key>
-    <true/>
-</dict>
+<array>
+	<dict>
+		<key>BundleHasStrictIdentifier</key>
+		<true/>
+		<key>BundleIsRelocatable</key>
+		<false/>
+		<key>BundleIsVersionChecked</key>
+		<false/>
+		<key>BundleOverwriteAction</key>
+		<string>upgrade</string>
+		<key>RootRelativeBundlePath</key>
+		<string>Library/Linn/LinnSongcast.app</string>
+	</dict>
+	<dict>
+		<key>BundleIsVersionChecked</key>
+		<false/>
+		<key>BundleOverwriteAction</key>
+		<string>upgrade</string>
+		<key>RootRelativeBundlePath</key>
+		<string>Library/Linn/LinnSongcast.kext</string>
+	</dict>
+	<dict>
+		<key>BundleIsVersionChecked</key>
+		<false/>
+		<key>BundleOverwriteAction</key>
+		<string>upgrade</string>
+		<key>RootRelativeBundlePath</key>
+		<string>Library/PreferencePanes/LinnSongcast.prefPane</string>
+	</dict>
+</array>
 </plist>

@@ -190,12 +190,196 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\lbar.png">
+      <Link>presentation\main\images\lbar.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rbar.png">
+      <Link>presentation\main\images\rbar.png</Link>
+    </Resource>
+    <Content Include="..\..\Widgets\Common\Common.css">
+      <Link>presentation\main\Widgets\Common\Common.css</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Common\Common.js">
+      <Link>presentation\main\Widgets\Common\Common.js</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Rocker\Rocker.css">
+      <Link>presentation\main\Widgets\Rocker\Rocker.css</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Rocker\Rocker.js">
+      <Link>presentation\main\Widgets\Rocker\Rocker.js</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Rotary\Rotary.css">
+      <Link>presentation\main\Widgets\Rotary\Rotary.css</Link>
+    </Content>
+    <Content Include="..\..\Widgets\Rotary\Rotary.js">
+      <Link>presentation\main\Widgets\Rotary\Rotary.js</Link>
+    </Content>
+    <Content Include="..\..\Widgets\ToggleButton\ToggleButton.css">
+      <Link>presentation\main\Widgets\ToggleButton\ToggleButton.css</Link>
+    </Content>
+    <Content Include="..\..\Widgets\ToggleButton\ToggleButton.js">
+      <Link>presentation\main\Widgets\ToggleButton\ToggleButton.js</Link>
+    </Content>
+    <Resource Include="..\..\Widgets\Rotary\Screws.png">
+      <Link>presentation\main\Widgets\Rotary\Screws.png</Link>
+    </Resource>
+    <Resource Include="..\..\Widgets\Rotary\Wheel.png">
+      <Link>presentation\main\Widgets\Rotary\Wheel.png</Link>
+    </Resource>
+    <Resource Include="..\..\Widgets\Rotary\WheelMute.png">
+      <Link>presentation\main\Widgets\Rotary\WheelMute.png</Link>
+    </Resource>
+    <Resource Include="..\..\Widgets\Rocker\Screws.png">
+      <Link>presentation\main\Widgets\Rocker\Screws.png</Link>
+    </Resource>
+    <Resource Include="..\..\Widgets\Rocker\Wheel.png">
+      <Link>presentation\main\Widgets\Rocker\Wheel.png</Link>
+    </Resource>
+    <Resource Include="..\..\Widgets\Rocker\WheelMute.png">
+      <Link>presentation\main\Widgets\Rocker\WheelMute.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\computer_disabled.png">
+      <Link>presentation\main\images\computer_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\computer_off.png">
+      <Link>presentation\main\images\computer_off.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\computer_rollover.png">
+      <Link>presentation\main\images\computer_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\ControlDeviceBackground.png">
+      <Link>presentation\main\images\ControlDeviceBackground.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\ds_disabled.png">
+      <Link>presentation\main\images\ds_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\ds_off.png">
+      <Link>presentation\main\images\ds_off.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\ds_rollover.png">
+      <Link>presentation\main\images\ds_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\help.png">
+      <Link>presentation\main\images\help.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\help_rollover.png">
+      <Link>presentation\main\images\help_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\linn_logo.png">
+      <Link>presentation\main\images\linn_logo.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\movies_disabled.png">
+      <Link>presentation\main\images\movies_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\movies_on.png">
+      <Link>presentation\main\images\movies_on.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\music_disabled.png">
+      <Link>presentation\main\images\music_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\music_on.png">
+      <Link>presentation\main\images\music_on.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\play_disabled.png">
+      <Link>presentation\main\images\play_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\play_on.png">
+      <Link>presentation\main\images\play_on.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_disabled.png">
+      <Link>presentation\main\images\rocker_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_inner_rollover.png">
+      <Link>presentation\main\images\rocker_inner_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_inner_rollover_fg.png">
+      <Link>presentation\main\images\rocker_inner_rollover_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_left_rollover.png">
+      <Link>presentation\main\images\rocker_left_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_left_rollover_fg.png">
+      <Link>presentation\main\images\rocker_left_rollover_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_off.png">
+      <Link>presentation\main\images\rocker_off.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_off_fg.png">
+      <Link>presentation\main\images\rocker_off_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_right_rollover.png">
+      <Link>presentation\main\images\rocker_right_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_right_rollover_fg.png">
+      <Link>presentation\main\images\rocker_right_rollover_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rocker_symbols.png">
+      <Link>presentation\main\images\rocker_symbols.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_adornment.png">
+      <Link>presentation\main\images\rotary_adornment.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_disabled.png">
+      <Link>presentation\main\images\rotary_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_dots.png">
+      <Link>presentation\main\images\rotary_dots.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_inner_rollover.png">
+      <Link>presentation\main\images\rotary_inner_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_inner_rollover_fg.png">
+      <Link>presentation\main\images\rotary_inner_rollover_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_off.png">
+      <Link>presentation\main\images\rotary_off.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_off_fg.png">
+      <Link>presentation\main\images\rotary_off_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_outer_rollover.png">
+      <Link>presentation\main\images\rotary_outer_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\rotary_outer_rollover_fg.png">
+      <Link>presentation\main\images\rotary_outer_rollover_fg.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\settings.png">
+      <Link>presentation\main\images\settings.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\settings_rollover.png">
+      <Link>presentation\main\images\settings_rollover.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\songcast_spinner_animated.gif">
+      <Link>presentation\main\images\songcast_spinner_animated.gif</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\stop_disabled.png">
+      <Link>presentation\main\images\stop_disabled.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\stop_on.png">
+      <Link>presentation\main\images\stop_on.png</Link>
+    </Resource>
+    <Resource Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\images\warning.png">
+      <Link>presentation\main\images\warning.png</Link>
+    </Resource>
+    <Content Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\index.css">
+      <Link>presentation\main\index.css</Link>
+    </Content>
     <Content Include="..\..\Songcast\OpenHome\Windows\ohSongcast.dll">
       <Link>ohSongcast.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\..\Songcast\Linn\Songcast\Resources\presentation\main\index.xapp">
+      <Link>presentation\main\index.xapp</Link>
+    </None>
+    <None Include="..\..\Widgets\Fonts\effra-webfont.eot">
+      <Link>presentation\main\Widgets\Fonts\effra-webfont.eot</Link>
+    </None>
+    <None Include="..\..\Widgets\Fonts\effra-webfont.woff">
+      <Link>presentation\main\Widgets\Fonts\effra-webfont.woff</Link>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /S /E /I /Y $(ProjectDir)\..\..\Songcast\Linn\Songcast\Resources\presentation $(TargetDir)\presentation

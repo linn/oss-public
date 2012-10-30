@@ -1,5 +1,0 @@
-Import("_default_env")
-
-SConscript('640x480/SConscript', exports = '_default_env')
-
-Alias('Lib', 'Sneaky')

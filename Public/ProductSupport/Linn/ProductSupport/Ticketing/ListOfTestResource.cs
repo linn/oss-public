@@ -7,10 +7,9 @@
 namespace Linn.Tickets.Resources
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Xml.Serialization;
 
-    public class ListOfTestResource : IValidatableObject
+    public class ListOfTestResource 
     {
         public ListOfTestResource()
         {
@@ -20,16 +19,5 @@ namespace Linn.Tickets.Resources
         [XmlElement("test", typeof(TestResource))]
         public List<TestResource> Tests { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var results = new List<ValidationResult>();
-
-            foreach (var test in this.Tests)
-            {
-                Validator.TryValidateObject(test, new ValidationContext(test, null, null), results, true);
-            }
-
-            return results;
-        }
     }
 }

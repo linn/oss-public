@@ -1,0 +1,20 @@
+Copyright (c) 2009-2012, Linn Products Ltd
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+    * Neither the name of Linn Products Ltd nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+Use of cookies in usage data gathering:
+
+A cookie is a small file which asks permission to be placed on your computer's hard drive. 
+
+We use cookies to identify which pages and features of the application are being used. This helps us analyse and improve our application in order to tailor it to our customer needs. We only use this information for statistical analysis purposes.
+Overall, cookies help us provide you with a better application by enabling us to monitor which features you find useful and which you do not. Our use of cookies in no way gives us access to your computer or any personal information about you.
+
+If you do not wish to participate in usage data gathering, you can opt out by turning off the "Send anonymous usage data" setting within the application.  
+By accepting this license agreement and using this software without usage data disabled, you agree to the use of cookies for this purpose.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

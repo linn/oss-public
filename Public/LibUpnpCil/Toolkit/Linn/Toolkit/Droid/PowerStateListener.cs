@@ -11,6 +11,7 @@ namespace OssToolkitDroid
         private bool iIsConnected;
         private Scheduler iScheduler;
         public event EventHandler<EventArgsPowerState> EventPowerStateChanged;
+        private Context iContext;
     
         // default constructor to satisfy framework requirements, should not be used
         public PowerStateListener()
@@ -23,16 +24,16 @@ namespace OssToolkitDroid
             : base()
         {
             iScheduler = new Scheduler("PowerStateChangeScheduler", 1);
+            iContext = aContext;
             iIsConnected = IsConnected(aContext);
+            iContext.RegisterReceiver(this, new IntentFilter(Intent.ActionBatteryChanged));
         }
-
 
         public override void OnReceive(Context aContext, Intent aIntent)
         {
             iScheduler.Schedule(() =>
             {
                 bool isConnected = IsConnected(aIntent);
-                UserLog.WriteLine("PowerStateLinstener.OnReceive: " + isConnected);
                 if (isConnected != iIsConnected)
                 {
                     iIsConnected = isConnected;
@@ -64,6 +65,16 @@ namespace OssToolkitDroid
             {
                 del(this, new EventArgsPowerState(aIsConnected));
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            UserLog.WriteLine("PowerStateListener::Dispose");
+            iScheduler.Stop();
+            iScheduler = null;
+            iContext.UnregisterReceiver(this);
+            iContext = null;
+            base.Dispose(disposing);
         }
     }
 

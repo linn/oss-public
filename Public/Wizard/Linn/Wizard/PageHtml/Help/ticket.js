@@ -118,24 +118,46 @@ function ValidateInputFields() {
     SetAllFieldsValid();
     var allValid = true;
 
-    if ($('#TicketFirstName').val() == "") {
+    if (IsEmpty($('#TicketFirstName').val())) {
         SetFieldStatus('#TicketFirstNameTitle', false);
         allValid = false;
     }
     
-    if ($('#TicketLastName').val() == "") {
+    if (IsEmpty($('#TicketLastName').val())) {
         SetFieldStatus('#TicketLastNameTitle', false);
         allValid = false;
     }
 
-    if (($('#TicketEmail').val() == "") && ($('#TicketPhoneNumber').val() == "")) {
+    if (IsEmpty($('#TicketEmail').val() + $('#TicketPhoneNumber').val()))
+    {
         SetFieldStatus("#TicketEmailTitle", false);
         SetFieldStatus('#TicketPhoneNumberTitle', false);
         allValid = false;
     }
 
+    // trim trailing whitespace
+    var text = $('#TicketFirstName').val();
+    $('#TicketFirstName').val($.trim(text));
+
+    var text = $('#TicketLastName').val();
+    $('#TicketLastName').val($.trim(text));
+
+    var text = $('#TicketEmail').val();
+    $('#TicketEmail').val($.trim(text));
+
+    var text = $('#TicketPhoneNumber').val();
+    $('#TicketPhoneNumber').val($.trim(text));
+
+
     return allValid;
 }
+
+
+function IsEmpty(str) {
+    // returns true if blank or only contains whitespace 
+    return str.replace(/^\s+|\s+$/g, '').length == 0;
+}
+
 
 
 function onClearButtonClick() {

@@ -45,6 +45,7 @@ def build(path, args=''):
 
 build(['Docs'])
 build(['External'])
+build(['Widgets'])
 build(['Xml'])
 build(['Kodegen'])
 build(['LibUpnpCil','Core'])

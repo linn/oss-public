@@ -224,6 +224,10 @@ namespace Linn.Topology
             {
                 iProtocolInfo += ",http-get:*:audio/x-flac:*,http-get:*:audio/mp4:*,http-get:*:audio/wav:*,http-get:*:video/quicktime:*,http-get:*:video/x-matroska:*";
             }
+            if (Device.Model == "AVR-3808")
+            {
+                iProtocolInfo += ",http-get:*:audio/x-flac:*";
+            }
 
             if (iEventInitialisedTime != null)
             {

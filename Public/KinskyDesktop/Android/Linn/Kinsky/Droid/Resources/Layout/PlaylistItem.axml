@@ -67,7 +67,7 @@
   android:layout_alignParentTop="true"
   android:singleLine="true"
   android:ellipsize="end"
-  style="@style/largetextview" />
+  style="@style/semilargetextview" />
     
   <TextView
       android:id="@+id/playlistitemsecondline"
@@ -77,7 +77,7 @@
       android:layout_below="@id/playlistitemfirstline"        
       android:singleLine="true"
       android:ellipsize="end"
-      style="@style/semilargetextview" />
+      style="@style/mediumtextview" />
 
   <TextView
       android:id="@+id/playlistitemthirdline"
@@ -87,7 +87,7 @@
       android:layout_below="@id/playlistitemsecondline"        
       android:singleLine="true"
       android:ellipsize="end"
-      style="@style/semilargetextview" />
+      style="@style/mediumtextview" />
   
 
 </RelativeLayout>

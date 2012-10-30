@@ -118,7 +118,7 @@ namespace KinskyDroid
 
         public override void OnPageSelected(int p0)
         {
-            OnEventPageSelected(p0);
+            OnEventPageSelected((EPageIndex)p0);
         }
 
         public override void OnPageScrollStateChanged(int p0)
@@ -134,7 +134,7 @@ namespace KinskyDroid
                 del(this, new EventArgsScrollState(aScrollState));
             }
         }
-        private void OnEventPageSelected(int aPage)
+        private void OnEventPageSelected(EPageIndex aPage)
         {
             EventHandler<EventArgsPageSelection> del = EventPageSelected;
             if (del != null)
@@ -153,12 +153,12 @@ namespace KinskyDroid
 
     public class EventArgsPageSelection : EventArgs
     {
-        public EventArgsPageSelection(int aPage)
+        public EventArgsPageSelection(EPageIndex aPage)
         {
             Page = aPage;
         }
 
-        public int Page { get; set; }
+        public EPageIndex Page { get; set; }
     }
 
     public class EventArgsScrollState : EventArgs
@@ -178,8 +178,7 @@ namespace KinskyDroid
         {
             iBrowserPopupFactory = new SpeechBubblePopupFactory(aStack, Color.Black);
             iPopupFactory = new OverlayPopupFactory(iStack, new Color(0, 0, 0, 127));
-            iLargeArtwork = false;
-            iCurrentPage = 1;
+            iCurrentPage = aViewMaster.CurrentPageIndex;
             Init(aActivity);
         }
 
@@ -214,7 +213,7 @@ namespace KinskyDroid
             iViewPager = aActivity.FindViewById<ViewPager>(Resource.Id.viewpagerphone);
             iViewPager.Adapter = new PhoneViewPagerAdapter(views, iHiddenContainer);
 
-            iViewPager.CurrentItem = iCurrentPage;
+            iViewPager.CurrentItem = (int)iCurrentPage;
             iPhonePagerListener = new PhonePagerListener();
             iPhonePagerListener.EventPageSelected += EventPageSelectedHandler;
             iViewPager.SetOnPageChangeListener(iPhonePagerListener);
@@ -223,7 +222,7 @@ namespace KinskyDroid
             iPageIndicator.EventPagePrevious += EventPagePreviousHandler;
             iPageIndicator.EventPageNext += EventPageNextHandler;
             iPageIndicator.Count = views.Count;
-            iPageIndicator.SelectedIndex = iCurrentPage;
+            iPageIndicator.SelectedIndex = (int)iCurrentPage;
         }
 
         public override void Dispose()
@@ -297,27 +296,28 @@ namespace KinskyDroid
         {
             if (iCurrentPage > 0)
             {
-                iViewPager.CurrentItem = iCurrentPage - 1;
+                iViewPager.CurrentItem = (int)iCurrentPage - 1;
             }
         }
 
         private void EventPageNextHandler(object sender, EventArgs e)
         {
-            if (iCurrentPage < iViewPager.Adapter.Count - 1)
+            if ((int)iCurrentPage < iViewPager.Adapter.Count - 1)
             {
-                iViewPager.CurrentItem = iCurrentPage + 1;
+                iViewPager.CurrentItem = (int)iCurrentPage + 1;
             }
         }
 
         private void EventPageSelectedHandler(object sender, EventArgsPageSelection e)
         {
-            iCurrentPage = e.Page;
-            iPageIndicator.SelectedIndex = iCurrentPage;
+            iCurrentPage = (EPageIndex)e.Page;
+            iPageIndicator.SelectedIndex = (int)iCurrentPage;
+            iViewMaster.CurrentPageIndex = iCurrentPage;
         }
 
         protected override void OnOpened()
         {
-            iOptionsMediator = new OptionsMediator(iPopupFactory, iStack, iViewMaster.ImageCache, iIconResolver);
+            iOptionsMediator = new OptionsMediator(iPopupFactory, iStack, iViewMaster.ImageCache, iIconResolver, true);
             iOptionsMediator.PopupAnchor = iRootView.FindViewById(Resource.Id.viewpagerphone);
             iRootView.KeepScreenOn = iStack.AutoLock;
 
@@ -404,16 +404,17 @@ namespace KinskyDroid
             iViewMaster.ViewWidgetPlaylist.SaveButton = iRootView.FindViewById<Button>(Resource.Id.playlistsavebutton);
             iViewMaster.ViewWidgetPlaylist.DeleteButton = iRootView.FindViewById<ImageButton>(Resource.Id.playlistdeletebutton);
             iViewMaster.ViewWidgetPlaylist.ButtonContainer = iRootView.FindViewById<ViewGroup>(Resource.Id.playlistbuttons);
+            iViewMaster.ViewWidgetPlaylist.ScrollToButton = iRootView.FindViewById<View>(Resource.Id.trackdisplaycontainer);
 
             iViewMaster.ViewWidgetPlaylistReceiver.ContainerView = iRootView.FindViewById<RelativeLayout>(Resource.Id.playlist);
+            iViewMaster.ViewWidgetPlaylistReceiver.ScrollToButton = iRootView.FindViewById<View>(Resource.Id.trackdisplaycontainer);
             iPlaylistReceiver = new ListView(iStack);
             iPlaylistReceiver.DividerHeight = 0;
 
             iViewMaster.ViewWidgetPlaylistReceiver.PlaylistView = iPlaylistReceiver;
-            iViewMaster.ViewWidgetPlaylistReceiver.ButtonContainer = iRootView.FindViewById<ViewGroup>(Resource.Id.playlistbuttons);
 
             iViewMaster.ViewWidgetPlaylistRadio.ContainerView = iRootView.FindViewById<RelativeLayout>(Resource.Id.playlist);
-            iViewMaster.ViewWidgetPlaylistRadio.ButtonContainer = iRootView.FindViewById<ViewGroup>(Resource.Id.playlistbuttons);
+            iViewMaster.ViewWidgetPlaylistRadio.ScrollToButton = iRootView.FindViewById<View>(Resource.Id.trackdisplaycontainer);
             iPlaylistRadio = new ListView(iStack);
             iPlaylistRadio.DividerHeight = 0;
 
@@ -446,10 +447,42 @@ namespace KinskyDroid
                     iRootView.FindViewById(Resource.Id.playlistcontainerphone),
                     iRootView.FindViewById(Resource.Id.trackartwork),
                     iRootView.FindViewById(Resource.Id.trackshowplaylistbutton),
-                    iLargeArtwork);
+                    iViewMaster.IsShowingLargeArtwork);
 
             iLargeArtworkMediator.EventViewStateChanged += EventFullscreenChangedHandler;
 
+            // go to room selection page if no room selected
+            iTimer = new System.Threading.Timer(TimerCallback);
+            iTimer.Change(5000, Timeout.Infinite);
+
+            double containerWidth = iStack.Resources.DisplayMetrics.WidthPixels;
+            double width = Math.Min(containerWidth, 600);
+
+            new ControlsLayout(iRootView.FindViewById<RelativeLayout>(Resource.Id.volumeandtransportcontrolscontainer),
+                               iRootView.FindViewById<RelativeLayout>(Resource.Id.volumeandtransportcontrols),
+                               iRootView.FindViewById<TransportControls>(Resource.Id.transportcontrols),
+                               iRootView.FindViewById<DisplayControl>(Resource.Id.timedisplay),
+                               iRootView.FindViewById<DisplayControl>(Resource.Id.volumedisplay))
+            .Layout(containerWidth, width);
+
+            new ToolbarLayoutPhone(iRootView.FindViewById<ViewGroup>(Resource.Id.trackartworkcontainer),
+                                   iRootView.FindViewById<ViewGroup>(Resource.Id.trackcontrols),
+                                   iRootView.FindViewById<ViewGroup>(Resource.Id.roomlisttitlebar),
+                                   iRootView.FindViewById<ViewGroup>(Resource.Id.sourcelisttitlebar),
+                                   iRootView.FindViewById<ViewGroup>(Resource.Id.browsercontrolscontainer))
+            .Layout(iStack.Resources.DisplayMetrics.HeightPixels);
+
+        }
+
+        private void TimerCallback(object aState)
+        {
+            iStack.Invoker.BeginInvoke((Action)(() =>
+            {
+                if (iOpen && iViewMaster.RoomSelector.SelectedItem == null && iCurrentPage != 0)
+                {
+                    iViewPager.CurrentItem = 0;
+                }
+            }));
         }
 
         protected override void OnClosed()
@@ -530,6 +563,8 @@ namespace KinskyDroid
             iOptionsMediator.PopupAnchor = null;
             iOptionsMediator.Dispose();
             iOptionsMediator = null;
+            iTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            iTimer.Dispose();
         }
 
         private void EventLocationChangedHandler(object sender, EventArgsLocation e)
@@ -559,7 +594,7 @@ namespace KinskyDroid
 
         private void EventFullscreenChangedHandler(object sender, EventArgs e)
         {
-            iLargeArtwork = iLargeArtworkMediator.IsShowingLargeArtwork;
+            iViewMaster.IsShowingLargeArtwork = iLargeArtworkMediator.IsShowingLargeArtwork;
         }
 
         private void OptionEnableRockerEventValueChangedHandler(object sender, EventArgs e)
@@ -607,7 +642,20 @@ namespace KinskyDroid
             {
                 iOptionsMediator.ToggleOptions();
             }
-            return false;
+            else if (aKeyCode == Keycode.Back && iOpen)
+            {
+                if (iCurrentPage == EPageIndex.Browser && iBrowser.CanGoUp())
+                {
+                    iBrowser.Up(1);
+                    return true;
+                }
+                else if (iCurrentPage == EPageIndex.RoomSource && !iRoomSourceMediator.IsShowingRooms)
+                {
+                    iRoomSourceMediator.IsShowingRooms = true;
+                    return true;
+                }
+            }
+            return base.OnKeyUp(aKeyCode, e);
         }
 
         private ViewWidgetBrowser iBrowser;
@@ -615,8 +663,7 @@ namespace KinskyDroid
         private IPopupFactory iPopupFactory;
         private IPopupFactory iBrowserPopupFactory;
         private SavePlaylistDialog iSavePlaylistDialog;
-        private IRoomSourceMediator iRoomSourceMediator;
-        private bool iLargeArtwork;
+        private RoomSourceListsMediator iRoomSourceMediator;
         private ILargeArtworkMediator iLargeArtworkMediator;
         private ListView iPlaylistMediaRenderer;
         private ListView iPlaylistRadio;
@@ -624,12 +671,20 @@ namespace KinskyDroid
         private View iRootView;
         private ViewPager iViewPager;
         private ViewGroup iHiddenContainer;
-        private int iCurrentPage;
+        private EPageIndex iCurrentPage;
         private PhonePagerListener iPhonePagerListener;
         private ViewGroup iPlaylistContainer;
         private MultiViewPageIndicator iPageIndicator;
 
         private const int kMaxImageCacheSize = 1 * 1024 * 1024;
+        private System.Threading.Timer iTimer;
+    }
+
+    public enum EPageIndex
+    {
+        RoomSource = 0,
+        NowPlaying = 1,
+        Browser = 2
     }
 
     public class ViewKinskyTablet : ViewKinsky
@@ -639,7 +694,6 @@ namespace KinskyDroid
         {
             iBrowserPopupFactory = new SpeechBubblePopupFactory(aStack, Color.Black);
             iPopupFactory = new SpeechBubblePopupFactory(aStack, Color.Black);
-            iLargeArtwork = false;
             Init(aActivity);
         }
 
@@ -702,7 +756,7 @@ namespace KinskyDroid
 
         protected override void OnOpened()
         {
-            iOptionsMediator = new OptionsMediator(iPopupFactory, iStack, iViewMaster.ImageCache, iIconResolver);
+            iOptionsMediator = new OptionsMediator(iPopupFactory, iStack, iViewMaster.ImageCache, iIconResolver, false);
             iOptionsMediator.PopupAnchor = iRootView.FindViewById(Resource.Id.settingsbutton);
             iRootView.KeepScreenOn = iStack.AutoLock;
 
@@ -764,15 +818,16 @@ namespace KinskyDroid
             iViewMaster.ViewWidgetPlaylist.SaveButton = iRootView.FindViewById<Button>(Resource.Id.playlistsavebutton);
             iViewMaster.ViewWidgetPlaylist.DeleteButton = iRootView.FindViewById<ImageButton>(Resource.Id.playlistdeletebutton);
             iViewMaster.ViewWidgetPlaylist.ButtonContainer = iRootView.FindViewById<ViewGroup>(Resource.Id.playlistbuttons);
+            iViewMaster.ViewWidgetPlaylist.ScrollToButton = iRootView.FindViewById<View>(Resource.Id.trackdisplaycontainer);
 
             iViewMaster.ViewWidgetPlaylistReceiver.ContainerView = iRootView.FindViewById<RelativeLayout>(Resource.Id.playlist);
+            iViewMaster.ViewWidgetPlaylistReceiver.ScrollToButton = iRootView.FindViewById<View>(Resource.Id.trackdisplaycontainer);
             iPlaylistReceiver = new ListView(iStack);
             iPlaylistReceiver.DividerHeight = 0;
             iViewMaster.ViewWidgetPlaylistReceiver.PlaylistView = iPlaylistReceiver;
-            iViewMaster.ViewWidgetPlaylistReceiver.ButtonContainer = iRootView.FindViewById<ViewGroup>(Resource.Id.playlistbuttons);
 
             iViewMaster.ViewWidgetPlaylistRadio.ContainerView = iRootView.FindViewById<RelativeLayout>(Resource.Id.playlist);
-            iViewMaster.ViewWidgetPlaylistRadio.ButtonContainer = iRootView.FindViewById<ViewGroup>(Resource.Id.playlistbuttons);
+            iViewMaster.ViewWidgetPlaylistRadio.ScrollToButton = iRootView.FindViewById<View>(Resource.Id.trackdisplaycontainer);
             iPlaylistRadio = new ListView(iStack);
             iPlaylistRadio.DividerHeight = 0;
             iViewMaster.ViewWidgetPlaylistRadio.PlaylistView = iPlaylistRadio;
@@ -809,8 +864,17 @@ namespace KinskyDroid
                 iRootView.FindViewById(Resource.Id.mainlayout),
                 iRootView.FindViewById(Resource.Id.trackartwork),
                 iRootView.FindViewById(Resource.Id.trackcontrolsfullscreen),
-                iLargeArtwork);
+                iViewMaster.IsShowingLargeArtwork);
             iLargeArtworkMediator.EventViewStateChanged += EventFullscreenChangedHandler;
+
+            double containerWidth = Math.Min(iStack.Resources.DisplayMetrics.WidthPixels, iStack.Resources.DisplayMetrics.HeightPixels) / 2;
+            double width = containerWidth;
+            new ControlsLayout(iRootView.FindViewById<RelativeLayout>(Resource.Id.volumeandtransportcontrolscontainer),
+                               iRootView.FindViewById<RelativeLayout>(Resource.Id.volumeandtransportcontrols),
+                               iRootView.FindViewById<TransportControls>(Resource.Id.transportcontrols),
+                               iRootView.FindViewById<DisplayControl>(Resource.Id.timedisplay),
+                               iRootView.FindViewById<DisplayControl>(Resource.Id.volumedisplay))
+            .Layout(containerWidth, width);
         }
 
         protected override void OnClosed()
@@ -914,7 +978,7 @@ namespace KinskyDroid
 
         private void EventFullscreenChangedHandler(object sender, EventArgs e)
         {
-            iLargeArtwork = iLargeArtworkMediator.IsShowingLargeArtwork;
+            iViewMaster.IsShowingLargeArtwork = iLargeArtworkMediator.IsShowingLargeArtwork;
         }
 
         private void OptionEnableRockerEventValueChangedHandler(object sender, EventArgs e)
@@ -962,7 +1026,15 @@ namespace KinskyDroid
             {
                 iOptionsMediator.ToggleOptions();
             }
-            return false;
+            else if (aKeyCode == Keycode.Back && iOpen)
+            {
+                if (iBrowser.CanGoUp())
+                {
+                    iBrowser.Up(1);
+                    return true;
+                }
+            }
+            return base.OnKeyUp(aKeyCode, e);
         }
 
         private ViewWidgetBrowser iBrowser;
@@ -971,7 +1043,6 @@ namespace KinskyDroid
         private IPopupFactory iBrowserPopupFactory;
         private SavePlaylistDialog iSavePlaylistDialog;
         private IRoomSourceMediator iRoomSourceMediator;
-        private bool iLargeArtwork;
         private ILargeArtworkMediator iLargeArtworkMediator;
         private ListView iPlaylistMediaRenderer;
         private ListView iPlaylistRadio;
@@ -1003,7 +1074,26 @@ namespace KinskyDroid
 
         protected abstract void OnClosed();
 
-        public abstract bool OnKeyUp(Keycode aKeyCode, KeyEvent e);
+        public virtual bool OnKeyDown(Keycode aKeyCode, KeyEvent e)
+        {
+           
+            if (aKeyCode == Keycode.VolumeDown && iOpen)
+            {
+                iViewMaster.ViewWidgetVolumeControl.DecrementVolume();
+                return true;
+            }
+            else if (aKeyCode == Keycode.VolumeUp && iOpen)
+            {
+                iViewMaster.ViewWidgetVolumeControl.IncrementVolume();
+                return true;
+            }
+            return false;
+        }
+
+        public virtual bool OnKeyUp(Keycode aKeyCode, KeyEvent e)
+        {            
+            return false;
+        }
 
         public void Open()
         {
@@ -1113,7 +1203,11 @@ namespace KinskyDroid
 
             SetPlaylistGrouping(iOptionGroupTracks.Native);
             SetDisplayExtendedTrackInfo(iOptionExtendedTrackInfo.Native);
+            CurrentPageIndex = EPageIndex.NowPlaying;
         }
+
+        public bool IsShowingLargeArtwork { get; set; }
+        public EPageIndex CurrentPageIndex { get; set; }
 
         public AndroidImageCache ImageCache
         {
@@ -1379,8 +1473,7 @@ namespace KinskyDroid
             iHideFullscreenButton = aHideFullscreenButton;
             iHideFullscreenButton.Click += HideFullscreenButtonClick;
             iShowFullscreenButton.Click += ShowFullscreenButtonClick;
-            iIsShowingLargeArtwork = aInitialState;
-            iFullscreenView.Visibility = iIsShowingLargeArtwork ? ViewStates.Visible : ViewStates.Gone;
+            IsShowingLargeArtwork = aInitialState;
         }
 
         public event EventHandler<EventArgs> EventViewStateChanged;
@@ -1580,7 +1673,7 @@ namespace KinskyDroid
 
     public class OptionsMediator
     {
-        public OptionsMediator(IPopupFactory aPopupFactory, Stack aStack, AndroidImageCache aImageCache, IconResolver aIconResolver)
+        public OptionsMediator(IPopupFactory aPopupFactory, Stack aStack, AndroidImageCache aImageCache, IconResolver aIconResolver, bool aShowCancelButton)
         {
             iImageCache = aImageCache;
             iIconResolver = aIconResolver;
@@ -1592,8 +1685,20 @@ namespace KinskyDroid
             iOptionsView.EditButtonLayoutId = Resource.Layout.EditButton;
             iOptionsView.RequestDeleteButtonResourceId = Resource.Layout.RequestDeleteButton;
             iOptionsView.ConfirmDeleteButtonResourceId = Resource.Layout.ConfirmDeleteButton;
+            iOptionsView.CancelButtonLayoutId = Resource.Layout.BackButton;
+            iOptionsView.CancelButtonText = "Back";
+            iOptionsView.ShowCancelButton = aShowCancelButton;
+            iOptionsView.EventCancelButtonClicked += EventCancelButtonClickedHandler;
             iStack.HelperKinsky.EventOptionPagesChanged += EventOptionPagesChangedHandler;
-            UpdateOptionPages();
+            aStack.Invoker.BeginInvoke((Action)(() =>
+            {
+                UpdateOptionPages();
+            }));
+        }
+
+        private void EventCancelButtonClickedHandler(object sender, EventArgs e)
+        {
+            iPopup.Dismiss();
         }
 
         public View SettingsButton
@@ -1717,7 +1822,7 @@ namespace KinskyDroid
                 iAboutView.FindViewById<TextView>(Resource.Id.helpaboutcompany).Text = iStack.HelperKinsky.Company;
                 iAboutView.FindViewById<TextView>(Resource.Id.helpaboutdescription).Text = iStack.HelperKinsky.Description;
 
-                optionPages.Insert(0, new HelpAboutOptionPage(iAboutView, kManualLink));
+                optionPages.Insert(0, new HelpAboutOptionPage(iAboutView, iStack.IsTabletView ? kManualLinkTablet : kManualLinkPhone));
                 iOptionsView.OptionPages = optionPages;
             }
         }
@@ -1745,6 +1850,7 @@ namespace KinskyDroid
             {
                 iAboutView.Dispose();
             }
+            iOptionsView.EventCancelButtonClicked -= EventCancelButtonClickedHandler;
             iOptionsView.Dispose();
             iOptionsView = null;
         }
@@ -1757,7 +1863,8 @@ namespace KinskyDroid
         private View iPopupAnchor;
         private AndroidImageCache iImageCache;
         private IconResolver iIconResolver;
-        private static string kManualLink = "http://oss.linn.co.uk/trac/wiki/KinskyDavaarManual";
+        private static string kManualLinkTablet = "http://oss.linn.co.uk/trac/wiki/KinskyAndroidTabletDavaarManual";
+        private static string kManualLinkPhone = "http://oss.linn.co.uk/trac/wiki/KinskyAndroidPhoneDavaarManual";
         private View iAboutView;
     }
 
@@ -2296,7 +2403,7 @@ namespace KinskyDroid
         #region IViewWidgetSelector<Room> Members
 
         void IViewWidgetSelector<Room>.Open() { }
-        void IViewWidgetSelector<Room>.Close() { }
+        void IViewWidgetSelector<Room>.Close() { iRooms.Clear(); }
 
         public void InsertItem(int aIndex, Room aItem)
         {
@@ -2318,19 +2425,17 @@ namespace KinskyDroid
 
         #endregion
 
-        public override void Open()
+        protected override void CreateAdapter()
         {
-            base.Open();
+            base.CreateAdapter();
             iPlaylistAdapter.EventJumpToRoomClick += EventJumpToRoomClickHandler;
+            OnPlaylistUpdated();
         }
 
-        public override void Close()
+        protected override void CloseAdapter()
         {
-            if (iPlaylistAdapter != null)
-            {
-                iPlaylistAdapter.EventJumpToRoomClick -= EventJumpToRoomClickHandler;
-            }
-            base.Close();
+            iPlaylistAdapter.EventJumpToRoomClick -= EventJumpToRoomClickHandler;
+            base.CloseAdapter();
         }
 
         private void EventJumpToRoomClickHandler(object sender, EventArgs args)
@@ -2359,7 +2464,10 @@ namespace KinskyDroid
                 {
                     if (iSenders[i].Metadata != null)
                     {
-                        items.Add(new Linn.Topology.MrItem(0, "", iSenders[i].Metadata));
+                        DidlLite didl = new DidlLite();
+                        didl.Add(iSenders[i].Metadata[0]);
+                        didl[0].Title = iSenders[i].FullName;
+                        items.Add(new Linn.Topology.MrItem(0, "", didl));
                     }
                 }
             }
@@ -2624,31 +2732,42 @@ namespace KinskyDroid
                 {
                     iPlaylistView.ItemClick -= ItemClickHandler;
                     iPlaylistView.Adapter = null;
-                    if (iContainerView != null)
+                    if (iContainerView != null && iInitialised)
                     {
                         iContainerView.RemoveView(iPlaylistView);
                     }
                     iPlaylistView.SetOnScrollListener(null);
                     iFlingStateManager.SetFlinging(iPlaylistView, false);
                     iFlingStateManager.EventFlingStateChanged -= EventFlingStateChangedHandler;
+                    if (iPlaylistAdapter != null)
+                    {
+                        CloseAdapter();
+                    }
                 }
                 iPlaylistView = value;
                 if (iPlaylistView != null)
                 {
-                    iPlaylistView.LayoutParameters = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent);
-                    iPlaylistView.ItemClick += ItemClickHandler;
-                    if (iPlaylistAdapter != null)
+                    using (ViewGroup.LayoutParams parms = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent))
                     {
+                        iPlaylistView.LayoutParameters = parms;
+                    }
+                    iPlaylistView.ItemClick += ItemClickHandler;
+                    if (iInitialised)
+                    {
+                        CreateAdapter();
                         iPlaylistView.Adapter = iPlaylistAdapter;
                     }
                     if (iContainerView != null && iInitialised)
                     {
+                        iContainerView.RemoveAllViews();
                         iContainerView.AddView(iPlaylistView);
                     }
                     iPlaylistView.SetOnScrollListener(new FlingScrollListener(iFlingStateManager));
                     iFlingStateManager.EventFlingStateChanged += EventFlingStateChangedHandler;
                     iPlaylistView.FastScrollEnabled = true;
                 }
+                SetButtonState();
+                UpdateTrack();
             }
         }
 
@@ -2656,14 +2775,43 @@ namespace KinskyDroid
         {
             set
             {
-                if (iContainerView != null)
+                if (iContainerView != null && iContainerView.ChildCount > 0)
                 {
-                    iContainerView.RemoveView(iPlaylistView);
+                    iContainerView.RemoveAllViews();
                 }
                 iContainerView = value;
                 if (value != null && iInitialised && iPlaylistView != null)
                 {
                     iContainerView.AddView(iPlaylistView);
+                }
+                SetButtonState();
+            }
+        }
+
+        public View ScrollToButton
+        {
+            set
+            {
+                if (iScrollToButton != null)
+                {
+                    iScrollToButton.Click -= ScrollToButtonClick;
+                }
+                iScrollToButton = value;
+                if (iScrollToButton != null)
+                {
+                    iScrollToButton.Click += ScrollToButtonClick;
+                }
+            }
+        }
+
+        private void ScrollToButtonClick(object sender, EventArgs args)
+        {
+            if (iInitialised && iPlaylistView != null && iPlaylistDisplayItems != null)
+            {
+                int scrollIndex = iPlaylistDisplayItems.IndexOf(CurrentDisplayTrack);
+                if (scrollIndex != -1)
+                {
+                    iPlaylistView.SmoothScrollToPosition(scrollIndex);
                 }
             }
         }
@@ -2685,16 +2833,7 @@ namespace KinskyDroid
 
         public virtual void Open()
         {
-            iPlaylistAdapter = new PlaylistAdapter(iContext, this, iIconResolver, iImageCache);
-            iPlaylistAdapter.EventItemDeleted += EventItemDeletedHandler;
-            iPlaylistAdapter.EventItemMovedDown += EventItemMovedDownHandler;
-            iPlaylistAdapter.EventItemMovedUp += EventItemMovedUpHandler;
-            iPlaylistAdapter.ShowAdditionalInfo = ShowAdditionalInfo;
             iEditing = false;
-            if (iPlaylistView != null)
-            {
-                iPlaylistView.Adapter = iPlaylistAdapter;
-            }
             SetButtonState();
         }
 
@@ -2709,30 +2848,54 @@ namespace KinskyDroid
             if (iPlaylistView != null)
             {
                 iPlaylistView.Adapter = null;
+                iFlingStateManager.SetFlinging(iPlaylistView, false);
             }
             if (iPlaylistAdapter != null)
             {
-                iPlaylistAdapter.EventItemDeleted -= EventItemDeletedHandler;
-                iPlaylistAdapter.EventItemMovedDown -= EventItemMovedDownHandler;
-                iPlaylistAdapter.EventItemMovedUp -= EventItemMovedUpHandler;
-                iPlaylistAdapter.Close();
-                iPlaylistAdapter.Dispose();
-                iPlaylistAdapter = null;
+                CloseAdapter();
             }
             if (iContainerView != null && iContainerView.ChildCount > 0)
             {
-                iContainerView.RemoveView(iPlaylistView);
+                iContainerView.RemoveAllViews();
             }
             iEditing = false;
             SetButtonState();
         }
 
-        public void Initialised()
+        protected virtual void CreateAdapter()
+        {
+            iPlaylistAdapter = new PlaylistAdapter(iContext, this, iIconResolver, iImageCache);
+            iPlaylistAdapter.EventItemDeleted += EventItemDeletedHandler;
+            iPlaylistAdapter.EventItemMovedDown += EventItemMovedDownHandler;
+            iPlaylistAdapter.EventItemMovedUp += EventItemMovedUpHandler;
+            iPlaylistAdapter.ShowAdditionalInfo = ShowAdditionalInfo;
+        }
+
+        protected virtual void CloseAdapter()
+        {
+            iPlaylistAdapter.EventItemDeleted -= EventItemDeletedHandler;
+            iPlaylistAdapter.EventItemMovedDown -= EventItemMovedDownHandler;
+            iPlaylistAdapter.EventItemMovedUp -= EventItemMovedUpHandler;
+            iPlaylistAdapter.Close();
+            iPlaylistAdapter.Dispose();
+            iPlaylistAdapter = null;
+        }
+
+        public virtual void Initialised()
         {
             iInitialised = true;
-            if (iContainerView != null && iContainerView.ChildCount == 0)
+            if (iContainerView != null)
             {
-                iContainerView.AddView(iPlaylistView);
+                iContainerView.RemoveAllViews();
+                if (iPlaylistView != null)
+                {
+                    iContainerView.AddView(iPlaylistView);
+                }
+            }
+            CreateAdapter();
+            if (iPlaylistView != null)
+            {
+                iPlaylistView.Adapter = iPlaylistAdapter;
             }
             iEditing = false;
             SetButtonState();
@@ -2869,8 +3032,7 @@ namespace KinskyDroid
             {
                 items.Add(iPlaylistItems[i]);
             }
-            uint insertAfterId = iPlaylistItems[e.Item.StartIndex + e.Item.Count].Id;
-            OnEventPlaylistMove(insertAfterId, items);
+            OnEventPlaylistMove(e.Item.NextId, items);
         }
 
         private void EventItemMovedUpHandler(object sender, EventArgsListEdit<PlaylistDisplayItem<Bitmap>> e)
@@ -2881,12 +3043,7 @@ namespace KinskyDroid
             {
                 items.Add(iPlaylistItems[i]);
             }
-            uint insertAfterId = 0;
-            if (e.Item.StartIndex > 1)
-            {
-                insertAfterId = iPlaylistItems[e.Item.StartIndex - 2].Id;
-            }
-            OnEventPlaylistMove(insertAfterId, items);
+            OnEventPlaylistMove(e.Item.PreviousId, items);
         }
 
         private void EditButtonClickHandler(object sender, EventArgs e)
@@ -2899,16 +3056,21 @@ namespace KinskyDroid
         {
             if (iPlaylistAdapter != null)
             {
-                if (iTrack != null && iPlaylistItems != null && iPlaylistItems.IndexOf(iTrack) != -1)
-                {
-                    iPlaylistAdapter.CurrentTrack = (from i in iPlaylistDisplayItems where i.StartIndex == iPlaylistItems.IndexOf(iTrack) && i.Count == 1 select i).SingleOrDefault();
-                }
-                else
-                {
-                    iPlaylistAdapter.CurrentTrack = null;
-                }
+                iPlaylistAdapter.CurrentTrack = CurrentDisplayTrack;
             }
             OnEventDataChanged();
+        }
+
+        private PlaylistDisplayItem<Bitmap> CurrentDisplayTrack
+        {
+            get
+            {
+                if (iTrack != null && iPlaylistItems != null && iPlaylistItems.IndexOf(iTrack) != -1 && iPlaylistDisplayItems != null)
+                {
+                    return (from i in iPlaylistDisplayItems where i.StartIndex == iPlaylistItems.IndexOf(iTrack) && i.Count == 1 select i).SingleOrDefault();
+                }
+                return null;
+            }
         }
 
         private void ItemClickHandler(object sender, Android.Widget.AdapterView.ItemClickEventArgs e)
@@ -3020,6 +3182,7 @@ namespace KinskyDroid
         private Context iContext;
         private IViewSaveSupport iViewSaveSupport;
         private ViewGroup iButtonContainer;
+        private View iScrollToButton;
     }
 
     public class ViewWidgetPlaylistDiscPlayer : ViewWidgetPlaylistAux, IViewWidgetPlaylistDiscPlayer
@@ -3058,13 +3221,14 @@ namespace KinskyDroid
         {
             set
             {
-                if (iContainerView != null && iContainerView != value && !iOpen)
+                if (iContainerView != null && iContainerView.ChildCount > 0)
                 {
-                    iContainerView.RemoveView(iImageView);
+                    iContainerView.RemoveAllViews();
                 }
                 iContainerView = value;
-                if (value != null && iOpen && iImageView != null)
+                if (iContainerView != null && iOpen)
                 {
+                    iContainerView.RemoveAllViews();
                     iContainerView.AddView(iImageView);
                 }
             }
@@ -3079,13 +3243,16 @@ namespace KinskyDroid
             if (iImageView == null)
             {
                 iImageView = new ImageView(iContext);
-                RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(iImageWidth, RelativeLayout.LayoutParams.WrapContent);
-                parms.AddRule(LayoutRules.CenterInParent);
-                iImageView.LayoutParameters = parms;
+                using (RelativeLayout.LayoutParams parms = new RelativeLayout.LayoutParams(iImageWidth, RelativeLayout.LayoutParams.WrapContent))
+                {
+                    parms.AddRule(LayoutRules.CenterInParent);
+                    iImageView.LayoutParameters = parms;
+                }
                 iImageView.SetImageResource(iImageResourceId);
             }
             if (iContainerView != null)
             {
+                iContainerView.RemoveAllViews();
                 iContainerView.AddView(iImageView);
             }
         }
@@ -3093,14 +3260,14 @@ namespace KinskyDroid
         public void Close()
         {
             iOpen = false;
-            if (iContainerView != null && iImageView != null)
+            if (iContainerView != null)
             {
-                iContainerView.RemoveView(iImageView);
-                RelativeLayout.LayoutParams parms = iImageView.LayoutParameters as RelativeLayout.LayoutParams;
+                iContainerView.RemoveAllViews();
+            }
+            if (iImageView != null)
+            {
                 iImageView.Dispose();
                 iImageView = null;
-                parms.Dispose();
-                parms = null;
             }
         }
 
@@ -3119,7 +3286,7 @@ namespace KinskyDroid
         public event EventHandler<EventArgs> EventJumpToRoomClick;
 
         public PlaylistAdapter(Context aContext, IAsyncLoader<PlaylistDisplayItem<Bitmap>> aLoader, IconResolver aIconResolver, AndroidImageCache aImageCache)
-            : base(aContext, aLoader)
+            : base(aContext, aLoader, "PlaylistAdapter")
         {
             iIconResolver = aIconResolver;
             iImageCache = aImageCache;
@@ -3169,6 +3336,14 @@ namespace KinskyDroid
             PopulateView(aItem, aViewCache);
         }
 
+        protected override void DestroyItemView(Context aContext, ViewCache aViewCache)
+        {
+            LazyLoadingImageView imageView = aViewCache.FindViewById<LazyLoadingImageView>(Resource.Id.playlistitemicon);
+            imageView.Dispose();
+            base.DestroyItemView(aContext, aViewCache);
+        }
+
+
         private void PopulateView(PlaylistDisplayItem<Bitmap> aItem, ViewCache aViewCache)
         {
             // should never get empty items here
@@ -3190,7 +3365,7 @@ namespace KinskyDroid
             imageViewContainer.Visibility = aItem.IsGrouped && aItem.Count == 1 ? ViewStates.Gone : ViewStates.Visible;
 
             ImageView playingItem = aViewCache.FindViewById<ImageView>(Resource.Id.playlistitemplaying);
-            playingItem.Visibility = aItem == iCurrentTrack ? ViewStates.Visible : ViewStates.Invisible;
+            playingItem.Visibility = aItem == iCurrentTrack ? ViewStates.Visible : ViewStates.Gone;
 
             ImageButton jumpToRoom = aViewCache.FindViewById<ImageButton>(Resource.Id.playlistitemjumptoroom);
             if (aItem == iCurrentTrack && Room != null)
@@ -3213,7 +3388,7 @@ namespace KinskyDroid
             firstLine.Visibility = ViewStates.Visible;
             TextView secondLine = aViewCache.FindViewById<TextView>(Resource.Id.playlistitemsecondline);
             secondLine.Text = aItem.DisplayField2;
-            secondLine.Visibility = !ShowAdditionalInfo || (aItem.IsGrouped && aItem.Count == 1) ? ViewStates.Invisible : ViewStates.Visible;
+            secondLine.Visibility = !ShowAdditionalInfo || (aItem.IsGrouped && aItem.Count == 1) ? ViewStates.Gone : ViewStates.Visible;
             TextView thirdLine = aViewCache.FindViewById<TextView>(Resource.Id.playlistitemthirdline);
             thirdLine.Text = aItem.DisplayField3;
             thirdLine.Visibility = !ShowAdditionalInfo || (aItem.IsGrouped && aItem.Count == 1) ? ViewStates.Gone : ViewStates.Visible;
@@ -3238,12 +3413,12 @@ namespace KinskyDroid
 
         protected override bool CanMoveItemUp(PlaylistDisplayItem<Bitmap> aItem, int aPosition)
         {
-            return EditMode && aItem.StartIndex != 0;
+            return EditMode && aItem.CanMoveUp;
         }
 
         protected override bool CanMoveItemDown(PlaylistDisplayItem<Bitmap> aItem, int aPosition)
         {
-            return EditMode && aItem.StartIndex + aItem.Count != Count;
+            return EditMode && aItem.CanMoveDown;
         }
 
         protected override int RequestDeleteButtonResourceId
@@ -3644,7 +3819,7 @@ namespace KinskyDroid
                     iDisplayControl.MaxValue = 0;
                     iDisplayControl.Value = 0;
                     iDisplayControl.UpdatingValue = 0;
-                    iDisplayControl.IsDimmed = true;
+                    iDisplayControl.IsDimmed = false;
                     iDisplayControl.IsIndeterminate = false;
                     iDisplayControl.Text = string.Empty;
                 }
@@ -3985,6 +4160,16 @@ namespace KinskyDroid
             {
                 iPopupControl.Dismiss();
             }
+        }
+
+        public void IncrementVolume()
+        {
+            OnEventVolumeIncrement();
+        }
+
+        public void DecrementVolume()
+        {
+            OnEventVolumeDecrement();
         }
 
 
@@ -4826,6 +5011,87 @@ namespace KinskyDroid
         private bool iInitialised;
     }
 
+    public class ToolbarLayoutPhone
+    {
+        public ToolbarLayoutPhone(ViewGroup aArtworkContainer,
+                                  ViewGroup aTrackControls,
+                                  ViewGroup aRoomListTitleBar,
+                                  ViewGroup aSourceListTitleBar,
+                                  ViewGroup aBrowserTitleBar)
+        {
+            iArtworkContainer = aArtworkContainer;
+            iTrackControls = aTrackControls;
+            iRoomListTitleBar = aRoomListTitleBar;
+            iSourceListTitleBar = aSourceListTitleBar;
+            iBrowserTitleBar = aBrowserTitleBar;
+        }
+
+        public void Layout(double aScreenHeight)
+        {
+            double minToolbarHeight = TypedValue.ApplyDimension(ComplexUnitType.Dip,
+                              (float)kMinToolbarHeight, iArtworkContainer.Context.Resources.DisplayMetrics);
+
+            double toolbarHeight = Math.Max(minToolbarHeight, aScreenHeight / 15);
+            iArtworkContainer.LayoutParameters.Height = (int)toolbarHeight;
+            iArtworkContainer.LayoutParameters.Width = (int)toolbarHeight;
+            iTrackControls.LayoutParameters.Height = (int)toolbarHeight;
+            if (iRoomListTitleBar != null)
+            {
+                iRoomListTitleBar.LayoutParameters.Height = (int)toolbarHeight;
+            }
+            if (iSourceListTitleBar != null)
+            {
+                iSourceListTitleBar.LayoutParameters.Height = (int)toolbarHeight;
+            }
+            if (iBrowserTitleBar != null)
+            {
+                iBrowserTitleBar.LayoutParameters.Height = (int)toolbarHeight;
+            }
+        }
+
+        private ViewGroup iArtworkContainer;
+        private ViewGroup iTrackControls;
+        private ViewGroup iRoomListTitleBar;
+        private ViewGroup iSourceListTitleBar;
+        private ViewGroup iBrowserTitleBar;
+        private const double kMinToolbarHeight = 45;
+    }
+
+    public class ControlsLayout
+    {
+        public ControlsLayout(RelativeLayout aContainer, RelativeLayout aControls, TransportControls aTransportControls, DisplayControl aVolumeControl, DisplayControl aMediaTimeControl)
+        {
+            iContainer = aContainer;
+            iControls = aControls;
+            iTransportControls = aTransportControls;
+            iVolumeControl = aVolumeControl;
+            iMediaTimeControl = aMediaTimeControl;
+        }
+        public void Layout(double aContainerWidth, double aWidth)
+        {
+            double height = aWidth * kTransportControlsRatio;
+            iContainer.LayoutParameters.Width = (int)aContainerWidth;
+            iContainer.LayoutParameters.Height = (int)height;
+            iControls.LayoutParameters.Width = (int)aWidth;
+            iControls.LayoutParameters.Height = (int)height;
+            iTransportControls.LayoutParameters.Width = (int)(aWidth * kArrayWidthRatio);
+            height = (height * kArrayHeightRatio);
+            iTransportControls.LayoutParameters.Height = (int)height;
+            iVolumeControl.LayoutParameters.Height = (int)height;
+            iVolumeControl.LayoutParameters.Width = (int)height;
+            iMediaTimeControl.LayoutParameters.Height = (int)height;
+            iMediaTimeControl.LayoutParameters.Width = (int)height;
+        }
+        private RelativeLayout iContainer;
+        private RelativeLayout iControls;
+        private TransportControls iTransportControls;
+        private DisplayControl iVolumeControl;
+        private DisplayControl iMediaTimeControl;
+        private const double kTransportControlsRatio = (double)100 / (double)400;
+        private const double kArrayHeightRatio = (double)84 / (double)100;
+        private const double kArrayWidthRatio = (double)243 / (double)400;
+    }
+
     public class TransportControls : RelativeLayout
     {
 
@@ -4850,7 +5116,7 @@ namespace KinskyDroid
             iBackground = new ImageView(Context);
             Stack stack = (this.Context.ApplicationContext as Stack);
             iBackground.SetImageBitmap(stack.ResourceManager.GetBitmap(Resource.Drawable.Array));
-            RelativeLayout.LayoutParams backgroundParams = new RelativeLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
+            RelativeLayout.LayoutParams backgroundParams = new RelativeLayout.LayoutParams(LayoutParams.FillParent, LayoutParams.FillParent);
             backgroundParams.AddRule(LayoutRules.CenterHorizontal);
             backgroundParams.AddRule(LayoutRules.CenterVertical);
             iBackground.LayoutParameters = backgroundParams;
@@ -5159,7 +5425,7 @@ namespace KinskyDroid
 
             Bitmap background = (this.Context.ApplicationContext as Stack).ResourceManager.GetBitmap(Resource.Drawable.Wheel);
             ImageView backgroundImage = new ImageView(Context);
-            RelativeLayout.LayoutParams backgroundLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
+            RelativeLayout.LayoutParams backgroundLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.FillParent, LayoutParams.FillParent);
             backgroundImage.LayoutParameters = backgroundLayoutParams;
             backgroundImage.SetImageBitmap(background);
             AddView(backgroundImage);
@@ -5176,7 +5442,7 @@ namespace KinskyDroid
 
             iDimmer = new ImageView(Context);
             iDimmer.SetImageBitmap((this.Context.ApplicationContext as Stack).ResourceManager.GetBitmap(Resource.Drawable.WheelMute));
-            RelativeLayout.LayoutParams dimmerLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
+            RelativeLayout.LayoutParams dimmerLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.FillParent, LayoutParams.FillParent);
             dimmerLayoutParams.AddRule(LayoutRules.CenterHorizontal);
             dimmerLayoutParams.AddRule(LayoutRules.CenterVertical);
             iDimmer.LayoutParameters = dimmerLayoutParams;
@@ -5187,7 +5453,8 @@ namespace KinskyDroid
             iTextPaint.AntiAlias = true;
             iTextPaint.StrokeWidth = 5;
             iTextPaint.StrokeCap = Paint.Cap.Round;
-            iTextPaint.TextSize = kFontSize;
+            iTextPaint.TextSize = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip,
+                              kFontSize, Context.Resources.DisplayMetrics);
             iTextPaint.SetTypeface(new TextView(Context).Typeface);
 
             IsIndeterminate = false;
@@ -5404,7 +5671,7 @@ namespace KinskyDroid
         private RectF iArcRect;
         private float iStartAngleValue, iSweepAngleValue, iStartAngleUpdating, iSweepAngleUpdating;
         private bool iDrawUpdatingArc;
-        private const float kInnerRingRatio = 0.72f;
+        private const float kInnerRingRatio = 0.7f;
     }
 
     #endregion
@@ -5468,7 +5735,7 @@ namespace KinskyDroid
             anim.OneShot = false;
             for (int i = 0; i < kFrameCount; i++)
             {
-                Bitmap tempImage = Bitmap.CreateBitmap(foregroundImage.Width, foregroundImage.Height, foregroundImage.GetConfig());
+                Bitmap tempImage = Bitmap.CreateBitmap(foregroundImage.Width, foregroundImage.Height, Bitmap.Config.Argb8888);
                 Canvas tempCanvas = new Canvas(tempImage);
                 tempCanvas.Rotate(i * 45, foregroundImage.Width / 2, foregroundImage.Height / 2);
                 tempCanvas.DrawBitmap(foregroundImage, 0, 0, null);
@@ -5515,7 +5782,7 @@ namespace KinskyDroid
         void Close();
     }
 
-    public class RoomSourceListsMediator : Java.Lang.Object, IRoomSourceMediator, Android.Views.Animations.Animation.IAnimationListener
+    public class RoomSourceListsMediator : IRoomSourceMediator
     {
         public RoomSourceListsMediator(Context aContext, Stack aStack, ListView aRoomList, ListView aSourceList, View aRefreshButton, Throbber aRefreshThrobber, ViewSwitcher aViewSwitcher, View aStandbyButton, View aBackButton, TextView aSourceListTitle, IconResolver aIconResolver, ViewWidgetSelectorRoom aRoomSelector, ViewWidgetSelector<Source> aSourceSelector, ViewPager aViewPager, ToggleButton aStandbyAllButton)
         {
@@ -5547,18 +5814,45 @@ namespace KinskyDroid
             iIsShowingRooms = true;
             iRoomSelector.StandbyAllButton = iStandbyAllButton;
             iViewPager = aViewPager;
+            RoomChanged();
         }
+
+        public bool IsShowingRooms
+        {
+            get { return iIsShowingRooms; }
+            set
+            {
+                if (iIsShowingRooms != value)
+                {
+                    if (iIsShowingRooms && iRoomSelector.SelectedItem != null)
+                    {
+                        ShowSources();
+                    }
+                    else if (!iIsShowingRooms)
+                    {
+                        ShowRooms();
+                        iRoomSelector.SelectedItem = null;
+                    }
+                }
+            }
+        }
+
 
         private void RoomSelector_EventDataChanged(object sender, EventArgs e)
         {
+            RoomChanged();
+        }
+
+        private void RoomChanged()
+        {
             Room room = iRoomSelector.SelectedItem;
-            if (room != null && iIsShowingRooms)
+            if (room != null)
             {
-                ToggleView();
+                ShowSources();
             }
-            else if (room == null && !iIsShowingRooms)
+            else
             {
-                ToggleView();
+                ShowRooms();
             }
             iSourceListTitle.Text = room == null ? "Sources" : room.Name;
         }
@@ -5569,12 +5863,14 @@ namespace KinskyDroid
             if (room != null)
             {
                 room.Standby = true;
+                ShowRooms();
+                iRoomSelector.SelectedItem = null;
             }
         }
 
         private void BackClickHandler(object sender, EventArgs e)
         {
-            ToggleView();
+            ShowRooms();
             iRoomSelector.SelectedItem = null;
         }
 
@@ -5630,66 +5926,58 @@ namespace KinskyDroid
 
         private void RoomAdapterEventUserSelectedItem(object sender, EventArgs e)
         {
-            ToggleView();
+            ShowSources();
         }
 
         private void SourceAdapterEventUserSelectedItem(object sender, EventArgs e)
         {
-            iViewPager.CurrentItem = 1;
+            iViewPager.CurrentItem = (int)EPageIndex.NowPlaying;
         }
 
-        private void ToggleView()
+        private void ShowRooms()
         {
-            if (iAnimating)
+            if (!iIsShowingRooms)
             {
-                return;
+                iIsShowingRooms = true;
+                using (Animation inAnim = CreateTranslateAnimation(-1, 0))
+                {
+                    iViewSwitcher.InAnimation = inAnim;
+                }
+                using (Animation outAnim = CreateTranslateAnimation(0, 1))
+                {
+                    iViewSwitcher.OutAnimation = outAnim;
+                }
+                iViewSwitcher.DisplayedChild = 0;
             }
-            iAnimating = true;
+        }
+
+        private void ShowSources()
+        {
             if (iIsShowingRooms)
             {
                 iIsShowingRooms = false;
-                iViewSwitcher.InAnimation = CreateTranslateAnimation(1, 0);
-                iViewSwitcher.OutAnimation = CreateTranslateAnimation(0, -1);
+                using (Animation inAnim = CreateTranslateAnimation(1, 0))
+                {
+                    iViewSwitcher.InAnimation = inAnim;
+                }
+                using (Animation outAnim = CreateTranslateAnimation(0, -1))
+                {
+                    iViewSwitcher.OutAnimation = outAnim;
+                }
+                iViewSwitcher.DisplayedChild = 1;
             }
-            else
-            {
-                iIsShowingRooms = true;
-                iViewSwitcher.InAnimation = CreateTranslateAnimation(-1, 0);
-                iViewSwitcher.OutAnimation = CreateTranslateAnimation(0, 1);
-            }
-            iViewSwitcher.OutAnimation.SetAnimationListener(this);
-            iViewSwitcher.ShowNext();
         }
 
         private Animation CreateTranslateAnimation(float fromX, float toX)
         {
             TranslateAnimation anim = new TranslateAnimation(Dimension.RelativeToParent, fromX, Dimension.RelativeToParent, toX, Dimension.RelativeToParent, 0f, Dimension.RelativeToParent, 0f);
             anim.Duration = 500;
-            anim.Interpolator = new Android.Views.Animations.DecelerateInterpolator();
+            using (DecelerateInterpolator interpolator = new Android.Views.Animations.DecelerateInterpolator())
+            {
+                anim.Interpolator = interpolator;
+            }
             return anim;
         }
-
-        #region IAnimationListener Members
-
-        public void OnAnimationEnd(Animation animation)
-        {
-            iAnimating = false;
-            animation.SetAnimationListener(null);
-            iViewSwitcher.OutAnimation.Dispose();
-            iViewSwitcher.OutAnimation = null;
-            iViewSwitcher.InAnimation.Dispose();
-            iViewSwitcher.InAnimation = null;
-        }
-
-        public void OnAnimationRepeat(Animation animation)
-        {
-        }
-
-        public void OnAnimationStart(Animation animation)
-        {
-        }
-
-        #endregion
 
         private ListView iRoomList;
         private ListView iSourceList;
@@ -5702,7 +5990,6 @@ namespace KinskyDroid
         private System.Threading.Timer iRefreshTimer;
         private const int kRefreshTimeout = 5000;
         private ViewSwitcher iViewSwitcher;
-        private bool iAnimating;
         private bool iIsShowingRooms;
         private View iStandbyButton;
         private View iBackButton;
@@ -6017,7 +6304,7 @@ namespace KinskyDroid
     public abstract class ViewWidgetSelectorAdapter<T> : AsyncArrayAdapter<T, string>
     {
         public ViewWidgetSelectorAdapter(Context aContext, ViewWidgetSelector<T> aViewWidgetSelector, IInvoker aInvoker, IconResolver aIconResolver)
-            : base(aContext, aViewWidgetSelector)
+            : base(aContext, aViewWidgetSelector, "ViewWidgetSelectorAdapter")
         {
             iInvoker = aInvoker;
             iViewWidgetSelector = aViewWidgetSelector;
@@ -6042,6 +6329,7 @@ namespace KinskyDroid
                     iListView.ItemClick -= iListView_ItemClick;
                     iListView.Adapter = null;
                     iListView = null;
+                    Clear();
                 }
                 if (value != null)
                 {
@@ -7156,7 +7444,7 @@ namespace KinskyDroid
                     OnEventDisplayStateChanged();
                     iTestedCanEdit = false;
                     iAdaptorCount = iContentCollector.Count;
-                    Adapter = new BrowserListAdaptor(Context, this, iInvoker, iImageCache, iIconResolver);
+                    Adapter = new BrowserListAdaptor(Context, this, iInvoker, iImageCache, iIconResolver, iFlingStateManager);
                     (Adapter as BrowserListAdaptor).EventItemDeleted += EventItemDeletedHandler;
                     if (iContainer.Metadata is musicAlbum)
                     {
@@ -7479,14 +7767,16 @@ namespace KinskyDroid
 
     public class BrowserListAdaptor : AsyncArrayAdapter<BrowserItem, BrowserItem>
     {
-        public BrowserListAdaptor(Context aContext, IAsyncLoader<BrowserItem> aLoader, IInvoker aInvoker, AndroidImageCache aImageCache, IconResolver aIconResolver)
-            : base(aContext, aLoader)
+        public BrowserListAdaptor(Context aContext, IAsyncLoader<BrowserItem> aLoader, IInvoker aInvoker, AndroidImageCache aImageCache, IconResolver aIconResolver, FlingStateManager aFlingStateManager)
+            : base(aContext, aLoader, "BrowserListAdaptor")
         {
+            iFlingStateManager = aFlingStateManager;
             iImageCache = aImageCache;
             iIconResolver = aIconResolver;
             iInvoker = aInvoker;
             CanDelete = false;
             iPlaceholder = new BitmapDrawable(iIconResolver.IconLoading.Image);
+            iPreferredHeight = (int)aContext.ThemedResourceAttribute(Android.Resource.Attribute.ListPreferredItemHeight);
         }
 
         public bool CanDelete { get; set; }
@@ -7509,6 +7799,13 @@ namespace KinskyDroid
         protected override void RecycleItemView(Context aContext, BrowserItem aItem, ViewCache aViewCache)
         {
             PopulateView(aItem, aViewCache);
+        }
+
+        protected override void DestroyItemView(Context aContext, ViewCache aViewCache)
+        {
+            LazyLoadingImageView imageView = aViewCache.FindViewById<LazyLoadingImageView>(Resource.Id.browseritemicon);
+            imageView.Dispose();
+            base.DestroyItemView(aContext, aViewCache);
         }
 
         protected override bool CanDeleteItem(BrowserItem aItem, int aPosition)
@@ -7572,27 +7869,16 @@ namespace KinskyDroid
 
                 RelativeLayout imageViewContainer = aViewCache.FindViewById<RelativeLayout>(Resource.Id.browseritemiconcontainer);
                 imageViewContainer.Visibility = isGroupedItem ? ViewStates.Gone : ViewStates.Visible;
-                int preferredHeight = (int)iContext.ThemedResourceAttribute(Android.Resource.Attribute.ListPreferredItemHeight);
-                View browseritemtracknumbercontainer = aViewCache.FindViewById<RelativeLayout>(Resource.Id.browseritemtracknumbercontainer);
-                if (aItem.IsGroupHeader && imageViewContainer.LayoutParameters.Width != preferredHeight * 2)
+                int preferredSize = aItem.IsGroupHeader ? iPreferredHeight * 2 : iPreferredHeight;
+                if (imageViewContainer.LayoutParameters.Width != preferredSize)
                 {
-                    imageViewContainer.LayoutParameters.Width = preferredHeight * 2;
-                    imageViewContainer.LayoutParameters.Height = preferredHeight * 2;
-                    browseritemtracknumbercontainer.LayoutParameters.Width = preferredHeight * 2;
+                    imageViewContainer.LayoutParameters.Width = preferredSize;
+                    imageViewContainer.LayoutParameters.Height = preferredSize;
                 }
-                else if (!aItem.IsGroupHeader && imageViewContainer.LayoutParameters.Width != preferredHeight)
-                {
-                    imageViewContainer.LayoutParameters.Width = preferredHeight;
-                    imageViewContainer.LayoutParameters.Height = preferredHeight;
-                    browseritemtracknumbercontainer.LayoutParameters.Width = preferredHeight;
-                }
-
-                TextView browseritemtracknumber = aViewCache.FindViewById<TextView>(Resource.Id.browseritemtracknumber);
-                browseritemtracknumber.Text = (aViewCache.Position).ToString();
-                browseritemtracknumber.Visibility = isGroupedItem ? ViewStates.Visible : ViewStates.Gone;
 
                 TextView firstLine = aViewCache.FindViewById<TextView>(Resource.Id.browseritemfirstline);
-                firstLine.Text = aItem.DisplayField1;
+                string firstLineText = isGroupedItem ? string.Format("{0}. {1}", aViewCache.Position, aItem.DisplayField1) : aItem.DisplayField1;
+                firstLine.Text = firstLineText;
                 firstLine.Visibility = ViewStates.Visible;
                 TextView secondLine = aViewCache.FindViewById<TextView>(Resource.Id.browseritemsecondline);
                 secondLine.Text = aItem.DisplayField2;
@@ -7625,6 +7911,9 @@ namespace KinskyDroid
         private IInvoker iInvoker;
         private BitmapDrawable iPlaceholder;
         private string iHeaderArtist;
+        private FlingStateManager iFlingStateManager;
+        private int iPreferredHeight;
+
     }
 
     public class BrowserErrorPanel

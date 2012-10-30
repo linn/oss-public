@@ -28,12 +28,20 @@ namespace KinskyDesktopWpf
     public partial class UserLogDialog : Window, IUserLogListener
     {
 
-
-        public UserLogDialog()
+        private UiOptions iUiOptions;
+        public UserLogDialog(UiOptions aUiOptions)
         {
             InitializeComponent();
             UserLog.AddListener(this);
             txtUserLog.Text = TruncateText(UserLog.Text);
+            iUiOptions = aUiOptions;
+            this.Loaded += LoadedHandler;
+        }
+
+        void LoadedHandler(object sender, RoutedEventArgs e)
+        {
+            iUiOptions.DialogSettings.Register(this, "UserLog");
+            this.Loaded -= LoadedHandler;
         }
 
         private string TruncateText(string aText)

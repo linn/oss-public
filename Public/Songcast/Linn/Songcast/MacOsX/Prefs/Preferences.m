@@ -399,6 +399,19 @@ static bool gPrefMulticastChannelSeeded = false;
     [self setBoolPreference:@"BetaUpdatesEnabled" value:aEnabled notification:@"PreferenceBetaUpdatesEnabledChanged"];
 }
 
+// UsageDataEnabled
+
+- (bool) usageDataEnabled
+{
+    return [self getBoolPreference:@"UsageDataEnabled" default:true];
+}
+
+
+- (void) setUsageDataEnabled:(bool)aEnabled
+{
+    [self setBoolPreference:@"UsageDataEnabled" value:aEnabled notification:@"PreferenceUsageDataEnabledChanged"];
+}
+
 
 // ReceiverList
 

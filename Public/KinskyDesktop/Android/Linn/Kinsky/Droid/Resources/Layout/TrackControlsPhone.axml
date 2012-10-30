@@ -3,7 +3,7 @@
               style="@style/toolbardimensions"
               android:background="@drawable/topbarfiller">
 
-  <LinearLayout android:id="@+id/trackartworkcontainer"
+  <RelativeLayout android:id="@+id/trackartworkcontainer"
               style="@style/trackartworkcontainerdimensions"
              android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -15,6 +15,7 @@
     <osstoolkitdroid.LazyLoadingImageView android:id="@+id/trackartwork"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
              />
     <ImageButton android:id="@+id/trackshowplaylistbutton"
              android:layout_width="wrap_content"
@@ -23,11 +24,14 @@
                  android:src="@drawable/list"
                  android:padding="5dip"
              android:visibility="gone"    
+                android:layout_centerVertical="true"
                  />
 
-  </LinearLayout>
+  </RelativeLayout>
   
-  <LinearLayout android:layout_width="wrap_content" 
+  <LinearLayout 
+                android:id="@+id/trackdisplaycontainer"
+                android:layout_width="wrap_content" 
                 android:layout_height="wrap_content" 
                 android:orientation="vertical"             
                 android:layout_toLeftOf="@id/trackartworkcontainer"

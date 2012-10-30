@@ -400,10 +400,17 @@ namespace Linn
                         // this is not an option - positional argument
                         if (aArgs[i].StartsWith("-"))
                         {
-                            // this is an unspecified option
-                            throw new OptionParserError("No such option: " + aArgs[i]);
+                            // handle argument MonoDevelop adds to commandline
+                            if(!aArgs[i].StartsWith("-psn_"))
+                            {
+                                // this is an unspecified option
+                                throw new OptionParserError("No such option: " + aArgs[i]);
+                            }
                         }
-                        iPosArgs.Add(iArgs[i]);
+                        else
+                        {
+                            iPosArgs.Add(iArgs[i]);
+                        }
                         i++;
                     }
                     else
@@ -471,9 +478,7 @@ namespace Linn
         {
             Console.WriteLine(Help());
 
-#if !PocketPC
             Environment.Exit(1);
-#endif
         }
 
         public string Usage

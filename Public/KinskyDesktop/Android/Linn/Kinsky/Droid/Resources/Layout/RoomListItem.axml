@@ -33,8 +33,8 @@
       android:layout_height="wrap_content"        
       android:layout_toRightOf="@id/standbybutton"
       android:singleLine="true"
-             android:textStyle="bold"
-      android:ellipsize="marquee" />
+      android:ellipsize="marquee"
+          style="@style/semilargetextview" />
 
 
 </RelativeLayout>

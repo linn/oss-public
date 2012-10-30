@@ -19,40 +19,15 @@ namespace Linn.Songbox
     public interface IMediaServerApp
     {
         string Name { get; }
-        bool StartAtLogin { get; set; }
         void OpenConfiguration();
-        void CheckForUpdates();
     }
 
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application, IMediaServerApp
+    public class StartAtLoginOption : IStartAtLoginOption
     {
-        private FormSysTray iFormSysTray;
-        private ConfigurationWindow iWindow;
-        private Helper iHelper;
-        private HelperAutoUpdate iHelperAutoUpdate;
-        private Server iServer;
-
-        public string Name
+        private string iTitle;
+        public StartAtLoginOption(string aTitle)
         {
-            get
-            {
-                return iHelper.Title;
-            }
-        }
-
-        public void OpenConfiguration()
-        {
-            iWindow.Show();
-            iWindow.Focus();
-            iWindow.WindowState = System.Windows.WindowState.Normal;
-        }
-
-        public void CheckForUpdates()
-        {
-            iHelperAutoUpdate.CheckForUpdates();
+            iTitle = aTitle;
         }
 
         public bool StartAtLogin
@@ -62,10 +37,10 @@ namespace Linn.Songbox
                 RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
                 if (key != null)
                 {
-                    object o = key.GetValue(iHelper.Title);
+                    object o = key.GetValue(iTitle);
 
                     key.Close();
-                 
+
                     return (o != null);
                 }
 
@@ -80,11 +55,11 @@ namespace Linn.Songbox
                     {
                         if (value)
                         {
-                            key.SetValue(iHelper.Title, System.Reflection.Assembly.GetExecutingAssembly().Location, Microsoft.Win32.RegistryValueKind.String);
+                            key.SetValue(iTitle, System.Reflection.Assembly.GetExecutingAssembly().Location, Microsoft.Win32.RegistryValueKind.String);
                         }
                         else
                         {
-                            key.DeleteValue(iHelper.Title);
+                            key.DeleteValue(iTitle);
                         }
 
                         key.Close();
@@ -93,6 +68,40 @@ namespace Linn.Songbox
             }
         }
 
+    }
+
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application, IMediaServerApp
+    {
+        private FormSysTray iFormSysTray;
+        private ConfigurationWindow iWindow;
+        private Helper iHelper;
+        private Server iServer;
+        private PageMain iPageMain;
+        private HelperAutoUpdate iHelperAutoUpdate;
+        private IViewAutoUpdate iViewAutoUpdate;
+
+        public event EventHandler<EventArgs> EventSendUsageDataChanged;
+
+        public string Name
+        {
+            get
+            {
+                return iHelper.Title;
+            }
+        }
+
+        public void OpenConfiguration()
+        {
+            iPageMain.TrackPageVisibilityChange(true);
+            iWindow.Show();
+            iWindow.Focus();
+            iWindow.WindowState = System.Windows.WindowState.Normal;
+        }
+
+        
         private void ApplicationStartup(object sender, StartupEventArgs e)
         {
             // this prevents the UI framework from handling unhandled exceptions so that they are let throught
@@ -101,6 +110,8 @@ namespace Linn.Songbox
 
             // create the app helper
             iHelper = new Helper(Environment.GetCommandLineArgs());
+            OptionPagePrivacy optionPagePrivacy = new OptionPagePrivacy(iHelper);
+            iHelper.AddOptionPage(optionPagePrivacy);
             iHelper.ProcessOptionsFileAndCommandLine();
 
             // create crash log dumper
@@ -108,15 +119,20 @@ namespace Linn.Songbox
             iHelper.AddCrashLogDumper(d);
 
             // create view and helper for auto updates
-            IViewAutoUpdate autoUpdateView = new Toolkit.Wpf.ViewAutoUpdateStandard(Songbox.Properties.Resources.Icon, Songbox.Properties.Resources.Image106x106);
-            iHelperAutoUpdate = new HelperAutoUpdate(iHelper, autoUpdateView, new Invoker(this.Dispatcher));
-            //iHelperAutoUpdate.OptionPageUpdates.BetaVersions = true;
+            iViewAutoUpdate = new Toolkit.Wpf.ViewAutoUpdateStandard(Songbox.Properties.Resources.Icon, Songbox.Properties.Resources.Image106x106);
+            iViewAutoUpdate.EventButtonUpdateClicked += EventButtonUpdateClicked;
+            iHelperAutoUpdate = new HelperAutoUpdate(iHelper, iViewAutoUpdate, new Invoker(this.Dispatcher));
+            iHelperAutoUpdate.OptionPageUpdates.BetaVersions = iHelper.BuildType == EBuildType.Beta;
             iHelperAutoUpdate.Start();
+
+            iPageMain = new Linn.Songbox.PageMain(iHelper, optionPagePrivacy, iHelperAutoUpdate, new StartAtLoginOption(iHelper.Title));
+
+            IconInfo iconInfo = new IconInfo("logo.png", "image/png", 106, 106, 32);
 
             try
             {
                 // create the media server
-                iServer = new Server("git://github.com/linnoss/MediaApps.git", iHelper.Company, "http://www.linn.co.uk", iHelper.Title, "http://www.linn.co.uk");
+                iServer = new Server("git://github.com/linnoss/MediaApps.git", iHelper.Company, "http://www.linn.co.uk", iHelper.Title, "http://www.linn.co.uk", new Presentation(iPageMain), iconInfo);
             }
             catch (ApplicationException)
             {
@@ -131,34 +147,53 @@ namespace Linn.Songbox
             iFormSysTray = new FormSysTray(this);
         }
 
+        private void EventButtonUpdateClicked(object sender, EventArgs e)
+        {
+            // fix #1073 - perform time consuming shutdown code here to prevent a race with installer
+            ShutdownApp();
+        }
+
         private void ApplicationExit(object sender, ExitEventArgs e)
         {
+            ShutdownApp();
+            
             if (iHelperAutoUpdate != null)
             {
                 iHelperAutoUpdate.Dispose();
+                iViewAutoUpdate.EventButtonUpdateClicked -= EventButtonUpdateClicked;
             }
+        }
 
+        private void ShutdownApp()
+        {
             if (iServer != null)
             {
                 iServer.Dispose();
+                iServer = null;
             }
 
             if (iFormSysTray != null)
             {
                 iFormSysTray.Close();
+                iFormSysTray = null;
             }
 
             if (iWindow != null)
             {
                 iWindow.Close();
+                iWindow = null;
             }
         }
 
         private void EventWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // prevent the configuration window from being closed - just hide it
+            iPageMain.TrackPageVisibilityChange(false);
+            // prevent the configuration window from being closed - just hide it            
             e.Cancel = true;
-            iWindow.Hide();
+            if (iWindow != null)
+            {
+                iWindow.Hide();
+            }
         }
     }
 }

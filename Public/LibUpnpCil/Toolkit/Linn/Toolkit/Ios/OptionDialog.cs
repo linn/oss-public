@@ -69,17 +69,17 @@ namespace Linn.Toolkit.Ios
             iNavigationController = new UINavigationController(new OptionDialogRoot(aHelper, aManualUri, aImageIcon, new OptionPageAboutIphone(aHelper, aImageIcon)));
             iNavigationController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             iNavigationController.ModalTransitionStyle = UIModalTransitionStyle.FlipHorizontal;
-            iNavigationController.TopViewController.NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate { iViewController.DismissModalViewControllerAnimated(true); });
+            iNavigationController.TopViewController.NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Done, delegate { iViewController.DismissViewController(true, () => {}); });
         }
 
         public void Open()
         {
-            iViewController.PresentModalViewController(iNavigationController, true);
+            iViewController.PresentViewController(iNavigationController, true, () => {});
         }
 
         internal void Close()
         {
-            iViewController.DismissModalViewControllerAnimated(true);
+            iViewController.DismissViewController(true, () => {});
         }
 
         private UIViewController iViewController;

@@ -10,6 +10,7 @@ using Monobjc.Cocoa;
 
 
 // View classes that correspond to the MainMenu.xib file
+using System.Runtime.InteropServices;
 
 namespace KinskyDesktop
 {
@@ -44,7 +45,22 @@ namespace KinskyDesktop
 
         void IInvoker.BeginInvoke(Delegate aDelegate, params object[] aArgs)
         {
-            NSApplication.NSApp.BeginInvoke(aDelegate, aArgs);
+                try
+                {
+#if DEBUG || TRACE
+                    Trace.WriteLine(Trace.kGui, string.Format("{0} INVOKING {1}", DateTime.Now.ToString(), this.GetCallInfo(aDelegate, aArgs)));
+#endif
+                    NSApplication.NSApp.BeginInvoke(aDelegate, aArgs);
+#if DEBUG || TRACE
+                    Trace.WriteLine(Trace.kGui, string.Format("{0} INVOKED {1}", DateTime.Now.ToString(), this.GetCallInfo(aDelegate, aArgs)));
+#endif
+                }
+                catch (System.Exception ex)
+                {
+                    UserLog.WriteLine("Exception: " + ex);
+                    UserLog.WriteLine("Invocation details: " + this.GetCallInfo(aDelegate, aArgs));
+                    throw ex;
+                }
         }
 
         bool IInvoker.TryBeginInvoke(Delegate aDelegate, params object[] aArgs)
@@ -94,6 +110,25 @@ namespace KinskyDesktop
 
             // start the model - network stack etc...
             iController.Start(iMainWindow);
+
+            //register for fast user switching notifications
+            IntPtr handlerPtr = Monobjc.ObjectiveCRuntime.Selector("sessionChangedHandler:");
+            NSWorkspace.SharedWorkspace.NotificationCenter.AddObserverSelectorNameObject(this, handlerPtr, NSWorkspace.NSWorkspaceSessionDidBecomeActiveNotification, null);
+            NSWorkspace.SharedWorkspace.NotificationCenter.AddObserverSelectorNameObject(this, handlerPtr, NSWorkspace.NSWorkspaceSessionDidResignActiveNotification, null);
+        }
+
+        [ObjectiveCMessage("sessionChangedHandler:")]
+        public void SessionChangeHandler(NSNotification aNotification)
+        {
+            UserLog.WriteLine("SessionChangeHandler: " + aNotification.Name.ToString());
+            if (aNotification.Name.ToString().Equals(NSWorkspace.NSWorkspaceSessionDidBecomeActiveNotification))
+            {
+                iController.Resume();
+            }
+            else
+            {
+                iController.Pause();
+            }
         }
 
         [ObjectiveCMessage("applicationWillTerminate:")]

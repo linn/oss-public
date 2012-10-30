@@ -1,0 +1,95 @@
+#diagnosticsContainer
+{
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+#buttonSendAll
+{
+    position: absolute;
+    z-index: 2;
+    top: 40px;
+    right: 185px;
+}
+
+#buttonIgnoreAll
+{
+    position: absolute;
+    z-index: 2;
+    top: 40px;
+    right: 103px;
+}
+
+#subHeaderOption
+{
+    top: 44px;
+    right: 270px;
+    color: white;
+    font-size: 12px;
+}
+
+#autoSendCrashDataLabel
+{
+    position: absolute;
+    top: 3px;
+    right: 25px;
+    width: 300px;
+    text-align: right;
+}
+
+#allworking-text
+{
+    font-family: 'MyEffraRegular', Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    position: absolute;
+    top: 25%;
+    width: 100%;
+    text-align: center;
+    /*color: white;*/
+}
+
+.diagnosticsContainer
+{
+    padding-left: 320px;    /*left column width*/
+    padding-right: 155px;   /*right column width*/
+}
+
+.diagnosticsLeft
+{
+    position: relative;
+    float: left;
+    width: 320px;
+    right: 320px;
+    margin-left: -100%;
+    padding-right: 5px;
+    overflow: hidden;
+}
+
+.diagnosticsMiddle
+{
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+.diagnosticsRight
+{
+    position: relative;
+    float: left;
+    width: 150px;
+    margin-right: -155px;
+    padding-left: 5px;
+}
+
+#buttonSend, #buttonSendAll, #buttonIgnore, #buttonIgnoreAll, #buttonNeedHelp
+{
+    float: right;
+}
+
+.textSpacer
+{
+    padding-bottom: 15px;
+}

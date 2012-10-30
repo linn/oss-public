@@ -3,7 +3,7 @@ import re
 class BuildInformation(object):
     """BuildInformation."""
 
-    def Update(self, aType='', aVersion='', aRevision='0'):
+    def Update(self, aType='', aVersion='', aRevision='0', aAndroidVersionCode='0'):
         if self._Type == '' and aType != '':
             self._Type = aType
         if self._Version == '' and aVersion != '':
@@ -27,6 +27,7 @@ class BuildInformation(object):
         self.BuildInformation['BUILD_INFO_VERSION'] = version
         self.BuildInformation['BUILD_INFO_SVN_REVISION'] = revision
         self.BuildInformation['BUILD_INFO_INFORMATIONAL_VERSION'] = informationalVersion
+        self.BuildInformation['BUILD_INFO_ANDROID_VERSION_CODE'] = aAndroidVersionCode
             
     def _GetFamily(self, aVersion):
         families = ['Auskerry', 'Bute', 'Cara', 'Davaar']

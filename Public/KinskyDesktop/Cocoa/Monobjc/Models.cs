@@ -58,6 +58,16 @@ namespace KinskyDesktop
             iHelper.Dispose();
         }
 
+        public void Pause()
+        {
+            iHelper.Stack.Stop();
+        }
+
+        public void Resume()
+        {
+            iHelper.Stack.Start();
+        }
+
         public void Rescan()
         {
             iHelper.Rescan();
